@@ -23,8 +23,6 @@ import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.CommandSource;
 
 import net.justmili.trueend.init.TrueEndModGameRules;
 
@@ -48,33 +46,24 @@ public class IfTakesSuffocationDamageProcedure {
 			return;
 		if (entity instanceof Player && (damagesource.is(DamageTypes.IN_WALL) || damagesource.is(DamageTypes.FALLING_BLOCK)) && !(entity instanceof ServerPlayer _plr3 && _plr3.level() instanceof ServerLevel
 				&& _plr3.getAdvancements().getOrStartProgress(_plr3.server.getAdvancements().getAdvancement(new ResourceLocation("true_end:leave_the_nightmare_within_a_dream"))).isDone())) {
-			if (Math.random() < 0.1) {
-				if (entity instanceof ServerPlayer _player && !_player.level().isClientSide()) {
-					ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, new ResourceLocation("true_end:nightmare_within_a_dream"));
-					if (_player.level().dimension() == destinationType)
-						return;
-					ServerLevel nextLevel = _player.server.getLevel(destinationType);
-					if (nextLevel != null) {
-						_player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-						_player.teleportTo(nextLevel, _player.getX(), _player.getY(), _player.getZ(), _player.getYRot(), _player.getXRot());
-						_player.connection.send(new ClientboundPlayerAbilitiesPacket(_player.getAbilities()));
-						for (MobEffectInstance _effectinstance : _player.getActiveEffects())
-							_player.connection.send(new ClientboundUpdateMobEffectPacket(_player.getId(), _effectinstance));
-						_player.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
-					}
-				}
-				if (Math.random() < 0.75 && world.getLevelData().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) == false) {
-					world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(false, world.getServer());
-					world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
-				} else {
-					world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(true, world.getServer());
-				}
-				{
-					Entity _ent = entity;
-					if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-						_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
-								_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "advancement revoke @s only true_end:player_leaves_nwad");
-					}
+			if (world.getLevelData().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) == false) {
+				world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(false, world.getServer());
+				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
+			} else {
+				world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(true, world.getServer());
+			}
+			if (entity instanceof ServerPlayer _player && !_player.level().isClientSide()) {
+				ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, new ResourceLocation("true_end:nightmare_within_a_dream"));
+				if (_player.level().dimension() == destinationType)
+					return;
+				ServerLevel nextLevel = _player.server.getLevel(destinationType);
+				if (nextLevel != null) {
+					_player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+					_player.teleportTo(nextLevel, _player.getX(), _player.getY(), _player.getZ(), _player.getYRot(), _player.getXRot());
+					_player.connection.send(new ClientboundPlayerAbilitiesPacket(_player.getAbilities()));
+					for (MobEffectInstance _effectinstance : _player.getActiveEffects())
+						_player.connection.send(new ClientboundUpdateMobEffectPacket(_player.getId(), _effectinstance));
+					_player.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 				}
 			}
 		}
