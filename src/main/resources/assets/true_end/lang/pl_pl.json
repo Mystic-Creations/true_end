@@ -1,5 +1,5 @@
 {
-  "gamerule.keepInvDefaultGameplayValue": "Domyślna wartość keepInventory (LOGIC GAMERULE)",
+  "gamerule.keepInvDefaultGameplayValue": "Domyślna wartość keepInventory (Wartość Logiczna)",
   "block.true_end.wood_6_sided": "Drewno",
   "block.true_end.glass": "Szkło",
   "advancements.stop_dreaming.title": "Pobudka",
