@@ -1,6 +1,6 @@
 {
   "display": {
-    "background": "minecraft:textures/block/stone.png",
+    "background": "true_end:textures/block/old_dirt.png",
     "icon": {
       "item": "true_end:grass_block"
     },
