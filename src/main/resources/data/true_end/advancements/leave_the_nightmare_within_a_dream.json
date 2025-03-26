@@ -16,11 +16,7 @@
   },
   "criteria": {
     "leave_the_nightmare_within_a_dream_0": {
-      "trigger": "minecraft:changed_dimension",
-      "conditions": {
-        "from": "true_end:nightmare_within_a_dream",
-        "to": "minecraft:overworld"
-      }
+      "trigger": "minecraft:impossible"
     }
   },
   "parent": "true_end:the_start_of_an_end"
