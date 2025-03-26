@@ -11,13 +11,15 @@
     },
     "frame": "task",
     "show_toast": true,
-    "announce_to_chat": false
+    "announce_to_chat": false,
+    "hidden": true
   },
   "criteria": {
-    "player_leaves_dimension_nwad": {
+    "leave_the_nightmare_within_a_dream_0": {
       "trigger": "minecraft:changed_dimension",
       "conditions": {
-        "from": "true_end:nightmare_within_a_dream"
+        "from": "true_end:nightmare_within_a_dream",
+        "to": "minecraft:overworld"
       }
     }
   },

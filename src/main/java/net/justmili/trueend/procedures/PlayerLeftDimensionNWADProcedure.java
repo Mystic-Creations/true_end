@@ -33,7 +33,6 @@ public class PlayerLeftDimensionNWADProcedure {
 			return;
 		if (entity instanceof ServerPlayer _plr0 && _plr0.level() instanceof ServerLevel
 				&& _plr0.getAdvancements().getOrStartProgress(_plr0.server.getAdvancements().getAdvancement(new ResourceLocation("true_end:leave_the_nightmare_within_a_dream"))).isDone()) {
-			entity.sendSystemMessage(Component.literal("This command is running"));
 			if (!world.getLevelData().getGameRules().getBoolean(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE)) {
 				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(false, world.getServer());
 			} else {
