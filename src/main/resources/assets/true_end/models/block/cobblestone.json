@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "true_end:block/old_cobblestone",
+    "up": "true_end:block/old_cobblestone",
+    "north": "true_end:block/old_cobblestone",
+    "east": "true_end:block/old_cobblestone",
+    "south": "true_end:block/old_cobblestone",
+    "west": "true_end:block/old_cobblestone",
+    "particle": "true_end:block/old_cobblestone"
+  },
+  "render_type": "solid"
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "true_end:obsidian",
+    "true_end:stone",
+    "true_end:cobblestone"
+  ]
+}

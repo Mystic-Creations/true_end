@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "true_end:block/wood_6_sided",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "true_end:block/wood_6_sided"
+    },
+    "axis=z": {
+      "model": "true_end:block/wood_6_sided",
+      "x": 90
+    }
+  }
+}

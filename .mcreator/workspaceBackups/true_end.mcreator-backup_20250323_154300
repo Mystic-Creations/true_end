@@ -1,0 +1,730 @@
+{
+  "mod_elements": [
+    {
+      "name": "Dirt",
+      "type": "block",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "dirt",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/models/block/dirt.json",
+          "src/main/resources/assets/true_end/blockstates/dirt.json",
+          "src/main/resources/assets/true_end/models/item/dirt.json",
+          "src/main/java/net/justmili/trueend/block/DirtBlock.java",
+          "src/main/resources/data/true_end/loot_tables/blocks/dirt.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "GrassBlock",
+      "type": "block",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "grass_block",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/loot_tables/blocks/grass_block.json",
+          "src/main/resources/assets/true_end/models/item/grass_block.json",
+          "src/main/resources/assets/true_end/models/block/grass_block.json",
+          "src/main/java/net/justmili/trueend/block/GrassBlockBlock.java",
+          "src/main/resources/assets/true_end/blockstates/grass_block.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "Cobblestone",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "cobblestone",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/models/block/cobblestone.json",
+          "src/main/java/net/justmili/trueend/block/CobblestoneBlock.java",
+          "src/main/resources/assets/true_end/blockstates/cobblestone.json",
+          "src/main/resources/assets/true_end/models/item/cobblestone.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/cobblestone.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "Stone",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "stone",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/blockstates/stone.json",
+          "src/main/java/net/justmili/trueend/block/StoneBlock.java",
+          "src/main/resources/assets/true_end/models/item/stone.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/stone.json",
+          "src/main/resources/assets/true_end/models/block/stone.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "Wood",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "wood",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/block/WoodBlock.java",
+          "src/main/resources/assets/true_end/models/item/wood.json",
+          "src/main/resources/assets/true_end/models/block/wood.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/wood.json",
+          "src/main/resources/assets/true_end/blockstates/wood.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "WoodenPlanks",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "wooden_planks",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/models/item/wooden_planks.json",
+          "src/main/resources/assets/true_end/blockstates/wooden_planks.json",
+          "src/main/java/net/justmili/trueend/block/WoodenPlanksBlock.java",
+          "src/main/resources/assets/true_end/models/block/wooden_planks.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/wooden_planks.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "TreeLeaves",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "tree_leaves",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/blockstates/tree_leaves.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/tree_leaves.json",
+          "src/main/resources/assets/true_end/models/item/tree_leaves.json",
+          "src/main/resources/assets/true_end/models/block/tree_leaves.json",
+          "src/main/java/net/justmili/trueend/block/TreeLeavesBlock.java"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "Obsidian",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "obsidian",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/blockstates/obsidian.json",
+          "src/main/resources/assets/true_end/models/item/obsidian.json",
+          "src/main/java/net/justmili/trueend/block/ObsidianBlock.java",
+          "src/main/resources/assets/true_end/models/block/obsidian.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/obsidian.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "Gravel",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "gravel",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/loot_tables/blocks/gravel.json",
+          "src/main/resources/assets/true_end/models/block/gravel.json",
+          "src/main/resources/assets/true_end/models/item/gravel.json",
+          "src/main/java/net/justmili/trueend/block/GravelBlock.java",
+          "src/main/resources/assets/true_end/blockstates/gravel.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "TrueEnd",
+      "type": "tab",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "true_end",
+      "metadata": {
+        "files": []
+      },
+      "path": "~/Main Features"
+    },
+    {
+      "name": "Wood6Sided",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "wood_6_sided",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/models/block/wood_6_sided.json",
+          "src/main/resources/assets/true_end/models/item/wood_6_sided.json",
+          "src/main/java/net/justmili/trueend/block/Wood6SidedBlock.java",
+          "src/main/resources/assets/true_end/blockstates/wood_6_sided.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/wood_6_sided.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "NostalgicMeadow",
+      "type": "biome",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "nostalgic_meadow",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/worldgen/biome/nostalgic_meadow.json",
+          "src/main/resources/data/true_end/worldgen/placed_feature/nostalgic_meadow_tree.json",
+          "src/main/resources/data/true_end/worldgen/configured_feature/nostalgic_meadow_tree.json"
+        ]
+      },
+      "path": "~/Main Features/Dimension/Biomes"
+    },
+    {
+      "name": "BeyondTheDream",
+      "type": "dimension",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "beyond_the_dream",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/blockstates/beyond_the_dream_portal.json",
+          "src/main/java/net/justmili/trueend/world/teleporter/BeyondTheDreamTeleporter.java",
+          "src/main/java/net/justmili/trueend/world/teleporter/BeyondTheDreamPortalShape.java",
+          "src/main/java/net/justmili/trueend/block/BeyondTheDreamPortalBlock.java",
+          "src/main/resources/data/true_end/dimension_type/beyond_the_dream.json",
+          "src/main/resources/assets/true_end/models/block/beyond_the_dream_portal_ew.json",
+          "src/main/java/net/justmili/trueend/world/dimension/BeyondTheDreamDimension.java",
+          "src/main/resources/data/true_end/dimension/beyond_the_dream.json",
+          "src/main/resources/assets/true_end/models/block/beyond_the_dream_portal_ns.json"
+        ]
+      },
+      "path": "~/Main Features/Dimension"
+    },
+    {
+      "name": "MysteriousCube",
+      "type": "item",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "mysterious_cube",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/item/MysteriousCubeItem.java",
+          "src/main/resources/assets/true_end/models/item/mysterious_cube.json"
+        ]
+      },
+      "path": "~/Main Features/Items"
+    },
+    {
+      "name": "AlphaTrees",
+      "type": "feature",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "alpha_trees",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/worldgen/configured_feature/alpha_trees.json",
+          "src/main/resources/data/true_end/worldgen/placed_feature/alpha_trees.json",
+          "src/main/resources/data/true_end/forge/biome_modifier/alpha_trees_biome_modifier.json"
+        ]
+      },
+      "path": "~/Main Features/Trees"
+    },
+    {
+      "name": "Glass",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "glass",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/true_end/blockstates/glass.json",
+          "src/main/resources/assets/true_end/models/item/glass.json",
+          "src/main/java/net/justmili/trueend/block/GlassBlock.java",
+          "src/main/resources/assets/true_end/models/block/glass.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "Sand",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "sand",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/block/SandBlock.java",
+          "src/main/resources/assets/true_end/models/block/sand.json",
+          "src/main/resources/data/true_end/loot_tables/blocks/sand.json",
+          "src/main/resources/assets/true_end/models/item/sand.json",
+          "src/main/resources/assets/true_end/blockstates/sand.json"
+        ]
+      },
+      "path": "~/Main Features/Blocks"
+    },
+    {
+      "name": "ClearDreamItems",
+      "type": "gamerule",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "clear_dream_items",
+      "metadata": {
+        "files": [],
+        "type": "logic"
+      },
+      "path": "~/Main Features/Gamerules"
+    },
+    {
+      "name": "BtdConversationMessegeDelay",
+      "type": "gamerule",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "btd_conversation_messege_delay",
+      "metadata": {
+        "files": [],
+        "type": "number"
+      },
+      "path": "~/Main Features/Gamerules"
+    },
+    {
+      "name": "CheckIfExitingEnd",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "check_if_exiting_end",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/procedures/CheckIfExitingEndProcedure.java"
+        ],
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/Main Features/Procedures"
+    },
+    {
+      "name": "StopDreaming",
+      "type": "achievement",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "stop_dreaming",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/advancements/stop_dreaming.json"
+        ]
+      },
+      "path": "~/Main Features/Advancements"
+    },
+    {
+      "name": "GoBack",
+      "type": "achievement",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "go_back",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/advancements/go_back.json"
+        ]
+      },
+      "path": "~/Main Features/Advancements"
+    },
+    {
+      "name": "FindTheMysteriousCube",
+      "type": "achievement",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "find_the_mysterious_cube",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/advancements/find_the_mysterious_cube.json"
+        ]
+      },
+      "path": "~/Main Features/Advancements"
+    },
+    {
+      "name": "DreamPortalParticle",
+      "type": "particle",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dream_portal_particle",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/client/particle/DreamPortalParticleParticle.java",
+          "src/main/resources/assets/true_end/particles/dream_portal_particle.json"
+        ]
+      },
+      "path": "~/Main Features"
+    },
+    {
+      "name": "LogicHasVisitedBTDForTheFirstTime",
+      "type": "gamerule",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "logic_has_visited_btd_for_the_first_time",
+      "metadata": {
+        "files": [],
+        "type": "logic"
+      },
+      "path": "~/logic"
+    },
+    {
+      "name": "Trueenddimensiontest",
+      "type": "command",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "trueenddimensiontest",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/command/TrueenddimensiontestCommand.java"
+        ]
+      },
+      "path": "~/Main Features/Commands"
+    },
+    {
+      "name": "Trueenddimensiontestproc",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "trueenddimensiontestproc",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/procedures/TrueenddimensiontestprocProcedure.java"
+        ],
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/Main Features/Procedures/dev"
+    },
+    {
+      "name": "IfTakesSuffocationDamage",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "if_takes_suffocation_damage",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/procedures/IfTakesSuffocationDamageProcedure.java"
+        ],
+        "dependencies": [
+          {
+            "name": "damagesource",
+            "type": "damagesource"
+          },
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/Side Features/Nightmare Within A Dream/Procedures"
+    },
+    {
+      "name": "PlayerLeftDimensionNWAD",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "player_left_dimension_nwad",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/procedures/PlayerLeftDimensionNWADProcedure.java"
+        ],
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/Side Features/Nightmare Within A Dream/Procedures"
+    },
+    {
+      "name": "NightmareWithinADream",
+      "type": "dimension",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "nightmare_within_a_dream",
+      "metadata": {
+        "files": [
+          "src/main/java/net/justmili/trueend/world/dimension/NightmareWithinADreamDimension.java",
+          "src/main/resources/data/true_end/dimension/nightmare_within_a_dream.json",
+          "src/main/resources/data/true_end/dimension_type/nightmare_within_a_dream.json"
+        ]
+      },
+      "path": "~/Side Features/Nightmare Within A Dream"
+    },
+    {
+      "name": "KeepInvDefaultGameplayValue",
+      "type": "gamerule",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "keep_inv_default_gameplay_value",
+      "metadata": {
+        "files": [],
+        "type": "logic"
+      },
+      "path": "~/logic"
+    },
+    {
+      "name": "TheStartOfAnEnd",
+      "type": "achievement",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "the_start_of_an_end",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/advancements/the_start_of_an_end.json"
+        ]
+      },
+      "path": "~/Main Features/Advancements"
+    },
+    {
+      "name": "LeaveTheNightmareWithinADream",
+      "type": "achievement",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "leave_the_nightmare_within_a_dream",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/true_end/advancements/leave_the_nightmare_within_a_dream.json"
+        ]
+      },
+      "path": "~/Side Features/Nightmare Within A Dream/Advancements"
+    }
+  ],
+  "variable_elements": [],
+  "sound_elements": [],
+  "tag_elements": {
+    "BLOCKS:minecraft:needs_diamond_tool": [
+      "~CUSTOM:Obsidian"
+    ],
+    "BLOCKS:minecraft:mineable/pickaxe": [
+      "~CUSTOM:Obsidian",
+      "~CUSTOM:Stone",
+      "~CUSTOM:Cobblestone"
+    ],
+    "BLOCKS:minecraft:mineable/axe": [
+      "~CUSTOM:Wood6Sided",
+      "~CUSTOM:WoodenPlanks",
+      "~CUSTOM:Wood"
+    ],
+    "BLOCKS:minecraft:mineable/hoe": [
+      "~CUSTOM:TreeLeaves"
+    ],
+    "BLOCKS:minecraft:mineable/shovel": [
+      "~CUSTOM:Sand",
+      "~CUSTOM:Gravel"
+    ],
+    "BLOCKS:true_end:underwater_river_blocks": [
+      "CUSTOM:Dirt",
+      "CUSTOM:Gravel",
+      "CUSTOM:Sand"
+    ],
+    "BLOCKS:minecraft:overworld_carver_replaceables": [
+      "~CUSTOM:Stone"
+    ]
+  },
+  "tab_element_order": {
+    "CUSTOM:TrueEnd": [
+      "GrassBlock",
+      "Dirt",
+      "Stone",
+      "Cobblestone",
+      "Wood6Sided",
+      "Wood",
+      "WoodenPlanks",
+      "TreeLeaves",
+      "Gravel",
+      "Sand",
+      "Glass",
+      "Obsidian",
+      "MysteriousCube"
+    ]
+  },
+  "language_map": {
+    "en_us": {
+      "gamerule.keepInvDefaultGameplayValue": "keepInventory Default Gameplay Value",
+      "block.true_end.wood_6_sided": "Wood",
+      "block.true_end.glass": "Glass",
+      "item.true_end.beyond_the_dream.description_0": "",
+      "advancements.stop_dreaming.title": "Wakin\u0027 Up",
+      "block.true_end.stone": "Stone",
+      "gamerule.logicHasVisitedBTDForTheFirstTime": "Logic Gamerule Variable (don\u0027t touch)",
+      "block.true_end.dirt": "Dirt",
+      "gamerule.logicHasVisitedBTDForTheFirstTime.description": "Don\u0027t mess with this",
+      "biome.true_end.nostalgic_meadow": "Nostalgic Meadow",
+      "advancements.leave_the_nightmare_within_a_dream.title": "What the hell happened?",
+      "gamerule.clearDreamItems.description": "Clears Player Inventory when entering Beyond The Dream dimension for the 1st time",
+      "advancements.the_start_of_an_end.descr": "The Start Of An End",
+      "advancements.the_start_of_an_end.title": "True End",
+      "block.true_end.sand": "Gravel",
+      "gamerule.clearDreamItems": "Clear Dream Items",
+      "item_group.true_end.true_end": "True End",
+      "advancements.leave_the_nightmare_within_a_dream.descr": "Leave the Nightmare Within a Dream",
+      "item.true_end.mysterious_cube": "Mysterious Cube",
+      "gamerule.btdConversationMessegeDelay": "BTD Conversation Messege Delay",
+      "block.true_end.cobblestone": "Cobblestone",
+      "block.true_end.obsidian": "Obsidian",
+      "advancements.stop_dreaming.descr": "Stop Dreaming",
+      "block.true_end.gravel": "Gravel",
+      "block.true_end.wooden_planks": "Wooden Planks",
+      "advancements.go_back.descr": "Go back to the regular Minecraft gameplay",
+      "advancements.find_the_mysterious_cube.title": "What\u0027s That?",
+      "block.true_end.tree_leaves": "Leaves",
+      "gamerule.btdConversationMessegeDelay.description": "When enetering Beyond The Dream dimension for the 1st time, you\u0027ll be prompted with a conversation between the player and the voices, the being that talk in the End Credits, this is the delay between each message.",
+      "gamerule.keepInvDefaultGameplayValue.description": "Logic Gamerule, do not touch",
+      "advancements.go_back.title": "Keep On Dreamin\u0027",
+      "block.true_end.grass_block": "Grass Block",
+      "block.true_end.wood": "Wood",
+      "advancements.find_the_mysterious_cube.descr": "Find the Mysterious Cube"
+    }
+  },
+  "foldersRoot": {
+    "name": "~",
+    "children": [
+      {
+        "name": "Main Features",
+        "children": [
+          {
+            "name": "Dimension",
+            "children": [
+              {
+                "name": "Biomes",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "Items",
+            "children": []
+          },
+          {
+            "name": "Procedures",
+            "children": [
+              {
+                "name": "dev",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "Trees",
+            "children": []
+          },
+          {
+            "name": "Loot Tables",
+            "children": []
+          },
+          {
+            "name": "Blocks",
+            "children": []
+          },
+          {
+            "name": "Gamerules",
+            "children": []
+          },
+          {
+            "name": "Advancements",
+            "children": []
+          },
+          {
+            "name": "Commands",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Side Features",
+        "children": [
+          {
+            "name": "Nightmare Within A Dream",
+            "children": [
+              {
+                "name": "Procedures",
+                "children": []
+              },
+              {
+                "name": "Advancements",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "logic",
+        "children": []
+      }
+    ]
+  },
+  "workspaceSettings": {
+    "modid": "true_end",
+    "modName": "True End",
+    "version": "1.3",
+    "description": "Defeated the dragon, but woke up in a familiar yet unknown place, shortly you realize it was all just a dream.",
+    "author": "Mystic Creations Team",
+    "websiteURL": "https://modrinth.com/mod/true_end",
+    "license": "CC-BY 4.0",
+    "serverSideOnly": false,
+    "modPicture": "icon",
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "mcreatorDependencies": [],
+    "currentGenerator": "forge-1.20.1",
+    "credits": "JustMili, Notmas, willjefferson77",
+    "modElementsPackage": "net.justmili.trueend"
+  },
+  "mcreatorVersion": 202400452410
+}

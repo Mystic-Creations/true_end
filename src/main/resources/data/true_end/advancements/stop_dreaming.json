@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "true_end:grass_block"
+    },
+    "title": {
+      "translate": "advancements.stop_dreaming.title"
+    },
+    "description": {
+      "translate": "advancements.stop_dreaming.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "stop_dreaming_0": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "from": "minecraft:the_end"
+      }
+    }
+  },
+  "parent": "true_end:the_start_of_an_end"
+}

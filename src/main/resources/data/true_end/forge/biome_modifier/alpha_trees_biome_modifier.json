@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "true_end:nostalgic_meadow",
+  "features": "true_end:alpha_trees",
+  "step": "surface_structures"
+}

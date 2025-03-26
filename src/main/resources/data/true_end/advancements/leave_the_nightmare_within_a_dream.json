@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "true_end:stone"
+    },
+    "title": {
+      "translate": "advancements.leave_the_nightmare_within_a_dream.title"
+    },
+    "description": {
+      "translate": "advancements.leave_the_nightmare_within_a_dream.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "player_leaves_dimension_nwad": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "from": "true_end:nightmare_within_a_dream"
+      }
+    }
+  },
+  "parent": "true_end:the_start_of_an_end"
+}

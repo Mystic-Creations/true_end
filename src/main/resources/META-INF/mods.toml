@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="CC-BY 4.0"
+
+[[mods]]
+modId="true_end"
+version="1.3"
+displayName="True End"
+displayURL="https://modrinth.com/mod/true_end"
+logoFile="logo.png"
+credits="JustMili, Notmas, willjefferson77"
+authors="Mystic Creations Team"
+description="Defeated the dragon, but woke up in a familiar yet unknown place, shortly you realize it was all just a dream."
+
+# Start of user code block mod configuration
+# End of user code block mod configuration
+
+[[dependencies.true_end]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="AFTER"
+    side="BOTH"
+
+
+
+
+# Start of user code block dependencies configuration
+# End of user code block dependencies configuration

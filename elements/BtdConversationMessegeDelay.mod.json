@@ -1,0 +1,12 @@
+{
+  "_fv": 73,
+  "_type": "gamerule",
+  "definition": {
+    "type": "Number",
+    "displayName": "BTD Conversation Messege Delay",
+    "description": "When enetering Beyond The Dream dimension for the 1st time, you'll be prompted with a conversation between the player and the voices, the being that talk in the End Credits, this is the delay between each message.",
+    "category": "PLAYER",
+    "defaultValueLogic": false,
+    "defaultValueNumber": 20
+  }
+}
