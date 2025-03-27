@@ -1,23 +1,23 @@
-# True End
-Remember the end credits? All the talk about "Player dreaming of stuff"? Well, with this mod, you wake up. With this mod, you, as a player, wake up after beating the game and jumping into the portal.
-Where you'll 'wake up' you may ask.. Well, in a dimension beyond your dream; that looks completely like the overworld (with a few missing biomes), right next to your cozy little house.
+Quick info: Project first made in MCreator, them moved out of it and now we only rely on what's left of the MCreator project workspace (file structure, jars, etc)
 
-_Time to wake up,_
-**_Player._**
+# Description
+Remember the End Credits after beating the ender dragon that most of us just skip over? Well, this time, they're a bit important you see.
+With *True End*, you don't go back to your normal Minecraft world after beating the game, no, you end up in a familiar, yet a unknown world. You're told by the voices from the end credits that you've been sleeping, dreaming, dreaming of a better world.
 
-## Notes
-- "home" ~~sometimes~~ usually spawns in the ocean for some reason (versions 1.0-1.2)
+## Lore? Maybe? Idk lmao
+After finally beating the dragon, freeing The End, you jump into the portal to go back but.. something's different;
+You hear some people talk, talking about you.
+There you get to other side of the portal, but you can't see, the voices say you were dreaming, dreaming of a better world.
+You open your eyes - your things are gone, you look around, you don't recognize where you are, but then you remember - *"It was all just a dream... "*.
+All you have, is your cozy little house, a couple of items in a chest and a motivation to keep dreaming.
 
-Quick info:
-Project first made in MCreator, them moved out of it and now we only rely on what's left of the MCreator project workspace (file structure, jars, etc)
 
+Wake up, *Player.*
 
 <details>
 <summary>Notes</summary>
-In versions before 1.3, don't do much on the world as when you complete the game and get put into the Beyond The Dream dimension your items get cleared and you don't really have a way to  go back.
-Updating from version 1.2 to 1.3 may cause world corruption as version 1.3 is a complete mod rework.
+Inventory can/can't be disabled with gamerule "clearDreamItems", it's set to true by default, you can disable it by setting it to false.
 </details>
-
 
 [Offcial Mod Page (Modrinth)](https://modrinth.com/mod/true_end)
 
