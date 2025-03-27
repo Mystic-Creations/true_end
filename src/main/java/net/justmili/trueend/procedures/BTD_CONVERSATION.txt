@@ -30,3 +30,6 @@ tellraw @s {\"text\":\"We left something for you in your home.\",\"color\":\"dar
 tellraw @s {\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}
 tellraw @s {\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}
 tellraw @s [\"\",{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"@s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"}]
+
+SOLUTION:
+Change from executing as world to executing as target/event entity (player)

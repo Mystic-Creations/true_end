@@ -71,17 +71,17 @@ public class CheckIfExitingEndProcedure {
 
 						if (world instanceof ServerLevel _level)
 							_level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-									"tellraw @s [\"\",{\"selector\":\"@s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"}]");
+									"tellraw @a {\"text\":\"test\"}");
 
 						TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
 							if (world instanceof ServerLevel _level)
 								_level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-										"tellraw @s {\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}");
+										"tellraw @a {\"text\":\"test2\"}");
 										
 							TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
 								if (world instanceof ServerLevel _level)
 									_level.getServer().getCommands().performPrefixedCommand(
-											new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(), "tellraw @s [\"\",{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"@s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"}]");
+											new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(), "tellraw @a {\"text\":\"test3\"}");
 							});
 						});
 					});
