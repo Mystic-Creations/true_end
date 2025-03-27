@@ -19,7 +19,7 @@
 
 
 DEV NOTES
-tellraw commands with these messeges do not work, but placeholders like "tellraw @s {"text":"placeholder1"}" do work, idk why
+tellraw commands with these messeges do not work, but placeholders like "tellraw @s {\"text\":\"placeholder1\"}" do work, idk why
 we need these to be executed as the player that entered the BTD dimension so only that player will see them
 
 conversation commands:
