@@ -5,8 +5,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
@@ -21,7 +19,6 @@ import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
-import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.commands.CommandSourceStack;
@@ -36,14 +33,14 @@ import javax.annotation.Nullable;
 public class CheckIfExitingEndProcedure {
 	@SubscribeEvent
 	public static void onAdvancement(AdvancementEvent event) {
-		execute(event, event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity());
+		execute(event, event.getEntity().level(), event.getEntity());
 	}
 
-	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
-		execute(null, world, x, y, z, entity);
+	public static void execute(LevelAccessor world, Entity entity) {
+		execute(null, world, entity);
 	}
 
-	private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity) {
+	private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
 		if (entity == null)
 			return;
 		if (world.getLevelData().getGameRules().getBoolean(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME) == false) {
@@ -68,22 +65,76 @@ public class CheckIfExitingEndProcedure {
 						_player.getInventory().clearContent();
 					world.getLevelData().getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, world.getServer());
 					TrueEndMod.queueServerWork(45, () -> {
-
-						if (world instanceof ServerLevel _level)
-							_level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-									"tellraw @a {\"text\":\"test\"}");
-
-						TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-							if (world instanceof ServerLevel _level)
-								_level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-										"tellraw @a {\"text\":\"test2\"}");
-										
-							TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-								if (world instanceof ServerLevel _level)
-									_level.getServer().getCommands().performPrefixedCommand(
-											new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(), "tellraw @a {\"text\":\"test3\"}");
-							});
-						});
+						{
+							Entity _ent = entity;
+							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
+								_ent.getServer().getCommands().performPrefixedCommand(
+										new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
+												_ent.getDisplayName(), _ent.level().getServer(), _ent),
+										"tellraw @p [\\\"\\\",{\\\"selector\\\":\\\"@s\\\",\\\"color\\\":\\\"dark_green\\\"},{\\\"text\\\":\\\"? You've awakened.\\\",\\\"color\\\":\\\"dark_green\\\"}]");
+							}
+						}
+					});
+					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
+						{
+							Entity _ent = entity;
+							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
+								_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
+										_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "tellraw @s {\\\"text\\\":\\\"So soon, thought it'd dream longer...\\\",\\\"color\\\":\\\"dark_aqua\\\"}");
+							}
+						}
+					});
+					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
+						{
+							Entity _ent = entity;
+							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
+								_ent.getServer().getCommands().performPrefixedCommand(
+										new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
+												_ent.getDisplayName(), _ent.level().getServer(), _ent),
+										"tellraw @p [\\\"\\\",{\\\"text\\\":\\\"Well, it's beyond the dream now. The player, \\\",\\\"color\\\":\\\"dark_green\\\"},{\\\"selector\\\":\\\"@s\\\",\\\"color\\\":\\\"dark_green\\\"},{\\\"text\\\":\\\", woke up.\\\",\\\"color\\\":\\\"dark_green\\\"}]");
+							}
+						}
+					});
+					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
+						{
+							Entity _ent = entity;
+							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
+								_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
+										_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "tellraw @s {\\\"text\\\":\\\"We left something for you in your home.\\\",\\\"color\\\":\\\"dark_aqua\\\"}");
+							}
+						}
+					});
+					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
+						{
+							Entity _ent = entity;
+							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
+								_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
+										_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "tellraw @s {\\\"text\\\":\\\"Use it well.\\\",\\\"color\\\":\\\"dark_aqua\\\"}");
+							}
+						}
+					});
+					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
+						{
+							Entity _ent = entity;
+							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
+								_ent.getServer().getCommands()
+										.performPrefixedCommand(
+												new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
+														_ent.getDisplayName(), _ent.level().getServer(), _ent),
+												"tellraw @p {\\\"text\\\":\\\"You may go back to the dream, a dream of a better world if you wish.\\\",\\\"color\\\":\\\"dark_green\\\"}");
+							}
+						}
+					});
+					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
+						{
+							Entity _ent = entity;
+							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
+								_ent.getServer().getCommands().performPrefixedCommand(
+										new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
+												_ent.getDisplayName(), _ent.level().getServer(), _ent),
+										"tellraw @p [\\\"\\\",{\\\"text\\\":\\\"We'll see you again soon, \\\",\\\"color\\\":\\\"dark_aqua\\\"},{\\\"selector\\\":\\\"@s\\\",\\\"color\\\":\\\"dark_aqua\\\"},{\\\"text\\\":\\\".\\\",\\\"color\\\":\\\"dark_aqua\\\"}]");
+							}
+						}
 					});
 					world.getLevelData().getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, world.getServer());
 				}
