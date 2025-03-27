@@ -1,5 +1,9 @@
 package net.justmili.trueend;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -83,6 +87,25 @@ public class TrueEndMod {
 			});
 			actions.forEach(e -> e.getKey().run());
 			workQueue.removeAll(actions);
+		}
+	}
+
+	public static void sendTellrawFormatMessage(ServerPlayer player, String message) {
+		JsonElement jsonElement = JsonParser.parseString(message);
+
+		// convert message to components
+		Component component = Component.Serializer.fromJson(jsonElement);
+		if (component != null) {
+			player.sendSystemMessage(component);
+		}
+	}
+
+	public static void sendTellrawMessagesWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
+		for (int i = 0; i < messages.length;i++) {
+			String message = messages[i];
+			queueServerWork(	1+ cooldown * i, () -> {
+				sendTellrawFormatMessage(player, message);
+			});
 		}
 	}
 }
