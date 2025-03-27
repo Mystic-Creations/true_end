@@ -1,6 +1,6 @@
-§2PLAYERNAME? You've awakened. // ADDED
+§2PLAYERNAME? You've awakened.
 
-§3So soon, thought it'd dream longer... // ADDED
+§3So soon, thought it'd dream longer...
 
 §2Well, now it's beyond the dream. The player, PLAYERNAME, woke up.
 
@@ -10,17 +10,7 @@
 
 §2You may go back to the dream, a dream of a better world if you wish.
 
-§3We'll see you again soon, PLAYER. // ADDED
-
-
-
-
-
-
-
-DEV NOTES
-tellraw commands with these messeges do not work, but placeholders like "tellraw @a {\"text\":\"placeholder1\"}" do work, idk why
-we need these to be executed as the player that entered the BTD dimension so only that player will see them
+§3We'll see you again soon, PLAYER.
 
 conversation commands:
 tellraw @s [\"\",{\"selector\":\"@s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"}]
@@ -30,6 +20,3 @@ tellraw @s {\"text\":\"We left something for you in your home.\",\"color\":\"dar
 tellraw @s {\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}
 tellraw @s {\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}
 tellraw @s [\"\",{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"@s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"}]
-
-SOLUTION:
-Change from executing as world to executing as target/event entity (player)
