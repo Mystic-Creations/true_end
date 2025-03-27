@@ -8,12 +8,9 @@ version="1.3"
 displayName="True End"
 displayURL="https://modrinth.com/mod/true_end"
 logoFile="logo.png"
-credits="JustMili, Notmas, willjefferson77"
+credits="Credits to all the members of the Mystic Creations Team"
 authors="Mystic Creations Team"
 description="Defeated the dragon, but woke up in a familiar yet unknown place, shortly you realize it was all just a dream."
-
-# Start of user code block mod configuration
-# End of user code block mod configuration
 
 [[dependencies.true_end]]
     modId="minecraft"
@@ -21,9 +18,3 @@ description="Defeated the dragon, but woke up in a familiar yet unknown place, s
     versionRange="[1.20.1]"
     ordering="AFTER"
     side="BOTH"
-
-
-
-
-# Start of user code block dependencies configuration
-# End of user code block dependencies configuration
