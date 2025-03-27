@@ -24,7 +24,6 @@ public class PlayerDiedInNWADProcedure {
         if (!(event.getEntity() instanceof ServerPlayer)) {
             return;
         }
-        event.getEntity().sendSystemMessage(Component.literal(event.getEntity().level().dimension().location().toString()));
         if (event.getEntity().level().dimension().location().toString().equals("true_end:nightmare_within_a_dream")) {
 
             // get orignal keepinventory gamerule

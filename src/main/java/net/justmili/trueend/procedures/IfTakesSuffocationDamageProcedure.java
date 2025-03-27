@@ -1,5 +1,6 @@
 package net.justmili.trueend.procedures;
 
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -59,7 +60,34 @@ public class IfTakesSuffocationDamageProcedure {
 				ServerLevel nextLevel = _player.server.getLevel(destinationType);
 				if (nextLevel != null) {
 					_player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-					_player.teleportTo(nextLevel, _player.getX(), _player.getY(), _player.getZ(), _player.getYRot(), _player.getXRot());
+					// Find a location for the player to stand on
+					// start at 120 to avoid spawning at bedrock roof
+					int y = 120;
+					boolean foundPlace = false;
+
+					while (y > 0) {
+						BlockPos pos = new BlockPos(_player.getBlockX(), y, _player.getBlockZ());
+						BlockPos posAbove = pos.above();
+						BlockPos posBelow = pos.below();
+
+						boolean isEmpty = nextLevel.isEmptyBlock(pos);
+						boolean isAboveEmpty = nextLevel.isEmptyBlock(posAbove);
+						boolean isBelowSolid = !nextLevel.isEmptyBlock(posBelow);
+
+						if (isEmpty && isAboveEmpty && isBelowSolid) {
+							foundPlace = true;
+							break;
+						}
+						y--;
+					}
+
+					// If no valid spot is found, set a fallback
+					if (!foundPlace) {
+						y = 129;
+					}
+
+					_player.teleportTo(nextLevel, _player.getBlockX(), y + 1, _player.getBlockZ(), _player.getYRot(), _player.getXRot());
+
 					_player.connection.send(new ClientboundPlayerAbilitiesPacket(_player.getAbilities()));
 					for (MobEffectInstance _effectinstance : _player.getActiveEffects())
 						_player.connection.send(new ClientboundUpdateMobEffectPacket(_player.getId(), _effectinstance));
