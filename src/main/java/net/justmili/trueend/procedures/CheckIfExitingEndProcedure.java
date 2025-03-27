@@ -44,8 +44,8 @@ public class CheckIfExitingEndProcedure {
 		if (entity == null)
 			return;
 		if (world.getLevelData().getGameRules().getBoolean(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME) == false) {
-			if ((world instanceof Level _lvl ? _lvl.dimension() : (world instanceof WorldGenLevel _wgl ? _wgl.getLevel().dimension() : Level.OVERWORLD)) == Level.OVERWORLD && entity instanceof ServerPlayer _plr4
-					&& _plr4.level() instanceof ServerLevel && _plr4.getAdvancements().getOrStartProgress(_plr4.server.getAdvancements().getAdvancement(new ResourceLocation("true_end:stop_dreaming"))).isDone()) {
+			if ((world instanceof Level _lvl ? _lvl.dimension() : (world instanceof WorldGenLevel worldGenLevel ? worldGenLevel.getLevel().dimension() : Level.OVERWORLD)) == Level.OVERWORLD && entity instanceof ServerPlayer player
+					&& player.level() instanceof ServerLevel && player.getAdvancements().getOrStartProgress(player.server.getAdvancements().getAdvancement(new ResourceLocation("true_end:stop_dreaming"))).isDone()) {
 				if (entity instanceof ServerPlayer _player && !_player.level().isClientSide()) {
 					ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, new ResourceLocation("true_end:beyond_the_dream"));
 					if (_player.level().dimension() == destinationType)
@@ -64,78 +64,21 @@ public class CheckIfExitingEndProcedure {
 					if (entity instanceof Player _player)
 						_player.getInventory().clearContent();
 					world.getLevelData().getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, world.getServer());
-					TrueEndMod.queueServerWork(45, () -> {
-						{
-							Entity _ent = entity;
-							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-								_ent.getServer().getCommands().performPrefixedCommand(
-										new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
-												_ent.getDisplayName(), _ent.level().getServer(), _ent),
-										"tellraw @p [\\\"\\\",{\\\"selector\\\":\\\"@s\\\",\\\"color\\\":\\\"dark_green\\\"},{\\\"text\\\":\\\"? You've awakened.\\\",\\\"color\\\":\\\"dark_green\\\"}]");
-							}
-						}
+
+					String[] convesation = {
+							"[\"\",{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
+							"{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}".formatted(player.getName().getString()),
+							"[\"\",{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
+							"{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}".formatted(player.getName().getString()),
+							"{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}".formatted(player.getName().getString()),
+							"{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}".formatted(player.getName().getString()),
+							"[\"\",{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"}]".formatted(player.getName().getString())
+					};
+
+					TrueEndMod.queueServerWork(44, () -> {
+						TrueEndMod.sendTellrawMessagesWithCooldown(player, convesation, world.getLevelData().getGameRules().getRule(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY).get());
 					});
-					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-						{
-							Entity _ent = entity;
-							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-								_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
-										_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "tellraw @s {\\\"text\\\":\\\"So soon, thought it'd dream longer...\\\",\\\"color\\\":\\\"dark_aqua\\\"}");
-							}
-						}
-					});
-					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-						{
-							Entity _ent = entity;
-							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-								_ent.getServer().getCommands().performPrefixedCommand(
-										new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
-												_ent.getDisplayName(), _ent.level().getServer(), _ent),
-										"tellraw @p [\\\"\\\",{\\\"text\\\":\\\"Well, it's beyond the dream now. The player, \\\",\\\"color\\\":\\\"dark_green\\\"},{\\\"selector\\\":\\\"@s\\\",\\\"color\\\":\\\"dark_green\\\"},{\\\"text\\\":\\\", woke up.\\\",\\\"color\\\":\\\"dark_green\\\"}]");
-							}
-						}
-					});
-					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-						{
-							Entity _ent = entity;
-							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-								_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
-										_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "tellraw @s {\\\"text\\\":\\\"We left something for you in your home.\\\",\\\"color\\\":\\\"dark_aqua\\\"}");
-							}
-						}
-					});
-					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-						{
-							Entity _ent = entity;
-							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-								_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
-										_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "tellraw @s {\\\"text\\\":\\\"Use it well.\\\",\\\"color\\\":\\\"dark_aqua\\\"}");
-							}
-						}
-					});
-					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-						{
-							Entity _ent = entity;
-							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-								_ent.getServer().getCommands()
-										.performPrefixedCommand(
-												new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
-														_ent.getDisplayName(), _ent.level().getServer(), _ent),
-												"tellraw @p {\\\"text\\\":\\\"You may go back to the dream, a dream of a better world if you wish.\\\",\\\"color\\\":\\\"dark_green\\\"}");
-							}
-						}
-					});
-					TrueEndMod.queueServerWork((world.getLevelData().getGameRules().getInt(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY)), () -> {
-						{
-							Entity _ent = entity;
-							if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-								_ent.getServer().getCommands().performPrefixedCommand(
-										new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4, _ent.getName().getString(),
-												_ent.getDisplayName(), _ent.level().getServer(), _ent),
-										"tellraw @p [\\\"\\\",{\\\"text\\\":\\\"We'll see you again soon, \\\",\\\"color\\\":\\\"dark_aqua\\\"},{\\\"selector\\\":\\\"@s\\\",\\\"color\\\":\\\"dark_aqua\\\"},{\\\"text\\\":\\\".\\\",\\\"color\\\":\\\"dark_aqua\\\"}]");
-							}
-						}
-					});
+
 					world.getLevelData().getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, world.getServer());
 				}
 			}
