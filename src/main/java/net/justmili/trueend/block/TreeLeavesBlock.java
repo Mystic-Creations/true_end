@@ -51,7 +51,7 @@ public class TreeLeavesBlock extends Block implements SimpleWaterloggedBlock {
 	public void tick(BlockState state, ServerLevel level, BlockPos blockPos, RandomSource randomSource) {
 		if (state.getValue(DISTANCE) == 7) {
 			if (randomSource.nextDouble() < 0.2) {
-				level.destroyBlock(blockPos, true);
+				level.removeBlock(blockPos, true);
 			}
 		}
 	}
