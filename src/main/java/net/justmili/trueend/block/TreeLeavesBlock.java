@@ -2,6 +2,12 @@ package net.justmili.trueend.block;
 
 import net.justmili.trueend.TrueEndMod;
 import net.justmili.trueend.init.TrueEndModBlocks;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.material.Fluids;
@@ -20,11 +26,19 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITagManager;
+
 import java.util.Random;
 
 public class TreeLeavesBlock extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 1, 7);
+	public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
+
+	public static final TagKey<Block> woodTag = BlockTags.create(ResourceLocation.fromNamespaceAndPath("true_end", "wood"));
+
 
 	public TreeLeavesBlock() {
 		super(BlockBehaviour.Properties.of().sound(SoundType.GRASS).strength(0.2f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).randomTicks());
@@ -34,7 +48,7 @@ public class TreeLeavesBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(WATERLOGGED, DISTANCE);
+		builder.add(WATERLOGGED, DISTANCE, PERSISTENT);
 	}
 
 	@Override
@@ -50,6 +64,9 @@ public class TreeLeavesBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos blockPos, RandomSource randomSource) {
+		if (state.getValue(PERSISTENT)) {
+			return;
+		}
 		if (state.getValue(DISTANCE) == 7) {
 			if (randomSource.nextDouble() < 0.2) {
 				level.removeBlock(blockPos, true);
@@ -62,7 +79,7 @@ public class TreeLeavesBlock extends Block implements SimpleWaterloggedBlock {
 		int minDistance = 7;
 		for (Direction direction : Direction.values()) {
 			BlockState neighbor = world.getBlockState(currentPos.relative(direction));
-			if (neighbor.is(TrueEndModBlocks.WOOD.get())) {
+		if (ForgeRegistries.BLOCKS.tags().getTag(woodTag).contains(neighbor.getBlock())) {
 				minDistance = 1;
 				break;
 			} else if (neighbor.getBlock() instanceof TreeLeavesBlock) {

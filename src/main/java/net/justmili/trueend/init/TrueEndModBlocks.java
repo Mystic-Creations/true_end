@@ -40,6 +40,7 @@ public class TrueEndModBlocks {
 	public static final RegistryObject<Block> BEYOND_THE_DREAM_PORTAL = REGISTRY.register("beyond_the_dream_portal", () -> new BeyondTheDreamPortalBlock());
 	public static final RegistryObject<Block> GLASS = REGISTRY.register("glass", () -> new GlassBlock());
 	public static final RegistryObject<Block> SAND = REGISTRY.register("sand", () -> new SandBlock());
+
 	// Start of user code block custom blocks
 	// End of user code block custom blocks
 }

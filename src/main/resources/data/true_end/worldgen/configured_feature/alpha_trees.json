@@ -10,7 +10,10 @@
     "foliage_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "true_end:tree_leaves"
+        "Name": "true_end:tree_leaves",
+        "Properties": {
+          "persistent": "false"
+        }
       }
     },
     "trunk_provider": {
