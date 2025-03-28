@@ -38,11 +38,6 @@ public class GrassBlockBlock extends Block {
         if (aboveState.is(TrueEndModBlocks.TREE_LEAVES.get())) {
             return true;
         }
-        if (aboveState.getLightBlock(world, abovePos) > 0) {
-            return false;
-        } else {
-            int light = world.getBrightness(net.minecraft.world.level.LightLayer.SKY, abovePos);
-            return light > 8;
-        }
+        return aboveState.getLightBlock(world, abovePos) <= 0;
     }
 }
