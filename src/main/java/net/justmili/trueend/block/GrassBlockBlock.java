@@ -35,7 +35,9 @@ public class GrassBlockBlock extends Block {
     private static boolean canStayGrass(LevelReader world, BlockPos pos) {
         BlockPos abovePos = pos.above();
         BlockState aboveState = world.getBlockState(abovePos);
-
+        if (aboveState.is(TrueEndModBlocks.TREE_LEAVES.get())) {
+            return true;
+        }
         if (aboveState.getLightBlock(world, abovePos) > 0) {
             return false;
         } else {
