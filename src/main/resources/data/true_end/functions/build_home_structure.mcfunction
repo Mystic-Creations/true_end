@@ -6,7 +6,7 @@ fill ~-2 ~-1 ~-2 ~2 ~-1 ~2 true_end:wooden_planks
 fill ~-2 ~4 ~-2 ~2 ~4 ~2 true_end:wooden_planks
 
 fill ~-4 ~-1 ~-4 ~4 ~-1 ~4 true_end:grass_block replace air
-fill ~-4 ~-2 ~-4 ~4 ~-2 ~4 true_end:grass_block replace air
+fill ~-4 ~-2 ~-4 ~4 ~-2 ~4 true_end:dirt replace air
 
 fill ~-3 ~ ~-3 ~-3 ~3 ~-3 true_end:wood
 setblock ~-3 ~4 ~-3 true_end:wood_6_sided[axis=z]
