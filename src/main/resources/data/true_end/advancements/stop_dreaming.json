@@ -21,5 +21,6 @@
         "from": "minecraft:the_end"
       }
     }
-  }
+  },
+  "parent": "true_end:the_start_of_an_end"
 }
