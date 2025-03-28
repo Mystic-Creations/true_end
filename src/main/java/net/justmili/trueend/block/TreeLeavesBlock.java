@@ -3,6 +3,7 @@ package net.justmili.trueend.block;
 import net.justmili.trueend.TrueEndMod;
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;

@@ -28,6 +28,7 @@ import net.minecraft.core.BlockPos;
 import net.justmili.trueend.init.TrueEndModGameRules;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 @Mod.EventBusSubscriber
 public class IfTakesSuffocationDamageProcedure {
@@ -45,28 +46,28 @@ public class IfTakesSuffocationDamageProcedure {
 	private static void execute(@Nullable Event event, LevelAccessor world, DamageSource damagesource, Entity entity) {
 		if (damagesource == null || entity == null)
 			return;
-		if (entity instanceof Player && (damagesource.is(DamageTypes.IN_WALL) || damagesource.is(DamageTypes.FALLING_BLOCK)) && !(entity instanceof ServerPlayer _plr3 && _plr3.level() instanceof ServerLevel
-				&& _plr3.getAdvancements().getOrStartProgress(_plr3.server.getAdvancements().getAdvancement(new ResourceLocation("true_end:leave_the_nightmare_within_a_dream"))).isDone())) {
-			if (world.getLevelData().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) == false) {
+		if (entity instanceof Player && (damagesource.is(DamageTypes.IN_WALL) || damagesource.is(DamageTypes.FALLING_BLOCK)) && !(entity instanceof ServerPlayer player && player.level() instanceof ServerLevel
+				&& player.getAdvancements().getOrStartProgress(Objects.requireNonNull(player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream")))).isDone())) {
+			if (!world.getLevelData().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
 				world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(false, world.getServer());
 				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
 			} else {
 				world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(true, world.getServer());
 			}
-			if (entity instanceof ServerPlayer _player && !_player.level().isClientSide()) {
-				ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, new ResourceLocation("true_end:nightmare_within_a_dream"));
-				if (_player.level().dimension() == destinationType)
+			if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()) {
+				ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("true_end:nightmare_within_a_dream"));
+				if (serverPlayer.level().dimension() == destinationType)
 					return;
-				ServerLevel nextLevel = _player.server.getLevel(destinationType);
+				ServerLevel nextLevel = serverPlayer.server.getLevel(destinationType);
 				if (nextLevel != null) {
-					_player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+					serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 					// Find a location for the player to stand on
 					// start at 120 to avoid spawning at bedrock roof
 					int y = 120;
 					boolean foundPlace = false;
 
 					while (y > 0) {
-						BlockPos pos = new BlockPos(_player.getBlockX(), y, _player.getBlockZ());
+						BlockPos pos = new BlockPos(serverPlayer.getBlockX(), y, serverPlayer.getBlockZ());
 						BlockPos posAbove = pos.above();
 						BlockPos posBelow = pos.below();
 
@@ -86,12 +87,12 @@ public class IfTakesSuffocationDamageProcedure {
 						y = 129;
 					}
 
-					_player.teleportTo(nextLevel, _player.getBlockX(), y + 1, _player.getBlockZ(), _player.getYRot(), _player.getXRot());
+					serverPlayer.teleportTo(nextLevel, serverPlayer.getBlockX(), y + 1, serverPlayer.getBlockZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
 
-					_player.connection.send(new ClientboundPlayerAbilitiesPacket(_player.getAbilities()));
-					for (MobEffectInstance _effectinstance : _player.getActiveEffects())
-						_player.connection.send(new ClientboundUpdateMobEffectPacket(_player.getId(), _effectinstance));
-					_player.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+					serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+					for (MobEffectInstance mobEffectInstance : serverPlayer.getActiveEffects())
+						serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), mobEffectInstance));
+					serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 				}
 			}
 		}

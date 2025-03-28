@@ -28,13 +28,10 @@ public class PlayerJoinedWorldProcedure {
 	private static void execute(@Nullable Event event, Entity entity) {
 		if (entity == null)
 			return;
-		String playerName = "";
-		{
-			Entity _ent = entity;
-			if (!_ent.level().isClientSide() && _ent.getServer() != null) {
-				_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
-						_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "tellraw @a [\"\",{\"selector\":\"@s\",\"color\":\"yellow\"},{\"text\":\" joined the game\",\"color\":\"yellow\"}]");
-			}
+		if (!entity.level().isClientSide() && entity.getServer() != null) {
+			entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel) entity.level() : null, 4,
+					entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tellraw @a [\"\",{\"selector\":\"@s\",\"color\":\"yellow\"},{\"text\":\" joined the game\",\"color\":\"yellow\"}]");
 		}
+
 	}
 }
