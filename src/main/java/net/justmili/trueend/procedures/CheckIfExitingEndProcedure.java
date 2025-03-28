@@ -55,20 +55,45 @@ public class CheckIfExitingEndProcedure {
                         serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
                         // Find a suitable spawn point on true_end:grass_block within Y 64-70 with sky check
-                        BlockPos spawnPos = findGrassSpawnPoint(nextLevel, 64, 70);
-                        if (spawnPos != null) {
-                            serverPlayer.teleportTo(nextLevel, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
-                            // Schedule the structure placement after a short delay
-                            TrueEndMod.queueServerWork(20, () -> {
-                                executeCommand(nextLevel, serverPlayer, "function true_end:build_home_structure");
-                            });
-                        } else {
-                            // If no grass block is found, teleport to the default spawn
-                            serverPlayer.teleportTo(nextLevel, nextLevel.getSharedSpawnPos().getX(), nextLevel.getSharedSpawnPos().getY(), nextLevel.getSharedSpawnPos().getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
-                            TrueEndMod.queueServerWork(20, () -> {
-                                executeCommand(nextLevel, serverPlayer, "function true_end:build_home_structure");
-                            });
+                        int offset = 0;
+
+                        BlockPos spawnPos = null;
+                        while (spawnPos == null) {
+                            spawnPos = findGrassSpawnPoint(nextLevel, 64, 70, offset * 16, 0);
+                            offset++;
+                            if (offset > 24) {
+                                int y = 120;
+                                boolean foundPlace = false;
+
+                                while (y > 0) {
+                                    BlockPos pos = new BlockPos(serverPlayer.getBlockX(), y, serverPlayer.getBlockZ());
+                                    BlockPos posAbove = pos.above();
+                                    BlockPos posBelow = pos.below();
+
+                                    boolean isEmpty = nextLevel.isEmptyBlock(pos);
+                                    boolean isAboveEmpty = nextLevel.isEmptyBlock(posAbove);
+                                    boolean isBelowSolid = !nextLevel.isEmptyBlock(posBelow);
+
+                                    if (isEmpty && isAboveEmpty && isBelowSolid) {
+                                        foundPlace = true;
+                                        break;
+                                    }
+                                    y--;
+                                }
+
+                                // If no valid spot is found, set a fallback
+                                if (!foundPlace) {
+                                    y = 129;
+                                }
+                                spawnPos = new BlockPos(offset, y, 0);
+                                break;
+                            }
                         }
+                        serverPlayer.teleportTo(nextLevel, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
+                        // Schedule the structure placement after a short delay
+                        TrueEndMod.queueServerWork(10, () -> {
+                            executeCommand(nextLevel, serverPlayer, "function true_end:build_home_structure");
+                        });
 
                         serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
                         for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
@@ -82,20 +107,13 @@ public class CheckIfExitingEndProcedure {
                     world.getLevelData().getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, world.getServer());
 
                     String[] convesation = {
-                            "{\"text\":\" \"}",
-                            "[\"\",{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
-                            "{\"text\":\" \"}",
+                            "[\"\",{\"text\":\"\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\n\"}]".formatted(player.getName().getString()),
                             "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
-                            "{\"text\":\" \"}",
-                            "[\"\",{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
-                            "{\"text\":\" \"}",
-                            "{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}",
-                            "{\"text\":\" \"}",
-                            "{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}",
-                            "{\"text\":\" \"}",
-                            "{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}",
-                            "{\"text\":\" \"}",
-                            "[\"\",{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"}]".formatted(player.getName().getString())
+                            "[\"\",{\"text\":\"\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
+                            "[\"\",{\"text\":\"\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
+                            "[\"\",{\"text\":\"\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
+                            "[\"\",{\"text\":\"\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
+                            "[\"\",{\"text\":\"\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\n\"}]".formatted(player.getName().getString())
                     };
 
                     TrueEndMod.queueServerWork(44, () -> {
@@ -109,17 +127,15 @@ public class CheckIfExitingEndProcedure {
     }
 
     // Helper method to find a grass block within a Y range
-    private static BlockPos findGrassSpawnPoint(ServerLevel level, int minY, int maxY) {
-        ChunkPos chunkPos = new ChunkPos(level.getSharedSpawnPos());
+    private static BlockPos findGrassSpawnPoint(ServerLevel level, int minY, int maxY, int startX, int startZ) {
+        ChunkPos chunkPos = new ChunkPos(new BlockPos(startX, maxY , startZ));
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        for (int x = -16; x <= 16; x++) {
-            for (int z = -16; z <= 16; z++) {
-                for (int y = maxY; y >= minY; y--) {
-                    mutablePos.set(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ() + z);
-                    if (level.getBlockState(mutablePos).is(net.justmili.trueend.init.TrueEndModBlocks.GRASS_BLOCK.get()) && isSkyClear(level, mutablePos)) {
-                        return mutablePos.above();
-                    }
+        for (int x = -4; x <= 4; x++) {
+            for (int y = maxY; y >= minY; y--) {
+                mutablePos.set(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ());
+                if (level.getBlockState(mutablePos).is(net.justmili.trueend.init.TrueEndModBlocks.GRASS_BLOCK.get()) && isSkyClear(level, mutablePos)) {
+                    return mutablePos.above();
                 }
             }
         }

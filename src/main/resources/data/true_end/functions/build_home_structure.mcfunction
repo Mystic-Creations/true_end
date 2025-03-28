@@ -2,8 +2,8 @@
 tp @s ~ ~ ~ 180 0
 
 # Terrain modifications
-fill ~-4 ~ ~-4 ~4 ~5 ~3 air
-fill ~-1 ~ ~-5 ~1 ~ ~-1 air
+fill ~3 ~ ~3 ~-3 ~5 ~-4 air
+fill ~-1 ~ ~-5 ~1 ~ ~-5 air
 
 fill ~-4 ~-1 ~-4 ~4 ~-1 ~4 true_end:grass_block replace air
 fill ~-4 ~-2 ~-4 ~4 ~-2 ~4 true_end:dirt replace air
