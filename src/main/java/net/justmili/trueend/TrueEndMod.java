@@ -2,6 +2,7 @@ package net.justmili.trueend;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.apache.logging.log4j.Logger;
@@ -91,8 +92,16 @@ public class TrueEndMod {
 	}
 
 	public static void sendTellrawFormatMessage(ServerPlayer player, String message) {
-		JsonElement jsonElement = JsonParser.parseString(message);
-
+		JsonElement jsonElement;
+		try {
+			jsonElement = JsonParser.parseString(message);
+		} catch (JsonSyntaxException e) {
+			LOGGER.error("MESSAGE FAILED TO SEND BECAUSE YOU FORMATTED TELLRAW STYLE TEXT WRONG");
+			String json =  "JSON in question: %s".formatted(message);
+			LOGGER.error(json);
+			LOGGER.error(e.getMessage());
+			return;
+		}
 		// convert message to components
 		Component component = Component.Serializer.fromJson(jsonElement);
 		if (component != null) {
