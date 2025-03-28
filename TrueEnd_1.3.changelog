@@ -1,0 +1,22 @@
+# Changes (Mod page)
+- Changed description
+
+# Changes (Mod)
+- Beyond The Dream Dimension rework
+- A proper way to get back from Beyond The Dream ("The Dreaming Tree")
+- Reworked home, and actually spawning inside it
+- Reworked lore(?)
+
+# Additions
+- Item tab
+- New dimension-specific biome "Nostalic Meadow"
+- New blocks (Alpha version-like Grass Block, dirt, Wood, Wood but 6-sided, Leaves, Dirt, Wooden Planks, Sand, Gravel, Stone, Glass)
+- New item ("Mysterious Cube")
+- 2nd dimension ("Nightmare Within a Dream", one-time access by taking suffocation damage)
+- New Advancements
+- New Gamerules (clearDreamItems & btdConversationMessegeDelay, and yes ik there's a spelling errror, deal with it)
+- Language translations for English US, English UK, Polish, Dutch
+
+# Removed
+- Bugs.
+If you find any bugs, join [our discord server](https://discord.gg/BcCDgnsCwQ) and report them (please).

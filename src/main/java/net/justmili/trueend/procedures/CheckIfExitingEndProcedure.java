@@ -82,12 +82,19 @@ public class CheckIfExitingEndProcedure {
                     world.getLevelData().getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, world.getServer());
 
                     String[] convesation = {
+                            "{\"text\":\" \"}",
                             "[\"\",{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
+                            "{\"text\":\" \"}",
                             "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
+                            "{\"text\":\" \"}",
                             "[\"\",{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
+                            "{\"text\":\" \"}",
                             "{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}",
+                            "{\"text\":\" \"}",
                             "{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}",
+                            "{\"text\":\" \"}",
                             "{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}",
+                            "{\"text\":\" \"}",
                             "[\"\",{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"}]".formatted(player.getName().getString())
                     };
 
