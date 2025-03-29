@@ -22,8 +22,11 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.LightLayer;
 
 import net.justmili.trueend.init.TrueEndModGameRules;
+import net.justmili.trueend.init.TrueEndModBlocks;
 import net.justmili.trueend.TrueEndMod;
 
 import javax.annotation.Nullable;
@@ -54,51 +57,23 @@ public class CheckIfExitingEndProcedure {
                     if (nextLevel != null) {
                         serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-                        // Find a suitable spawn point on true_end:grass_block within Y 64-70 with sky check
-                        int offset = 0;
+                        // Find a suitable spawn point with all conditions
+                        BlockPos spawnPos = findIdealSpawnPoint(nextLevel, serverPlayer);
+                        if (spawnPos != null) {
+                            serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot()); //Teleport to center of block
+                            // Schedule the structure placement after a short delay
+                            TrueEndMod.queueServerWork(10, () -> {
+                                executeCommand(nextLevel, serverPlayer, "function true_end:build_home_structure");
+                            });
 
-                        BlockPos spawnPos = null;
-                        while (spawnPos == null) {
-                            spawnPos = findGrassSpawnPoint(nextLevel, 64, 70, offset * 16, 0);
-                            offset++;
-                            if (offset > 24) {
-                                int y = 120;
-                                boolean foundPlace = false;
-
-                                while (y > 0) {
-                                    BlockPos pos = new BlockPos(serverPlayer.getBlockX(), y, serverPlayer.getBlockZ());
-                                    BlockPos posAbove = pos.above();
-                                    BlockPos posBelow = pos.below();
-
-                                    boolean isEmpty = nextLevel.isEmptyBlock(pos);
-                                    boolean isAboveEmpty = nextLevel.isEmptyBlock(posAbove);
-                                    boolean isBelowSolid = !nextLevel.isEmptyBlock(posBelow);
-
-                                    if (isEmpty && isAboveEmpty && isBelowSolid) {
-                                        foundPlace = true;
-                                        break;
-                                    }
-                                    y--;
-                                }
-
-                                // If no valid spot is found, set a fallback
-                                if (!foundPlace) {
-                                    y = 129;
-                                }
-                                spawnPos = new BlockPos(offset, y, 0);
-                                break;
-                            }
+                            serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+                            for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
+                                serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
+                            serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+                        } else {
+                            //fallback teleport if no valid position is found.
+                            serverPlayer.teleportTo(nextLevel, serverPlayer.getX(), 129, serverPlayer.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
                         }
-                        serverPlayer.teleportTo(nextLevel, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
-                        // Schedule the structure placement after a short delay
-                        TrueEndMod.queueServerWork(10, () -> {
-                            executeCommand(nextLevel, serverPlayer, "function true_end:build_home_structure");
-                        });
-
-                        serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-                        for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
-                            serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
-                        serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
                     }
                 }
                 if (world.getLevelData().getGameRules().getBoolean(TrueEndModGameRules.CLEAR_DREAM_ITEMS)) {
@@ -107,13 +82,13 @@ public class CheckIfExitingEndProcedure {
                     world.getLevelData().getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, world.getServer());
 
                     String[] convesation = {
-                            "[\"\",{\"text\":\"\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\n\"}]".formatted(player.getName().getString()),
+                            "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString()),
                             "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
-                            "[\"\",{\"text\":\"\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
-                            "[\"\",{\"text\":\"\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
-                            "[\"\",{\"text\":\"\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
-                            "[\"\",{\"text\":\"\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
-                            "[\"\",{\"text\":\"\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\n\"}]".formatted(player.getName().getString())
+                            "[\"\",{\"text\":\"\\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
+                            "[\"\",{\"text\":\"\\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
+                            "[\"\",{\"text\":\"\\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
+                            "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
+                            "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString())
                     };
 
                     TrueEndMod.queueServerWork(44, () -> {
@@ -126,27 +101,38 @@ public class CheckIfExitingEndProcedure {
         }
     }
 
-    // Helper method to find a grass block within a Y range
-    private static BlockPos findGrassSpawnPoint(ServerLevel level, int minY, int maxY, int startX, int startZ) {
-        ChunkPos chunkPos = new ChunkPos(new BlockPos(startX, maxY , startZ));
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+    private static BlockPos findIdealSpawnPoint(ServerLevel level, ServerPlayer player) {
+        int playerX = player.getBlockX();
+        int playerZ = player.getBlockZ();
 
-        for (int x = -6; x <= 6; x++) {
-            for (int y = maxY; y >= minY; y--) {
-                mutablePos.set(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ());
-                if (level.getBlockState(mutablePos).is(net.justmili.trueend.init.TrueEndModBlocks.GRASS_BLOCK.get()) && isSkyClear(level, mutablePos)) {
-                    return mutablePos.above();
+        for (int xOffset = -8; xOffset <= 8; xOffset++) {
+            for (int zOffset = -8; zOffset <= 8; zOffset++) {
+                for (int y = 85; y >= 65; y--) {
+                    BlockPos pos = new BlockPos(playerX + xOffset, y, playerZ + zOffset);
+    
+                    // ensure biome and grass block conditions are met
+                    if (level.getBiome(pos).is(new ResourceLocation("true_end:nostalgic_meadow")) &&
+                        level.getBlockState(pos.below()).is(TrueEndModBlocks.GRASS_BLOCK.get()) &&
+                        level.getBlockState(pos).isAir()) {
+
+                        // light level and flat area condition check
+                        if (level.getBrightness(LightLayer.SKY, pos) >= 15 && isFlatArea(level, pos)) {
+                            return pos; // Found a suitable spawn point
+                        }
+                    }
                 }
             }
         }
-        return null; // Return null if no grass block is found
+        return null; // No suitable spawn point found
     }
 
-    //Helper method to check if the sky is clear.
-    private static boolean isSkyClear(ServerLevel level, BlockPos pos) {
-        for (int i = 1; i <= 15; i++) {
-            if (!level.getBlockState(pos.above(i)).isAir()) {
-                return false;
+    // Helper method to check for a flat area (8x8)
+    private static boolean isFlatArea(ServerLevel level, BlockPos pos) {
+        for (int x = -4; x <= 4; x++) {
+            for (int z = -4; z <= 4; z++) {
+                if (pos.below().getY() != pos.offset(x, 0, z).below().getY()) {
+                    return false;
+                }
             }
         }
         return true;

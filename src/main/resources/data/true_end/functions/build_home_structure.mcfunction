@@ -1,13 +1,16 @@
 # Make player face north (face "home" door)
 tp @s ~ ~ ~ 180 0
 
-# Terrain modifications
+# Terrain modifications / terrain clear
 fill ~3 ~ ~3 ~-3 ~5 ~-4 air
-fill ~-1 ~ ~-5 ~1 ~ ~-5 air
+fill ~-1 ~ ~-5 ~1 ~5 ~-5 air
 
+# Terrain modifications / terrain fill
 fill ~-4 ~-1 ~-4 ~4 ~-1 ~4 true_end:grass_block replace air
 fill ~-4 ~-2 ~-4 ~4 ~-2 ~4 true_end:dirt replace air
 fill ~-4 ~-2 ~-4 ~4 ~-2 ~4 true_end:dirt replace true_end:grass_block
+fill ~-4 ~-3 ~-4 ~4 ~-3 ~4 true_end:dirt replace air
+fill ~-4 ~-3 ~-4 ~4 ~-3 ~4 true_end:dirt replace true_end:grass_block
 
 # Floor and ceiling
 fill ~-2 ~-1 ~-2 ~2 ~-1 ~2 true_end:wooden_planks
