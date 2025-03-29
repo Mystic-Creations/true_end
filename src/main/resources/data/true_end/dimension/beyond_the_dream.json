@@ -6,11 +6,23 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
+          "biome": "true_end:neverending_ocean",
+          "parameters": {
+            "temperature": 0.5,
+            "humidity": 1,
+            "continentalness": -1,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
           "biome": "true_end:nostalgic_meadow",
           "parameters": {
-            "temperature": 0,
-            "humidity": 0,
-            "continentalness": 0,
+            "temperature": 0.4,
+            "humidity": 0.5,
+            "continentalness": 1,
             "weirdness": 0,
             "erosion": 0,
             "depth": 0,
@@ -22,9 +34,9 @@
     "settings": {
       "name": "true_end:beyond_the_dream",
       "sea_level": 63,
-      "legacy_random_source": false,
-      "disable_mob_generation": false,
-      "aquifers_enabled": true,
+      "legacy_random_source": true,
+      "disable_mob_generation": true,
+      "aquifers_enabled": false,
       "ore_veins_enabled": false,
       "default_block": {
         "Name": "true_end:stone"
@@ -37,8 +49,8 @@
       },
       "spawn_target": [],
       "noise": {
-        "min_y": -64,
-        "height": 384,
+        "min_y": 0,
+        "height": 128,
         "size_horizontal": 2,
         "size_vertical": 2
       },

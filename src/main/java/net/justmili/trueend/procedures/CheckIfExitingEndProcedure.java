@@ -131,7 +131,7 @@ public class CheckIfExitingEndProcedure {
         ChunkPos chunkPos = new ChunkPos(new BlockPos(startX, maxY , startZ));
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        for (int x = -4; x <= 4; x++) {
+        for (int x = -6; x <= 6; x++) {
             for (int y = maxY; y >= minY; y--) {
                 mutablePos.set(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ());
                 if (level.getBlockState(mutablePos).is(net.justmili.trueend.init.TrueEndModBlocks.GRASS_BLOCK.get()) && isSkyClear(level, mutablePos)) {
