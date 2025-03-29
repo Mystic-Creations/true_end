@@ -3,8 +3,14 @@ package net.justmili.trueend;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -27,6 +33,7 @@ import net.justmili.trueend.init.TrueEndModParticleTypes;
 import net.justmili.trueend.init.TrueEndModItems;
 import net.justmili.trueend.init.TrueEndModBlocks;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.Function;
 import java.util.function.BiConsumer;
@@ -116,5 +123,20 @@ public class TrueEndMod {
 				sendTellrawFormatMessage(player, message);
 			});
 		}
+	}
+
+	private static Predicate<Holder<Biome>> isBiome(String biomeNamespaced) {
+		return biomeHolder -> biomeHolder.unwrapKey().map(biomeKey ->
+				biomeKey.location().toString().equals(biomeNamespaced)
+		).orElse(false);
+	};
+
+	public static BlockPos locateBiome(ServerLevel level,BlockPos startPosition, String biomeNamespaced) {
+
+		Pair<BlockPos, Holder<Biome>> blockPosHolderPair = level.getLevel().findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
+		if (blockPosHolderPair == null) {
+			return null;
+		}
+		return blockPosHolderPair.getFirst();
 	}
 }

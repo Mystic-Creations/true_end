@@ -1,5 +1,8 @@
 package net.justmili.trueend.procedures;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -57,8 +60,15 @@ public class CheckIfExitingEndProcedure {
                     if (nextLevel != null) {
                         serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-                        // Find a suitable spawn point with all conditions
-                        BlockPos spawnPos = findIdealSpawnPoint(nextLevel, serverPlayer);
+                        BlockPos biomePos = TrueEndMod.locateBiome(nextLevel, serverPlayer.blockPosition(), "true_end:nostalgic_meadow");
+                        BlockPos spawnPos;
+                        if (biomePos == null) {
+                            spawnPos = null;
+                        } else {
+                            player.sendSystemMessage(Component.literal("biomePos = X: %d Y: %d Z: %d".formatted(biomePos.getX(), biomePos.getY(), biomePos.getZ())));
+                            // Find a suitable spawn point with all conditions
+                            spawnPos = findIdealSpawnPoint(nextLevel, biomePos);
+                        }
                         if (spawnPos != null) {
                             serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot()); //Teleport to center of block
                             // Schedule the structure placement after a short delay
@@ -72,7 +82,73 @@ public class CheckIfExitingEndProcedure {
                             serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
                         } else {
                             //fallback teleport if no valid position is found.
-                            serverPlayer.teleportTo(nextLevel, serverPlayer.getX(), 129, serverPlayer.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
+                            if (biomePos == null) {
+                                int y = 129;
+                                boolean foundPlace = false;
+
+                                while (y > 0) {
+                                    BlockPos pos = new BlockPos(serverPlayer.getBlockX(), y, serverPlayer.getBlockZ());
+                                    BlockPos posAbove = pos.above();
+                                    BlockPos posBelow = pos.below();
+
+                                    boolean isEmpty = nextLevel.isEmptyBlock(pos);
+                                    boolean isAboveEmpty = nextLevel.isEmptyBlock(posAbove);
+                                    boolean isBelowSolid = !nextLevel.isEmptyBlock(posBelow);
+
+                                    if (isEmpty && isAboveEmpty && isBelowSolid) {
+                                        foundPlace = true;
+                                        break;
+                                    }
+                                    y--;
+                                }
+
+                                // If no valid spot is found, set a fallback
+                                if (!foundPlace) {
+                                    y = 129;
+                                }
+                                serverPlayer.teleportTo(nextLevel,serverPlayer.getX(), y, serverPlayer.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
+                                TrueEndMod.queueServerWork(10, () -> {
+                                    executeCommand(nextLevel, serverPlayer, "function true_end:build_home_structure");
+                                });
+
+                                serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+                                for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
+                                    serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
+                                serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+                            } else {
+                                int y = 129;
+                                boolean foundPlace = false;
+
+                                while (y > 0) {
+                                    BlockPos pos = new BlockPos(serverPlayer.getBlockX(), y, serverPlayer.getBlockZ());
+                                    BlockPos posAbove = pos.above();
+                                    BlockPos posBelow = pos.below();
+
+                                    boolean isEmpty = nextLevel.getBlockState(pos).is(Blocks.AIR);
+                                    boolean isAboveEmpty = nextLevel.getBlockState(posAbove).is(Blocks.AIR);
+                                    boolean isBelowSolid = !nextLevel.getBlockState(posBelow).is(Blocks.AIR);
+
+                                    if (isEmpty && isAboveEmpty && isBelowSolid) {
+                                        foundPlace = true;
+                                        break;
+                                    }
+                                    y--;
+                                }
+
+                                // If no valid spot is found, set a fallback
+                                if (!foundPlace) {
+                                    y = 129;
+                                }
+                                serverPlayer.teleportTo(nextLevel,biomePos.getX(), y, biomePos.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
+                                TrueEndMod.queueServerWork(10, () -> {
+                                    executeCommand(nextLevel, serverPlayer, "function true_end:build_home_structure");
+                                });
+
+                                serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+                                for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
+                                    serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
+                                serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+                            }
                         }
                     }
                 }
@@ -101,9 +177,9 @@ public class CheckIfExitingEndProcedure {
         }
     }
 
-    private static BlockPos findIdealSpawnPoint(ServerLevel level, ServerPlayer player) {
-        int playerX = player.getBlockX();
-        int playerZ = player.getBlockZ();
+    private static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos blockPos) {
+        int playerX = blockPos.getX();
+        int playerZ = blockPos.getZ();
 
         for (int xOffset = -8; xOffset <= 8; xOffset++) {
             for (int zOffset = -8; zOffset <= 8; zOffset++) {
@@ -111,12 +187,11 @@ public class CheckIfExitingEndProcedure {
                     BlockPos pos = new BlockPos(playerX + xOffset, y, playerZ + zOffset);
     
                     // ensure biome and grass block conditions are met
-                    if (level.getBiome(pos).is(new ResourceLocation("true_end:nostalgic_meadow")) &&
-                        level.getBlockState(pos.below()).is(TrueEndModBlocks.GRASS_BLOCK.get()) &&
-                        level.getBlockState(pos).isAir()) {
+                    if (level.getBiome(pos).is(ResourceLocation.parse("true_end:nostalgic_meadow")) &&
+                        level.getBlockState(pos.below()).is(TrueEndModBlocks.GRASS_BLOCK.get())) {
 
                         // light level and flat area condition check
-                        if (level.getBrightness(LightLayer.SKY, pos) >= 15 && isFlatArea(level, pos)) {
+                        if (isFlatArea(pos)) {
                             return pos; // Found a suitable spawn point
                         }
                     }
@@ -126,16 +201,17 @@ public class CheckIfExitingEndProcedure {
         return null; // No suitable spawn point found
     }
 
-    // Helper method to check for a flat area (8x8)
-    private static boolean isFlatArea(ServerLevel level, BlockPos pos) {
-        for (int x = -4; x <= 4; x++) {
-            for (int z = -4; z <= 4; z++) {
+    // Helper method to check for a flat area (6x6)
+    private static boolean isFlatArea(BlockPos pos) {
+        int unflatness = 0;
+        for (int x = -3; x <= 3; x++) {
+            for (int z = -3; z <= 3; z++) {
                 if (pos.below().getY() != pos.offset(x, 0, z).below().getY()) {
-                    return false;
+                    unflatness++;
                 }
             }
         }
-        return true;
+        return unflatness < 7;
     }
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {
