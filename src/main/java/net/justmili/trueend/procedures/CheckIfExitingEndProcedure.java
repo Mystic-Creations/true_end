@@ -191,7 +191,7 @@ public class CheckIfExitingEndProcedure {
                         level.getBlockState(pos.below()).is(TrueEndModBlocks.GRASS_BLOCK.get())) {
 
                         // light level and flat area condition check
-                        if (isFlatArea(pos)) {
+                        if (level.getBrightness(LightLayer.SKY, pos) >= 15 && isFlatArea(pos)) {
                             return pos; // Found a suitable spawn point
                         }
                     }
