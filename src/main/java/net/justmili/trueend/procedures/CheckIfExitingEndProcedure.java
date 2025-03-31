@@ -181,8 +181,8 @@ public class CheckIfExitingEndProcedure {
         int playerX = blockPos.getX();
         int playerZ = blockPos.getZ();
 
-        for (int xOffset = -8; xOffset <= 8; xOffset++) {
-            for (int zOffset = -8; zOffset <= 8; zOffset++) {
+        for (int xOffset = -6; xOffset <= 6; xOffset++) {
+            for (int zOffset = -6; zOffset <= 6; zOffset++) {
                 for (int y = 85; y >= 65; y--) {
                     BlockPos pos = new BlockPos(playerX + xOffset, y, playerZ + zOffset);
     
