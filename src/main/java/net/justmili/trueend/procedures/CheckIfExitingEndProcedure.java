@@ -177,7 +177,7 @@ public class CheckIfExitingEndProcedure {
         }
     }
 
-    private static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos blockPos) {
+    public static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos blockPos) {
         int playerX = blockPos.getX();
         int playerZ = blockPos.getZ();
 
