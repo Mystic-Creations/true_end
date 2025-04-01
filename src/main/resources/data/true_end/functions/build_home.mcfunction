@@ -62,3 +62,6 @@ loot insert ~1 ~ ~-2 loot true_end:chests/home
 
 # Makes the player look at the top half of the bed next to them as if they just woke up
 tp @s ~1 ~1 ~1 -40 40
+
+# Grant logic advancement when built
+advancement grant @s only true_end:logic/home_built

@@ -12,10 +12,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
-public class FlatAreaTeleportCommand {
+public class FlatAreaCheckCommand {
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("trueendflatareateleporttest")
+        event.getDispatcher().register(Commands.literal("flatterraincheck")
                 .requires(s -> s.hasPermission(4))
                 .executes(arguments -> {
                     Entity entity = arguments.getSource().getEntity();
