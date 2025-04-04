@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber
-public class IfTakesSuffocationDamageProcedure {
+public class IfTakesSuffocationDamage {
 	@SubscribeEvent
 	public static void onEntityAttacked(LivingHurtEvent event) {
 		if (event != null && event.getEntity() != null) {

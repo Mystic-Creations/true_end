@@ -16,7 +16,7 @@ import net.minecraft.client.Minecraft;
 import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
-public class PlayerJoinedWorldProcedure {
+public class PlayerJoinedWorld {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
 		execute(event, event.getEntity().level(), event.getEntity());

@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.commands.Commands;
 
-import net.justmili.trueend.procedures.TrueenddimensiontestprocProcedure;
+import net.justmili.trueend.procedures.BTDDimensionTest;
 
 @Mod.EventBusSubscriber
 public class TrueEndBTDTest {
@@ -32,7 +32,7 @@ public class TrueEndBTDTest {
 			if (entity != null)
 				direction = entity.getDirection();
 
-			TrueenddimensiontestprocProcedure.execute(world, entity);
+			BTDDimensionTest.execute(world, entity);
 			return 0;
 		}));
 	}

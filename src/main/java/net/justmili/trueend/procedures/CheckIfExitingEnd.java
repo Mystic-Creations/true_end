@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber
-public class CheckIfExitingEndProcedure {
+public class CheckIfExitingEnd {
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
         execute(event, event.getEntity().level(), event.getEntity());
