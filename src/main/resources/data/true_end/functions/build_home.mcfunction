@@ -6,11 +6,14 @@ fill ~3 ~ ~3 ~-3 ~5 ~-4 air
 fill ~-1 ~ ~-5 ~1 ~5 ~-5 air
 
 # Terrain modifications / terrain fill
-fill ~-4 ~-1 ~-4 ~4 ~-1 ~4 true_end:grass_block replace air
-fill ~-4 ~-2 ~-4 ~4 ~-2 ~4 true_end:dirt replace air
-fill ~-4 ~-2 ~-4 ~4 ~-2 ~4 true_end:dirt replace true_end:grass_block
-fill ~-4 ~-3 ~-4 ~4 ~-3 ~4 true_end:dirt replace air
-fill ~-4 ~-3 ~-4 ~4 ~-3 ~4 true_end:dirt replace true_end:grass_block
+fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 true_end:grass_block replace #true_end:build_home_replacables
+fill ~-5 ~-2 ~-5 ~5 ~-2 ~5 true_end:dirt replace #true_end:build_home_replacables
+fill ~-5 ~-3 ~-5 ~5 ~-3 ~5 true_end:dirt replace #true_end:build_home_replacables
+fill ~-4 ~-4 ~-4 ~4 ~-4 ~4 true_end:dirt replace #true_end:build_home_replacables
+fill ~5 ~-3 ~-5 ~5 ~-3 ~-5 air
+fill ~-5 ~-3 ~-5 ~-5 ~-3 ~-5 air
+fill ~5 ~-3 ~5 ~5 ~-3 ~5 air
+fill ~-5 ~-3 ~5 ~-5 ~-3 ~5 air
 
 # Floor and ceiling
 fill ~-2 ~-1 ~-2 ~2 ~-1 ~2 true_end:wooden_planks
