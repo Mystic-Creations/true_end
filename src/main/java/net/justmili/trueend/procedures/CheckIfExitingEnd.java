@@ -94,7 +94,10 @@ public class CheckIfExitingEnd {
 
                 // After dimension change, find a suitable spawn
                 TrueEndMod.queueServerWork(15, () -> {
-                    BlockPos initialSearchPos = serverPlayer.blockPosition();
+                    BlockPos initialSearchPos = TrueEndMod.locateBiome(nextLevel, serverPlayer.blockPosition(), "true_end:nostalgic_meadow");
+                    if (initialSearchPos == null) {
+                        initialSearchPos = serverPlayer.blockPosition();
+                    }
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
                     if (spawnPos != null) {
