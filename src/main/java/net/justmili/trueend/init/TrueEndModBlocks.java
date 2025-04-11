@@ -22,6 +22,7 @@ import net.justmili.trueend.block.GrassBlockBlock;
 import net.justmili.trueend.block.GlassBlock;
 import net.justmili.trueend.block.DirtBlock;
 import net.justmili.trueend.block.CobblestoneBlock;
+import net.justmili.trueend.block.MossyCobblestoneBlock;
 import net.justmili.trueend.block.BeyondTheDreamPortalBlock;
 import net.justmili.trueend.TrueEndMod;
 
