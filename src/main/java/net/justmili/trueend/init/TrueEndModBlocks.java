@@ -4,25 +4,13 @@
  */
 package net.justmili.trueend.init;
 
+import net.justmili.trueend.block.*;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.DeferredRegister;
 
 import net.minecraft.world.level.block.Block;
 
-import net.justmili.trueend.block.WoodenPlanksBlock;
-import net.justmili.trueend.block.WoodBlock;
-import net.justmili.trueend.block.Wood6SidedBlock;
-import net.justmili.trueend.block.TreeLeavesBlock;
-import net.justmili.trueend.block.StoneBlock;
-import net.justmili.trueend.block.SandBlock;
-import net.justmili.trueend.block.ObsidianBlock;
-import net.justmili.trueend.block.GravelBlock;
-import net.justmili.trueend.block.GrassBlockBlock;
-import net.justmili.trueend.block.GlassBlock;
-import net.justmili.trueend.block.DirtBlock;
-import net.justmili.trueend.block.CobblestoneBlock;
-import net.justmili.trueend.block.BeyondTheDreamPortalBlock;
 import net.justmili.trueend.TrueEndMod;
 
 public class TrueEndModBlocks {
