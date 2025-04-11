@@ -8,10 +8,7 @@ import net.justmili.trueend.block.*;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.DeferredRegister;
-
 import net.minecraft.world.level.block.Block;
-
-<<<<<<< HEAD
 import net.justmili.trueend.block.WoodenPlanksBlock;
 import net.justmili.trueend.block.WoodBlock;
 import net.justmili.trueend.block.Wood6SidedBlock;
@@ -26,8 +23,6 @@ import net.justmili.trueend.block.DirtBlock;
 import net.justmili.trueend.block.CobblestoneBlock;
 import net.justmili.trueend.block.MossyCobblestoneBlock;
 import net.justmili.trueend.block.BeyondTheDreamPortalBlock;
-=======
->>>>>>> 1e0bd2502c8cba8c246ac30c63ea0918847c7a32
 import net.justmili.trueend.TrueEndMod;
 
 public class TrueEndModBlocks {
