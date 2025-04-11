@@ -1,4 +1,4 @@
-Quick info: Project first made in MCreator, them moved out of it and now we only rely on what's left of the MCreator project workspace (file structure, jars, etc)
+# True End
 
 # Description
 Remember the End Credits after beating the ender dragon that most of us just skip over? Well, this time, they're a bit important you see.
