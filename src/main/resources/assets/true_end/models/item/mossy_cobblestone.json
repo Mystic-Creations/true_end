@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "parent": "true_end:block/mossy_cobblestone",
-=======
-  "parent": "true_end:block/cobblestone",
->>>>>>> 1e0bd2502c8cba8c246ac30c63ea0918847c7a32
   "display": {
     "thirdperson": {
       "rotation": [
