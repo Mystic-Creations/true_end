@@ -10,10 +10,6 @@ fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 true_end:grass_block replace #true_end:build_home_rep
 fill ~-5 ~-2 ~-5 ~5 ~-2 ~5 true_end:dirt replace #true_end:build_home_replacables
 fill ~-5 ~-3 ~-5 ~5 ~-3 ~5 true_end:dirt replace #true_end:build_home_replacables
 fill ~-4 ~-4 ~-4 ~4 ~-4 ~4 true_end:dirt replace #true_end:build_home_replacables
-fill ~5 ~-3 ~-5 ~5 ~-3 ~-5 air
-fill ~-5 ~-3 ~-5 ~-5 ~-3 ~-5 air
-fill ~5 ~-3 ~5 ~5 ~-3 ~5 air
-fill ~-5 ~-3 ~5 ~-5 ~-3 ~5 air
 
 # Floor and ceiling
 fill ~-2 ~-1 ~-2 ~2 ~-1 ~2 true_end:wooden_planks

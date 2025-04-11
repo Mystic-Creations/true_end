@@ -210,8 +210,8 @@ public class CheckIfExitingEnd {
 
     // Helper method to check for a flat area (6x6) with solid ground below
     private static boolean isFlatArea(Level level, BlockPos pos) {
-        for (int x = -3; x <= 3; x++) {
-            for (int z = -3; z <= 3; z++) {
+        for (int x = -4; x <= 4; x++) {
+            for (int z = -4; z <= 4; z++) {
                 BlockPos belowPos = pos.offset(x, -1, z);
                 if (pos.getY() != belowPos.getY() + 1) { // Check if the block below is at y-1
                     return false;
