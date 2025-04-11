@@ -81,7 +81,7 @@ public class CheckIfExitingEnd {
                 ChunkPos leavingChunkPos = serverPlayer.level().getChunkAt(serverPlayer.blockPosition()).getPos();
 
                 // Switch dimension
-                serverPlayer.changeDimension(nextLevel);
+                //serverPlayer.changeDimension(nextLevel);
 
                 // Explicitly unload the chunk in the Overworld (after player leaves)
                 TrueEndMod.queueServerWork(10, () -> {
@@ -103,7 +103,6 @@ public class CheckIfExitingEnd {
                         for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
                             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
                         serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
-
                         // Delay other actions slightly
                         TrueEndMod.queueServerWork(30, () -> {
                             executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
