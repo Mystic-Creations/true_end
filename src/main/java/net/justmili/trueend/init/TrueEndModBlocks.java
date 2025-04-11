@@ -30,6 +30,7 @@ public class TrueEndModBlocks {
 	public static final RegistryObject<Block> DIRT = REGISTRY.register("dirt", () -> new DirtBlock());
 	public static final RegistryObject<Block> GRASS_BLOCK = REGISTRY.register("grass_block", () -> new GrassBlockBlock());
 	public static final RegistryObject<Block> COBBLESTONE = REGISTRY.register("cobblestone", () -> new CobblestoneBlock());
+	public static final RegistryObject<Block> MOSSY_COBBLESTONE = REGISTRY.register("mossy_cobblestone", () -> new MossyCobblestoneBlock());
 	public static final RegistryObject<Block> STONE = REGISTRY.register("stone", () -> new StoneBlock());
 	public static final RegistryObject<Block> WOOD = REGISTRY.register("wood", () -> new WoodBlock());
 	public static final RegistryObject<Block> WOODEN_PLANKS = REGISTRY.register("wooden_planks", () -> new WoodenPlanksBlock());

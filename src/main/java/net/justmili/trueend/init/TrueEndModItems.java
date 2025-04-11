@@ -20,6 +20,7 @@ public class TrueEndModItems {
 	public static final RegistryObject<Item> DIRT = block(TrueEndModBlocks.DIRT);
 	public static final RegistryObject<Item> GRASS_BLOCK = block(TrueEndModBlocks.GRASS_BLOCK);
 	public static final RegistryObject<Item> COBBLESTONE = block(TrueEndModBlocks.COBBLESTONE);
+	public static final RegistryObject<Item> MOSSY_COBBLESTONE = block(TrueEndModBlocks.MOSSY_COBBLESTONE);
 	public static final RegistryObject<Item> STONE = block(TrueEndModBlocks.STONE);
 	public static final RegistryObject<Item> WOOD = block(TrueEndModBlocks.WOOD);
 	public static final RegistryObject<Item> WOODEN_PLANKS = block(TrueEndModBlocks.WOODEN_PLANKS);

@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.BlockPos;
 
-public class CobblestoneBlock extends Block {
-	public CobblestoneBlock() {
+public class MossyCobblestoneBlock extends Block {
+	public MossyCobblestoneBlock() {
 		super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(2f, 6f).requiresCorrectToolForDrops());
 	}
 

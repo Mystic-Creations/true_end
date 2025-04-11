@@ -22,6 +22,7 @@ public class TrueEndModTabs {
 				tabData.accept(TrueEndModBlocks.DIRT.get().asItem());
 				tabData.accept(TrueEndModBlocks.STONE.get().asItem());
 				tabData.accept(TrueEndModBlocks.COBBLESTONE.get().asItem());
+				tabData.accept(TrueEndModBlocks.MOSSY_COBBLESTONE.get().asItem());
 				tabData.accept(TrueEndModBlocks.WOOD_6_SIDED.get().asItem());
 				tabData.accept(TrueEndModBlocks.WOOD.get().asItem());
 				tabData.accept(TrueEndModBlocks.WOODEN_PLANKS.get().asItem());
