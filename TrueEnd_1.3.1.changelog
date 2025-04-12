@@ -1,4 +1,5 @@
-# PRERELEASE
+# Full Version Release
+now just wait for 1.4
 
 ## Additions
 - Ore generation in Beyond The Dream
@@ -6,5 +7,6 @@
 - Farming
 
 ## Removed Bugs
+- All caves below sea level being water caves (not done yet)
 - Water from water caves not getting overwritten by bedrock
 - Not being able to place blocks on True End's grass block, dirt and redstone ore
