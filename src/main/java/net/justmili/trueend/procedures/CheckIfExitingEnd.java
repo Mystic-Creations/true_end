@@ -119,7 +119,7 @@ public class CheckIfExitingEnd {
                                 serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
                             serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
-                            TrueEndMod.queueServerWork(1, () -> {
+                            TrueEndMod.queueServerWork(5, () -> {
                                 executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                                 sendFirstEntryConversation(serverPlayer, nextLevel);
                                 nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
@@ -145,8 +145,8 @@ public class CheckIfExitingEnd {
     }
 
     public static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos centerPos) {
-        int searchRadius = 16; // Check a reasonable area
-        for (int y = 85; y >= 65; y--) { // Iterate through potential ground levels
+        int searchRadius = 24; // Check a reasonable area
+        for (int y = 75; y >= 64; y--) { // Iterate through potential ground levels
             for (int x = -searchRadius; x <= searchRadius; x++) {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
                     BlockPos groundPos = centerPos.offset(x, y - centerPos.getY(), z);
@@ -170,8 +170,8 @@ public class CheckIfExitingEnd {
     }
 
     public static BlockPos findFallbackSpawn(ServerLevel level, BlockPos centerPos) {
-        int searchRadius = 32; // Wider search for fallback
-        for (int y = level.getMaxBuildHeight() - 5; y >= level.getMinBuildHeight() + 5; y--) {
+        int searchRadius = 48; // Wider search for fallback
+        for (int y = level.getMaxBuildHeight() - 16; y >= level.getMinBuildHeight() + 8; y--) {
             for (int x = -searchRadius; x <= searchRadius; x++) {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
                     BlockPos groundPos = centerPos.offset(x, y - centerPos.getY(), z);
@@ -190,16 +190,15 @@ public class CheckIfExitingEnd {
         return null;
     }
 
-    // Helper method to check for a flat area (6x6) with solid ground below
     private static boolean isFlatArea(Level level, BlockPos pos) {
         for (int x = -5; x <= 5; x++) {
             for (int z = -5; z <= 5; z++) {
                 BlockPos belowPos = pos.offset(x, -1, z);
-                if (pos.getY() != belowPos.getY() + 1) { // Check if the block below is at y-1
+                if (pos.getY() != belowPos.getY() + 1) {
                     return false;
                 }
                 if (level.getBlockState(belowPos).isAir()) {
-                    return false; // Check if the block below is air
+                    return false;
                 }
             }
         }
