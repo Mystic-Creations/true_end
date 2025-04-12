@@ -1,9 +1,9 @@
 {
-    "feature": "true_end:diamond_ore",
+    "feature": "true_end:iron_ore",
     "placement": [
       {
         "type": "minecraft:count",
-        "count": 20
+        "count": 10
       },
       {
         "type": "minecraft:in_square"
@@ -19,9 +19,6 @@
             "absolute": 64
           }
         }
-      },
-      {
-        "type": "minecraft:biome"
       }
     ]
   }

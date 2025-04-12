@@ -1,5 +1,5 @@
 {
-    "feature": "true_end:diamond_ore",
+    "feature": "true_end:coal_ore",
     "placement": [
       {
         "type": "minecraft:count",
@@ -19,9 +19,6 @@
             "absolute": 128
           }
         }
-      },
-      {
-        "type": "minecraft:biome"
       }
     ]
   }

@@ -37,7 +37,13 @@
     [],
     [],
     [],
-    [],
+    [
+      "true_end:coal_ore",
+      "true_end:iron_ore",
+      "true_end:redstone_ore",
+      "true_end:gold_ore",
+      "true_end:diamond_ore"
+    ],
     [
       "true_end:alpha_trees"
     ],
