@@ -1,3 +1,11 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.home": "C:/Program Files/Eclipse Adoptium/jdk-17.0.14.7-hotspot",
+    "java.configuration.runtimes": [
+      {
+        "name": "JavaSE-17",
+        "path": "C:/Program Files/Eclipse Adoptium/jdk-17.0.14.7-hotspot",
+        "default": true
+      }
+    ]
 }
