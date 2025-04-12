@@ -34,7 +34,6 @@ public class RedstoneOreBlock extends Block {
 			.strength(3f)
 			.lightLevel(state -> state.getValue(LIT) ? 9 : 0)
 			.randomTicks()
-			.noOcclusion()
 		);
 		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false));
 	}
@@ -98,6 +97,6 @@ public void animateTick(BlockState state, Level level, BlockPos pos, RandomSourc
 	public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
 		super.use(blockstate, world, pos, entity, hand, hit);
 		RedstoneOreOnInteraction.execute(world, pos.getX(), pos.getY(), pos.getZ());
-		return InteractionResult.SUCCESS;
+		return InteractionResult.FAIL;
 	}
 }
