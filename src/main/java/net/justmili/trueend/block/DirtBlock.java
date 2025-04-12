@@ -1,10 +1,12 @@
 package net.justmili.trueend.block;
 
-import net.justmili.trueend.procedures.GrassBlockOnRightClick;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,6 +22,9 @@ import net.minecraft.world.level.block.SoundType;
 
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Objects;
 
 public class DirtBlock extends Block {
     public DirtBlock() {
@@ -43,18 +48,22 @@ public class DirtBlock extends Block {
     }
 
     @Override
-	public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
-		super.use(blockstate, world, pos, entity, hand, hit);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		double hitX = hit.getLocation().x;
-		double hitY = hit.getLocation().y;
-		double hitZ = hit.getLocation().z;
-		Direction direction = hit.getDirection();
-		GrassBlockOnRightClick.execute(world, x, y, z, entity);
-		return InteractionResult.SUCCESS;
-	}
+    public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
+        super.use(blockstate, world, pos, entity, hand, hit);
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        if (entity.getMainHandItem().is(ItemTags.HOES)) {
+            world.setBlock(BlockPos.containing(x, y, z), TrueEndModBlocks.FARMLAND.get().defaultBlockState(), 3);
+            if (world.isClientSide()) {
+                world.playSound(null, BlockPos.containing(x, y, z), (ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.PLAYERS, 1, 1);
+            } else {
+                world.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.PLAYERS, 1, 1, false);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.FAIL;
+    }
 
 private static boolean canBeGrass(BlockState state, LevelReader world, BlockPos pos) {
     BlockPos abovePos = pos.above();
