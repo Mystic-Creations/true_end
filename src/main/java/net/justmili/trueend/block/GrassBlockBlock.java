@@ -1,13 +1,17 @@
 package net.justmili.trueend.block;
 
-import net.justmili.trueend.procedures.GrassBlockOnRightClick;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -20,6 +24,9 @@ import net.minecraft.world.level.block.SoundType;
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.justmili.trueend.procedures.GrassBlockOnLeftClick;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Objects;
 
 public class GrassBlockBlock extends Block {
     public GrassBlockBlock() {
@@ -55,12 +62,16 @@ public class GrassBlockBlock extends Block {
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
-		double hitX = hit.getLocation().x;
-		double hitY = hit.getLocation().y;
-		double hitZ = hit.getLocation().z;
-		Direction direction = hit.getDirection();
-		GrassBlockOnRightClick.execute(world, x, y, z, entity);
-		return InteractionResult.SUCCESS;
+        if (entity.getMainHandItem().is(ItemTags.HOES)) {
+            world.setBlock(BlockPos.containing(x, y, z), TrueEndModBlocks.FARMLAND.get().defaultBlockState(), 3);
+            if (world.isClientSide()) {
+                world.playSound(null, BlockPos.containing(x, y, z), (ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.PLAYERS, 1, 1);
+            } else {
+                world.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.PLAYERS, 1, 1, false);
+            }
+            return InteractionResult.SUCCESS;
+        }
+		return InteractionResult.FAIL;
 	}
 
 	@Override
