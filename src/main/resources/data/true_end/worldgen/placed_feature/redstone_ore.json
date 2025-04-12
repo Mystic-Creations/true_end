@@ -3,7 +3,7 @@
     "placement": [
       {
         "type": "minecraft:count",
-        "count": 8
+        "count": 6
       },
       {
         "type": "minecraft:in_square"
@@ -16,12 +16,9 @@
             "absolute": 0
           },
           "max_inclusive": {
-            "absolute": 16
+            "absolute": 40
           }
         }
-      },
-      {
-        "type": "minecraft:biome"
       }
     ]
   }
