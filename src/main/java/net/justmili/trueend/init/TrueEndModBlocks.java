@@ -27,6 +27,7 @@ import net.justmili.trueend.block.GlassBlock;
 import net.justmili.trueend.block.DirtBlock;
 import net.justmili.trueend.block.CobblestoneBlock;
 import net.justmili.trueend.block.MossyCobblestoneBlock;
+import net.justmili.trueend.block.FarmlandBlock;
 import net.justmili.trueend.block.BeyondTheDreamPortalBlock;
 import net.justmili.trueend.TrueEndMod;
 
@@ -34,6 +35,7 @@ public class TrueEndModBlocks {
 	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, TrueEndMod.MODID);
 	public static final RegistryObject<Block> DIRT = REGISTRY.register("dirt", () -> new DirtBlock());
 	public static final RegistryObject<Block> GRASS_BLOCK = REGISTRY.register("grass_block", () -> new GrassBlockBlock());
+	public static final RegistryObject<Block> FARMLAND = REGISTRY.register("farmland", () -> new FarmlandBlock());
 	public static final RegistryObject<Block> COBBLESTONE = REGISTRY.register("cobblestone", () -> new CobblestoneBlock());
 	public static final RegistryObject<Block> MOSSY_COBBLESTONE = REGISTRY.register("mossy_cobblestone", () -> new MossyCobblestoneBlock());
 	public static final RegistryObject<Block> STONE = REGISTRY.register("stone", () -> new StoneBlock());
