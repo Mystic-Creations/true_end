@@ -25,7 +25,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.justmili.trueend.init.TrueEndModGameRules;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.justmili.trueend.TrueEndMod;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -35,8 +34,6 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod.EventBusSubscriber
 public class CheckIfExitingEnd {
@@ -81,10 +78,8 @@ public class CheckIfExitingEnd {
                 ChunkPos leavingChunkPos = serverPlayer.level().getChunkAt(serverPlayer.blockPosition()).getPos();
 
                 // Switch dimension
-                //serverPlayer.changeDimension(nextLevel);
-
-                // Explicitly unload the chunk in the Overworld (after player leaves)
-                TrueEndMod.queueServerWork(10, () -> {
+                // Unload overworld chunk at leave
+                TrueEndMod.queueServerWork(1, () -> {
                     if (world instanceof ServerLevel overworldFinal) {
                         int chunkX = leavingChunkPos.x;
                         int chunkZ = leavingChunkPos.z;
@@ -93,7 +88,7 @@ public class CheckIfExitingEnd {
                 });
 
                 // After dimension change, find a suitable spawn
-                TrueEndMod.queueServerWork(15, () -> {
+                TrueEndMod.queueServerWork(1, () -> {
                     BlockPos initialSearchPos = TrueEndMod.locateBiome(nextLevel, serverPlayer.blockPosition(), "true_end:nostalgic_meadow");
                     if (initialSearchPos == null) {
                         initialSearchPos = serverPlayer.blockPosition();
@@ -107,17 +102,11 @@ public class CheckIfExitingEnd {
                             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
                         serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
                         // Delay other actions slightly
-                        TrueEndMod.queueServerWork(30, () -> {
+                        TrueEndMod.queueServerWork(5, () -> {
                             executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                             sendFirstEntryConversation(serverPlayer, nextLevel);
                             nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
                             HAS_PROCESSED.remove(serverPlayer);
-
-                            // Potential fix: Delay entity spawning by a few ticks
-                            TrueEndMod.queueServerWork(60, () -> { // Delay for 3 seconds (20 ticks per second)
-                                // No explicit entity spawning here, relying on natural spawn
-                                System.out.println("Delaying natural entity spawning in BTD.");
-                            });
                         });
 
                     } else {
@@ -130,18 +119,11 @@ public class CheckIfExitingEnd {
                                 serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
                             serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
-                            // Delay other actions slightly
-                            TrueEndMod.queueServerWork(30, () -> {
+                            TrueEndMod.queueServerWork(1, () -> {
                                 executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                                 sendFirstEntryConversation(serverPlayer, nextLevel);
                                 nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
                                 HAS_PROCESSED.remove(serverPlayer);
-
-                                // Potential fix: Delay entity spawning by a few ticks
-                                TrueEndMod.queueServerWork(60, () -> { // Delay for 3 seconds
-                                    // No explicit entity spawning here, relying on natural spawn
-                                    System.out.println("Delaying natural entity spawning in BTD (fallback).");
-                                });
                             });
                         } else {
                             System.out.println("SEVERE: Could not find ANY fallback spawn point!");
@@ -210,8 +192,8 @@ public class CheckIfExitingEnd {
 
     // Helper method to check for a flat area (6x6) with solid ground below
     private static boolean isFlatArea(Level level, BlockPos pos) {
-        for (int x = -4; x <= 4; x++) {
-            for (int z = -4; z <= 4; z++) {
+        for (int x = -5; x <= 5; x++) {
+            for (int z = -5; z <= 5; z++) {
                 BlockPos belowPos = pos.offset(x, -1, z);
                 if (pos.getY() != belowPos.getY() + 1) { // Check if the block below is at y-1
                     return false;
