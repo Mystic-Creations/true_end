@@ -2,6 +2,7 @@ package net.justmili.trueend.block;
 
 import javax.annotation.Nullable;
 
+import net.minecraftforge.common.IPlantable;
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +42,6 @@ public class FarmlandBlock extends Block {
 	public FarmlandBlock() {
 		super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
 	}
-
 
 	public BlockState updateShape(BlockState p_53276_, Direction p_53277_, BlockState p_53278_, LevelAccessor p_53279_, BlockPos p_53280_, BlockPos p_53281_) {
 		if (p_53277_ == Direction.UP && !p_53276_.canSurvive(p_53279_, p_53280_)) {
@@ -132,4 +132,10 @@ public class FarmlandBlock extends Block {
 		MOISTURE = BlockStateProperties.MOISTURE;
 		SHAPE = Block.box((double)0.0F, (double)0.0F, (double)0.0F, (double)16.0F, (double)15.0F, (double)16.0F);
 	}
+
+		@Override
+	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, IPlantable plantable) {
+		return true;
+	}
+
 }
