@@ -16,6 +16,7 @@ public class TrueEndModTabs {
 			() -> CreativeModeTab.builder().title(Component.translatable("item_group.true_end.true_end")).icon(() -> new ItemStack(TrueEndModBlocks.GRASS_BLOCK.get())).displayItems((parameters, tabData) -> {
 				tabData.accept(TrueEndModBlocks.GRASS_BLOCK.get().asItem());
 				tabData.accept(TrueEndModBlocks.DIRT.get().asItem());
+				tabData.accept(TrueEndModBlocks.FARMLAND.get().asItem());
 				tabData.accept(TrueEndModBlocks.STONE.get().asItem());
 				tabData.accept(TrueEndModBlocks.COAL_ORE.get().asItem());
 				tabData.accept(TrueEndModBlocks.IRON_ORE.get().asItem());

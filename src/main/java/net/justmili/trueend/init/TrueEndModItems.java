@@ -15,6 +15,7 @@ public class TrueEndModItems {
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, TrueEndMod.MODID);
 	public static final RegistryObject<Item> DIRT = block(TrueEndModBlocks.DIRT);
 	public static final RegistryObject<Item> GRASS_BLOCK = block(TrueEndModBlocks.GRASS_BLOCK);
+	public static final RegistryObject<Item> FARMLAND = block(TrueEndModBlocks.FARMLAND);
 	public static final RegistryObject<Item> COBBLESTONE = block(TrueEndModBlocks.COBBLESTONE);
 	public static final RegistryObject<Item> MOSSY_COBBLESTONE = block(TrueEndModBlocks.MOSSY_COBBLESTONE);
 	public static final RegistryObject<Item> STONE = block(TrueEndModBlocks.STONE);

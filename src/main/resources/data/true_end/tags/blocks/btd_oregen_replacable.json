@@ -2,7 +2,6 @@
     "replace": false,
     "values": [
       "true_end:stone",
-      "true_end:gravel",
-      "true_end:dirt"
+      "true_end:gravel"
     ]
   }

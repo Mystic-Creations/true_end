@@ -24,7 +24,7 @@ public class GrassBlockOnLeftClick {
                 entityToSpawn.setPickUpDelay(15);
                 _level.addFreshEntity(entityToSpawn);
             }
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.05) {
                 if (world instanceof ServerLevel _level) {
                     ItemEntity entityToSpawn = new ItemEntity(_level, x, (y + 1), z, new ItemStack(Items.WHEAT_SEEDS));
                     entityToSpawn.setPickUpDelay(15);
