@@ -39,7 +39,6 @@ public class BeyondTheDreamPortalBlock extends NetherPortalBlock {
     @Override
     public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
     }
-
     public static void portalSpawn(Level world, BlockPos pos) {
         Optional<BeyondTheDreamPortalShape> optional = BeyondTheDreamPortalShape.findEmptyPortalShape(world, pos, Direction.Axis.X);
         if (optional.isPresent()) {
