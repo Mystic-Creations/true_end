@@ -1,13 +1,9 @@
 package net.justmili.trueend.procedures;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +21,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.justmili.trueend.init.TrueEndModGameRules;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.justmili.trueend.TrueEndMod;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -35,8 +30,6 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod.EventBusSubscriber
 public class CheckIfExitingEnd {
@@ -81,9 +74,7 @@ public class CheckIfExitingEnd {
                 ChunkPos leavingChunkPos = serverPlayer.level().getChunkAt(serverPlayer.blockPosition()).getPos();
 
                 // Switch dimension
-                //serverPlayer.changeDimension(nextLevel);
-
-                // Explicitly unload the chunk in the Overworld (after player leaves)
+                // Unload overworld chunk at leave
                 TrueEndMod.queueServerWork(10, () -> {
                     if (world instanceof ServerLevel overworldFinal) {
                         int chunkX = leavingChunkPos.x;
@@ -112,12 +103,6 @@ public class CheckIfExitingEnd {
                             sendFirstEntryConversation(serverPlayer, nextLevel);
                             nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
                             HAS_PROCESSED.remove(serverPlayer);
-
-                            // Potential fix: Delay entity spawning by a few ticks
-                            TrueEndMod.queueServerWork(60, () -> { // Delay for 3 seconds (20 ticks per second)
-                                // No explicit entity spawning here, relying on natural spawn
-                                System.out.println("Delaying natural entity spawning in BTD.");
-                            });
                         });
 
                     } else {
@@ -130,18 +115,11 @@ public class CheckIfExitingEnd {
                                 serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
                             serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
-                            // Delay other actions slightly
-                            TrueEndMod.queueServerWork(30, () -> {
+                            TrueEndMod.queueServerWork(10, () -> {
                                 executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                                 sendFirstEntryConversation(serverPlayer, nextLevel);
                                 nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
                                 HAS_PROCESSED.remove(serverPlayer);
-
-                                // Potential fix: Delay entity spawning by a few ticks
-                                TrueEndMod.queueServerWork(60, () -> { // Delay for 3 seconds
-                                    // No explicit entity spawning here, relying on natural spawn
-                                    System.out.println("Delaying natural entity spawning in BTD (fallback).");
-                                });
                             });
                         } else {
                             System.out.println("SEVERE: Could not find ANY fallback spawn point!");
