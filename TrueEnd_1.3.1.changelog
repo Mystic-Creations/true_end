@@ -1,0 +1,6 @@
+# Additions
+- Ore generation in Beyond The Dream
+
+# Removed Bugs
+- All caves below sea level being water caves (not done yet)
+- Water from water caves not getting overwritten by bedrock (not done yet)

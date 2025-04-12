@@ -1,7 +1,3 @@
-
-/*
- *    MCreator note: This file will be REGENERATED on each build.
- */
 package net.justmili.trueend.init;
 
 import net.minecraftforge.registries.RegistryObject;
@@ -21,6 +17,11 @@ public class TrueEndModTabs {
 				tabData.accept(TrueEndModBlocks.GRASS_BLOCK.get().asItem());
 				tabData.accept(TrueEndModBlocks.DIRT.get().asItem());
 				tabData.accept(TrueEndModBlocks.STONE.get().asItem());
+				tabData.accept(TrueEndModBlocks.COAL_ORE.get().asItem());
+				tabData.accept(TrueEndModBlocks.IRON_ORE.get().asItem());
+				tabData.accept(TrueEndModBlocks.GOLD_ORE.get().asItem());
+				tabData.accept(TrueEndModBlocks.REDSTONE_ORE.get().asItem());
+				tabData.accept(TrueEndModBlocks.DIAMOND_ORE.get().asItem());
 				tabData.accept(TrueEndModBlocks.COBBLESTONE.get().asItem());
 				tabData.accept(TrueEndModBlocks.MOSSY_COBBLESTONE.get().asItem());
 				tabData.accept(TrueEndModBlocks.WOOD_6_SIDED.get().asItem());
