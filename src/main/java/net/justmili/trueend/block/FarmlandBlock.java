@@ -56,7 +56,7 @@ public class FarmlandBlock extends Block {
 	}
 
 	public BlockState getStateForPlacement(BlockPlaceContext p_53249_) {
-		return !this.defaultBlockState().canSurvive(p_53249_.getLevel(), p_53249_.getClickedPos()) ? TrueEndModBlocks.GRASS_BLOCK.get().defaultBlockState() : super.getStateForPlacement(p_53249_);
+		return !this.defaultBlockState().canSurvive(p_53249_.getLevel(), p_53249_.getClickedPos()) ? TrueEndModBlocks.DIRT.get().defaultBlockState() : super.getStateForPlacement(p_53249_);
 	}
 
 	public boolean useShapeForLightOcclusion(BlockState p_53295_) {
@@ -89,7 +89,7 @@ public class FarmlandBlock extends Block {
 	}
 
 	public void fallOn(Level p_153227_, BlockState p_153228_, BlockPos p_153229_, Entity p_153230_, float p_153231_) {
-		if (!p_153227_.isClientSide && ForgeHooks.onFarmlandTrample(p_153227_, p_153229_, TrueEndModBlocks.GRASS_BLOCK.get().defaultBlockState(), p_153231_, p_153230_)) {
+		if (!p_153227_.isClientSide && ForgeHooks.onFarmlandTrample(p_153227_, p_153229_, TrueEndModBlocks.DIRT.get().defaultBlockState(), p_153231_, p_153230_)) {
 			turnToDirt(p_153230_, p_153228_, p_153227_, p_153229_);
 		}
 
@@ -97,7 +97,7 @@ public class FarmlandBlock extends Block {
 	}
 
 	public static void turnToDirt(@Nullable Entity p_270981_, BlockState p_270402_, Level p_270568_, BlockPos p_270551_) {
-		BlockState blockstate = pushEntitiesUp(p_270402_, TrueEndModBlocks.GRASS_BLOCK.get().defaultBlockState(), p_270568_, p_270551_);
+		BlockState blockstate = pushEntitiesUp(p_270402_, TrueEndModBlocks.DIRT.get().defaultBlockState(), p_270568_, p_270551_);
 		p_270568_.setBlockAndUpdate(p_270551_, blockstate);
 		p_270568_.gameEvent(GameEvent.BLOCK_CHANGE, p_270551_, Context.of(p_270981_, blockstate));
 	}

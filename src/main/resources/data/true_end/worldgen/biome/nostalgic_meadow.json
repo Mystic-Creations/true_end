@@ -42,7 +42,8 @@
       "true_end:iron_ore",
       "true_end:redstone_ore",
       "true_end:gold_ore",
-      "true_end:diamond_ore"
+      "true_end:diamond_ore",
+      "true_end:gravel_patch"
     ],
     [
       "true_end:alpha_trees"

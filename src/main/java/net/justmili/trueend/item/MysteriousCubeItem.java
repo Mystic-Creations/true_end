@@ -36,7 +36,7 @@ public class MysteriousCubeItem extends Item {
 			int y = pos.getY();
 			int z = pos.getZ();
 			boolean success = false;
-			if (world.isEmptyBlock(pos) && true) {
+			if (world.isEmptyBlock(pos)) {
 				BeyondTheDreamPortalBlock.portalSpawn(world, pos);
 				itemstack.hurtAndBreak(1, entity, c -> c.broadcastBreakEvent(context.getHand()));
 				success = true;
