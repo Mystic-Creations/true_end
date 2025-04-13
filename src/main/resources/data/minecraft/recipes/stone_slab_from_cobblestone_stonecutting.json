@@ -2,7 +2,7 @@
   "type": "minecraft:stonecutting",
   "count": 2,
   "ingredient": {
-      "tag": "forge:cobblestone"
+      "tag": "forge:stone"
   },
-  "result": "minecraft:cobblestone_slab"
+  "result": "minecraft:stone_slab"
 }

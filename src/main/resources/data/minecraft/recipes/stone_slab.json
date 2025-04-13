@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "tag": "forge:cobblestone"
+      "tag": "forge:stone"
     }
   },
   "pattern": [
@@ -11,7 +11,7 @@
   ],
   "result": {
     "count": 6,
-    "item": "minecraft:cobblestone_slab"
+    "item": "minecraft:stone_slab"
   },
   "show_notification": true
 }

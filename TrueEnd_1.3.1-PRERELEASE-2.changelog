@@ -1,0 +1,13 @@
+# PRERELEASE
+
+## Additions
+- Ore smelting recipes (I forgor)
+- Glass recipe
+- Cobble to Stone smelting recipe
+- Stone (True End) to Smooth Stone (Minecraft)
+
+## Other
+- Modified a bunch of minecraft and forge tags and recipes to include True End blocks
+
+## Important
+Reminder that the mod uses SPECIFICALLy Forge 47.4.0, it will just simply not start up/crash at all on an older version of Forge
