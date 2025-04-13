@@ -101,16 +101,15 @@ public class CheckIfExitingEnd {
                         for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
                             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
                         serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
-                        // Delay other actions slightly
+
                         TrueEndMod.queueServerWork(5, () -> {
                             executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                             sendFirstEntryConversation(serverPlayer, nextLevel);
                             nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
                             HAS_PROCESSED.remove(serverPlayer);
                         });
-
                     } else {
-                        // Enhanced fallback spawn logic
+                        // Fallback spawn logic
                         BlockPos fallbackSpawn = findFallbackSpawn(nextLevel, initialSearchPos);
                         if (fallbackSpawn != null) {
                             serverPlayer.teleportTo(nextLevel, fallbackSpawn.getX() + 0.5, fallbackSpawn.getY(), fallbackSpawn.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());

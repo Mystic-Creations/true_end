@@ -20,7 +20,7 @@ public class BTDDimensionTest {
                             _ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "setblock ~ ~ ~ minecraft:end_portal");
                 }
             }
-            TrueEndMod.queueServerWork(30, () -> {
+            TrueEndMod.queueServerWork(20, () -> {
                 {
                     Entity _ent = entity;
                     if (!_ent.level().isClientSide() && _ent.getServer() != null) {
@@ -28,7 +28,7 @@ public class BTDDimensionTest {
                                 _ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "kill @e[type=ender_dragon]");
                     }
                 }
-                TrueEndMod.queueServerWork(30, () -> {
+                TrueEndMod.queueServerWork(10, () -> {
                     {
                         Entity _ent = entity;
                         if (!_ent.level().isClientSide() && _ent.getServer() != null) {
