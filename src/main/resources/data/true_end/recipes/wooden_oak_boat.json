@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "pattern": [
+      "# #",
+      "###"
+    ],
+    "key": {
+      "#": {
+        "item": "true_end:wooden_planks"
+      }
+    },
+    "result": {
+      "item": "minecraft:oak_boat",
+      "count": 1
+    }
+  }
