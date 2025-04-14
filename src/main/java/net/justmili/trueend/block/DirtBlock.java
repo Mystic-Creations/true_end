@@ -56,9 +56,9 @@ public class DirtBlock extends Block {
         if (entity.getMainHandItem().is(ItemTags.HOES)) {
             world.setBlock(BlockPos.containing(x, y, z), TrueEndModBlocks.FARMLAND.get().defaultBlockState(), 3);
             if (world.isClientSide()) {
-                world.playSound(null, BlockPos.containing(x, y, z), (ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.PLAYERS, 1, 1);
+                world.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.BLOCKS, 1, 1, false);
             } else {
-                world.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.PLAYERS, 1, 1, false);
+                world.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.BLOCKS, 1, 1, false);
             }
             return InteractionResult.SUCCESS;
         }

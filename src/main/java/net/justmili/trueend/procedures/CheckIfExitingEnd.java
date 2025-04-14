@@ -74,11 +74,8 @@ public class CheckIfExitingEnd {
 
                 serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-                // Get the chunk the player is leaving
                 ChunkPos leavingChunkPos = serverPlayer.level().getChunkAt(serverPlayer.blockPosition()).getPos();
 
-                // Switch dimension
-                // Unload overworld chunk at leave
                 TrueEndMod.queueServerWork(1, () -> {
                     if (world instanceof ServerLevel overworldFinal) {
                         int chunkX = leavingChunkPos.x;
@@ -87,8 +84,7 @@ public class CheckIfExitingEnd {
                     }
                 });
 
-                // After dimension change, find a suitable spawn
-                TrueEndMod.queueServerWork(1, () -> {
+                TrueEndMod.queueServerWork(5, () -> {
                     BlockPos initialSearchPos = TrueEndMod.locateBiome(nextLevel, serverPlayer.blockPosition(), "true_end:nostalgic_meadow");
                     if (initialSearchPos == null) {
                         initialSearchPos = serverPlayer.blockPosition();
@@ -98,8 +94,8 @@ public class CheckIfExitingEnd {
                     if (spawnPos != null) {
                         serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
                         serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-                        for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
-                            serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
+                        for (MobEffectInstance effect : serverPlayer.getActiveEffects())
+                            serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                         serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
                         TrueEndMod.queueServerWork(5, () -> {
@@ -109,16 +105,15 @@ public class CheckIfExitingEnd {
                             HAS_PROCESSED.remove(serverPlayer);
                         });
                     } else {
-                        // Fallback spawn logic
                         BlockPos fallbackSpawn = findFallbackSpawn(nextLevel, initialSearchPos);
                         if (fallbackSpawn != null) {
                             serverPlayer.teleportTo(nextLevel, fallbackSpawn.getX() + 0.5, fallbackSpawn.getY(), fallbackSpawn.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
                             serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-                            for (MobEffectInstance _effectinstance : serverPlayer.getActiveEffects())
-                                serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), _effectinstance));
+                            for (MobEffectInstance effect : serverPlayer.getActiveEffects())
+                                serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                             serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
-                            TrueEndMod.queueServerWork(5, () -> {
+                            TrueEndMod.queueServerWork(10, () -> {
                                 executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                                 sendFirstEntryConversation(serverPlayer, nextLevel);
                                 nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
@@ -132,10 +127,8 @@ public class CheckIfExitingEnd {
                         }
                     }
 
-                    // Clear inventory if the gamerule is true
                     if (nextLevel.getGameRules().getBoolean(TrueEndModGameRules.CLEAR_DREAM_ITEMS)) {
-                        Player _player = serverPlayer;
-                        _player.getInventory().clearContent();
+                        serverPlayer.getInventory().clearContent();
                         nextLevel.getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
@@ -144,22 +137,21 @@ public class CheckIfExitingEnd {
     }
 
     public static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos centerPos) {
-        int searchRadius = 24; // Check a reasonable area
-        for (int y = 75; y >= 64; y--) { // Iterate through potential ground levels
+        int searchRadius = 24;
+        for (int y = 75; y >= 64; y--) {
             for (int x = -searchRadius; x <= searchRadius; x++) {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
-                    BlockPos groundPos = centerPos.offset(x, y - centerPos.getY(), z);
-                    BlockPos abovePos = groundPos.above();
-                    BlockPos aboveAbovePos = abovePos.above();
-
-                    if (level.getBlockState(groundPos).is(TrueEndModBlocks.GRASS_BLOCK.get()) &&
-                        level.getBiome(groundPos).is(ResourceLocation.parse("true_end:nostalgic_meadow")) &&
-                        level.isEmptyBlock(abovePos) &&
-                        level.isEmptyBlock(aboveAbovePos) &&
-                        level.getBrightness(LightLayer.SKY, abovePos) >= 15 &&
-                        isFlatArea(level, groundPos)) {
-                        System.out.println("Found ideal spawn: " + abovePos);
-                        return abovePos;
+                    BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
+                    BlockPos above = candidate.above();
+                    BlockPos above2 = above.above();
+                    if (level.getBlockState(candidate).is(TrueEndModBlocks.GRASS_BLOCK.get())
+                        && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                        && level.isEmptyBlock(above)
+                        && level.isEmptyBlock(above2)
+                        && level.getBrightness(LightLayer.SKY, above) >= 15
+                        && isValidSpawnArea(level, candidate)) {
+                        System.out.println("Found ideal spawn: " + above);
+                        return above;
                     }
                 }
             }
@@ -169,18 +161,18 @@ public class CheckIfExitingEnd {
     }
 
     public static BlockPos findFallbackSpawn(ServerLevel level, BlockPos centerPos) {
-        int searchRadius = 48; // Wider search for fallback
+        int searchRadius = 48;
         for (int y = level.getMaxBuildHeight() - 16; y >= level.getMinBuildHeight() + 8; y--) {
             for (int x = -searchRadius; x <= searchRadius; x++) {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
-                    BlockPos groundPos = centerPos.offset(x, y - centerPos.getY(), z);
-                    BlockPos abovePos = groundPos.above();
-
-                    if (level.getBlockState(groundPos).is(TrueEndModBlocks.GRASS_BLOCK.get()) &&
-                        level.getBiome(groundPos).is(ResourceLocation.parse("true_end:nostalgic_meadow")) &&
-                        level.isEmptyBlock(abovePos)) {
-                        System.out.println("Found fallback spawn: " + abovePos);
-                        return abovePos;
+                    BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
+                    BlockPos above = candidate.above();
+                    if (level.getBlockState(candidate).is(TrueEndModBlocks.GRASS_BLOCK.get())
+                        && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                        && level.isEmptyBlock(above)
+                        && isValidSpawnArea(level, candidate)) {
+                        System.out.println("Found fallback spawn: " + above);
+                        return above;
                     }
                 }
             }
@@ -189,24 +181,29 @@ public class CheckIfExitingEnd {
         return null;
     }
 
-    private static boolean isFlatArea(Level level, BlockPos pos) {
-        for (int x = -5; x <= 5; x++) {
-            for (int z = -5; z <= 5; z++) {
-                BlockPos belowPos = pos.offset(x, -1, z);
-                if (pos.getY() != belowPos.getY() + 1) {
-                    return false;
+    private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
+        int grassCount = 0;
+        int total = 0;
+        for (int dx = -3; dx <= 2; dx++) {
+            for (int dz = -3; dz <= 2; dz++) {
+                BlockPos pos = center.offset(dx, 0, dz);
+                total++;
+                if (level.getBlockState(pos).is(TrueEndModBlocks.GRASS_BLOCK.get())) {
+                    grassCount++;
                 }
-                if (level.getBlockState(belowPos).isAir()) {
+                if (level.getBlockState(pos).is(Blocks.WATER)
+                        || level.getBlockState(pos.below()).is(Blocks.WATER)
+                        || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
                     return false;
                 }
             }
         }
-        return true;
+        return grassCount >= 28;
     }
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {
-        if (world instanceof ServerLevel _level && entity instanceof ServerPlayer _player) {
-            _level.getServer().getCommands().performPrefixedCommand(_player.createCommandSourceStack().withSuppressedOutput(), command);
+        if (world instanceof ServerLevel level && entity instanceof ServerPlayer player) {
+            level.getServer().getCommands().performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput(), command);
         }
     }
 
