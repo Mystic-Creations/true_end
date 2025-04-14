@@ -7,6 +7,6 @@ now just wait for 1.4
 - Farming
 
 ## Removed Bugs
-- All caves below sea level being water caves (not done yet)
+- All caves below sea level being water caves (fixed by removing all caves)
 - Water from water caves not getting overwritten by bedrock
 - Not being able to place blocks on True End's grass block, dirt and redstone ore
