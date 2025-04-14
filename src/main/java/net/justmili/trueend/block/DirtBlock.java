@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
 
 import net.justmili.trueend.init.TrueEndModBlocks;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -28,7 +29,7 @@ import java.util.Objects;
 
 public class DirtBlock extends Block {
     public DirtBlock() {
-        super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
     }
 
     @Override

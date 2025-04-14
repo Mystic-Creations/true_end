@@ -29,6 +29,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.tags.ITagManager;
+import net.minecraft.world.level.material.MapColor;
 
 import java.util.Random;
 
@@ -41,7 +42,7 @@ public class TreeLeavesBlock extends Block implements SimpleWaterloggedBlock {
 
 
 	public TreeLeavesBlock() {
-		super(BlockBehaviour.Properties.of().sound(SoundType.GRASS).strength(0.2f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).randomTicks());
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.GRASS).strength(0.2f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).randomTicks());
 		this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false).setValue(DISTANCE, 7));
 	}
 

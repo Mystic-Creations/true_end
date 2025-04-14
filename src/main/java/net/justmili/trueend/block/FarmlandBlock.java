@@ -2,6 +2,7 @@ package net.justmili.trueend.block;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.IPlantable;
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.minecraft.core.BlockPos;
@@ -40,7 +41,7 @@ public class FarmlandBlock extends Block {
 	public static final int MAX_MOISTURE = 7;
 
 	public FarmlandBlock() {
-		super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
 	}
 
 	public BlockState updateShape(BlockState p_53276_, Direction p_53277_, BlockState p_53278_, LevelAccessor p_53279_, BlockPos p_53280_, BlockPos p_53281_) {

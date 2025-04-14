@@ -7,10 +7,11 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.material.MapColor;
 
 public class CobblestoneBlock extends Block {
 	public CobblestoneBlock() {
-		super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(2f, 6f).requiresCorrectToolForDrops());
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2f, 6f).requiresCorrectToolForDrops());
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package net.justmili.trueend.block;
 
+import net.minecraft.world.level.material.MapColor;
 import org.checkerframework.checker.units.qual.s;
 
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,7 +34,7 @@ import java.util.Optional;
 
 public class BeyondTheDreamPortalBlock extends NetherPortalBlock {
     public BeyondTheDreamPortalBlock() {
-        super(BlockBehaviour.Properties.of().noCollission().randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> 12).noLootTable());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).noCollission().randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> 12).noLootTable());
     }
 
     @Override

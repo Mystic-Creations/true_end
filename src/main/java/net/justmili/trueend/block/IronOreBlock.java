@@ -7,10 +7,11 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.material.MapColor;
 
 public class IronOreBlock extends Block {
 	public IronOreBlock() {
-		super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3f).requiresCorrectToolForDrops());
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(3f).requiresCorrectToolForDrops());
 	}
 
 	@Override
