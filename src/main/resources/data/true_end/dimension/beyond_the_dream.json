@@ -56,8 +56,8 @@
       },
       "noise_router": {
         "barrier": 0,
-        "fluid_level_floodedness":  "minecraft:overworld/base_3d_noise",
-        "fluid_level_spread":  "minecraft:overworld/base_3d_noise",
+        "fluid_level_floodedness":  0,
+        "fluid_level_spread":  0,
         "lava": 0,
         "temperature": {
           "type": "minecraft:shifted_noise",

@@ -8,10 +8,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -97,6 +100,7 @@ public void animateTick(BlockState state, Level level, BlockPos pos, RandomSourc
 	public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
 		super.use(blockstate, world, pos, entity, hand, hit);
 		RedstoneOreOnInteraction.execute(world, pos.getX(), pos.getY(), pos.getZ());
-		return InteractionResult.PASS;
+		ItemStack itemstack = entity.getItemInHand(hand);
+		return itemstack.getItem() instanceof BlockItem && (new BlockPlaceContext(entity, hand, itemstack, hit)).canPlace() ? InteractionResult.PASS : InteractionResult.SUCCESS;
 	}
 }
