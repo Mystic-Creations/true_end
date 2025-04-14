@@ -65,8 +65,7 @@ fill ~-2 ~ ~-2 ~-1 ~1 ~-2 minecraft:furnace[facing=south]
 setblock ~2 ~ ~-2 minecraft:crafting_table
 
 # "Gift"
-setblock ~1 ~ ~-2 minecraft:chest[facing=south]
-loot insert ~1 ~ ~-2 loot true_end:chests/home
+setblock ~1 ~ ~-2 chest[facing=south]{LootTable:"true_end:chests/home"} replace
 
 # Makes the player look at the top half of the bed next to them as if they just woke up
 tp @s ~1 ~1 ~1 -40 40
