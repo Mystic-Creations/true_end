@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.material.MapColor;
 
 import net.justmili.trueend.procedures.RedstoneOreOnInteraction;
 
@@ -33,6 +34,7 @@ public class RedstoneOreBlock extends Block {
 
 	public RedstoneOreBlock() {
 		super(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
 			.sound(SoundType.STONE)
 			.strength(3f)
 			.lightLevel(state -> state.getValue(LIT) ? 9 : 0)

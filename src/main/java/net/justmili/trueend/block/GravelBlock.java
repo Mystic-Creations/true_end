@@ -7,10 +7,11 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.material.MapColor;
 
 public class GravelBlock extends FallingBlock {
 	public GravelBlock() {
-		super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.6f));
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).sound(SoundType.GRAVEL).strength(0.6f));
 	}
 
 	@Override

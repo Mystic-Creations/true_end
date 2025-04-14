@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MapColor;
 
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.justmili.trueend.procedures.GrassBlockOnLeftClick;
@@ -30,7 +31,7 @@ import java.util.Objects;
 
 public class GrassBlockBlock extends Block {
     public GrassBlockBlock() {
-        super(BlockBehaviour.Properties.of().sound(SoundType.GRASS).strength(0.6f).randomTicks());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.GRASS).strength(0.6f).randomTicks());
     }
 
     @Override

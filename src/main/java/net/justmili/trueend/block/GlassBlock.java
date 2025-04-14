@@ -1,6 +1,7 @@
 
 package net.justmili.trueend.block;
 
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -14,7 +15,7 @@ import net.minecraft.core.BlockPos;
 
 public class GlassBlock extends Block {
 	public GlassBlock() {
-		super(BlockBehaviour.Properties.of().sound(SoundType.GLASS).strength(0.3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(0.3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
 	}
 
 	@Override
