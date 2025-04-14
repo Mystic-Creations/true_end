@@ -97,6 +97,6 @@ public void animateTick(BlockState state, Level level, BlockPos pos, RandomSourc
 	public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
 		super.use(blockstate, world, pos, entity, hand, hit);
 		RedstoneOreOnInteraction.execute(world, pos.getX(), pos.getY(), pos.getZ());
-		return InteractionResult.FAIL;
+		return InteractionResult.PASS;
 	}
 }
