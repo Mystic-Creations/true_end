@@ -26,6 +26,9 @@ public class TrueEndModItems {
 	public static final RegistryObject<Item> DIAMOND_ORE = block(TrueEndModBlocks.DIAMOND_ORE);
 	public static final RegistryObject<Item> WOOD = block(TrueEndModBlocks.WOOD);
 	public static final RegistryObject<Item> WOODEN_PLANKS = block(TrueEndModBlocks.WOODEN_PLANKS);
+	public static final RegistryObject<Item> WOODEN_STAIRS = block(TrueEndModBlocks.WOODEN_STAIRS);
+	public static final RegistryObject<Item> WOODEN_SLAB = block(TrueEndModBlocks.WOODEN_SLAB);
+	public static final RegistryObject<Item> WOODEN_FENCE = block(TrueEndModBlocks.WOODEN_FENCE);
 	public static final RegistryObject<Item> TREE_LEAVES = block(TrueEndModBlocks.TREE_LEAVES);
 	public static final RegistryObject<Item> OBSIDIAN = block(TrueEndModBlocks.OBSIDIAN);
 	public static final RegistryObject<Item> GRAVEL = block(TrueEndModBlocks.GRAVEL);

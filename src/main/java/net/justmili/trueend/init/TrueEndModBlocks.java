@@ -29,6 +29,9 @@ import net.justmili.trueend.block.CobblestoneBlock;
 import net.justmili.trueend.block.MossyCobblestoneBlock;
 import net.justmili.trueend.block.FarmlandBlock;
 import net.justmili.trueend.block.BeyondTheDreamPortalBlock;
+import net.justmili.trueend.block.WoodenStairsBlock;
+import net.justmili.trueend.block.WoodenSlabBlock;
+import net.justmili.trueend.block.WoodenFenceBlock;
 import net.justmili.trueend.TrueEndMod;
 
 public class TrueEndModBlocks {
@@ -53,4 +56,7 @@ public class TrueEndModBlocks {
 	public static final RegistryObject<Block> BEYOND_THE_DREAM_PORTAL = REGISTRY.register("beyond_the_dream_portal", () -> new BeyondTheDreamPortalBlock());
 	public static final RegistryObject<Block> GLASS = REGISTRY.register("glass", () -> new GlassBlock());
 	public static final RegistryObject<Block> SAND = REGISTRY.register("sand", () -> new SandBlock());
+	public static final RegistryObject<Block> WOODEN_STAIRS = REGISTRY.register("wooden_stairs", () -> new WoodenStairsBlock());
+	public static final RegistryObject<Block> WOODEN_SLAB = REGISTRY.register("wooden_slab", () -> new WoodenSlabBlock());
+	public static final RegistryObject<Block> WOODEN_FENCE = REGISTRY.register("wooden_fence", () -> new WoodenFenceBlock());
 }
