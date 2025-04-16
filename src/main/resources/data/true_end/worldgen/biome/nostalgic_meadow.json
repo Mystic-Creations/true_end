@@ -21,10 +21,14 @@
     "misc": []
   },
   "spawn_costs": {},
-  "carvers": {
+  "carvers":  {
     "air": [
-    ]
-  },
+      "minecraft:cave"
+    ],
+    "liquid": [
+      "minecraft:cave"
+    ]}
+,
   "features": [
     [],
     [],

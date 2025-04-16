@@ -36,7 +36,7 @@
       "sea_level": 63,
       "legacy_random_source": true,
       "disable_mob_generation": true,
-      "aquifers_enabled": false,
+      "aquifers_enabled": true,
       "ore_veins_enabled": false,
       "default_block": {
         "Name": "true_end:stone"
@@ -55,10 +55,10 @@
         "size_vertical": 2
       },
       "noise_router": {
-        "barrier": 0,
-        "fluid_level_floodedness":  0,
-        "fluid_level_spread":  0,
-        "lava": 0,
+        "barrier": -1,
+        "fluid_level_floodedness":  -1,
+        "fluid_level_spread":  -1,
+        "lava": -1,
         "temperature": {
           "type": "minecraft:shifted_noise",
           "noise": "minecraft:temperature",
