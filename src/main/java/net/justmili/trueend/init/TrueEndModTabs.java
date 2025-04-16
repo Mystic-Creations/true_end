@@ -28,9 +28,6 @@ public class TrueEndModTabs {
 				tabData.accept(TrueEndModBlocks.WOOD_6_SIDED.get().asItem());
 				tabData.accept(TrueEndModBlocks.WOOD.get().asItem());
 				tabData.accept(TrueEndModBlocks.WOODEN_PLANKS.get().asItem());
-				tabData.accept(TrueEndModBlocks.WOODEN_STAIRS.get().asItem());
-				tabData.accept(TrueEndModBlocks.WOODEN_SLAB.get().asItem());
-				tabData.accept(TrueEndModBlocks.WOODEN_FENCE.get().asItem());
 				tabData.accept(TrueEndModBlocks.TREE_LEAVES.get().asItem());
 				tabData.accept(TrueEndModBlocks.GRAVEL.get().asItem());
 				tabData.accept(TrueEndModBlocks.SAND.get().asItem());
