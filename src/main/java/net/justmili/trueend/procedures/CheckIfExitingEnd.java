@@ -5,10 +5,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +27,6 @@ import net.justmili.trueend.init.TrueEndModGameRules;
 import net.justmili.trueend.init.TrueEndModBlocks;
 import net.justmili.trueend.TrueEndMod;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.level.ChunkPos;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -51,17 +49,16 @@ public class CheckIfExitingEnd {
     }
 
     private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
-        if (!(entity instanceof ServerPlayer serverPlayer))
-            return;
+        if (!(entity instanceof ServerPlayer serverPlayer)) return;
 
-        if (HAS_PROCESSED.containsKey(serverPlayer) && HAS_PROCESSED.get(serverPlayer)) {
-            return;
-        }
+        if (HAS_PROCESSED.getOrDefault(serverPlayer, false)) return;
 
         if (!world.getLevelData().getGameRules().getBoolean(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME)) {
             if (serverPlayer.level().dimension() == Level.OVERWORLD
-                    && serverPlayer.level() instanceof ServerLevel
-                    && serverPlayer.getAdvancements().getOrStartProgress(Objects.requireNonNull(serverPlayer.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:stop_dreaming")))).isDone()) {
+                    && serverPlayer.level() instanceof ServerLevel overworld
+                    && serverPlayer.getAdvancements().getOrStartProgress(
+                        Objects.requireNonNull(serverPlayer.server.getAdvancements()
+                            .getAdvancement(ResourceLocation.parse("true_end:stop_dreaming")))).isDone()) {
 
                 HAS_PROCESSED.put(serverPlayer, true);
 
@@ -74,58 +71,34 @@ public class CheckIfExitingEnd {
 
                 serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-                ChunkPos leavingChunkPos = serverPlayer.level().getChunkAt(serverPlayer.blockPosition()).getPos();
-
-                TrueEndMod.queueServerWork(1, () -> {
-                    if (world instanceof ServerLevel overworldFinal) {
-                        int chunkX = leavingChunkPos.x;
-                        int chunkZ = leavingChunkPos.z;
-                        overworldFinal.unload(overworldFinal.getChunk(chunkX, chunkZ));
-                    }
-                });
-
                 TrueEndMod.queueServerWork(5, () -> {
-                    BlockPos initialSearchPos = TrueEndMod.locateBiome(nextLevel, serverPlayer.blockPosition(), "true_end:nostalgic_meadow");
-                    if (initialSearchPos == null) {
-                        initialSearchPos = serverPlayer.blockPosition();
-                    }
+                    BlockPos worldSpawn = overworld.getSharedSpawnPos();
+                    BlockPos initialSearchPos = TrueEndMod.locateBiome(nextLevel, worldSpawn, "true_end:nostalgic_meadow");
+                    if (initialSearchPos == null) initialSearchPos = worldSpawn;
+
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
-                    if (spawnPos != null) {
-                        serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
-                        serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-                        for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                            serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
-                        serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
-
-                        TrueEndMod.queueServerWork(5, () -> {
-                            executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
-                            sendFirstEntryConversation(serverPlayer, nextLevel);
-                            nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
-                            HAS_PROCESSED.remove(serverPlayer);
-                        });
-                    } else {
-                        BlockPos fallbackSpawn = findFallbackSpawn(nextLevel, initialSearchPos);
-                        if (fallbackSpawn != null) {
-                            serverPlayer.teleportTo(nextLevel, fallbackSpawn.getX() + 0.5, fallbackSpawn.getY(), fallbackSpawn.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
-                            serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-                            for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                                serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
-                            serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
-
-                            TrueEndMod.queueServerWork(10, () -> {
-                                executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
-                                sendFirstEntryConversation(serverPlayer, nextLevel);
-                                nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
-                                HAS_PROCESSED.remove(serverPlayer);
-                            });
-                        } else {
-                            System.out.println("SEVERE: Could not find ANY fallback spawn point!");
-                            BlockPos worldSpawn = nextLevel.getSharedSpawnPos();
-                            serverPlayer.teleportTo(nextLevel, worldSpawn.getX() + 0.5, worldSpawn.getY(), worldSpawn.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
-                            HAS_PROCESSED.remove(serverPlayer);
-                        }
+                    if (spawnPos == null) {
+                        spawnPos = findFallbackSpawn(nextLevel, initialSearchPos);
                     }
+
+                    if (spawnPos == null) {
+                        System.out.println("TRUE_END: Could not find ANY fallback spawn point!");
+                        spawnPos = nextLevel.getSharedSpawnPos();
+                    }
+
+                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
+                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+                    for (MobEffectInstance effect : serverPlayer.getActiveEffects())
+                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
+                    serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+
+                    TrueEndMod.queueServerWork(5, () -> {
+                        executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
+                        sendFirstEntryConversation(serverPlayer, nextLevel);
+                        nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
+                        HAS_PROCESSED.remove(serverPlayer);
+                    });
 
                     if (nextLevel.getGameRules().getBoolean(TrueEndModGameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
@@ -150,13 +123,12 @@ public class CheckIfExitingEnd {
                         && level.isEmptyBlock(above2)
                         && level.getBrightness(LightLayer.SKY, above) >= 15
                         && isValidSpawnArea(level, candidate)) {
-                        System.out.println("Found ideal spawn: " + above);
+                        System.out.println("TRUE_END: Found ideal spawn: " + above);
                         return above;
                     }
                 }
             }
         }
-        System.out.println("No suitable ideal spawn point found within the search radius.");
         return null;
     }
 
@@ -171,34 +143,31 @@ public class CheckIfExitingEnd {
                         && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
                         && level.isEmptyBlock(above)
                         && isValidSpawnArea(level, candidate)) {
-                        System.out.println("Found fallback spawn: " + above);
+                        System.out.println("TRUE_END: Found fallback spawn: " + above);
                         return above;
                     }
                 }
             }
         }
-        System.out.println("No fallback spawn point found.");
         return null;
     }
 
     private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
         int grassCount = 0;
         int total = 0;
-        for (int dx = -3; dx <= 2; dx++) {
-            for (int dz = -3; dz <= 2; dz++) {
+        for (int dx = -4; dx <= 3; dx++) {
+            for (int dz = -4; dz <= 3; dz++) {
                 BlockPos pos = center.offset(dx, 0, dz);
                 total++;
-                if (level.getBlockState(pos).is(TrueEndModBlocks.GRASS_BLOCK.get())) {
-                    grassCount++;
-                }
+                if (level.getBlockState(pos).is(TrueEndModBlocks.GRASS_BLOCK.get())) grassCount++;
                 if (level.getBlockState(pos).is(Blocks.WATER)
-                        || level.getBlockState(pos.below()).is(Blocks.WATER)
-                        || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
+                    || level.getBlockState(pos.below()).is(Blocks.WATER)
+                    || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
                     return false;
                 }
             }
         }
-        return grassCount >= 28;
+        return grassCount >= 48; // roughly 75% of 8x8
     }
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {
@@ -209,13 +178,13 @@ public class CheckIfExitingEnd {
 
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
         String[] conversation = {
-                "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString()),
-                "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString())
+            "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString()),
+            "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
+            "[\"\",{\"text\":\"\\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
+            "[\"\",{\"text\":\"\\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
+            "[\"\",{\"text\":\"\\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
+            "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
+            "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString())
         };
         TrueEndMod.queueServerWork(44, () -> {
             TrueEndMod.sendTellrawMessagesWithCooldown(player, conversation, world.getGameRules().getRule(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY).get());
