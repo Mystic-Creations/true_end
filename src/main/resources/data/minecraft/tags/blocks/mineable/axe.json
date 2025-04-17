@@ -3,14 +3,6 @@
   "values": [
     "true_end:wood",
     "true_end:wood_6_sided",
-    "true_end:wooden_planks",
-    "true_end:wooden_stairs",
-    "true_end:wooden_fence",
-    "true_end:wooden_fence_gate",
-    "true_end:wooden_door",
-    "true_end:wooden_trapdoor",
-    "true_end:wooden_pressure_plate",
-    "true_end:wooden_button",
-    "true_end:wooden_sign"
+    "true_end:wooden_planks"
   ]
 }
