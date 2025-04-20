@@ -28,7 +28,7 @@ public class PlayerDiedInNWAD {
         if (event.getEntity().level().dimension().location().toString().equals("true_end:nightmare_within_a_dream")) {
 
             // get orignal keepinventory gamerule
-            Boolean shouldKeepInvetoryBeOn = event.getEntity().level().getGameRules().getBoolean(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE);
+            boolean shouldKeepInvetoryBeOn = event.getEntity().level().getGameRules().getBoolean(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE);
 
             // set to orignal value to gamerule
             event.getEntity().level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(shouldKeepInvetoryBeOn, event.getEntity().getCommandSenderWorld().getServer());
