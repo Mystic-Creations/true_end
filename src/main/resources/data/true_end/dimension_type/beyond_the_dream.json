@@ -11,8 +11,8 @@
   "ambient_light": 0,
   "infiniburn": "#minecraft:infiniburn_overworld",
   "min_y": 0,
-  "height": 128,
-  "logical_height": 128,
+  "height": 256,
+  "logical_height": 256,
   "monster_spawn_light_level": 0,
   "monster_spawn_block_light_limit": 0,
   "effects": "true_end:beyond_the_dream"

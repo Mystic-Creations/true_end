@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 
-public class BTDDimensionTest {
+public class DimensionTest {
     public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null)
             return;
@@ -20,7 +20,7 @@ public class BTDDimensionTest {
                             _ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "setblock ~ ~ ~ minecraft:end_portal");
                 }
             }
-            TrueEndMod.queueServerWork(20, () -> {
+            TrueEndMod.queueServerWork(30, () -> {
                 {
                     Entity _ent = entity;
                     if (!_ent.level().isClientSide() && _ent.getServer() != null) {
@@ -28,7 +28,7 @@ public class BTDDimensionTest {
                                 _ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "kill @e[type=ender_dragon]");
                     }
                 }
-                TrueEndMod.queueServerWork(10, () -> {
+                TrueEndMod.queueServerWork(5, () -> {
                     {
                         Entity _ent = entity;
                         if (!_ent.level().isClientSide() && _ent.getServer() != null) {

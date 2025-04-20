@@ -14,13 +14,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.commands.Commands;
 
-import net.justmili.trueend.procedures.BTDDimensionTest;
+import net.justmili.trueend.procedures.DimensionTest;
 
 @Mod.EventBusSubscriber
 public class TrueEndBTDTest {
 	@SubscribeEvent
 	public static void registerCommand(RegisterCommandsEvent event) {
-		event.getDispatcher().register(Commands.literal("trueend_btd_test").requires(s -> s.hasPermission(4)).executes(arguments -> {
+		event.getDispatcher().register(Commands.literal("trueend_btdtest").requires(s -> s.hasPermission(4)).executes(arguments -> {
 			Level world = arguments.getSource().getUnsidedLevel();
 			double x = arguments.getSource().getPosition().x();
 			double y = arguments.getSource().getPosition().y();
@@ -32,7 +32,7 @@ public class TrueEndBTDTest {
 			if (entity != null)
 				direction = entity.getDirection();
 
-			BTDDimensionTest.execute(world, entity);
+			DimensionTest.execute(world, entity);
 			return 0;
 		}));
 	}
