@@ -1,10 +1,10 @@
-# Full Version Release
-now just wait for 1.4
-
 ## Additions
 - Ore generation in Beyond The Dream
 - Gravel and dirt patches
 - Farming possibility (so you won't starve while searching for a way out)
+
+## Changes
+- The Dreaming Tree now more findable
 
 ## Removed Bugs
 - All caves below sea level being water caves
@@ -13,3 +13,6 @@ now just wait for 1.4
 - Mostly fixed spawn checking for when entering Beyond The Dream
 - Blocks not having any color on maps
 - Kinda "improved" structure spawning for The Dreaming Tree
+
+## Known bugs (soon to be fixed)
+- Spawn checking in Beyond The Dream dimension not always working properly, altho does work most of the time
