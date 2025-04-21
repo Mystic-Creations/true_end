@@ -1,3 +1,5 @@
+// This is for when we make the variable map, the procedure itself is finished (probably)
+
 package net.justmili.trueend.procedures;
 
 import com.mojang.brigadier.context.CommandContext;

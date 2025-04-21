@@ -1,8 +1,29 @@
 ## Additions
+--------= Biomes
+--------= Entities
+--------= Blocks
+- Wooden Stairs                   (dev note: not added yet)
+- Wooden Slab                     (dev note: not added yet)
+- (Wooden) Fence                  (dev note: not added yet)
+- (Wooden) Fence Gate             (dev note: not added yet)
+- (Wooden) Door                   (dev note: not added yet)
+- (Wooden) Trapdoor               (dev note: not added yet)
+- (Wooden) Pressure Plate         (dev note: not added yet)
+- (Wooden) Button                 (dev note: not added yet)
+--------= HUD Overlays
+- Version overlay while in Beyond The Dream
+--------= Languages
+- Persian (Farsi)
+- Romanian                        (dev not: translation on wait)
+- Russian                         (dev not: translation on wait)
+- Portuguese (Brazilian)          (dev not: translation on wait)
+- Chinese (Simplified)            (dev not: translation on wait)
 
 ## Removed
 
 ## Changes
+--------= Languages
+- Fixed spelling error in en_us and en_uk
 
 ## Fixed Bugs
 
