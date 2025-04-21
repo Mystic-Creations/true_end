@@ -1,5 +1,14 @@
 package net.justmili.trueend.procedures;
 
+/**
+ * We gotta rewrite all this
+ * It's not working like it's supposed to
+ * It's supposed to always try again and again and again in a loop till it finds a good spawn,
+ * but when it fails to find it goes to fallback
+ * 
+ * and a lot of the checks aren't working right
+ */
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LightLayer;
@@ -155,8 +164,8 @@ public class CheckIfExitingEnd {
     private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
         int grassCount = 0;
         int total = 0;
-        for (int dx = -4; dx <= 3; dx++) {
-            for (int dz = -4; dz <= 3; dz++) {
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
                 BlockPos pos = center.offset(dx, 0, dz);
                 total++;
                 if (level.getBlockState(pos).is(TrueEndModBlocks.GRASS_BLOCK.get())) grassCount++;
@@ -186,7 +195,7 @@ public class CheckIfExitingEnd {
             "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
             "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString())
         };
-        TrueEndMod.queueServerWork(44, () -> {
+        TrueEndMod.queueServerWork(45, () -> {
             TrueEndMod.sendTellrawMessagesWithCooldown(player, conversation, world.getGameRules().getRule(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY).get());
         });
     }
