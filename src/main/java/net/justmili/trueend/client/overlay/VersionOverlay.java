@@ -29,14 +29,15 @@ public class VersionOverlay {
         "Minecraft v1.20.1",
         "Minecraft Alpha v1.1.2_wakeup"
     };
-    private static final ResourceKey<Level> BTD_DIMENSION = ResourceKey.create(
-        Registries.DIMENSION,
-        ResourceLocation.parse(MODID + ":beyond_the_dream")
-    );
 
     private static String currentText = BASE_TEXT;
     private static int flashTicks = 0;
     private static final Random random = new Random();
+
+    private static final ResourceKey<Level> BTD_DIMENSION = ResourceKey.create(
+        Registries.DIMENSION,
+        ResourceLocation.parse("true_end:beyond_the_dream")
+    );
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -55,7 +56,7 @@ public class VersionOverlay {
                 currentText = BASE_TEXT;
             }
             /** Dynamic String Change
-             * 6000 - ticks between each random "glitch" string
+             * 6000 - ticks between each random "glitch"
              * "//2-6 ticks" - "glitch" string show time
              */
         } else if (random.nextInt(6000) == 0) {
