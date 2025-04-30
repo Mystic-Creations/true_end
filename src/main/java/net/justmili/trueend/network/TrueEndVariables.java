@@ -18,6 +18,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -28,6 +29,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.justmili.trueend.TrueEndMod;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -35,6 +37,8 @@ public class TrueEndVariables {
     public static final Capability<TrueEndVariables.PlayerVariables> PLAYER_VARS_CAP =
         CapabilityManager.get(new CapabilityToken<>() {});
 
+    public static final Capability<TrueEndVariables.MapVariables> MAP_VARIABLES_CAP =
+            CapabilityManager.get(new CapabilityToken<>() {});
     // Register messages and capabilities
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
@@ -56,7 +60,9 @@ public class TrueEndVariables {
 
     @SubscribeEvent
     public static void onRegisterCaps(RegisterCapabilitiesEvent evt) {
+
         evt.register(PlayerVariables.class);
+        evt.register(MapVariables.class);
     }
 
     // --------------------
@@ -209,8 +215,8 @@ public class TrueEndVariables {
         public static void attachCaps(AttachCapabilitiesEvent<Entity> evt) {
             if (evt.getObject() instanceof Player && evt.getObject() instanceof ServerPlayer) {
                 evt.addCapability(
-                    new ResourceLocation(TrueEndMod.MODID, "player_variables"),
-                    new PlayerVariablesProvider()
+                        new ResourceLocation(TrueEndMod.MODID, "player_variables"),
+                        new PlayerVariablesProvider()
                 );
             }
         }

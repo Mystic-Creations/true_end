@@ -9,14 +9,13 @@ package net.justmili.trueend.procedures;
  * and a lot of the checks aren't working right
  */
 
-import net.minecraft.network.chat.Component;
+import net.justmili.trueend.network.TrueEndVariables;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
@@ -41,6 +40,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mod.EventBusSubscriber
 public class CheckIfExitingEnd {
@@ -53,16 +53,16 @@ public class CheckIfExitingEnd {
         }
     }
 
-    public static void execute(LevelAccessor world, Entity entity) {
-        execute(null, world, entity);
-    }
-
     private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
         if (!(entity instanceof ServerPlayer serverPlayer)) return;
 
         if (HAS_PROCESSED.getOrDefault(serverPlayer, false)) return;
 
-        if (!world.getLevelData().getGameRules().getBoolean(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME)) {
+        AtomicBoolean hasVisited = new AtomicBoolean(false);
+        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> {
+            hasVisited.set(data.hasBeenBeyond());
+        });
+        if (!hasVisited.get()) {
             if (serverPlayer.level().dimension() == Level.OVERWORLD
                     && serverPlayer.level() instanceof ServerLevel overworld
                     && serverPlayer.getAdvancements().getOrStartProgress(
@@ -87,14 +87,21 @@ public class CheckIfExitingEnd {
 
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
+                    BlockPos secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(10000, 100, 10000)), "true_end:nostalgic_meadow");
+
                     if (spawnPos == null) {
-                        spawnPos = findFallbackSpawn(nextLevel, initialSearchPos);
+                        spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
                     }
 
                     if (spawnPos == null) {
                         System.out.println("TRUE_END: Could not find ANY fallback spawn point!");
                         spawnPos = nextLevel.getSharedSpawnPos();
                     }
+
+                    BlockPos finalSpawnPos = spawnPos;
+                    nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
+                            data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(), finalSpawnPos.getZ())
+                    );
 
                     serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
@@ -105,7 +112,9 @@ public class CheckIfExitingEnd {
                     TrueEndMod.queueServerWork(5, () -> {
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         sendFirstEntryConversation(serverPlayer, nextLevel);
-                        nextLevel.getGameRules().getRule(TrueEndModGameRules.LOGIC_HAS_VISITED_BTD_FOR_THE_FIRST_TIME).set(true, nextLevel.getServer());
+                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent( data ->
+                                data.setBeenBeyond(true)
+                        );
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
