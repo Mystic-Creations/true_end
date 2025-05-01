@@ -90,7 +90,11 @@ public class CheckIfExitingEnd {
                     BlockPos secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(10000, 100, 10000)), "true_end:nostalgic_meadow");
 
                     if (spawnPos == null) {
-                        spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
+                        while(spawnPos == null) {
+                            secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(secondarySearchPos.getX() +10000, 100, secondarySearchPos.getZ()+10000)), "true_end:nostalgic_meadow");
+
+                            spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
+                        }
                     }
 
                     if (spawnPos == null) {
