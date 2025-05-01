@@ -36,5 +36,6 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal(
             "btdSpawnX/Y/Z: " + btdSpawnXc + "/" + btdSpawnYc + "/" + btdSpawnZc
         ));
+        source.sendSystemMessage(Component.literal("randomEventChance: " + globalVars.getRandomEventChance()));
     }
 }

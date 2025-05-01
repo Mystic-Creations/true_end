@@ -73,12 +73,14 @@ public class TrueEndVariables {
 
         private boolean defaultKeepInv = false;
         private double btdConversationDelay = 40;
+        private double randomEventChance = 0.005;
         private double btdSpawnX = 0.0;
         private double btdSpawnY = 64.0;
         private double btdSpawnZ = 0.0;
 
         public boolean isDefaultKeepInv() { return defaultKeepInv; }
         public double getBtdConversationDelay() { return btdConversationDelay; }
+        public double getRandomEventChance() { return randomEventChance; }
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
@@ -89,10 +91,12 @@ public class TrueEndVariables {
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
-            m.defaultKeepInv   = nbt.getBoolean("defaultKeepInv");
-            m.btdSpawnX        = nbt.getDouble("btdSpawnX");
-            m.btdSpawnY        = nbt.getDouble("btdSpawnY");
-            m.btdSpawnZ        = nbt.getDouble("btdSpawnZ");
+            m.defaultKeepInv = nbt.getBoolean("defaultKeepInv");
+            m.btdConversationDelay = nbt.getDouble("btdConversationDelay");
+            m.randomEventChance = nbt.getDouble("randomEventChance");
+            m.btdSpawnX = nbt.getDouble("btdSpawnX");
+            m.btdSpawnY = nbt.getDouble("btdSpawnY");
+            m.btdSpawnZ = nbt.getDouble("btdSpawnZ");
             return m;
         }
 
@@ -100,6 +104,7 @@ public class TrueEndVariables {
         public CompoundTag save(CompoundTag nbt) {
             nbt.putBoolean("defaultKeepInv",  defaultKeepInv);
             nbt.putDouble("btdConversationDelay", btdConversationDelay);
+            nbt.putDouble("randomEventChance", randomEventChance);
             nbt.putDouble("btdSpawnX", btdSpawnX);
             nbt.putDouble("btdSpawnY", btdSpawnY);
             nbt.putDouble("btdSpawnZ", btdSpawnZ);
@@ -141,6 +146,7 @@ public class TrueEndVariables {
                 MapVariables client = MapVariables.get(Minecraft.getInstance().level);
                 client.defaultKeepInv = msg.data.getBoolean("defaultKeepInv");
                 client.btdConversationDelay = msg.data.getDouble("btdConversationDelay");
+                client.randomEventChance = msg.data.getDouble("randomEventChance");
                 client.btdSpawnX = msg.data.getDouble("btdSpawnX");
                 client.btdSpawnY = msg.data.getDouble("btdSpawnY");
                 client.btdSpawnZ = msg.data.getDouble("btdSpawnZ");
