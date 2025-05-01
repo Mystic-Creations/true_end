@@ -10,8 +10,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.material.MapColor;
 
-public class WoodenFenceBlock extends FenceBlock {
-	public WoodenFenceBlock() {
+public class FenceBlock extends FenceBlock {
+	public FenceBlock() {
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2f, 3f).forceSolidOn());
 	}
 
