@@ -3,6 +3,9 @@
   "values": [
     "true_end:wood",
     "true_end:wood_6_sided",
-    "true_end:wooden_planks"
+    "true_end:wooden_planks",
+    "true_end:wooden_stairs",
+    "true_end:wooden_slab",
+    "true_end:fence"
   ]
 }
