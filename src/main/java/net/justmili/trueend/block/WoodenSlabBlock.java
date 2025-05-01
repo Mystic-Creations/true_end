@@ -14,9 +14,4 @@ public class WoodenSlabBlock extends SlabBlock {
 	public WoodenSlabBlock() {
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2f, 3f));
 	}
-
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 5;
-	}
 }
