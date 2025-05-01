@@ -42,11 +42,5 @@
     "advancements.leave_the_nightmare_within_a_dream.title": "What the hell happened?",
     "advancements.leave_the_nightmare_within_a_dream.descr": "Leave the Nightmare Within a Dream",
     "gamerule.clearDreamItems": "Clear Dream Items",
-    "gamerule.clearDreamItems.description": "Clears Player Inventory when entering Beyond The Dream dimension for the 1st time",
-    "gamerule.btdConversationMessegeDelay": "BTD Conversation Messege Delay",
-    "gamerule.btdConversationMessegeDelay.description": "When entering Beyond The Dream dimension for the 1st time, you\u0027ll be prompted with a conversation between the player and the voices, the being that talk in the End Credits, this is the delay between each message.",
-    "gamerule.keepInvDefaultGameplayValue": "True End Logic Variable (1)",
-    "gamerule.keepInvDefaultGameplayValue.description": "keepInvDefaultGameplayValue keeps track of player's keepInvetory preference",
-    "gamerule.logicHasVisitedBTDForTheFirstTime": "True End Logic Variable (2)",
-    "gamerule.logicHasVisitedBTDForTheFirstTime.description": "Keeps track have you or have you not been to Beyond The Dream for the 1st time"
+    "gamerule.clearDreamItems.description": "Clears Player Inventory when entering Beyond The Dream dimension for the 1st time"
   }

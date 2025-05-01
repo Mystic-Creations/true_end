@@ -2,9 +2,9 @@
 --------= Biomes
 --------= Entities
 --------= Blocks
-- Wooden Stairs                   (dev note: not added yet)
-- Wooden Slab                     (dev note: not added yet)
-- (Wooden) Fence                  (dev note: not added yet)
+- Wooden Stairs
+- Wooden Slab
+- (Wooden) Fence                  (dev note:  in debugging)
 - (Wooden) Fence Gate             (dev note: not added yet)
 - (Wooden) Door                   (dev note: not added yet)
 - (Wooden) Trapdoor               (dev note: not added yet)

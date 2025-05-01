@@ -10,9 +10,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.material.MapColor;
 
-public class FenceBlock extends FenceBlock {
-	public FenceBlock() {
-		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2f, 3f).forceSolidOn());
+public class WoodenFenceBlock extends FenceBlock {
+	public WoodenFenceBlock() {
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2f, 3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).forceSolidOn());
+	}
+
+	@Override
+	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
+		return 0;
 	}
 
 	@Override
