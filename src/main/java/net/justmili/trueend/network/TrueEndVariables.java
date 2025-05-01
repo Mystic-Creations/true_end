@@ -72,25 +72,24 @@ public class TrueEndVariables {
         public static final String DATA_NAME = "true_end_mapvars";
 
         private boolean defaultKeepInv = false;
-        private boolean clearDreamItems = true;
+        private double btdConversationDelay = 40;
         private double btdSpawnX = 0.0;
         private double btdSpawnY = 64.0;
         private double btdSpawnZ = 0.0;
 
         public boolean isDefaultKeepInv() { return defaultKeepInv; }
-        public boolean isClearDreamItems() { return clearDreamItems; }
+        public double getBtdConversationDelay() { return btdConversationDelay; }
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
 
-        public void setDefaultKeepInv(boolean v)  { defaultKeepInv = v; setDirty(); }
-        public void setClearDreamItems(boolean v) { clearDreamItems = v; setDirty(); }
+        public void setDefaultKeepInv(boolean v) { defaultKeepInv = v; setDirty(); }
+        public void setBtdConversationDelay(double btdConversationDelay) { this.btdConversationDelay = btdConversationDelay; setDirty(); }
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
             m.defaultKeepInv   = nbt.getBoolean("defaultKeepInv");
-            m.clearDreamItems  = nbt.getBoolean("clearDreamItems");
             m.btdSpawnX        = nbt.getDouble("btdSpawnX");
             m.btdSpawnY        = nbt.getDouble("btdSpawnY");
             m.btdSpawnZ        = nbt.getDouble("btdSpawnZ");
@@ -100,7 +99,7 @@ public class TrueEndVariables {
         @Override
         public CompoundTag save(CompoundTag nbt) {
             nbt.putBoolean("defaultKeepInv",  defaultKeepInv);
-            nbt.putBoolean("clearDreamItems", clearDreamItems);
+            nbt.putDouble("btdConversationDelay", btdConversationDelay);
             nbt.putDouble("btdSpawnX", btdSpawnX);
             nbt.putDouble("btdSpawnY", btdSpawnY);
             nbt.putDouble("btdSpawnZ", btdSpawnZ);
@@ -140,11 +139,11 @@ public class TrueEndVariables {
         public static void handle(MapVariablesSyncMessage msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 MapVariables client = MapVariables.get(Minecraft.getInstance().level);
-                client.defaultKeepInv   = msg.data.getBoolean("defaultKeepInv");
-                client.clearDreamItems  = msg.data.getBoolean("clearDreamItems");
-                client.btdSpawnX        = msg.data.getDouble("btdSpawnX");
-                client.btdSpawnY        = msg.data.getDouble("btdSpawnY");
-                client.btdSpawnZ        = msg.data.getDouble("btdSpawnZ");
+                client.defaultKeepInv = msg.data.getBoolean("defaultKeepInv");
+                client.btdConversationDelay = msg.data.getDouble("btdConversationDelay");
+                client.btdSpawnX = msg.data.getDouble("btdSpawnX");
+                client.btdSpawnY = msg.data.getDouble("btdSpawnY");
+                client.btdSpawnZ = msg.data.getDouble("btdSpawnZ");
             });
             ctx.get().setPacketHandled(true);
         }

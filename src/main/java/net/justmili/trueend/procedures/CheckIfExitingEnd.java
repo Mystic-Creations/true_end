@@ -195,6 +195,7 @@ public class CheckIfExitingEnd {
     }
 
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
+        int convoDelay = (int) TrueEndVariables.MapVariables.get(world).getBtdConversationDelay();
         String[] conversation = {
             "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString()),
             "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
@@ -205,7 +206,7 @@ public class CheckIfExitingEnd {
             "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString())
         };
         TrueEndMod.queueServerWork(45, () -> {
-            TrueEndMod.sendTellrawMessagesWithCooldown(player, conversation, world.getGameRules().getRule(TrueEndModGameRules.BTD_CONVERSATION_MESSEGE_DELAY).get());
+            TrueEndMod.sendTellrawMessagesWithCooldown(player, conversation, convoDelay);
         });
     }
 }

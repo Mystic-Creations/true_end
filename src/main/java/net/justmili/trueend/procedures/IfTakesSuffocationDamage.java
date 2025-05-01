@@ -1,5 +1,6 @@
 package net.justmili.trueend.procedures;
 
+import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,13 +47,13 @@ public class IfTakesSuffocationDamage {
 	private static void execute(@Nullable Event event, LevelAccessor world, DamageSource damagesource, Entity entity) {
 		if (damagesource == null || entity == null)
 			return;
-		if (entity instanceof Player && (damagesource.is(DamageTypes.IN_WALL) || damagesource.is(DamageTypes.FALLING_BLOCK)) && !(entity instanceof ServerPlayer player && player.level() instanceof ServerLevel
-				&& player.getAdvancements().getOrStartProgress(Objects.requireNonNull(player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream")))).isDone())) {
-			if (!world.getLevelData().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-				world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(false, world.getServer());
+		boolean currentKeepInv = TrueEndVariables.MapVariables.get(world).isDefaultKeepInv();
+		if (entity instanceof Player && damagesource.is(DamageTypes.IN_WALL) && !(entity instanceof ServerPlayer _plr2 && _plr2.level() instanceof ServerLevel
+				&& _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"))).isDone())) {
+			if (currentKeepInv == true) {
 				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
-			} else {
-				world.getLevelData().getGameRules().getRule(TrueEndModGameRules.KEEP_INV_DEFAULT_GAMEPLAY_VALUE).set(true, world.getServer());
+			} else if (currentKeepInv == false) {
+				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(false, world.getServer());
 			}
 			if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()) {
 				ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("true_end:nightmare_within_a_dream"));

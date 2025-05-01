@@ -20,6 +20,10 @@
 - Chinese (Simplified)            (dev not: translation on wait)
 
 ## Removed
+--------= Gamerules
+- btdConversationMessegeDelay (logic, replaced with a variable)
+- logicHasVisitedBTDForTheFirstTime (logic, replaced with a variable)
+- keepInvDefaultGameplayValue (logic, replaced with a variable)
 
 ## Changes
 --------= Languages
