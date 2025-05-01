@@ -1,3 +1,7 @@
+//**
+// Hey Appels, we gotta split thing thing into two or implement what it does into where it should get called
+// Cuz looks like there can't be 2 sub events in one file
+// */
 package net.justmili.trueend.procedures;
 
 import net.minecraft.commands.CommandSourceStack;
