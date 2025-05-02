@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Random;
 
+import static net.justmili.trueend.procedures.registries.DimKeyRegistry.BTD;
 import static net.justmili.trueend.TrueEndMod.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
@@ -34,17 +35,12 @@ public class VersionOverlay {
     private static int flashTicks = 0;
     private static final Random random = new Random();
 
-    private static final ResourceKey<Level> BTD_DIMENSION = ResourceKey.create(
-        Registries.DIMENSION,
-        ResourceLocation.parse("true_end:beyond_the_dream")
-    );
-
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null || mc.level.dimension() != BTD_DIMENSION) {
+        if (mc.level == null || mc.level.dimension() != BTD) {
             currentText = BASE_TEXT;
             flashTicks = 0;
             return;
@@ -68,7 +64,7 @@ public class VersionOverlay {
     @SubscribeEvent
     public static void onRenderGui(RenderGuiEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null || mc.level.dimension() != BTD_DIMENSION) return;
+        if (mc.level == null || mc.level.dimension() != BTD) return;
 
         GuiGraphics guiGraphics = event.getGuiGraphics();
         PoseStack poseStack = guiGraphics.pose();

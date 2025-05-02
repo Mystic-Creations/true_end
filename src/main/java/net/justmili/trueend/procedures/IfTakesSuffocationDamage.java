@@ -31,6 +31,8 @@ import net.justmili.trueend.init.TrueEndModGameRules;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
+import static net.justmili.trueend.procedures.registries.DimKeyRegistry.NWAD;
+
 @Mod.EventBusSubscriber
 public class IfTakesSuffocationDamage {
 	@SubscribeEvent
@@ -56,7 +58,7 @@ public class IfTakesSuffocationDamage {
 				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(false, world.getServer());
 			}
 			if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()) {
-				ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("true_end:nightmare_within_a_dream"));
+				ResourceKey<Level> destinationType = NWAD;
 				if (serverPlayer.level().dimension() == destinationType)
 					return;
 				ServerLevel nextLevel = serverPlayer.server.getLevel(destinationType);

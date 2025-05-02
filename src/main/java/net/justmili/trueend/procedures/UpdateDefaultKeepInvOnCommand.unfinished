@@ -13,6 +13,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.CommandEvent;
 
+import static net.justmili.trueend.procedures.registries.DimKeyRegistry.NWAD;
+
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.entity.Entity;
 
@@ -20,10 +22,6 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class UpdateDefaultKeepInvOnCommand {
-    private static final ResourceKey<Level> NWAD_DIMENSION = ResourceKey.create(
-            Registries.DIMENSION,
-            ResourceLocation.parse("true_end:nightmare_within_a_dream")
-    );
 
 	@SubscribeEvent
 	public static void onCommand(CommandEvent event) {
@@ -43,7 +41,7 @@ public class UpdateDefaultKeepInvOnCommand {
         CommandSourceStack source = event.getParseResults().getContext().getSource();
         if (!(source.getEntity() instanceof ServerPlayer player)) return;
         ServerLevel world = (ServerLevel) player.level();
-		if (!((entity.level().dimension()) == NWAD_DIMENSION)) {
+		if (!((entity.level().dimension()) == NWAD)) {
 			boolean getKeepInventory = world.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
 			TrueEndVariables.MapVariables.get(world).setDefaultKeepInv(getKeepInventory);
 			TrueEndVariables.MapVariables.get(world).syncAll(world);

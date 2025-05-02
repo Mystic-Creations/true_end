@@ -32,6 +32,8 @@ import net.justmili.trueend.init.TrueEndModParticleTypes;
 
 import java.util.Optional;
 
+import static net.justmili.trueend.procedures.registries.DimKeyRegistry.BTD;
+
 public class BeyondTheDreamPortalBlock extends NetherPortalBlock {
     public BeyondTheDreamPortalBlock() {
         super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).noCollission().randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> 12).noLootTable());
@@ -88,9 +90,9 @@ public class BeyondTheDreamPortalBlock extends NetherPortalBlock {
         if (entity.canChangeDimensions() && !entity.level().isClientSide() && true) {
             if (entity.isOnPortalCooldown()) {
                 entity.setPortalCooldown();
-            } else if (entity.level().dimension() != ResourceKey.create(Registries.DIMENSION, new ResourceLocation("true_end:beyond_the_dream"))) {
+            } else if (entity.level().dimension() != BTD) {
                 entity.setPortalCooldown();
-                teleportToDimension(entity, pos, ResourceKey.create(Registries.DIMENSION, new ResourceLocation("true_end:beyond_the_dream")));
+                teleportToDimension(entity, pos, BTD);
             } else {
                 entity.setPortalCooldown();
                 teleportToDimension(entity, pos, Level.OVERWORLD);

@@ -42,6 +42,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static net.justmili.trueend.procedures.registries.DimKeyRegistry.BTD;
+import static net.justmili.trueend.procedures.registries.IntegerRegistry.*;
+
 @Mod.EventBusSubscriber
 public class CheckIfExitingEnd {
     private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
@@ -71,7 +74,7 @@ public class CheckIfExitingEnd {
 
                 HAS_PROCESSED.put(serverPlayer, true);
 
-                ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("true_end:beyond_the_dream"));
+                ResourceKey<Level> destinationType = BTD;
                 ServerLevel nextLevel = serverPlayer.server.getLevel(destinationType);
                 if (nextLevel == null || serverPlayer.level().dimension() == destinationType) {
                     HAS_PROCESSED.remove(serverPlayer);
@@ -87,11 +90,11 @@ public class CheckIfExitingEnd {
 
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
-                    BlockPos secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(10000, 100, 10000)), "true_end:nostalgic_meadow");
+                    BlockPos secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), "true_end:nostalgic_meadow");
 
                     if (spawnPos == null) {
                         while(spawnPos == null) {
-                            secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(secondarySearchPos.getX() +10000, 100, secondarySearchPos.getZ()+10000)), "true_end:nostalgic_meadow");
+                            secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX+BlockPosRandomZ, BlockPosRandomY, BlockPosRandomZ+BlockPosRandomX)), "true_end:nostalgic_meadow");
 
                             spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
                         }
