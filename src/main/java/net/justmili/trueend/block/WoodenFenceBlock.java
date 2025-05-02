@@ -2,6 +2,7 @@
 package net.justmili.trueend.block;
 
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.material.MapColor;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 public class WoodenFenceBlock extends FenceBlock {
 	public WoodenFenceBlock() {
@@ -26,5 +28,10 @@ public class WoodenFenceBlock extends FenceBlock {
 	@Override
 	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return 5;
+	}
+
+	@Override
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
+		return BlockPathTypes.FENCE;
 	}
 }

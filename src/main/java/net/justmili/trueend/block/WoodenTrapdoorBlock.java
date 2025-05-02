@@ -2,20 +2,19 @@
 package net.justmili.trueend.block;
 
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
-public class WoodenFenceGateBlock extends FenceGateBlock {
-	public WoodenFenceGateBlock() {
-		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(21f, 3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).forceSolidOn(), WoodType.OAK);
+public class WoodenTrapdoorBlock extends TrapDoorBlock {
+	public WoodenTrapdoorBlock() {
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false), BlockSetType.OAK);
 	}
 
 	@Override
@@ -24,17 +23,12 @@ public class WoodenFenceGateBlock extends FenceGateBlock {
 	}
 
 	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 5;
-	}
-
-	@Override
 	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		if (state.getBlock() instanceof WoodenFenceGateBlock) {
-			if (state.getValue(WoodenFenceGateBlock.OPEN)) {
+		if (state.getBlock() instanceof WoodenTrapdoorBlock) {
+			if (state.getValue(WoodenTrapdoorBlock.OPEN)) {
 				return BlockPathTypes.WALKABLE;
 			} else {
-				return BlockPathTypes.FENCE;
+				return BlockPathTypes.TRAPDOOR;
 			}
 		}
 		return super.getBlockPathType(state, world, pos, entity);
