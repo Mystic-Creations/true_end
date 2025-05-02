@@ -1,0 +1,26 @@
+{
+    "display": {
+      "icon": {
+        "item": "minecraft:torch"
+      },
+      "title": {
+        "translate": "advancements.unknown_base_found.title"
+      },
+      "description": {
+        "translate": "advancements.unknown_base_found.descr"
+      }
+    },
+    "parent": "true_end:the_start_of_an_end",
+    "criteria": {
+      "structureUnknownBaseFound": {
+        "trigger": "minecraft:location",
+        "conditions": {
+          "player": {
+            "location": {
+              "structure": "true_end:unknown_base"
+            }
+          }
+        }
+      }
+    }
+  }
