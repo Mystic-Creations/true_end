@@ -4,12 +4,15 @@
 --------= Blocks
 - Wooden Stairs
 - Wooden Slab
-- (Wooden) Fence                  (dev note:  in debugging)
-- (Wooden) Fence Gate             (dev note: not added yet)
+- (Wooden) Fence
+- (Wooden) Fence Gate
 - (Wooden) Door                   (dev note: not added yet)
 - (Wooden) Trapdoor               (dev note: not added yet)
 - (Wooden) Pressure Plate         (dev note: not added yet)
 - (Wooden) Button                 (dev note: not added yet)
+--------= Spooky Elements
+- New small structure "Unknown Base", you're not alone
+- Random Events (Random mining sounds)
 --------= HUD Overlays
 - Version overlay while in Beyond The Dream
 --------= Languages
@@ -28,7 +31,10 @@
 ## Changes
 --------= Languages
 - Fixed spelling error in en_us and en_uk
+--------= Config
+- Switched from gamerules to config (dev note: in progress)
 
 ## Fixed Bugs
+- Bad Fallback Spawn
 
 ## Known Bugs

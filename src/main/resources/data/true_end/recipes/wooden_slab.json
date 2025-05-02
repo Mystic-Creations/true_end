@@ -2,8 +2,6 @@
     "type": "minecraft:crafting_shaped",
     "category": "misc",
     "pattern": [
-      "#  ",
-      "## ",
       "###"
     ],
     "key": {
@@ -12,7 +10,7 @@
       }
     },
     "result": {
-      "item": "minecraft:oak_stairs",
-      "count": 4
+      "item": "true_end:wooden_slab",
+      "count": 6
     }
   }

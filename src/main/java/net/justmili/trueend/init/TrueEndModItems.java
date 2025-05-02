@@ -1,5 +1,6 @@
 package net.justmili.trueend.init;
 
+import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.DeferredRegister;
@@ -29,6 +30,8 @@ public class TrueEndModItems {
 	public static final RegistryObject<Item> WOODEN_STAIRS = block(TrueEndModBlocks.WOODEN_STAIRS);
 	public static final RegistryObject<Item> WOODEN_SLAB = block(TrueEndModBlocks.WOODEN_SLAB);
 	public static final RegistryObject<Item> FENCE = block(TrueEndModBlocks.FENCE);
+	public static final RegistryObject<Item> FENCE_GATE = block(TrueEndModBlocks.FENCE_GATE);
+	public static final RegistryObject<Item> DOOR = doubleBlock(TrueEndModBlocks.DOOR);
 	public static final RegistryObject<Item> TREE_LEAVES = block(TrueEndModBlocks.TREE_LEAVES);
 	public static final RegistryObject<Item> OBSIDIAN = block(TrueEndModBlocks.OBSIDIAN);
 	public static final RegistryObject<Item> GRAVEL = block(TrueEndModBlocks.GRAVEL);
@@ -39,5 +42,8 @@ public class TrueEndModItems {
 	
 	private static RegistryObject<Item> block(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
+	}
+	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block) {
+		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
 	}
 }

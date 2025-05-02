@@ -6,6 +6,8 @@
     "true_end:wooden_planks",
     "true_end:wooden_stairs",
     "true_end:wooden_slab",
-    "true_end:fence"
+    "true_end:fence",
+    "true_end:fence_gate",
+    "true_end:door"
   ]
 }

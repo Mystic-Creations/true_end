@@ -7,7 +7,7 @@
     }
   ],
   "result": {
-    "item": "minecraft:oak_button",
+    "item": "true_end:button",
     "count": 1
   }
 }

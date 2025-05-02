@@ -16,6 +16,8 @@ import net.justmili.trueend.block.WoodenPlanksBlock;
 import net.justmili.trueend.block.WoodenStairsBlock;
 import net.justmili.trueend.block.WoodenSlabBlock;
 import net.justmili.trueend.block.WoodenFenceBlock;
+import net.justmili.trueend.block.WoodenFenceGateBlock;
+import net.justmili.trueend.block.WoodenDoorBlock;
 import net.justmili.trueend.block.StoneBlock;
 import net.justmili.trueend.block.CoalOreBlock;
 import net.justmili.trueend.block.IronOreBlock;
@@ -52,6 +54,8 @@ public class TrueEndModBlocks {
 	public static final RegistryObject<Block> WOODEN_STAIRS = REGISTRY.register("wooden_stairs", () -> new WoodenStairsBlock());
 	public static final RegistryObject<Block> WOODEN_SLAB = REGISTRY.register("wooden_slab", () -> new WoodenSlabBlock());
 	public static final RegistryObject<Block> FENCE = REGISTRY.register("fence", () -> new WoodenFenceBlock());
+	public static final RegistryObject<Block> FENCE_GATE = REGISTRY.register("fence_gate", () -> new WoodenFenceGateBlock());
+	public static final RegistryObject<Block> DOOR = REGISTRY.register("door", () -> new WoodenDoorBlock());
 	public static final RegistryObject<Block> TREE_LEAVES = REGISTRY.register("tree_leaves", () -> new TreeLeavesBlock());
 	public static final RegistryObject<Block> OBSIDIAN = REGISTRY.register("obsidian", () -> new ObsidianBlock());
 	public static final RegistryObject<Block> GRAVEL = REGISTRY.register("gravel", () -> new GravelBlock());

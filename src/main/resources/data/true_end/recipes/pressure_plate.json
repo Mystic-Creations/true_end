@@ -2,19 +2,15 @@
     "type": "minecraft:crafting_shaped",
     "category": "misc",
     "pattern": [
-      "#1#",
-      "#1#"
+      "##"
     ],
     "key": {
       "#": {
         "item": "true_end:wooden_planks"
-      },
-      "1": {
-        "item": "minecraft:stick"
       }
     },
     "result": {
-      "item": "minecraft:oak_fence",
-      "count": 3
+      "item": "true_end:pressure_plate",
+      "count": 1
     }
   }
