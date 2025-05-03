@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures;
+package net.justmili.trueend.procedures.blockinteractions;
 
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.BlockState;

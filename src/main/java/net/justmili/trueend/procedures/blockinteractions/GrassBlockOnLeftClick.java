@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures;
+package net.justmili.trueend.procedures.blockinteractions;
 
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.item.ItemStack;

@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures;
+package net.justmili.trueend.procedures.dev;
 
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.entity.Entity;

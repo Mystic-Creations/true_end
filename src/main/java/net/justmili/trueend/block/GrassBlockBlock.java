@@ -1,5 +1,6 @@
 package net.justmili.trueend.block;
 
+import net.justmili.trueend.procedures.blockinteractions.GrassBlockOnLeftClick;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
 import net.justmili.trueend.init.TrueEndModBlocks;
-import net.justmili.trueend.procedures.GrassBlockOnLeftClick;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.registries.ForgeRegistries;
 

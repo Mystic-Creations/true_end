@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures;
+package net.justmili.trueend.procedures.events;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -10,6 +10,11 @@ import net.minecraft.server.level.ServerLevel;
 
 @Mod.EventBusSubscriber
 public class PlayerJoinedWorld {
+
+
+
+
+
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         execute(event);
