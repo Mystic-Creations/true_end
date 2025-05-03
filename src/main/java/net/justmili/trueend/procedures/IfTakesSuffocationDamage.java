@@ -1,7 +1,6 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.TrueEndVariables;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -23,15 +22,12 @@ import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
-import net.minecraft.core.registries.Registries;
 
 import net.minecraft.core.BlockPos;
-import net.justmili.trueend.init.TrueEndModGameRules;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 
-import static net.justmili.trueend.procedures.registries.DimKeyRegistry.NWAD;
+import static net.justmili.trueend.regs.DimKeyRegistry.*;
 
 @Mod.EventBusSubscriber
 public class IfTakesSuffocationDamage {

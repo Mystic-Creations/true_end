@@ -1,14 +1,5 @@
 package net.justmili.trueend.procedures;
 
-/**
- * We gotta rewrite all this
- * It's not working like it's supposed to
- * It's supposed to always try again and again and again in a loop till it finds a good spawn,
- * but when it fails to find it goes to fallback
- * 
- * and a lot of the checks aren't working right
- */
-
 import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Blocks;
@@ -20,7 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
@@ -42,8 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static net.justmili.trueend.procedures.registries.DimKeyRegistry.BTD;
-import static net.justmili.trueend.procedures.registries.IntegerRegistry.*;
+import static net.justmili.trueend.regs.DimKeyRegistry.*;
+import static net.justmili.trueend.regs.IntegerRegistry.*;
 
 @Mod.EventBusSubscriber
 public class CheckIfExitingEnd {

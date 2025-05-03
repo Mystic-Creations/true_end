@@ -32,7 +32,7 @@ import net.justmili.trueend.init.TrueEndModParticleTypes;
 
 import java.util.Optional;
 
-import static net.justmili.trueend.procedures.registries.DimKeyRegistry.BTD;
+import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 
 public class BeyondTheDreamPortalBlock extends NetherPortalBlock {
     public BeyondTheDreamPortalBlock() {

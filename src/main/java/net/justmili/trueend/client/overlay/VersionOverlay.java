@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Random;
 
-import static net.justmili.trueend.procedures.registries.DimKeyRegistry.BTD;
+import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 import static net.justmili.trueend.TrueEndMod.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)

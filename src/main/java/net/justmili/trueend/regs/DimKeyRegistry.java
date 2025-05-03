@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.registries;
+package net.justmili.trueend.regs;
 
 import net.minecraftforge.fml.common.Mod;
 

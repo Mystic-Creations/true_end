@@ -1,6 +1,5 @@
 package net.justmili.trueend.procedures;
 
-import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;

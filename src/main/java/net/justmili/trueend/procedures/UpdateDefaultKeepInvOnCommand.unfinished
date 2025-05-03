@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.CommandEvent;
 
-import static net.justmili.trueend.procedures.registries.DimKeyRegistry.NWAD;
+import static net.justmili.trueend.procedures.DimKeyRegistry.*;
 
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.entity.Entity;
