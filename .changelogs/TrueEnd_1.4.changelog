@@ -31,6 +31,8 @@
 - keepInvDefaultGameplayValue (logic, replaced with a variable)
 
 ## Changes
+--------= Items
+- Changed the look of the Mysterious Cube
 --------= Languages
 - Fixed spelling error in en_us and en_uk
 --------= Config

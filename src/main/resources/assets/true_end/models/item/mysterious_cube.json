@@ -1,7 +1,7 @@
 {
   "parent": "true_end:custom/mysterious_cube",
   "textures": {
-    "0": "true_end:item/mysterious_cube",
-    "particle": "true_end:item/mysterious_cube"
+    "base":       "true_end:item/mysterious_cube",
+    "emissive":   "true_end:item/mysterious_cube_emissive"
   }
 }
