@@ -2,6 +2,8 @@ package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.core.Vec3i;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
@@ -16,6 +18,7 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -107,6 +110,7 @@ public class CheckIfExitingEnd {
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
                     TrueEndMod.queueServerWork(5, () -> {
+                        removeNearbyTrees(nextLevel, serverPlayer.blockPosition(),15);
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         sendFirstEntryConversation(serverPlayer, nextLevel);
                         serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent( data ->
@@ -120,6 +124,25 @@ public class CheckIfExitingEnd {
                         nextLevel.getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
+            }
+        }
+    }
+
+    public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    mutablePos.set(center.getX() + x, center.getY() + y, center.getZ() + z);
+                    BlockState state = level.getBlockState(mutablePos);
+                    Block block = state.getBlock();
+
+                    // Check if it's a log or leaves using Minecraft's built-in tags
+                    if (block.defaultBlockState().is(BlockTags.LEAVES)) {
+                        level.removeBlock(mutablePos, false);
+                    }
+                }
             }
         }
     }
