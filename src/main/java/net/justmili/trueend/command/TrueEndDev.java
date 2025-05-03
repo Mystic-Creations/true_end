@@ -1,5 +1,7 @@
 package net.justmili.trueend.command;
 
+import net.justmili.trueend.procedures.dev.BTDTest;
+import net.justmili.trueend.procedures.dev.NWADTestKIF;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,10 +14,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.commands.Commands;
 
-import net.justmili.trueend.procedures.PrintVars;
-import net.justmili.trueend.procedures.NWADTestKIT;
-import net.justmili.trueend.procedures.NWADTestKIF;
-import net.justmili.trueend.procedures.BTDTest;
+import net.justmili.trueend.procedures.dev.PrintVars;
+import net.justmili.trueend.procedures.dev.NWADTestKIT;
 
 
 @Mod.EventBusSubscriber

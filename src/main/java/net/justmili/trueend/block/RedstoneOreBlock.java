@@ -1,5 +1,6 @@
 package net.justmili.trueend.block;
 
+import net.justmili.trueend.procedures.blockinteractions.RedstoneOreOnInteraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
@@ -24,8 +25,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.material.MapColor;
-
-import net.justmili.trueend.procedures.RedstoneOreOnInteraction;
 
 import org.joml.Vector3f;
 
