@@ -54,8 +54,8 @@ fill ~3 ~1 ~-2 ~3 ~3 ~2 true_end:wooden_planks
 fill ~3 ~1 ~-1 ~3 ~2 ~1 true_end:glass
 
 # Details
-setblock ~ ~ ~-3 true_end:door[half=lower]
-setblock ~ ~1 ~-3 true_end:door[half=upper]
+setblock ~ ~ ~-3 true_end:door[half=lower,facing=south]
+setblock ~ ~1 ~-3 true_end:door[half=upper,facing=south]
 setblock ~2 ~ ~1 red_bed[part=foot,facing=south]
 setblock ~2 ~ ~2 red_bed[part=head,facing=south]
 setblock ~ ~2 ~-2 wall_torch[facing=south]
