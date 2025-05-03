@@ -224,6 +224,7 @@ public class TrueEndVariables {
         @SubscribeEvent
         public static void cloneOnDeath(PlayerEvent.Clone evt) {
             if (!evt.isWasDeath()) return;
+            evt.getOriginal().reviveCaps();
             evt.getOriginal().getCapability(PLAYER_VARS_CAP).ifPresent(oldV ->
                 evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(newV ->
                     newV.setBeenBeyond(oldV.hasBeenBeyond())
