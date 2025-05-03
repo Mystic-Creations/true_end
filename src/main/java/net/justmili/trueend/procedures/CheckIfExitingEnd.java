@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.*;
+import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 import static net.justmili.trueend.regs.IntegerRegistry.*;
 
 @Mod.EventBusSubscriber

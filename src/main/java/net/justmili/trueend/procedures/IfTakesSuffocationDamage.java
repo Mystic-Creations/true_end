@@ -27,7 +27,7 @@ import net.minecraft.core.BlockPos;
 
 import javax.annotation.Nullable;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.*;
+import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
 
 @Mod.EventBusSubscriber
 public class IfTakesSuffocationDamage {

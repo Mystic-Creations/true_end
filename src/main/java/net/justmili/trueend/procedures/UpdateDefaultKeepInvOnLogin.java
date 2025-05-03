@@ -1,27 +1,22 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.TrueEndVariables;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-
-import static net.justmili.trueend.procedures.DimKeyRegistry.*;
 
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nullable;
 
+import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
+
 @Mod.EventBusSubscriber
 public class UpdateDefaultKeepInvOnLogin {
-
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
 		execute(event, event.getEntity());
@@ -31,15 +26,14 @@ public class UpdateDefaultKeepInvOnLogin {
 		execute(null, entity);
 	}
 
-	private static void execute(@Nullable Event event, Entity entity) {
-		if (entity == null)
-			return;
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        ServerLevel world = (ServerLevel) player.level();
+    private static void execute(@Nullable Event event, Entity entity) {
+        if (!(entity instanceof ServerPlayer player)) {
+            return;
+        }
+		ServerLevel world = (ServerLevel) player.level();
 		if (!((entity.level().dimension()) == NWAD)) {
 			boolean getKeepInventory = world.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
 			TrueEndVariables.MapVariables.get(world).setDefaultKeepInv(getKeepInventory);
-			TrueEndVariables.MapVariables.get(world).syncAll(world);
 		}
 	}
 }

@@ -21,7 +21,8 @@ import javax.annotation.Nullable;
 
 import java.util.Objects;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.*;
+import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
+import static net.justmili.trueend.regs.DimKeyRegistry.OVERWORLD;
 import static net.justmili.trueend.regs.IntegerRegistry.*;
 
 @Mod.EventBusSubscriber

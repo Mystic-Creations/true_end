@@ -1,28 +1,22 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.TrueEndVariables;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.CommandEvent;
-
-import static net.justmili.trueend.procedures.DimKeyRegistry.*;
 
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nullable;
 
+import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
+
 @Mod.EventBusSubscriber
 public class UpdateDefaultKeepInvOnCommand {
-
 	@SubscribeEvent
 	public static void onCommand(CommandEvent event) {
 		Entity entity = event.getParseResults().getContext().getSource().getEntity();
@@ -36,15 +30,13 @@ public class UpdateDefaultKeepInvOnCommand {
 	}
 
 	private static void execute(@Nullable Event event, Entity entity) {
-		if (entity == null)
+		if (!(entity instanceof ServerPlayer player)) {
 			return;
-        CommandSourceStack source = event.getParseResults().getContext().getSource();
-        if (!(source.getEntity() instanceof ServerPlayer player)) return;
-        ServerLevel world = (ServerLevel) player.level();
+		}
+		ServerLevel world = (ServerLevel) player.level();
 		if (!((entity.level().dimension()) == NWAD)) {
 			boolean getKeepInventory = world.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
 			TrueEndVariables.MapVariables.get(world).setDefaultKeepInv(getKeepInventory);
-			TrueEndVariables.MapVariables.get(world).syncAll(world);
 		}
 	}
 }
