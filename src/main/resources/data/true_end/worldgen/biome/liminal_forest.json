@@ -1,0 +1,40 @@
+{
+  "temperature_modifier": "none",
+  "carvers": {},
+  "downfall": 0.8,
+  "effects": {
+    "fog_color": 12638463,
+    "grass_color": 2162223,
+    "foliage_color": 2162223,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 24000,
+      "min_delay": 12000,
+      "replace_current_music": false,
+      "sound": "minecraft:music.overworld.forest"
+    },
+    "sky_color": 7972607,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [
+      "minecraft:spring_water"
+    ],
+    [
+      "true_end:liminal_tree",
+      "minecraft:forest_flowers",
+      "minecraft:flower_default",
+      "minecraft:patch_grass_forest"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {},
+  "temperature": 0.7
+}

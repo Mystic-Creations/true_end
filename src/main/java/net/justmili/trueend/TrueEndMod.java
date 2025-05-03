@@ -32,6 +32,7 @@ import net.justmili.trueend.init.TrueEndModTabs;
 import net.justmili.trueend.init.TrueEndModParticleTypes;
 import net.justmili.trueend.init.TrueEndModItems;
 import net.justmili.trueend.init.TrueEndModBlocks;
+import net.justmili.trueend.init.TrueEndModBiomes;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -57,6 +58,8 @@ public class TrueEndMod {
 		TrueEndModBlocks.REGISTRY.register(bus);
 
 		TrueEndModItems.REGISTRY.register(bus);
+
+		TrueEndModBiomes.REGISTRY.register(bus);
 
 		TrueEndModTabs.REGISTRY.register(bus);
 
