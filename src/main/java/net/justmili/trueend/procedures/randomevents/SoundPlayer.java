@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures;
+package net.justmili.trueend.procedures.randomevents;
 
 import net.justmili.trueend.TrueEndMod;
 import net.justmili.trueend.init.TrueEndModBlocks;

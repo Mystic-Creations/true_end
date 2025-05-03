@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures;
+package net.justmili.trueend.procedures.randomevents;
 
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;

@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures;
+package net.justmili.trueend.procedures.dev;
 
 import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.server.level.ServerPlayer;
