@@ -6,6 +6,18 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
+          "biome": "true_end:dreamers_beach",
+          "parameters": {
+            "temperature": 0.8,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0.9935
+          }
+        },
+        {
           "biome": "true_end:neverending_ocean",
           "parameters": {
             "temperature": 0.5,
@@ -13,7 +25,7 @@
             "continentalness": -1,
             "erosion": 0,
             "weirdness": 0,
-            "depth": 0,
+            "depth": 0.1,
             "offset": 0
           }
         },
@@ -22,10 +34,10 @@
           "parameters": {
             "temperature": 0.4,
             "humidity": 0.5,
-            "continentalness": 1,
-            "weirdness": 0,
-            "erosion": 0,
-            "depth": 0,
+            "continentalness": 0.8,
+            "weirdness": -0.1,
+            "erosion": 0.3,
+            "depth": -0.1,
             "offset": 0
           }
         }
@@ -36,7 +48,7 @@
       "sea_level": 63,
       "legacy_random_source": true,
       "disable_mob_generation": true,
-      "aquifers_enabled": true,
+      "aquifers_enabled": false,
       "ore_veins_enabled": false,
       "default_block": {
         "Name": "true_end:stone"
@@ -56,8 +68,8 @@
       },
       "noise_router": {
         "barrier": -1,
-        "fluid_level_floodedness":  -1,
-        "fluid_level_spread":  -1,
+        "fluid_level_floodedness": -1,
+        "fluid_level_spread": -1,
         "lava": -1,
         "temperature": {
           "type": "minecraft:shifted_noise",
@@ -150,81 +162,78 @@
             "from_y": 0,
             "to_y": 20
           },
-          "argument2":  {
-              "type": "minecraft:squeeze",
-              "argument": {
-                "type": "minecraft:mul",
-                "argument1": 0.64,
-                "argument2": {
-                  "type": "minecraft:interpolated",
+          "argument2": {
+            "type": "minecraft:squeeze",
+            "argument": {
+              "type": "minecraft:mul",
+              "argument1": 0.64,
+              "argument2": {
+                "type": "minecraft:interpolated",
+                "argument": {
+                  "type": "minecraft:blend_density",
                   "argument": {
-                    "type": "minecraft:blend_density",
-                    "argument": {
-                      "type": "minecraft:add",
-                      "argument1": 0.1171875,
+                    "type": "minecraft:add",
+                    "argument1": 0.1171875,
+                    "argument2": {
+                      "type": "minecraft:mul",
+                      "argument1": {
+                        "type": "minecraft:y_clamped_gradient",
+                        "from_y": -64,
+                        "to_y": -40,
+                        "from_value": 0,
+                        "to_value": 1
+                      },
                       "argument2": {
-                        "type": "minecraft:mul",
-                        "argument1": {
-                          "type": "minecraft:y_clamped_gradient",
-                          "from_y": -64,
-                          "to_y": -40,
-                          "from_value": 0,
-                          "to_value": 1
-                        },
+                        "type": "minecraft:add",
+                        "argument1": -0.1171875,
                         "argument2": {
                           "type": "minecraft:add",
-                          "argument1": -0.1171875,
+                          "argument1": -0.078125,
                           "argument2": {
-                            "type": "minecraft:add",
-                            "argument1": -0.078125,
+                            "type": "minecraft:mul",
+                            "argument1": {
+                              "type": "minecraft:y_clamped_gradient",
+                              "from_y": 240,
+                              "to_y": 256,
+                              "from_value": 1,
+                              "to_value": 0
+                            },
                             "argument2": {
-                              "type": "minecraft:mul",
-                              "argument1": {
-                                "type": "minecraft:y_clamped_gradient",
-                                "from_y": 240,
-                                "to_y": 256,
-                                "from_value": 1,
-                                "to_value": 0
-                              },
+                              "type": "minecraft:add",
+                              "argument1": 0.078125,
                               "argument2": {
-                                "type": "minecraft:add",
-                                "argument1": 0.078125,
-                                "argument2": {
-                                  "type": "minecraft:range_choice",
-                                  "input": "minecraft:overworld/sloped_cheese",
-                                  "min_inclusive": -1000000,
-                                  "max_exclusive": 1.5625,
-                                  "when_in_range": {
-                                    "type": "minecraft:min",
-                                    "argument1": "minecraft:overworld/sloped_cheese",
-                                    "argument2": {
-                                      "type": "minecraft:mul",
-                                      "argument1": 5,
-                                      "argument2": "minecraft:overworld/caves/entrances"
+                                "type": "minecraft:range_choice",
+                                "input": "minecraft:overworld/sloped_cheese",
+                                "min_inclusive": -1000000,
+                                "max_exclusive": 1.5625,
+                                "when_in_range": {
+                                  "type": "minecraft:min",
+                                  "argument1": "minecraft:overworld/sloped_cheese",
+                                  "argument2": {
+                                    "type": "minecraft:mul",
+                                    "argument1": 5,
+                                    "argument2": "minecraft:overworld/caves/entrances"
+                                  }
+                                },
+                                "when_out_of_range": {
+                                  "type": "minecraft:mul",
+                                  "argument1": 4,
+                                  "argument2": {
+                                    "type": "minecraft:square",
+                                    "argument": {
+                                      "type": "minecraft:noise",
+                                      "noise": "minecraft:cave_layer",
+                                      "xz_scale": 1,
+                                      "y_scale": 8
                                     }
-                                  },
-                                  "when_out_of_range": {
-                                            "type": "minecraft:mul",
-                                            "argument1": 4,
-                                            "argument2": {
-                                              "type": "minecraft:square",
-                                              "argument": {
-                                                "type": "minecraft:noise",
-                                                "noise": "minecraft:cave_layer",
-                                                "xz_scale": 1,
-                                                "y_scale": 8
-                                              }
-                                          }
-                                      }
-
-
+                                  }
                                 }
                               }
                             }
                           }
                         }
                       }
-
+                    }
                   }
                 }
               }
