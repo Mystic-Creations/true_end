@@ -1,6 +1,7 @@
 ## Additions
 --------= Biomes
 - Dreamer's Beach / Beyond The Dream - Just a biome to seperate the Nostalgic Meadow from the Neverending Ocean
+- Liminal Forest  / Overworld - Reality pouring into the dream (dev note: in progress)
 --------= Entities
 --------= Blocks
 - Wooden Stairs
@@ -19,10 +20,10 @@
 --------= HUD Overlays
 - Version overlay while in Beyond The Dream
 --------= Languages
-- Chinese (Simplified)            (dev not: translation on wait)
-- Russian                         (dev not: translation on wait)
+- Chinese (Simplified)            (dev note: translation on wait)
+- Russian                         (dev note: translation on wait)
 - Portuguese (Brazilian)
-- Romanian                        (dev not: translation on wait)
+- Romanian                        (dev note: translation on wait)
 - Persian (Farsi)
 
 ## Removed

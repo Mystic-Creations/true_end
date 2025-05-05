@@ -28,7 +28,7 @@ public class VersionOverlay {
     };
 
     private static String currentText = BASE_TEXT;
-    private static int flashTicks = 0;
+    private static int flashTicks = 4;
     private static final Random random = new Random();
 
     @SubscribeEvent

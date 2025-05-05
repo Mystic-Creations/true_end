@@ -8,11 +8,23 @@
         {
           "biome": "true_end:dreamers_beach",
           "parameters": {
-            "temperature": 0.45,
+            "temperature": [
+              1,
+              2
+            ],
             "humidity": 0.75,
-            "continentalness": 0,
-            "erosion": 0,
-            "weirdness": 1.4,
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "erosion": [
+              0.42,
+              0.5
+            ],
+            "weirdness": [
+              -0.85,
+              -0.6
+            ],
             "depth": 0,
             "offset": 0.6
           }
@@ -63,8 +75,8 @@
       "noise": {
         "min_y": 0,
         "height": 128,
-        "size_horizontal": 2,
-        "size_vertical": 2
+        "size_horizontal": 1,
+        "size_vertical": 1
       },
       "noise_router": {
         "barrier": -1,

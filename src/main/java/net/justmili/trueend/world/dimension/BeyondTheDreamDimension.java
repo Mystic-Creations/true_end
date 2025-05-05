@@ -26,10 +26,10 @@ public class BeyondTheDreamDimension {
 
 				@Override
 				public boolean isFoggyAt(int x, int y) {
-					return true;
+					return false;
 				}
 			};
-			event.register(new ResourceLocation("true_end:beyond_the_dream"), customEffect);
+			event.register(ResourceLocation.parse("true_end:beyond_the_dream"), customEffect);
 		}
 	}
 }

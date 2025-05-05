@@ -1,10 +1,10 @@
 {
   "has_precipitation": true,
-  "temperature": 0.5,
+  "temperature": 0.2,
   "downfall": 0.8,
   "effects": {
-    "foliage_color": 10387789,
-    "grass_color": 9470285,
+    "foliage_color": 2162223,
+    "grass_color": 2162223,
     "sky_color": 7972607,
     "fog_color": 12638463,
     "water_color": 4159204,
