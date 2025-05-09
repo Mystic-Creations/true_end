@@ -24,9 +24,9 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import net.justmili.trueend.init.TrueEndModGameRules;
-import net.justmili.trueend.init.TrueEndModBlocks;
-import net.justmili.trueend.TrueEndMod;
+import net.justmili.trueend.init.TrueEndGameRules;
+import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.effect.MobEffectInstance;
 
 import javax.annotation.Nullable;
@@ -76,18 +76,18 @@ public class CheckIfExitingEnd {
 
                 serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-                TrueEndMod.queueServerWork(5, () -> {
+                TrueEnd.queueServerWork(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    BlockPos initialSearchPos = TrueEndMod.locateBiome(nextLevel, worldSpawn, "true_end:nostalgic_meadow");
+                    BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:nostalgic_meadow");
                     if (initialSearchPos == null) initialSearchPos = worldSpawn;
 
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
-                    BlockPos secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), "true_end:nostalgic_meadow");
+                    BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), "true_end:nostalgic_meadow");
 
                     if (spawnPos == null) {
                         while(spawnPos == null) {
-                            secondarySearchPos = TrueEndMod.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX+BlockPosRandomZ, BlockPosRandomY, BlockPosRandomZ+BlockPosRandomX)), "true_end:nostalgic_meadow");
+                            secondarySearchPos = TrueEnd.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX+BlockPosRandomZ, BlockPosRandomY, BlockPosRandomZ+BlockPosRandomX)), "true_end:nostalgic_meadow");
 
                             spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
                         }
@@ -109,7 +109,7 @@ public class CheckIfExitingEnd {
                         serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
-                    TrueEndMod.queueServerWork(5, () -> {
+                    TrueEnd.queueServerWork(5, () -> {
                         removeNearbyTrees(nextLevel, serverPlayer.blockPosition(),15);
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         sendFirstEntryConversation(serverPlayer, nextLevel);
@@ -119,9 +119,9 @@ public class CheckIfExitingEnd {
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
-                    if (nextLevel.getGameRules().getBoolean(TrueEndModGameRules.CLEAR_DREAM_ITEMS)) {
+                    if (nextLevel.getGameRules().getBoolean(TrueEndGameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(TrueEndModGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
+                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
             }
@@ -155,7 +155,7 @@ public class CheckIfExitingEnd {
                     BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
                     BlockPos above = candidate.above();
                     BlockPos above2 = above.above();
-                    if (level.getBlockState(candidate).is(TrueEndModBlocks.GRASS_BLOCK.get())
+                    if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                         && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
                         && level.isEmptyBlock(above)
                         && level.isEmptyBlock(above2)
@@ -177,7 +177,7 @@ public class CheckIfExitingEnd {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
                     BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
                     BlockPos above = candidate.above();
-                    if (level.getBlockState(candidate).is(TrueEndModBlocks.GRASS_BLOCK.get())
+                    if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                         && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
                         && level.isEmptyBlock(above)
                         && isValidSpawnArea(level, candidate)) {
@@ -197,7 +197,7 @@ public class CheckIfExitingEnd {
             for (int dz = -4; dz <= 4; dz++) {
                 BlockPos pos = center.offset(dx, 0, dz);
                 total++;
-                if (level.getBlockState(pos).is(TrueEndModBlocks.GRASS_BLOCK.get())) grassCount++;
+                if (level.getBlockState(pos).is(TrueEndBlocks.GRASS_BLOCK.get())) grassCount++;
                 if (level.getBlockState(pos).is(Blocks.WATER)
                     || level.getBlockState(pos.below()).is(Blocks.WATER)
                     || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
@@ -225,8 +225,8 @@ public class CheckIfExitingEnd {
             "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
             "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString())
         };
-        TrueEndMod.queueServerWork(45, () -> {
-            TrueEndMod.sendTellrawMessagesWithCooldown(player, conversation, convoDelay);
+        TrueEnd.queueServerWork(45, () -> {
+            TrueEnd.sendTellrawMessagesWithCooldown(player, conversation, convoDelay);
         });
     }
 }

@@ -11,10 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 @Mod.EventBusSubscriber
 public class PlayerJoinedWorld {
 
-
-
-
-
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         execute(event);

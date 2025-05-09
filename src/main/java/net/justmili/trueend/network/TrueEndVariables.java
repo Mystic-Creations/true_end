@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
-import net.justmili.trueend.TrueEndMod;
+import net.justmili.trueend.TrueEnd;
 
 import java.util.function.Supplier;
 
@@ -37,14 +37,14 @@ public class TrueEndVariables {
     // Register messages and capabilities
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
-        TrueEndMod.PACKET_HANDLER.registerMessage(
+        TrueEnd.PACKET_HANDLER.registerMessage(
             0,
             MapVariablesSyncMessage.class,
             MapVariablesSyncMessage::encode,
             MapVariablesSyncMessage::decode,
             MapVariablesSyncMessage::handle
         );
-        TrueEndMod.PACKET_HANDLER.registerMessage(
+        TrueEnd.PACKET_HANDLER.registerMessage(
             1,
             PlayerVariablesSyncMessage.class,
             PlayerVariablesSyncMessage::encode,
@@ -113,7 +113,7 @@ public class TrueEndVariables {
 
         public void syncAll(LevelAccessor world) {
             if (world instanceof ServerLevel lvl) {
-                TrueEndMod.PACKET_HANDLER.send(
+                TrueEnd.PACKET_HANDLER.send(
                     PacketDistributor.DIMENSION.with(() -> lvl.dimension()),
                     new MapVariablesSyncMessage(this)
                 );
@@ -160,7 +160,7 @@ public class TrueEndVariables {
         public void setBeenBeyond(boolean v) { beenBeyond = v; }
 
         public void sync(ServerPlayer player) {
-            TrueEndMod.PACKET_HANDLER.send(
+            TrueEnd.PACKET_HANDLER.send(
                 PacketDistributor.PLAYER.with(() -> player),
                 new PlayerVariablesSyncMessage(this)
             );
@@ -215,7 +215,7 @@ public class TrueEndVariables {
         public static void attachCaps(AttachCapabilitiesEvent<Entity> evt) {
             if (evt.getObject() instanceof Player && evt.getObject() instanceof ServerPlayer) {
                 evt.addCapability(
-                        new ResourceLocation(TrueEndMod.MODID, "player_variables"),
+                        new ResourceLocation(TrueEnd.MODID, "player_variables"),
                         new PlayerVariablesProvider()
                 );
             }

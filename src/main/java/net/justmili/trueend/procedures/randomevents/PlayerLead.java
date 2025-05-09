@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 import net.minecraft.world.level.LevelAccessor;
 
-import net.justmili.trueend.TrueEndMod;
+import net.justmili.trueend.TrueEnd;
 
 import javax.annotation.Nullable;
 
@@ -27,7 +27,7 @@ public class PlayerLead {
 
 	private static void execute(@Nullable Event event, LevelAccessor world) {
 		if (Math.random() < 0.2) {
-			TrueEndMod.queueServerWork(20, () -> {
+			TrueEnd.queueServerWork(20, () -> {
 				User32.INSTANCE.MessageBoxA(0L, "wake up.", " ", 0);
 			});
 		}

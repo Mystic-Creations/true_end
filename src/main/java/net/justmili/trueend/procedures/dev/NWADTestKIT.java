@@ -9,7 +9,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.CommandSource;
 
-import net.justmili.trueend.TrueEndMod;
+import net.justmili.trueend.TrueEnd;
 
 public class NWADTestKIT {
 	public static void execute(LevelAccessor world, Entity entity) {
@@ -29,7 +29,7 @@ public class NWADTestKIT {
 						_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "gamerule keepInventory true");
 			}
 		}
-		TrueEndMod.queueServerWork(5, () -> {
+		TrueEnd.queueServerWork(5, () -> {
 			entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.IN_WALL)), 1);
 		});
 	}

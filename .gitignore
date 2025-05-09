@@ -32,5 +32,3 @@ replay_pid*
 # macos
 .DS_Store
 .mcreator
-
-build/

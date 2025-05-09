@@ -19,7 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.BlockUtil;
 
-import net.justmili.trueend.init.TrueEndModBlocks;
+import net.justmili.trueend.init.TrueEndBlocks;
 
 import javax.annotation.Nullable;
 
@@ -32,7 +32,7 @@ public class BeyondTheDreamPortalShape {
 	private static final int MIN_HEIGHT = 3;
 	public static final int MAX_HEIGHT = 21;
 	private static final BlockBehaviour.StatePredicate FRAME = (p_77720_, p_77721_, p_77722_) -> {
-		return p_77720_.getBlock() == TrueEndModBlocks.OBSIDIAN.get();
+		return p_77720_.getBlock() == TrueEndBlocks.OBSIDIAN.get();
 	};
 	private static final float SAFE_TRAVEL_MAX_ENTITY_XY = 4.0F;
 	private static final double SAFE_TRAVEL_MAX_VERTICAL_DELTA = 1.0D;
@@ -143,7 +143,7 @@ public class BeyondTheDreamPortalShape {
 				if (!isEmpty(blockstate)) {
 					return i;
 				}
-				if (blockstate.getBlock() == TrueEndModBlocks.BEYOND_THE_DREAM_PORTAL.get()) {
+				if (blockstate.getBlock() == TrueEndBlocks.BEYOND_THE_DREAM_PORTAL.get()) {
 					++this.numPortalBlocks;
 				}
 			}
@@ -152,7 +152,7 @@ public class BeyondTheDreamPortalShape {
 	}
 
 	private static boolean isEmpty(BlockState p_77718_) {
-		return p_77718_.isAir() || p_77718_.getBlock() == TrueEndModBlocks.BEYOND_THE_DREAM_PORTAL.get();
+		return p_77718_.isAir() || p_77718_.getBlock() == TrueEndBlocks.BEYOND_THE_DREAM_PORTAL.get();
 	}
 
 	public boolean isValid() {
@@ -160,7 +160,7 @@ public class BeyondTheDreamPortalShape {
 	}
 
 	public void createPortalBlocks() {
-		BlockState blockstate = TrueEndModBlocks.BEYOND_THE_DREAM_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, this.axis);
+		BlockState blockstate = TrueEndBlocks.BEYOND_THE_DREAM_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, this.axis);
 		BlockPos.betweenClosed(this.bottomLeft, this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1)).forEach((p_77725_) -> {
 			this.level.setBlock(p_77725_, blockstate, 18);
 			if (this.level instanceof ServerLevel)

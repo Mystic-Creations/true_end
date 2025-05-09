@@ -1,7 +1,7 @@
 package net.justmili.trueend.procedures.randomevents;
 
-import net.justmili.trueend.TrueEndMod;
-import net.justmili.trueend.init.TrueEndModBlocks;
+import net.justmili.trueend.TrueEnd;
+import net.justmili.trueend.init.TrueEndBlocks;
 import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -46,9 +46,9 @@ public class SoundPlayer {
                 if ((entity.level().dimension()) == NWAD || (entity.level().dimension()) == OVERWORLD) {
                     if (Math.random() < randEvtChance) {
                         if (Math.random() < randEvtChance) {
-                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndModBlocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK) {
+                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK) {
                                 for (int index0 = 0; index0 < randomRepeatCount; index0++) {
-                                    TrueEndMod.queueServerWork(12, () -> {
+                                    TrueEnd.queueServerWork(12, () -> {
                                         if (world instanceof Level _level) {
                                             if (!_level.isClientSide()) {
                                                 _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1);
@@ -61,9 +61,9 @@ public class SoundPlayer {
                             }
                         }
                         if (Math.random() < randEvtChance) {
-                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndModBlocks.DIRT.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.ROOTED_DIRT) {
+                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.DIRT.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.ROOTED_DIRT) {
                                 for (int index1 = 0; index1 < randomRepeatCount; index1++) {
-                                    TrueEndMod.queueServerWork(10, () -> {
+                                    TrueEnd.queueServerWork(10, () -> {
                                         if (world instanceof Level _level) {
                                             if (!_level.isClientSide()) {
                                                 _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1);
@@ -76,9 +76,9 @@ public class SoundPlayer {
                             }
                         }
                         if (Math.random() < randEvtChance) {
-                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndModBlocks.STONE.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.STONE) {
+                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.STONE.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.STONE) {
                                 for (int index2 = 0; index2 < randomRepeatCount; index2++) {
-                                    TrueEndMod.queueServerWork(14, () -> {
+                                    TrueEnd.queueServerWork(14, () -> {
                                         if (world instanceof Level _level) {
                                             if (!_level.isClientSide()) {
                                                 _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1);
@@ -93,7 +93,7 @@ public class SoundPlayer {
                         if (Math.random() < randEvtChance) {
                             if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.DEEPSLATE) {
                                 for (int index3 = 0; index3 < (randomRepeatCount - 1); index3++) {
-                                    TrueEndMod.queueServerWork(8, () -> {
+                                    TrueEnd.queueServerWork(8, () -> {
                                         if (world instanceof Level _level) {
                                             if (!_level.isClientSide()) {
                                                 _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1);

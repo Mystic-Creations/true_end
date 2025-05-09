@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.CommandSource;
 
-import net.justmili.trueend.TrueEndMod;
+import net.justmili.trueend.TrueEnd;
 
 public class BTDTest {
 	public static void execute(LevelAccessor world, Entity entity) {
@@ -19,7 +19,7 @@ public class BTDTest {
 						_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "setblock ~ ~ ~ minecraft:end_portal");
 			}
 		}
-		TrueEndMod.queueServerWork(30, () -> {
+		TrueEnd.queueServerWork(30, () -> {
 			{
 				Entity _ent = entity;
 				if (!_ent.level().isClientSide() && _ent.getServer() != null) {
@@ -28,7 +28,7 @@ public class BTDTest {
 				}
 			}
 		});
-		TrueEndMod.queueServerWork(5, () -> {
+		TrueEnd.queueServerWork(5, () -> {
 			{
 				Entity _ent = entity;
 				if (!_ent.level().isClientSide() && _ent.getServer() != null) {

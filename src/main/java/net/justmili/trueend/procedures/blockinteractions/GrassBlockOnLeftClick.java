@@ -11,14 +11,14 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
-import net.justmili.trueend.init.TrueEndModBlocks;
+import net.justmili.trueend.init.TrueEndBlocks;
 
 public class GrassBlockOnLeftClick {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
         if (entity == null)
             return;
         if ((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).is(ItemTags.create(new ResourceLocation("minecraft:hoes")))) {
-            world.setBlock(BlockPos.containing(x, y, z), TrueEndModBlocks.DIRT.get().defaultBlockState(), 3);
+            world.setBlock(BlockPos.containing(x, y, z), TrueEndBlocks.DIRT.get().defaultBlockState(), 3);
             if (world instanceof ServerLevel _level) {
                 ItemEntity entityToSpawn = new ItemEntity(_level, x, (y + 1), z, new ItemStack(Items.WHEAT_SEEDS));
                 entityToSpawn.setPickUpDelay(15);

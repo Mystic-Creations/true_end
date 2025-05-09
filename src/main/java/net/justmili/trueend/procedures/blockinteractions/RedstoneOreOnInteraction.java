@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.core.BlockPos;
 
-import net.justmili.trueend.TrueEndMod;
+import net.justmili.trueend.TrueEnd;
 import net.minecraft.util.RandomSource;
 
 public class RedstoneOreOnInteraction {
@@ -21,7 +21,7 @@ public class RedstoneOreOnInteraction {
         int randomDelay = 1365 + RandomSource.create().nextInt(273);  // 1365 ticks +/- 10% (136.5 ticks)
 
         // Schedule the task after the random delay
-        TrueEndMod.queueServerWork(randomDelay, () -> {
+        TrueEnd.queueServerWork(randomDelay, () -> {
             // Set the block back to unlit after the random delay
             BlockState _bs2 = world.getBlockState(_pos);
             if (_bs2.getBlock().getStateDefinition().getProperty("lit") instanceof BooleanProperty _booleanProp2)
