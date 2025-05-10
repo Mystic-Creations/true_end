@@ -12,7 +12,6 @@ fill ~-5 ~-3 ~-5 ~5 ~-3 ~5 true_end:dirt replace #true_end:build_home_replacable
 fill ~-4 ~-4 ~-4 ~4 ~-4 ~4 true_end:dirt replace #true_end:build_home_replacables_terrain
 # Terrain modification / anti-water measures
 fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 true_end:cobblestone replace #true_end:build_home_replacables_terrainmod
-fill ~-5 ~-2 ~-5 ~5 ~-2 ~5 true_end:cobblestone replace #true_end:build_home_replacables_terrainmod
 
 fill ~5 ~-1 ~-5 ~5 ~-16 ~-5 true_end:wood replace #true_end:build_home_replacables_terrainmod
 fill ~-5 ~-1 ~-5 ~-5 ~-16 ~-5 true_end:wood replace #true_end:build_home_replacables_terrainmod
@@ -71,7 +70,7 @@ setblock ~2 ~ ~-2 minecraft:crafting_table
 setblock ~1 ~ ~-2 chest[facing=south]{LootTable:"true_end:chests/home"} replace
 
 # Makes the player look at the top half of the bed next to them as if they just woke up
-tp @s ~1 ~1 ~1 -40 40
+tp @s ~1 ~0.1 ~1 -40 40
 
 # Grant logic advancement when built
 advancement grant @s only true_end:logic/home_built

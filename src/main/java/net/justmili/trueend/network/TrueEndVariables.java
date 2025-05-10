@@ -70,7 +70,7 @@ public class TrueEndVariables {
         private double btdConversationDelay = 40;
         private double randomEventChance = 0.005;
         private double btdSpawnX = 0.0;
-        private double btdSpawnY = 64.0;
+        private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
 
         public boolean isDefaultKeepInv() { return defaultKeepInv; }

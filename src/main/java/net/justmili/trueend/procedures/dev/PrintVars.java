@@ -14,9 +14,9 @@ public class PrintVars {
 
 		TrueEndVariables.MapVariables getVariable = TrueEndVariables.MapVariables.get(world);
 
-        int btdSpawnXc = (int) getVariable.getBtdSpawnX();
-        int btdSpawnYc = (int) getVariable.getBtdSpawnY();
-        int btdSpawnZc = (int) getVariable.getBtdSpawnZ();
+        int btdSpawnX = (int) getVariable.getBtdSpawnX();
+        int btdSpawnY = (int) getVariable.getBtdSpawnY();
+        int btdSpawnZ = (int) getVariable.getBtdSpawnZ();
 
         // Per-Player Variables
         source.sendSystemMessage(Component.literal("----= Per-Player"));
@@ -34,7 +34,7 @@ public class PrintVars {
         TrueEndVariables.MapVariables globalVars = TrueEndVariables.MapVariables.get(world);
         source.sendSystemMessage(Component.literal("defaultKeepInv: " + globalVars.isDefaultKeepInv()));
         source.sendSystemMessage(Component.literal(
-            "btdSpawnX/Y/Z: " + btdSpawnXc + "/" + btdSpawnYc + "/" + btdSpawnZc
+            "btdSpawnX/Y/Z: " + btdSpawnX + "/" + btdSpawnY + "/" + btdSpawnZ
         ));
         source.sendSystemMessage(Component.literal("randomEventChance: " + globalVars.getRandomEventChance()));
     }

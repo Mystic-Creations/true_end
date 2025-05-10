@@ -2,7 +2,9 @@
 --------= Biomes
 - Dreamer's Beach / Beyond The Dream - Just a biome to seperate the Nostalgic Meadow from the Neverending Ocean
 - Liminal Forest  / Overworld - Reality pouring into the dream (dev note: in progress)
+
 --------= Entities
+
 --------= Blocks
 - Wooden Stairs
 - Wooden Slab
@@ -12,13 +14,17 @@
 - (Wooden) Trapdoor
 - (Wooden) Pressure Plate
 - (Wooden) Button
+
 --------= Advancements
 - "Was I here?" - Discover a early-game base, that doesn't belong to you somewhere in your world
+
 --------= Spooky Elements
 - New small structure "Unknown Base", as if you're not alone
-- Random Events (Random mining sounds)
+- Random Events (Random mining, walking sounds)
+
 --------= HUD Overlays
 - Version overlay while in Beyond The Dream
+
 --------= Languages
 - Chinese (Simplified)            (dev note: translation on wait)
 - Russian                         (dev note: translation on wait)
@@ -35,12 +41,14 @@
 ## Changes
 --------= Items
 - Changed the look of the Mysterious Cube
---------= Languages
-- Fixed spelling error in en_us and en_uk
+
 --------= Config
 - Switched from gamerules to config (dev note: in progress)
 
 ## Fixed Bugs
-- Bad Fallback Spawn
+--------= Languages
+- Fixed spelling error in en_us and en_uk
+--------= World
+- Bad Fallback Spawn              (dev note: kinda)
 
 ## Known Bugs
