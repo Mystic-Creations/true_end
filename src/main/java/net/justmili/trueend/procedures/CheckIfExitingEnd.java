@@ -67,9 +67,8 @@ public class CheckIfExitingEnd {
 
                 HAS_PROCESSED.put(serverPlayer, true);
 
-                ResourceKey<Level> destinationType = BTD;
-                ServerLevel nextLevel = serverPlayer.server.getLevel(destinationType);
-                if (nextLevel == null || serverPlayer.level().dimension() == destinationType) {
+                ServerLevel nextLevel = serverPlayer.server.getLevel(BTD);
+                if (nextLevel == null || serverPlayer.level().dimension() == BTD) {
                     HAS_PROCESSED.remove(serverPlayer);
                     return;
                 }
@@ -99,9 +98,7 @@ public class CheckIfExitingEnd {
                     }
 
                     BlockPos finalSpawnPos = spawnPos;
-                    nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                            data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(), finalSpawnPos.getZ())
-                    );
+                    BlockPos secFinalSpawnPos = secondarySearchPos;
 
                     serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
@@ -116,6 +113,16 @@ public class CheckIfExitingEnd {
                         serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent( data ->
                                 data.setBeenBeyond(true)
                         );
+                        if (secFinalSpawnPos == null) {
+                            nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
+                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(), finalSpawnPos.getZ())
+                            );
+                        }
+                        if (secFinalSpawnPos != null) {
+                            nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
+                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY(), secFinalSpawnPos.getZ())
+                            );
+                        }
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 

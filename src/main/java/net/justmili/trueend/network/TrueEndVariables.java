@@ -82,6 +82,7 @@ public class TrueEndVariables {
 
         public void setDefaultKeepInv(boolean v) { defaultKeepInv = v; setDirty(); }
         public void setBtdConversationDelay(double btdConversationDelay) { this.btdConversationDelay = btdConversationDelay; setDirty(); }
+
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
 
         public static MapVariables load(CompoundTag nbt) {
@@ -89,9 +90,6 @@ public class TrueEndVariables {
             m.defaultKeepInv = nbt.getBoolean("defaultKeepInv");
             m.btdConversationDelay = nbt.getDouble("btdConversationDelay");
             m.randomEventChance = nbt.getDouble("randomEventChance");
-            m.btdSpawnX = nbt.getDouble("btdSpawnX");
-            m.btdSpawnY = nbt.getDouble("btdSpawnY");
-            m.btdSpawnZ = nbt.getDouble("btdSpawnZ");
             return m;
         }
 
@@ -100,9 +98,6 @@ public class TrueEndVariables {
             nbt.putBoolean("defaultKeepInv",  defaultKeepInv);
             nbt.putDouble("btdConversationDelay", btdConversationDelay);
             nbt.putDouble("randomEventChance", randomEventChance);
-            nbt.putDouble("btdSpawnX", btdSpawnX);
-            nbt.putDouble("btdSpawnY", btdSpawnY);
-            nbt.putDouble("btdSpawnZ", btdSpawnZ);
             return nbt;
         }
 
@@ -142,9 +137,6 @@ public class TrueEndVariables {
                 client.defaultKeepInv = msg.data.getBoolean("defaultKeepInv");
                 client.btdConversationDelay = msg.data.getDouble("btdConversationDelay");
                 client.randomEventChance = msg.data.getDouble("randomEventChance");
-                client.btdSpawnX = msg.data.getDouble("btdSpawnX");
-                client.btdSpawnY = msg.data.getDouble("btdSpawnY");
-                client.btdSpawnZ = msg.data.getDouble("btdSpawnZ");
             });
             ctx.get().setPacketHandled(true);
         }

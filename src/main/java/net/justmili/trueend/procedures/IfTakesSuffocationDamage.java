@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.GameRules;
@@ -46,52 +45,55 @@ public class IfTakesSuffocationDamage {
 		if (damagesource == null || entity == null)
 			return;
 		boolean currentKeepInv = TrueEndVariables.MapVariables.get(world).isDefaultKeepInv();
-		if (entity instanceof Player && damagesource.is(DamageTypes.IN_WALL) && !(entity instanceof ServerPlayer _plr2 && _plr2.level() instanceof ServerLevel
-				&& _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"))).isDone())) {
-			if (currentKeepInv == true) {
-				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
-			} else if (currentKeepInv == false) {
-				world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(false, world.getServer());
-			}
-			if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()) {
-				ResourceKey<Level> destinationType = NWAD;
-				if (serverPlayer.level().dimension() == destinationType)
-					return;
-				ServerLevel nextLevel = serverPlayer.server.getLevel(destinationType);
-				if (nextLevel != null) {
-					serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-					// Find a location for the player to stand on
-					// start at 120 to avoid spawning at bedrock roof
-					int y = 120;
-					boolean foundPlace = false;
 
-					while (y > 0) {
-						BlockPos pos = new BlockPos(serverPlayer.getBlockX(), y, serverPlayer.getBlockZ());
-						BlockPos posAbove = pos.above();
-						BlockPos posBelow = pos.below();
+		if (Math.random() < (TrueEndVariables.MapVariables.get(world).getRandomEventChance()*15)) {
+			if (entity instanceof Player && damagesource.is(DamageTypes.IN_WALL) && !(entity instanceof ServerPlayer _plr2 && _plr2.level() instanceof ServerLevel
+					&& _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"))).isDone())) {
+				if (currentKeepInv == true) {
+					world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
+				} else if (currentKeepInv == false) {
+					world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(false, world.getServer());
+				}
+				if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()) {
+					ResourceKey<Level> destinationType = NWAD;
+					if (serverPlayer.level().dimension() == destinationType)
+						return;
+					ServerLevel nextLevel = serverPlayer.server.getLevel(destinationType);
+					if (nextLevel != null) {
+						serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+						// Find a location for the player to stand on
+						// start at 120 to avoid spawning at bedrock roof
+						int y = 120;
+						boolean foundPlace = false;
 
-						boolean isEmpty = nextLevel.isEmptyBlock(pos);
-						boolean isAboveEmpty = nextLevel.isEmptyBlock(posAbove);
-						boolean isBelowSolid = !nextLevel.isEmptyBlock(posBelow);
+						while (y > 0) {
+							BlockPos pos = new BlockPos(serverPlayer.getBlockX(), y, serverPlayer.getBlockZ());
+							BlockPos posAbove = pos.above();
+							BlockPos posBelow = pos.below();
 
-						if (isEmpty && isAboveEmpty && isBelowSolid) {
-							foundPlace = true;
-							break;
+							boolean isEmpty = nextLevel.isEmptyBlock(pos);
+							boolean isAboveEmpty = nextLevel.isEmptyBlock(posAbove);
+							boolean isBelowSolid = !nextLevel.isEmptyBlock(posBelow);
+
+							if (isEmpty && isAboveEmpty && isBelowSolid) {
+								foundPlace = true;
+								break;
+							}
+							y--;
 						}
-						y--;
+
+						// If no valid spot is found, set a fallback
+						if (!foundPlace) {
+							y = 129;
+						}
+
+						serverPlayer.teleportTo(nextLevel, serverPlayer.getBlockX(), y + 1, serverPlayer.getBlockZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
+
+						serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+						for (MobEffectInstance mobEffectInstance : serverPlayer.getActiveEffects())
+							serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), mobEffectInstance));
+						serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 					}
-
-					// If no valid spot is found, set a fallback
-					if (!foundPlace) {
-						y = 129;
-					}
-
-					serverPlayer.teleportTo(nextLevel, serverPlayer.getBlockX(), y + 1, serverPlayer.getBlockZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
-
-					serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-					for (MobEffectInstance mobEffectInstance : serverPlayer.getActiveEffects())
-						serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), mobEffectInstance));
-					serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 				}
 			}
 		}
