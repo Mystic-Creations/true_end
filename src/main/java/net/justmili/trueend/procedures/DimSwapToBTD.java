@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
@@ -39,7 +38,7 @@ import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 import static net.justmili.trueend.regs.IntegerRegistry.*;
 
 @Mod.EventBusSubscriber
-public class CheckIfExitingEnd {
+public class DimSwapToBTD {
     private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
 
     @SubscribeEvent
@@ -178,7 +177,7 @@ public class CheckIfExitingEnd {
     }
 
     public static BlockPos findFallbackSpawn(ServerLevel level, BlockPos centerPos) {
-        int searchRadius = 48;
+        int searchRadius = 32;
         for (int y = level.getMaxBuildHeight() - 16; y >= level.getMinBuildHeight() + 8; y--) {
             for (int x = -searchRadius; x <= searchRadius; x++) {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
@@ -199,20 +198,18 @@ public class CheckIfExitingEnd {
 
     private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
         int grassCount = 0;
-        int total = 0;
         for (int dx = -4; dx <= 4; dx++) {
             for (int dz = -4; dz <= 4; dz++) {
                 BlockPos pos = center.offset(dx, 0, dz);
-                total++;
                 if (level.getBlockState(pos).is(TrueEndBlocks.GRASS_BLOCK.get())) grassCount++;
                 if (level.getBlockState(pos).is(Blocks.WATER)
-                    || level.getBlockState(pos.below()).is(Blocks.WATER)
-                    || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
+                        || level.getBlockState(pos.below()).is(Blocks.WATER)
+                        || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
                     return false;
                 }
             }
         }
-        return grassCount >= 48; // roughly 75% of 8x8
+        return grassCount >= 80;
     }
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {

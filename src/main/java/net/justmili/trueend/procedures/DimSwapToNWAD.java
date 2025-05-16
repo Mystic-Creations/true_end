@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
 
 @Mod.EventBusSubscriber
-public class IfTakesSuffocationDamage {
+public class DimSwapToNWAD {
 	@SubscribeEvent
 	public static void onEntityAttacked(LivingHurtEvent event) {
 		if (event != null && event.getEntity() != null) {
