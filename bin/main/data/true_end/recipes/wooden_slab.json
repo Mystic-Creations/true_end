@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "pattern": [
+      "###"
+    ],
+    "key": {
+      "#": {
+        "item": "true_end:wooden_planks"
+      }
+    },
+    "result": {
+      "item": "true_end:wooden_slab",
+      "count": 6
+    }
+  }

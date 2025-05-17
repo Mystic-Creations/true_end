@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "true_end:stone"
+    },
+    "title": {
+      "translate": "advancements.leave_the_nightmare_within_a_dream.title"
+    },
+    "description": {
+      "translate": "advancements.leave_the_nightmare_within_a_dream.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "leave_the_nightmare_within_a_dream_0": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "true_end:the_start_of_an_end"
+}

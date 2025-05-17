@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "true_end:the_dreaming_tree",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 80,
+    "separation": 64,
+    "salt": 1253544446
+  }
+}

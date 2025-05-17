@@ -59,12 +59,16 @@ public class TrueEnd {
 
 		TrueEndParticleTypes.REGISTRY.register(bus);
 	}
-	
+
 	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
+			new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals,
+			PROTOCOL_VERSION::equals);
 	private static int messageID = 0;
 
-	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
+	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder,
+			Function<FriendlyByteBuf, T> decoder,
+			BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
 		PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
 		messageID++;
 	}
@@ -96,7 +100,7 @@ public class TrueEnd {
 			jsonElement = JsonParser.parseString(message);
 		} catch (JsonSyntaxException e) {
 			LOGGER.error("MESSAGE FAILED TO SEND BECAUSE YOU FORMATTED TELLRAW STYLE TEXT WRONG");
-			String json =  "JSON in question: %s".formatted(message);
+			String json = "JSON in question: %s".formatted(message);
 			LOGGER.error(json);
 			LOGGER.error(e.getMessage());
 			return;
@@ -109,26 +113,47 @@ public class TrueEnd {
 	}
 
 	public static void sendTellrawMessagesWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
-		for (int i = 0; i < messages.length;i++) {
+		for (int i = 0; i < messages.length; i++) {
 			String message = messages[i];
-			queueServerWork(	1+ cooldown * i, () -> {
+			queueServerWork(1 + cooldown * i, () -> {
 				sendTellrawFormatMessage(player, message);
 			});
 		}
 	}
 
 	private static Predicate<Holder<Biome>> isBiome(String biomeNamespaced) {
-		return biomeHolder -> biomeHolder.unwrapKey().map(biomeKey ->
-				biomeKey.location().toString().equals(biomeNamespaced)
-		).orElse(false);
+		return biomeHolder -> biomeHolder.unwrapKey()
+				.map(biomeKey -> biomeKey.location().toString().equals(biomeNamespaced)).orElse(false);
 	};
 
-	public static BlockPos locateBiome(ServerLevel level,BlockPos startPosition, String biomeNamespaced) {
+	public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
 
-		Pair<BlockPos, Holder<Biome>> blockPosHolderPair = level.getLevel().findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
+		Pair<BlockPos, Holder<Biome>> blockPosHolderPair = level.getLevel()
+				.findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
 		if (blockPosHolderPair == null) {
 			return null;
 		}
 		return blockPosHolderPair.getFirst();
+	}
+
+public static BlockPos locateBiomes(ServerLevel level, BlockPos startPos, String[] biomesNamespaced) {
+		List<BlockPos> biomePositions = List<BlockPos>();
+		// find biomes
+		for (String biomeNamespaced : biomesNamespaced) {
+			blockPositions.append(locateBiome(level, startPosition, biomeNamespaced));
+		}
+		// get closest biome
+		int minDistance = Integer.MAX_VALUE;
+		BlockPos closestBlockPos = null;
+		
+		for (BlockPos blockPos : biomePositions) {
+			int distance = startPos.distToCenterSqr(blockPos);
+			if (distance < minDistance) {
+				closestBlockPos = blockPos;
+				minDistance = distance;
+			}
+		}
+		
+		return closestBlockPos;
 	}
 }

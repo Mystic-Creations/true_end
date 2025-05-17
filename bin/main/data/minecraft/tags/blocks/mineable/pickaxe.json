@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "true_end:obsidian",
+    "true_end:stone",
+    "true_end:cobblestone",
+    "true_end:mossy_cobblestone",
+    "true_end:coal_ore",
+    "true_end:iron_ore",
+    "true_end:gold_ore",
+    "true_end:redstone_ore",
+    "true_end:diamond_ore"
+  ]
+}

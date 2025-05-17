@@ -49,9 +49,11 @@ public class DimSwapToBTD {
     }
 
     private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
-        if (!(entity instanceof ServerPlayer serverPlayer)) return;
+        if (!(entity instanceof ServerPlayer serverPlayer))
+            return;
 
-        if (HAS_PROCESSED.getOrDefault(serverPlayer, false)) return;
+        if (HAS_PROCESSED.getOrDefault(serverPlayer, false))
+            return;
 
         AtomicBoolean hasVisited = new AtomicBoolean(false);
         serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> {
@@ -61,8 +63,9 @@ public class DimSwapToBTD {
             if (serverPlayer.level().dimension() == Level.OVERWORLD
                     && serverPlayer.level() instanceof ServerLevel overworld
                     && serverPlayer.getAdvancements().getOrStartProgress(
-                        Objects.requireNonNull(serverPlayer.server.getAdvancements()
-                            .getAdvancement(ResourceLocation.parse("true_end:stop_dreaming")))).isDone()) {
+                            Objects.requireNonNull(serverPlayer.server.getAdvancements()
+                                    .getAdvancement(ResourceLocation.parse("true_end:stop_dreaming"))))
+                            .isDone()) {
 
                 HAS_PROCESSED.put(serverPlayer, true);
 
@@ -76,16 +79,22 @@ public class DimSwapToBTD {
 
                 TrueEnd.queueServerWork(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:nostalgic_meadow");
-                    if (initialSearchPos == null) initialSearchPos = worldSpawn;
+                    String[] searchBiomes = { "true_end:nostalgic_meadow", "true_end:dreamers_beach" };
+                    BlockPos initialSearchPos = TrueEnd.locateBiomes(nextLevel, worldSpawn, searchBiomes);
+                    if (initialSearchPos == null)
+                        initialSearchPos = worldSpawn;
 
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
-                    BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), "true_end:nostalgic_meadow");
+                    BlockPos secondarySearchPos = TrueEnd.locateBiomes(nextLevel,
+                            new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), searchBiomes);
 
                     if (spawnPos == null) {
-                        while(spawnPos == null) {
-                            secondarySearchPos = TrueEnd.locateBiome(nextLevel, new BlockPos(new Vec3i(BlockPosRandomX+BlockPosRandomZ, BlockPosRandomY, BlockPosRandomZ+BlockPosRandomX)), "true_end:nostalgic_meadow");
+                        while (spawnPos == null) {
+                            secondarySearchPos = TrueEnd.locateBiomes(nextLevel,
+                                    new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ, BlockPosRandomY,
+                                            BlockPosRandomZ + BlockPosRandomX)),
+                                    searchBiomes);
 
                             spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
                         }
@@ -99,35 +108,37 @@ public class DimSwapToBTD {
                     BlockPos finalSpawnPos = spawnPos;
                     BlockPos secFinalSpawnPos = secondarySearchPos;
 
-                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
+                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5,
+                            serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
                     for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
+                        serverPlayer.connection
+                                .send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
                     TrueEnd.queueServerWork(5, () -> {
-                        removeNearbyTrees(nextLevel, serverPlayer.blockPosition(),15);
+                        removeNearbyTrees(nextLevel, serverPlayer.blockPosition(), 15);
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         sendFirstEntryConversation(serverPlayer, nextLevel);
-                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent( data ->
-                                data.setBeenBeyond(true)
-                        );
+                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP)
+                                .ifPresent(data -> data.setBeenBeyond(true));
                         if (secFinalSpawnPos == null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(), finalSpawnPos.getZ())
-                            );
+                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(),
+                                            finalSpawnPos.getZ()));
                         }
                         if (secFinalSpawnPos != null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY(), secFinalSpawnPos.getZ())
-                            );
+                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY(),
+                                            secFinalSpawnPos.getZ()));
                         }
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
                     if (nextLevel.getGameRules().getBoolean(TrueEndGameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
+                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false,
+                                nextLevel.getServer());
                     }
                 });
             }
@@ -162,11 +173,11 @@ public class DimSwapToBTD {
                     BlockPos above = candidate.above();
                     BlockPos above2 = above.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
-                        && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
-                        && level.isEmptyBlock(above)
-                        && level.isEmptyBlock(above2)
-                        && level.getBrightness(LightLayer.SKY, above) >= 15
-                        && isValidSpawnArea(level, candidate)) {
+                            && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && level.isEmptyBlock(above)
+                            && level.isEmptyBlock(above2)
+                            && level.getBrightness(LightLayer.SKY, above) >= 15
+                            && isValidSpawnArea(level, candidate)) {
                         System.out.println("TRUE_END: Found ideal spawn: " + above);
                         return above;
                     }
@@ -184,9 +195,9 @@ public class DimSwapToBTD {
                     BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
                     BlockPos above = candidate.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
-                        && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
-                        && level.isEmptyBlock(above)
-                        && isValidSpawnArea(level, candidate)) {
+                            && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && level.isEmptyBlock(above)
+                            && isValidSpawnArea(level, candidate)) {
                         System.out.println("TRUE_END: Found fallback spawn: " + above);
                         return above;
                     }
@@ -201,7 +212,8 @@ public class DimSwapToBTD {
         for (int dx = -4; dx <= 4; dx++) {
             for (int dz = -4; dz <= 4; dz++) {
                 BlockPos pos = center.offset(dx, 0, dz);
-                if (level.getBlockState(pos).is(TrueEndBlocks.GRASS_BLOCK.get())) grassCount++;
+                if (level.getBlockState(pos).is(TrueEndBlocks.GRASS_BLOCK.get()))
+                    grassCount++;
                 if (level.getBlockState(pos).is(Blocks.WATER)
                         || level.getBlockState(pos.below()).is(Blocks.WATER)
                         || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
@@ -214,20 +226,24 @@ public class DimSwapToBTD {
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {
         if (world instanceof ServerLevel level && entity instanceof ServerPlayer player) {
-            level.getServer().getCommands().performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput(), command);
+            level.getServer().getCommands()
+                    .performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput(), command);
         }
     }
 
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
         int convoDelay = (int) TrueEndVariables.MapVariables.get(world).getBtdConversationDelay();
         String[] conversation = {
-            "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString()),
-            "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
-            "[\"\",{\"text\":\"\\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]".formatted(player.getName().getString()),
-            "[\"\",{\"text\":\"\\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
-            "[\"\",{\"text\":\"\\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
-            "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
-            "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]".formatted(player.getName().getString())
+                "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]"
+                        .formatted(player.getName().getString()),
+                "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
+                "[\"\",{\"text\":\"\\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]"
+                        .formatted(player.getName().getString()),
+                "[\"\",{\"text\":\"\\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
+                "[\"\",{\"text\":\"\\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
+                "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
+                "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]"
+                        .formatted(player.getName().getString())
         };
         TrueEnd.queueServerWork(45, () -> {
             TrueEnd.sendTellrawMessagesWithCooldown(player, conversation, convoDelay);

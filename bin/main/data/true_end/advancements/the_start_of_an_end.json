@@ -1,0 +1,31 @@
+{
+  "display": {
+    "background": "true_end:textures/block/old_dirt.png",
+    "icon": {
+      "item": "true_end:grass_block"
+    },
+    "title": {
+      "translate": "advancements.the_start_of_an_end.title"
+    },
+    "description": {
+      "translate": "advancements.the_start_of_an_end.descr"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "the_start_of_an_end_0": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "minecraft:crafting_table"
+          }
+        ]
+      }
+    }
+  }
+}

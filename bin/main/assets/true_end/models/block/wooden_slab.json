@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "true_end:block/old_planks",
+    "bottom": "true_end:block/old_planks",
+    "top": "true_end:block/old_planks",
+    "side": "true_end:block/old_planks"
+  },
+  "render_type": "solid"
+}

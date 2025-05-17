@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "true_end:wood",
+    "true_end:wood_6_sided",
+    "true_end:wooden_planks",
+    "true_end:wooden_stairs",
+    "true_end:wooden_slab",
+    "true_end:fence",
+    "true_end:fence_gate",
+    "true_end:door",
+    "true_end:trapdoor",
+    "true_end:pressure_plate",
+    "true_end:button"
+  ]
+}

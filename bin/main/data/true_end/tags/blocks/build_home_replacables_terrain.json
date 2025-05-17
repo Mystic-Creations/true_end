@@ -1,0 +1,11 @@
+{
+    "replace": false,
+    "values": [
+      "minecraft:air",
+      "true_end:grass_block",
+      "true_end:dirt",
+      "true_end:wood",
+      "true_end:wood_6_sided",
+      "true_end:leaves"
+    ]
+  }

@@ -1,0 +1,52 @@
+{
+    "type": "minecraft:chest",
+    "pools": [
+      {
+        "rolls": 2,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:wheat",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "type": "minecraft:uniform",
+                  "min": 1,
+                  "max": 8
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "rolls": {
+          "type": "minecraft:uniform",
+          "min": 1,
+          "max": 4
+        },
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:wheat_seeds"
+          }
+        ]
+      },
+      {
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:stone_hoe",
+            "functions": [
+              {
+                "function": "minecraft:set_damage",
+                "damage": 12
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "item": "true_end:mysterious_cube"
+    },
+    "title": {
+      "translate": "advancements.find_the_mysterious_cube.title"
+    },
+    "description": {
+      "translate": "advancements.find_the_mysterious_cube.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "find_the_mysterious_cube_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "true_end:mysterious_cube"
+            ],
+            "count": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parent": "true_end:stop_dreaming"
+}

@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:blasting",
+    "category": "misc",
+    "ingredient": {
+      "item": "true_end:diamond_ore"
+    },
+    "result": "minecraft:diamond",
+    "experience": 1,
+    "cookingtime": 100
+  }

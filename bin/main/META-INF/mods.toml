@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="true_end"
+version="1.4"
+displayName="True End"
+displayURL="https://modrinth.com/mod/true_end"
+logoFile="logo.png"
+credits="Credits to all the members of the Mystic Creations Team"
+authors="Mystic Creations Team"
+description="Defeated the dragon, but woke up in a familiar yet unknown place, shortly you realize it was all just a dream."
+
+[[mixin]]
+mixinClasses = ["net.justmili.trueend.mixin.TrueEndMixin"]
+
+[[dependencies.true_end]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.true_end]]
+    modId="terrablender"
+    mandatory=true
+    versionRange="[3.0.1.10,)"
+    ordering="NONE"
+    side="BOTH"

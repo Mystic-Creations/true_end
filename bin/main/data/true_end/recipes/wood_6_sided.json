@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "ingredients": [
+    {
+      "item": "true_end:wood"
+    }
+  ],
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "true_end:wood"
+    }
+  },
+  "result": {
+    "item": "true_end:wood_6_sided",
+    "count": 3
+  }
+}

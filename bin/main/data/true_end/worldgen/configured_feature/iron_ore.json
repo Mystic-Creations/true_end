@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:ore",
+    "config": {
+      "size": 9,
+      "discard_chance_on_air_exposure": 0,
+      "targets": [
+        {
+          "target": {
+            "predicate_type": "tag_match",
+            "tag": "true_end:btd_oregen_replacable"
+          },
+          "state": {
+            "Name": "true_end:iron_ore"
+          }
+        }
+      ]
+    }
+  }
