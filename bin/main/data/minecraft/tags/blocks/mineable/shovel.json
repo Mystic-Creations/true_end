@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "true_end:grass_block",
-    "true_end:dirt",
-    "true_end:sand",
-    "true_end:gravel"
-  ]
-}

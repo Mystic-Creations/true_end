@@ -1,8 +1,0 @@
-{
-  "parent": "block/button_inventory",
-  "textures": {
-    "particle": "true_end:block/old_planks",
-    "texture": "true_end:block/old_planks"
-  },
-  "render_type": "solid"
-}

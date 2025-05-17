@@ -1,8 +1,0 @@
-{
-  "parent": "block/template_orientable_trapdoor_top",
-  "textures": {
-    "texture": "true_end:block/old_trapdoor",
-    "particle": "true_end:block/old_trapdoor"
-  },
-  "render_type": "cutout_mipped"
-}
