@@ -1,8 +1,0 @@
-{
-    "criteria": {
-      "player_spawned_in_btd": {
-        "trigger": "minecraft:impossible"
-      }
-    },
-    "parent": "true_end:the_start_of_an_end"
-  }

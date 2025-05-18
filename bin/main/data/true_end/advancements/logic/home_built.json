@@ -1,8 +1,0 @@
-{
-    "criteria": {
-      "home_built_0": {
-        "trigger": "minecraft:impossible"
-      }
-    },
-    "parent": "true_end:player_spawned_btd"
-  }

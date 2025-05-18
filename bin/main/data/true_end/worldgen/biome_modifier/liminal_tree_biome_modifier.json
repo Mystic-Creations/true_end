@@ -1,8 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": {
-    "type": "minecraft:overworld"
-  },
-  "features": "true_end:liminal_tree",
-  "step": "surface_structures"
-}
