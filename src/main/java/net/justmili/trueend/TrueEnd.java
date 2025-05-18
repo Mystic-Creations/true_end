@@ -38,6 +38,7 @@ import java.util.function.Function;
 import java.util.function.BiConsumer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.AbstractMap;
@@ -136,24 +137,24 @@ public class TrueEnd {
 		return blockPosHolderPair.getFirst();
 	}
 
-public static BlockPos locateBiomes(ServerLevel level, BlockPos startPos, String[] biomesNamespaced) {
-		List<BlockPos> biomePositions = List<BlockPos>();
+	public static BlockPos locateBiomes(ServerLevel level, BlockPos startPos, String[] biomesNamespaced) {
+		List<BlockPos> biomePositions = new ArrayList<BlockPos>();
 		// find biomes
 		for (String biomeNamespaced : biomesNamespaced) {
-			blockPositions.append(locateBiome(level, startPosition, biomeNamespaced));
+			biomePositions.add(locateBiome(level, startPos, biomeNamespaced));
 		}
 		// get closest biome
-		int minDistance = Integer.MAX_VALUE;
+		double minDistance = Integer.MAX_VALUE;
 		BlockPos closestBlockPos = null;
-		
+
 		for (BlockPos blockPos : biomePositions) {
-			int distance = startPos.distToCenterSqr(blockPos);
+			int distance = startPos.distManhattan(blockPos);
 			if (distance < minDistance) {
 				closestBlockPos = blockPos;
 				minDistance = distance;
 			}
 		}
-		
+
 		return closestBlockPos;
 	}
 }
