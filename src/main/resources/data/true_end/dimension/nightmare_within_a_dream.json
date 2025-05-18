@@ -102,7 +102,7 @@
       "aquifers_enabled": false,
       "ore_veins_enabled": false,
       "default_block": {
-        "Name": "true_end:stone"
+        "Name": "minecraft:stone"
       },
       "default_fluid": {
         "Name": "minecraft:water",

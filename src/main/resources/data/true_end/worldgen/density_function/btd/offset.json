@@ -1,0 +1,207 @@
+{
+  "argument": {
+    "argument": {
+      "argument1": {
+        "argument1": {
+          "type": "minecraft:blend_offset"
+        },
+        "argument2": {
+          "argument1": 1.0,
+          "argument2": {
+            "argument1": -1.0,
+            "argument2": {
+              "argument": {
+                "type": "minecraft:blend_alpha"
+              },
+              "type": "minecraft:cache_once"
+            },
+            "type": "minecraft:mul"
+          },
+          "type": "minecraft:add"
+        },
+        "type": "minecraft:mul"
+      },
+      "argument2": {
+        "argument1": {
+          "argument1": -0.5037500262260437,
+          "argument2": {
+            "spline": {
+              "coordinate": "true_end:continents",
+              "points": [
+                {
+                  "location": -0.3,
+                  "derivative": 0,
+                  "value": -0.05906841
+                },
+                {
+                  "location": -0.2,
+                  "derivative": 0,
+                  "value": 0
+                },
+                {
+                  "location": 0.1,
+                  "derivative": 0,
+                  "value": {
+                    "coordinate": "true_end:erosion",
+                    "points": [
+                      {
+                        "location": -0.4,
+                        "derivative": 0,
+                        "value": {
+                          "coordinate": "true_end:ridges",
+                          "points": [
+                            {
+                              "location": -1.2166667066666665,
+                              "value": 0,
+                              "derivative": 0
+                            },
+                            {
+                              "location": -0.8015151399999999,
+                              "value": 2.9802322e-8,
+                              "derivative": 0
+                            },
+                            {
+                              "location": -0.7981818066666666,
+                              "value": 2.9802322e-8,
+                              "derivative": 0.7603689
+                            },
+                            {
+                              "location": -0.6666667,
+                              "value": 0.100000024,
+                              "derivative": 0.7603689
+                            },
+                            {
+                              "location": -0.6666667,
+                              "value": 0.100000024,
+                              "derivative": -0.7603689
+                            },
+                            {
+                              "location": -0.5351515933333333,
+                              "value": 2.9802322e-8,
+                              "derivative": -0.7603689
+                            },
+                            {
+                              "location": -0.53181826,
+                              "value": 2.9802322e-8,
+                              "derivative": 0
+                            },
+                            {
+                              "location": -0.11666669333333335,
+                              "value": 0,
+                              "derivative": 0
+                            },
+                            {
+                              "location": 0.11666669333333335,
+                              "value": 0,
+                              "derivative": 0
+                            },
+                            {
+                              "location": 0.53181826,
+                              "value": 2.9802322e-8,
+                              "derivative": 0
+                            },
+                            {
+                              "location": 0.5351515933333333,
+                              "value": 2.9802322e-8,
+                              "derivative": 0.7603689
+                            },
+                            {
+                              "location": 0.6666667,
+                              "value": 0.100000024,
+                              "derivative": 0.7603689
+                            },
+                            {
+                              "location": 0.6666667,
+                              "value": 0.100000024,
+                              "derivative": -0.7603689
+                            },
+                            {
+                              "location": 0.7981818066666666,
+                              "value": 2.9802322e-8,
+                              "derivative": -0.7603689
+                            },
+                            {
+                              "location": 0.8015151399999999,
+                              "value": 2.9802322e-8,
+                              "derivative": 0
+                            },
+                            {
+                              "location": 1.2166667066666665,
+                              "value": 0,
+                              "derivative": 0
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "location": -0.35,
+                        "derivative": 0,
+                        "value": {
+                          "coordinate": "true_end:ridges",
+                          "points": [
+                            {
+                              "location": -0.8666667066666666,
+                              "value": 0.05,
+                              "derivative": 0
+                            },
+                            {
+                              "location": -0.6666667,
+                              "value": 0.060000002,
+                              "derivative": 0.021000003
+                            },
+                            {
+                              "location": -0.6666667,
+                              "value": 0.060000002,
+                              "derivative": -0.021000003
+                            },
+                            {
+                              "location": -0.4666666933333333,
+                              "value": 0.05,
+                              "derivative": 0
+                            },
+                            {
+                              "location": 0.4666666933333333,
+                              "value": 0.05,
+                              "derivative": 0
+                            },
+                            {
+                              "location": 0.6666667,
+                              "value": 0.060000002,
+                              "derivative": 0.021000003
+                            },
+                            {
+                              "location": 0.6666667,
+                              "value": 0.060000002,
+                              "derivative": -0.021000003
+                            },
+                            {
+                              "location": 1.1333333733333333,
+                              "value": 0.05,
+                              "derivative": 0
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "type": "minecraft:spline"
+          },
+          "type": "minecraft:add"
+        },
+        "argument2": {
+          "argument": {
+            "type": "minecraft:blend_alpha"
+          },
+          "type": "minecraft:cache_once"
+        },
+        "type": "minecraft:mul"
+      },
+      "type": "minecraft:add"
+    },
+    "type": "minecraft:cache_2d"
+  },
+  "type": "minecraft:flat_cache"
+}
