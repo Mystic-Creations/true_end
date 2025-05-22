@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:oak_log"
+    },
+    "title": {
+      "translate": "advancements.mcstory.delicious_fish.title"
+    },
+    "description": {
+      "translate": "advancements.mcstory.delicious_fish.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "true_end:story/craft_a_furnace",
+  "criteria": {
+    "fish": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "true_end:cooked_fishes"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "fish"
+    ]
+  ]
+}

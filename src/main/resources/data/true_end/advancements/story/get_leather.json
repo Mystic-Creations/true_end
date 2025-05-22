@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:leather"
+    },
+    "title": {
+      "translate": "advancements.mcstory.cow_tipper.title"
+    },
+    "description": {
+      "translate": "advancements.mcstory.cow_tipper.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "true_end:story/wooden_sword",
+  "criteria": {
+    "kill_cow": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": {},
+        "items": [
+          {
+            "items": [
+              "minecraft:leather"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "kill_cow"
+    ]
+  ]
+}

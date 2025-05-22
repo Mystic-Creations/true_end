@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:saddle"
+    },
+    "title": {
+      "translate": "advancements.mcstory.flying_pig.title"
+    },
+    "description": {
+      "translate": "advancements.mcstory.flying_pig.descr"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "true_end:story/get_leather",
+  "criteria": {
+    "pig_ride": {
+      "trigger": "minecraft:fall_from_height",
+      "conditions": {
+        "player": {
+          "vehicle": {
+            "type": "minecraft:pig"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "pig_ride"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  }
+}

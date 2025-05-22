@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:cake"
+    },
+    "title": {
+      "translate": "advancements.mcstory.the_lie.title"
+    },
+    "description": {
+      "translate": "advancements.mcstory.the_lie.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "true_end:story/wooden_hoe",
+  "criteria": {
+    "make_cake": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "minecraft:cake"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "make_cake"
+    ]
+  ]
+}

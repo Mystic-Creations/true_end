@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:wooden_hoe"
+    },
+    "title": {
+      "translate": "advancements.mcstory.wooden_hoe.title"
+    },
+    "description": {
+      "translate": "advancements.mcstory.wooden_hoe.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:story/root",
+  "criteria": {
+    "wooden_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": {},
+        "items": [
+          {
+            "items": [
+              "minecraft:wooden_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "wooden_hoe"
+    ]
+  ]
+}

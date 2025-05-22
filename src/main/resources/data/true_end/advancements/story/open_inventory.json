@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:book"
+    },
+    "title": {
+      "translate": "advancements.mcstory.open_inv.title"
+    },
+    "description": {
+      "translate": "advancements.mcstory.open_inv.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "true_end:story/getting_wood",
+  "criteria": {
+    "open_inventory": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "open_inventory"
+    ]
+  ]
+}
