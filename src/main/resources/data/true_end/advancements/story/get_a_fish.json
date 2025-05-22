@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:oak_log"
+      "item": "minecraft:cooked_cod"
     },
     "title": {
       "translate": "advancements.mcstory.delicious_fish.title"

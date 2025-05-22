@@ -30,5 +30,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "true_end:story/wooden_pick"
+  "parent": "true_end:story/wooden_pickaxe"
 }

@@ -41,7 +41,7 @@ public class OnARailTracker {
 
     private static void grantAdvancement(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            ResourceLocation advancementId = ResourceLocation.parse("true_end:story/on_a_rail");
+            ResourceLocation advancementId = ResourceLocation.parse("true_end:story/travel_in_minecart");
             var advancement = serverPlayer.server.getAdvancements().getAdvancement(advancementId);
             if (advancement != null) {
                 var progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
