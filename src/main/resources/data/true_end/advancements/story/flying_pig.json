@@ -17,21 +17,10 @@
   "parent": "true_end:story/get_leather",
   "criteria": {
     "pig_ride": {
-      "trigger": "minecraft:fall_from_height",
-      "conditions": {
-        "player": {
-          "vehicle": {
-            "type": "minecraft:pig"
-          }
-        }
-      }
+      "trigger": "minecraft:impossible"
     }
   },
-  "requirements": [
-    [
-      "pig_ride"
-    ]
-  ],
+  "requirements": [],
   "rewards": {
     "experience": 100
   }

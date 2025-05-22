@@ -486,8 +486,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:iron_sword",
-      "nbt": "{Damage:0}"
+      "item": "minecraft:bone"
     },
     "show_toast": true,
     "title": {
