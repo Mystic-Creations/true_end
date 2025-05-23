@@ -6,8 +6,8 @@
       "count": {
         "type": "uniform",
         "value": {
-          "min_inclusive": 0,
-          "max_inclusive": 5
+          "min_inclusive": 16,
+          "max_inclusive": 32
         }
       }
     },
