@@ -70,7 +70,7 @@ public class TrueEnd {
 		event.enqueueWork(() ->
 		{
 			// Weights are kept intentionally low as we add minimal biomes
-			Regions.register(new LiminalForestRegion(new ResourceLocation(MODID, "overworld_region"), 2));
+			Regions.register(new LiminalForestRegion(new ResourceLocation(MODID, "overworld_region"), 1));
 
 			// Register our surface rules
 			//SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, TestSurfaceRuleData.makeRules());
