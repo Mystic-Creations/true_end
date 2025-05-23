@@ -7,7 +7,7 @@
         "type": "uniform",
         "value": {
           "min_inclusive": 0,
-          "max_inclusive": 4
+          "max_inclusive": 10
         }
       }
     },

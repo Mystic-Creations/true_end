@@ -30,8 +30,7 @@
   "block.true_end.obsidian": "Obsidiaan",
   "item.true_end.mysterious_cube": "Mysterieuze Kubus",
   "biome.true_end.nostalgic_meadow": "Nostalgisch Weiland",
-  "biome.true_end.neverending_ocean": "Eeuwige Oceaan",
-  "biome.true_end.dreamers_beach": "Dreamer's Beach",
+  "biome.true_end.lush_forest": "Lush Forest",
   "biome.true_end.liminal_forest": "Liminal Forest",
   "advancements.the_start_of_an_end.title": "True End",
   "advancements.the_start_of_an_end.descr": "De Start van een Einde",
@@ -45,7 +44,6 @@
   "advancements.go_back.descr": "Ga terug naar de normale Minecraft gameplay",
   "advancements.leave_the_nightmare_within_a_dream.title": "Wat de hell is er gebeurt?",
   "advancements.leave_the_nightmare_within_a_dream.descr": "Verlaat de Nachtmerrie Binnen Een Droom",
-  
   "advancements.mcstory.getting_wood.title": "Getting Wood",
   "advancements.mcstory.getting_wood.descr": "Attack a tree until a block of wood pops out",
   "advancements.mcstory.open_inv.title": "Taking Inventory",
@@ -70,7 +68,6 @@
   "advancements.mcstory.bake_bread.descr": "Turn wheat into bread",
   "advancements.mcstory.the_lie.title": "The Lie",
   "advancements.mcstory.the_lie.descr": "Wheat, sugar, milk and eggs!",  
-
   "gamerule.clearDreamItems": "Verwijder Droom Spullen",
   "gamerule.clearDreamItems.description": "Verwijderd alle spullen uit de invetaris van de speler als de speler de Voorbij De Droom dimensie voor de eerse keer binnengaat"
 }

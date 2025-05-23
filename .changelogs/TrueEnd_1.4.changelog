@@ -1,6 +1,6 @@
 ## Additions
 --------= Biomes
-- Dreamer's Beach / Beyond The Dream - Just a biome to seperate the Nostalgic Meadow from the Neverending Ocean
+- Lush Forest / Beyond The Dream
 - Liminal Forest  / Overworld - Reality pouring into the dream (dev note: in progress)
 
 --------= Entities
@@ -39,7 +39,14 @@
 - logicHasVisitedBTDForTheFirstTime (logic, replaced with a variable)
 - keepInvDefaultGameplayValue (logic, replaced with a variable)
 
+--------= Biomes
+- Neverending Ocean
+
 ## Changes
+--------= Worldgen
+- Made worldgen in Beyond The Dream more alpha-like
+- Split Nostalgic Meadow into Meadow and Forest (Nostalgic Meadow & Lush Forest)
+
 --------= Items
 - Changed the look of the Mysterious Cube
 
@@ -49,6 +56,7 @@
 ## Fixed Bugs
 --------= Languages
 - Fixed spelling error in en_us and en_uk
+
 --------= World
 - Bad Fallback Spawn              (dev note: kinda)
 
