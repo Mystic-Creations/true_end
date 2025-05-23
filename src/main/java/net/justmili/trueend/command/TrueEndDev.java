@@ -21,7 +21,24 @@ public class TrueEndDev {
 	public static void registerCommand(RegisterCommandsEvent event) {
 		event.getDispatcher().register(Commands.literal("trueend")
 
-		.then(Commands.literal("testHome").executes(arguments -> {
+					.then(Commands.literal("TestBTD-direct").executes(arguments -> {
+					Level world = arguments.getSource().getUnsidedLevel();
+
+					double x = arguments.getSource().getPosition().x();
+					double y = arguments.getSource().getPosition().y();
+					double z = arguments.getSource().getPosition().z();
+
+					Entity entity = arguments.getSource().getEntity();
+					if (entity == null && world instanceof ServerLevel _servLevel)
+						entity = FakePlayerFactory.getMinecraft(_servLevel);
+
+					Direction direction = Direction.DOWN;
+					if (entity != null)
+						direction = entity.getDirection();
+
+					TestBTDDirect.execute(world, entity);
+					return 0;
+				})).then(Commands.literal("testHome").executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 
 					double x = arguments.getSource().getPosition().x();
