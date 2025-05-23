@@ -31,8 +31,8 @@
   "item.true_end.mysterious_cube": "Tajemnicza Kostka",
   "biome.true_end.nostalgic_meadow": "Łąka nostalgii",
   "biome.true_end.neverending_ocean": "Ocean bez końca",
-  "biome.true_end.dreamers_beach": "Plaża marzyciela",
-  "biome.true_end.liminal_forest": "Las liminalny",
+  "biome.true_end.lush_forest": "Lush Forest",
+  "biome.true_end.liminal_forest": "Liminalny las",
   "advancements.the_start_of_an_end.title": "True End",
   "advancements.the_start_of_an_end.descr": "Początek końca",
   "advancements.unknown_base_found.title": "Czy ja tu byłem?",
@@ -45,7 +45,6 @@
   "advancements.go_back.descr": "Powróć do normalnej rozgrywki",
   "advancements.leave_the_nightmare_within_a_dream.title": "Co się odj#bało?",
   "advancements.leave_the_nightmare_within_a_dream.descr": "Wydostań się z 'koszmaru we śnie'",
-
   "advancements.mcstory.getting_wood.title": "Zdobywanie drewna",
   "advancements.mcstory.getting_wood.descr": "Atakuj drzewo aż blok drewna wyleci",
   "advancements.mcstory.open_inv.title": "Branie ekwipunku",
@@ -70,7 +69,6 @@
   "advancements.mcstory.bake_bread.descr": "Zamnień zborze w chleb",
   "advancements.mcstory.the_lie.title": "Kłamstwo",
   "advancements.mcstory.the_lie.descr": "Zborze, cukier, mleko i jajka!",
-
   "gamerule.clearDreamItems": "Czyść śnione przedmioty",
   "gamerule.clearDreamItems.description": "Czyści ekwipunek gracza podczas (tylko) pierwszej wizyty w Beyond The Dream"
 }

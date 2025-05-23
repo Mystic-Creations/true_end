@@ -1,14 +1,14 @@
 {
-  "has_precipitation": true,
   "temperature": 0.7,
   "downfall": 0.8,
+  "has_precipitation": true,
   "effects": {
-    "foliage_color": 8060727,
-    "grass_color": 11206458,
-    "sky_color": 7972607,
+    "sky_color": 7907327,
     "fog_color": 12638463,
     "water_color": 4159204,
     "water_fog_color": 329011,
+    "grass_color": 11206458,
+    "foliage_color": 8060727,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
@@ -23,14 +23,13 @@
     }
   },
   "spawners": {
-    "monster": [],
-    "creature": [],
     "ambient": [],
     "axolotls": [],
-    "underground_water_creature": [],
-    "water_creature": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
     "water_ambient": [],
-    "misc": []
+    "water_creature": []
   },
   "spawn_costs": {},
   "carvers":  {
@@ -60,7 +59,9 @@
       "true_end:diamond_ore",
       "true_end:gravel_patch"
     ],
-    [],
+    [
+      "true_end:alpha_trees"
+    ],
     []
   ]
 }
