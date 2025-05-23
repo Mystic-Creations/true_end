@@ -69,5 +69,21 @@
   "advancements.mcstory.the_lie.title": "The Lie",
   "advancements.mcstory.the_lie.descr": "Wheat, sugar, milk and eggs!",
   "gamerule.clearDreamItems": "Limpar Itens do sonho",
-  "gamerule.clearDreamItems.description": "Apaga o inventario do Jogador quando entra na dimensão Além do Sonho pela primeira vez"
+  "gamerule.clearDreamItems.description": "Apaga o inventario do Jogador quando entra na dimensão Além do Sonho pela primeira vez",
+  "config.true_end.screentitle": "True End / Config",
+  "config.true_end.category.gameplay": "Gameplay",
+  "config.true_end.category.render": "Render",
+  "config.true_end.subcategory.events": "Events",
+  "config.true_end.entry.cleardreamitems.title": "Clear Dream Items",
+  "config.true_end.entry.cleardreamitems.tooltip": "If true, clears player's inventory at their first-time entry to Beyond The Dream (once and never again)",
+  "config.true_end.entry.randomeventchance.title": "Random Event Chance",
+  "config.true_end.entry.randomeventchance.tooltip": "Random Events depend on this, as a chance in a tick or when player performs an action",
+  "config.true_end.entry.entityspawning.title": "Entity Appearance Frequency",
+  "config.true_end.entry.entityspawning.tooltip": "Determines the chance of how often the entity spawns to stalk the player every minute",
+  "config.true_end.entry.btdfog.title": "Fog in Beyond The Dream",
+  "config.true_end.entry.btdfog.tooltip": "Turns fog on/off in Beyond The Dream",
+  "config.true_end.entry.convodelay.title": "BTD Conversation Delay",
+  "config.true_end.entry.convodelay.tooltip": "Time in ticks between messages of 'The Voices' at first entry to Beyond The Dream",
+  "config.true_end.entry.pop_ups.title": "Window Pop-Ups",
+  "config.true_end.entry.pop_ups.tooltip": "Determines are event window pop-ups turned on or off"
 }
