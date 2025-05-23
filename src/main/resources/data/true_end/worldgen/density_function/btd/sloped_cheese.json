@@ -9,7 +9,7 @@
         "type": "minecraft:mul",
         "argument1": {
           "type": "minecraft:add",
-          "argument1": "true_end:depth",
+          "argument1": "true_end:btd/depth",
           "argument2": {
             "type": "minecraft:mul",
             "argument1": "minecraft:overworld/jaggedness",

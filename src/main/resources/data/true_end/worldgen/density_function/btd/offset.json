@@ -26,7 +26,7 @@
           "argument1": -0.5037500262260437,
           "argument2": {
             "spline": {
-              "coordinate": "true_end:continents",
+              "coordinate": "true_end:btd/continents",
               "points": [
                 {
                   "location": -0.3,
@@ -42,13 +42,13 @@
                   "location": 0.1,
                   "derivative": 0,
                   "value": {
-                    "coordinate": "true_end:erosion",
+                    "coordinate": "true_end:btd/erosion",
                     "points": [
                       {
                         "location": -0.4,
                         "derivative": 0,
                         "value": {
-                          "coordinate": "true_end:ridges",
+                          "coordinate": "true_end:btd/ridges",
                           "points": [
                             {
                               "location": -1.2166667066666665,
@@ -137,7 +137,7 @@
                         "location": -0.35,
                         "derivative": 0,
                         "value": {
-                          "coordinate": "true_end:ridges",
+                          "coordinate": "true_end:btd/ridges",
                           "points": [
                             {
                               "location": -0.8666667066666666,

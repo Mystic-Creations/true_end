@@ -37,7 +37,7 @@
                   "argument2": {
                     "type": "minecraft:add",
                     "argument1": 0.078125,
-                    "argument2": "true_end:sloped_cheese"
+                    "argument2": "true_end:btd/sloped_cheese"
                   }
                 }
               }

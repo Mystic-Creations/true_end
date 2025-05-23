@@ -79,7 +79,7 @@ public class DimSwapToBTD {
 
                 TrueEnd.queueServerWork(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    String[] searchBiomes = { "true_end:nostalgic_meadow", "true_end:dreamers_beach" };
+                    String[] searchBiomes = { "true_end:nostalgic_meadow" };
                     BlockPos initialSearchPos = TrueEnd.locateBiomes(nextLevel, worldSpawn, searchBiomes);
                     if (initialSearchPos == null)
                         initialSearchPos = worldSpawn;
@@ -209,8 +209,8 @@ public class DimSwapToBTD {
 
     private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
         int grassCount = 0;
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
                 BlockPos pos = center.offset(dx, 0, dz);
                 if (level.getBlockState(pos).is(TrueEndBlocks.GRASS_BLOCK.get()))
                     grassCount++;

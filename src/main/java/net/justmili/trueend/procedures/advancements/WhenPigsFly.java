@@ -1,4 +1,4 @@
-package net.justmili.trueend.events;
+package net.justmili.trueend.procedures.advancements;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Pig;

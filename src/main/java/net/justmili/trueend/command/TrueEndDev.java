@@ -1,6 +1,6 @@
 package net.justmili.trueend.command;
 
-import net.justmili.trueend.procedures.dev.*;
+import net.justmili.trueend.procedures.devcmd.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
