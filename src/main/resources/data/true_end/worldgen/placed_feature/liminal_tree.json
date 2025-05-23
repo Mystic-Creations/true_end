@@ -33,7 +33,7 @@
       "type": "minecraft:block_predicate_filter",
       "predicate": {
         "type": "minecraft:matching_blocks",
-        "blocks": "true_end:grass_block",
+        "blocks": "minecraft:grass_block",
         "offset": [
           0,
           -1,

@@ -4,12 +4,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.datafixers.util.Pair;
+import net.justmili.trueend.world.liminal_forest.LiminalForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -31,6 +33,7 @@ import net.justmili.trueend.init.TrueEndTabs;
 import net.justmili.trueend.init.TrueEndParticleTypes;
 import net.justmili.trueend.init.TrueEndItems;
 import net.justmili.trueend.init.TrueEndBlocks;
+import terrablender.api.Regions;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -40,7 +43,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.AbstractMap;
 
 @Mod("true_end")
@@ -59,6 +61,20 @@ public class TrueEnd {
 		TrueEndTabs.REGISTRY.register(bus);
 
 		TrueEndParticleTypes.REGISTRY.register(bus);
+
+		bus.addListener(this::commonSetup);
+	}
+
+	private void commonSetup(final FMLCommonSetupEvent event) {
+		// register terrablender region
+		event.enqueueWork(() ->
+		{
+			// Weights are kept intentionally low as we add minimal biomes
+			Regions.register(new LiminalForestRegion(new ResourceLocation(MODID, "overworld_region"), 2));
+
+			// Register our surface rules
+			//SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, TestSurfaceRuleData.makeRules());
+		});
 	}
 
 	private static final String PROTOCOL_VERSION = "1";
