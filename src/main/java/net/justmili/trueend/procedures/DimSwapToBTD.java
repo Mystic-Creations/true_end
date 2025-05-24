@@ -232,7 +232,7 @@ public class DimSwapToBTD {
     }
 
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
-        int convoDelay = (int) TrueEndVariables.MapVariables.get(world).getBtdConversationDelay();
+        int convoDelay = (int) TrueEndVariables.btdConversationDelay.getValue();
         String[] conversation = {
                 "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]"
                         .formatted(player.getName().getString()),

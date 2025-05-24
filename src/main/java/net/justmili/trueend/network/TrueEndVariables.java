@@ -1,5 +1,8 @@
 package net.justmili.trueend.network;
 
+import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
+import me.shedaniel.clothconfig2.gui.entries.DoubleListEntry;
+import me.shedaniel.clothconfig2.gui.entries.IntegerListEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -34,6 +37,14 @@ public class TrueEndVariables {
 
     public static final Capability<TrueEndVariables.MapVariables> MAP_VARIABLES_CAP =
             CapabilityManager.get(new CapabilityToken<>() {});
+    public static BooleanListEntry clearDreamItems;
+    public static DoubleListEntry randomEventChance;
+    public static DoubleListEntry entitySpawnChance;
+    public static BooleanListEntry popupsToggle;
+    public static BooleanListEntry fogToggle;
+    public static IntegerListEntry btdConversationDelay;
+    public static BooleanListEntry randomEventsToggle;
+
     // Register messages and capabilities
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
@@ -67,37 +78,31 @@ public class TrueEndVariables {
         public static final String DATA_NAME = "true_end_mapvars";
 
         private boolean defaultKeepInv = false;
-        private double btdConversationDelay = 40;
-        private double randomEventChance = 0.005;
         private double btdSpawnX = 0.0;
         private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
 
         public boolean isDefaultKeepInv() { return defaultKeepInv; }
-        public double getBtdConversationDelay() { return btdConversationDelay; }
-        public double getRandomEventChance() { return randomEventChance; }
+        public IntegerListEntry getBtdConversationDelay() { return btdConversationDelay; }
+        public DoubleListEntry getRandomEventChance() { return randomEventChance; }
+        public BooleanListEntry getRandomEventToggle() { return randomEventsToggle; }
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
 
         public void setDefaultKeepInv(boolean v) { defaultKeepInv = v; setDirty(); }
-        public void setBtdConversationDelay(double btdConversationDelay) { this.btdConversationDelay = btdConversationDelay; setDirty(); }
-
+        //public void setClearDreamItemsToggle(BooleanListEntry v) { clearDreamItems = v; setDirty(); }
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
             m.defaultKeepInv = nbt.getBoolean("defaultKeepInv");
-            m.btdConversationDelay = nbt.getDouble("btdConversationDelay");
-            m.randomEventChance = nbt.getDouble("randomEventChance");
             return m;
         }
 
         @Override
         public CompoundTag save(CompoundTag nbt) {
             nbt.putBoolean("defaultKeepInv",  defaultKeepInv);
-            nbt.putDouble("btdConversationDelay", btdConversationDelay);
-            nbt.putDouble("randomEventChance", randomEventChance);
             return nbt;
         }
 
@@ -135,8 +140,6 @@ public class TrueEndVariables {
             ctx.get().enqueueWork(() -> {
                 MapVariables client = MapVariables.get(Minecraft.getInstance().level);
                 client.defaultKeepInv = msg.data.getBoolean("defaultKeepInv");
-                client.btdConversationDelay = msg.data.getDouble("btdConversationDelay");
-                client.randomEventChance = msg.data.getDouble("randomEventChance");
             });
             ctx.get().setPacketHandled(true);
         }
@@ -207,7 +210,7 @@ public class TrueEndVariables {
         public static void attachCaps(AttachCapabilitiesEvent<Entity> evt) {
             if (evt.getObject() instanceof Player && evt.getObject() instanceof ServerPlayer) {
                 evt.addCapability(
-                        new ResourceLocation(TrueEnd.MODID, "player_variables"),
+                        ResourceLocation.parse("true_end:player_variables"),
                         new PlayerVariablesProvider()
                 );
             }

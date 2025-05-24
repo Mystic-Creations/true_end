@@ -36,6 +36,15 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal(
             "btdSpawnX/Y/Z: " + btdSpawnX + "/" + btdSpawnY + "/" + btdSpawnZ
         ));
-        source.sendSystemMessage(Component.literal("randomEventChance: " + globalVars.getRandomEventChance()));
+        // Configurable
+        source.sendSystemMessage(Component.literal("\n----= Configurable"));
+        //source.sendSystemMessage(Component.literal("clearDreamItems: " + TrueEndVariables.clearDreamItems.getValue()));
+        source.sendSystemMessage(Component.literal("btdConversationDelay: " + TrueEndVariables.btdConversationDelay.getValue()));
+        source.sendSystemMessage(Component.literal("randomEventChance: " + TrueEndVariables.randomEventChance.getValue()));
+        source.sendSystemMessage(Component.literal("entitySpawnChance: " + TrueEndVariables.entitySpawnChance.getValue()));
+        source.sendSystemMessage(Component.literal("popupsToggle: " + TrueEndVariables.popupsToggle.getValue()));
+        source.sendSystemMessage(Component.literal("fogToggle: " + TrueEndVariables.fogToggle.getValue()));
+
+
     }
 }

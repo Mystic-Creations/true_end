@@ -39,75 +39,77 @@ public class SoundPlayer {
     }
 
     private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity) {
-        double randEvtChance = TrueEndVariables.MapVariables.get(world).getRandomEventChance();
-        if (entity == null) return;
-        entity.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> {
-            if (data.hasBeenBeyond()) {
-                if ((entity.level().dimension()) == NWAD || (entity.level().dimension()) == OVERWORLD) {
-                    if (Math.random() < randEvtChance) {
+        double randEvtChance = TrueEndVariables.randomEventChance.getValue();
+        if (TrueEndVariables.randomEventsToggle.getValue() == true) {
+            if (entity == null) return;
+            entity.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> {
+                if (data.hasBeenBeyond()) {
+                    if ((entity.level().dimension()) == NWAD || (entity.level().dimension()) == OVERWORLD) {
                         if (Math.random() < randEvtChance) {
-                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK) {
-                                for (int index0 = 0; index0 < randomRepeatCount; index0++) {
-                                    TrueEnd.queueServerWork(12, () -> {
-                                        if (world instanceof Level _level) {
-                                            if (!_level.isClientSide()) {
-                                                _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1);
-                                            } else {
-                                                _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                            if (Math.random() < randEvtChance) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK) {
+                                    for (int index0 = 0; index0 < randomRepeatCount; index0++) {
+                                        TrueEnd.queueServerWork(12, () -> {
+                                            if (world instanceof Level _level) {
+                                                if (!_level.isClientSide()) {
+                                                    _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1);
+                                                } else {
+                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
-                        }
-                        if (Math.random() < randEvtChance) {
-                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.DIRT.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.ROOTED_DIRT) {
-                                for (int index1 = 0; index1 < randomRepeatCount; index1++) {
-                                    TrueEnd.queueServerWork(10, () -> {
-                                        if (world instanceof Level _level) {
-                                            if (!_level.isClientSide()) {
-                                                _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1);
-                                            } else {
-                                                _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                            if (Math.random() < randEvtChance) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.DIRT.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.ROOTED_DIRT) {
+                                    for (int index1 = 0; index1 < randomRepeatCount; index1++) {
+                                        TrueEnd.queueServerWork(10, () -> {
+                                            if (world instanceof Level _level) {
+                                                if (!_level.isClientSide()) {
+                                                    _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1);
+                                                } else {
+                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
-                        }
-                        if (Math.random() < randEvtChance) {
-                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.STONE.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.STONE) {
-                                for (int index2 = 0; index2 < randomRepeatCount; index2++) {
-                                    TrueEnd.queueServerWork(14, () -> {
-                                        if (world instanceof Level _level) {
-                                            if (!_level.isClientSide()) {
-                                                _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1);
-                                            } else {
-                                                _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                            if (Math.random() < randEvtChance) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.STONE.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.STONE) {
+                                    for (int index2 = 0; index2 < randomRepeatCount; index2++) {
+                                        TrueEnd.queueServerWork(14, () -> {
+                                            if (world instanceof Level _level) {
+                                                if (!_level.isClientSide()) {
+                                                    _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1);
+                                                } else {
+                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
-                        }
-                        if (Math.random() < randEvtChance) {
-                            if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.DEEPSLATE) {
-                                for (int index3 = 0; index3 < (randomRepeatCount - 1); index3++) {
-                                    TrueEnd.queueServerWork(8, () -> {
-                                        if (world instanceof Level _level) {
-                                            if (!_level.isClientSide()) {
-                                                _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1);
-                                            } else {
-                                                _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1, false);
+                            if (Math.random() < randEvtChance) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.DEEPSLATE) {
+                                    for (int index3 = 0; index3 < (randomRepeatCount - 1); index3++) {
+                                        TrueEnd.queueServerWork(8, () -> {
+                                            if (world instanceof Level _level) {
+                                                if (!_level.isClientSide()) {
+                                                    _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1);
+                                                } else {
+                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 }

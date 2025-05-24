@@ -1,6 +1,7 @@
 
 package net.justmili.trueend.world.dimension;
 
+import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
@@ -18,6 +19,7 @@ public class BeyondTheDream {
 		@SubscribeEvent
 		@OnlyIn(Dist.CLIENT)
 		public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
+			//boolean fogToggle = TrueEndVariables.fogToggle.getValue();
 			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(112f, true, DimensionSpecialEffects.SkyType.NONE, false, false) {
 				@Override
 				public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
@@ -26,6 +28,7 @@ public class BeyondTheDream {
 
 				@Override
 				public boolean isFoggyAt(int x, int y) {
+					//return fogToggle;
 					return false;
 				}
 			};

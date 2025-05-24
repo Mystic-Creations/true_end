@@ -21,7 +21,7 @@ public class TrueEndDev {
 	public static void registerCommand(RegisterCommandsEvent event) {
 		event.getDispatcher().register(Commands.literal("trueend")
 
-					.then(Commands.literal("TestBTD-direct").executes(arguments -> {
+					.then(Commands.literal("testBTD-direct").executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 
 					double x = arguments.getSource().getPosition().x();

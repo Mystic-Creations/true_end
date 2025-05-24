@@ -3,6 +3,7 @@ package net.justmili.trueend.procedures.randomevents;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.win32.StdCallLibrary;
+import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -26,10 +27,14 @@ public class PlayerLead {
 	}
 
 	private static void execute(@Nullable Event event, LevelAccessor world) {
-		if (Math.random() < 0.2) {
-			TrueEnd.queueServerWork(20, () -> {
-				User32.INSTANCE.MessageBoxA(0L, "wake up.", " ", 0);
-			});
+		if (TrueEndVariables.randomEventsToggle.getValue() == true) {
+			if (TrueEndVariables.popupsToggle.getValue() == true) {
+				if (Math.random() < 0.2) {
+					TrueEnd.queueServerWork(20, () -> {
+						User32.INSTANCE.MessageBoxA(0L, "wake up.", " ", 0);
+					});
+				}
+			}
 		}
 	}
 	public static interface User32
