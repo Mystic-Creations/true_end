@@ -79,7 +79,7 @@ public class DimSwapToBTD {
 
                 TrueEnd.queueServerWork(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    String[] searchBiomes = { "true_end:nostalgic_meadow" };
+                    String[] searchBiomes = { "true_end:nostalgic_meadow", "true_end:lush_forest" };
                     BlockPos initialSearchPos = TrueEnd.locateBiomes(nextLevel, worldSpawn, searchBiomes);
                     if (initialSearchPos == null)
                         initialSearchPos = worldSpawn;
@@ -92,8 +92,9 @@ public class DimSwapToBTD {
                     if (spawnPos == null) {
                         while (spawnPos == null) {
                             secondarySearchPos = TrueEnd.locateBiomes(nextLevel,
-                                    new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ, BlockPosRandomY,
-                                            BlockPosRandomZ + BlockPosRandomX)),
+                                    new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
+                                    BlockPosRandomY,
+                                    BlockPosRandomZ + BlockPosRandomX)),
                                     searchBiomes);
 
                             spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
@@ -214,11 +215,6 @@ public class DimSwapToBTD {
                 BlockPos pos = center.offset(dx, 0, dz);
                 if (level.getBlockState(pos).is(TrueEndBlocks.GRASS_BLOCK.get()))
                     grassCount++;
-                if (level.getBlockState(pos).is(Blocks.WATER)
-                        || level.getBlockState(pos.below()).is(Blocks.WATER)
-                        || level.getBlockState(pos.below(2)).is(Blocks.WATER)) {
-                    return false;
-                }
             }
         }
         return grassCount >= 80;
