@@ -87,5 +87,6 @@
   "config.true_end.entry.btdconvodelay.title": "Задержка ЗПС Общения",
   "config.true_end.entry.btdconvodelay.tooltip": "Время в тиках между сообщениями от 'Голосов' при первом вхождении За Пределами Сна",
   "config.true_end.entry.pop_ups.title": "Всплывающие окна",
-  "config.true_end.entry.pop_ups.tooltip": "Включает/выключает всплывающие окна"
+  "config.true_end.entry.pop_ups.tooltip": "Включает/выключает всплывающие окна",
+  "events.true_end.feelingwatched": "You feel watched..."
 }

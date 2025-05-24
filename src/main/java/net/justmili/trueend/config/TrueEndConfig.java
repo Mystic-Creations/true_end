@@ -30,8 +30,8 @@ public class TrueEndConfig {
 		//TrueEndVariables.clearDreamItems = entryBuilder.startBooleanToggle(Component.translatable("config.true_end.entry.cleardreamitems.title"), (boolean) entries.get("clearDreamItems")).setDefaultValue(true)
 		//		.setTooltip(Component.translatable("config.true_end.entry.cleardreamitems.tooltip")).setSaveConsumer(newValue -> entries.put("clearDreamItems", newValue)).build();
 		entries.putIfAbsent("btdConversationDelay", /*@int*/40);
-		TrueEndVariables.btdConversationDelay = entryBuilder.startIntField(Component.literal("config.true_end.entry.btdconvodelay.title"), Double.valueOf(String.valueOf(entries.get("btdConversationDelay"))).intValue()).setDefaultValue(/*@int*/40)
-				.setTooltip(Component.literal("config.true_end.entry.btdconvodelay.tooltip")).setMin(/*@int*/0).setMax(/*@int*/100).setSaveConsumer(newValue -> entries.put("btdConversationDelay", newValue)).build();
+		TrueEndVariables.btdConversationDelay = entryBuilder.startIntField(Component.translatable("config.true_end.entry.btdconvodelay.title"), Double.valueOf(String.valueOf(entries.get("btdConversationDelay"))).intValue()).setDefaultValue(/*@int*/40)
+				.setTooltip(Component.translatable("config.true_end.entry.btdconvodelay.tooltip")).setMin(/*@int*/0).setMax(/*@int*/100).setSaveConsumer(newValue -> entries.put("btdConversationDelay", newValue)).build();
 		entries.putIfAbsent("randomEventChance", 0.005d);
 		TrueEndVariables.randomEventChance = entryBuilder.startDoubleField(Component.translatable("config.true_end.entry.randomeventchance.title"), (double) entries.get("randomEventChance")).setDefaultValue(0.005d)
 				.setTooltip(Component.translatable("config.true_end.entry.randomeventchance.tooltip")).setMin(/*@int*/0).setMax(0.1).setRequirement(Requirement.isTrue(TrueEndVariables.randomEventsToggle))

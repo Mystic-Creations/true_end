@@ -87,5 +87,6 @@
   "config.true_end.entry.btdconvodelay.title": "BTD Conversation Delay",
   "config.true_end.entry.btdconvodelay.tooltip": "Time in ticks between messages of 'The Voices' at first entry to Beyond The Dream",
   "config.true_end.entry.pop_ups.title": "Window Pop-Ups",
-  "config.true_end.entry.pop_ups.tooltip": "Determines are event window pop-ups turned on or off"
+  "config.true_end.entry.pop_ups.tooltip": "Determines are event window pop-ups turned on or off",
+  "events.true_end.feelingwatched": "You feel watched..."
 }

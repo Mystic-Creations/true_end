@@ -88,5 +88,6 @@
   "config.true_end.entry.btdconvodelay.title": "Opóźnienie rozmowy BTD",
   "config.true_end.entry.btdconvodelay.tooltip": "Czas w tickach pomiędzy wiadomościami 'Głosów' przy pierwszym wejściu do Beyond The Dream",
   "config.true_end.entry.pop_ups.title": "Okna pop-up",
-  "config.true_end.entry.pop_ups.tooltip": "Określa, czy okna pop-up zdarzeń są włączone lub wyłączone"
+  "config.true_end.entry.pop_ups.tooltip": "Określa, czy okna pop-up zdarzeń są włączone lub wyłączone",
+  "events.true_end.feelingwatched": "Czujesz się obserwowany..."
 }

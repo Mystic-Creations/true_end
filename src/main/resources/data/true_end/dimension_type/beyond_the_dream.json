@@ -13,7 +13,7 @@
   "min_y": 0,
   "height": 128,
   "logical_height": 128,
-  "monster_spawn_light_level": 0,
+  "monster_spawn_light_level": 7,
   "monster_spawn_block_light_limit": 0,
   "effects": "minecraft:overworld"
 }
