@@ -28,56 +28,57 @@
     "creature": [
       {
         "type": "minecraft:sheep",
-        "weight": 12,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 12
       },
       {
         "type": "minecraft:pig",
-        "weight": 10,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 10
       },
       {
         "type": "minecraft:chicken",
-        "weight": 10,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 10
       },
       {
         "type": "minecraft:cow",
-        "weight": 8,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 8
       }
     ],
     "misc": [],
     "monster": [
       {
         "type": "minecraft:spider",
-        "weight": 100,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 100
       },
       {
         "type": "minecraft:zombie",
-        "weight": 95,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 95
       },
       {
         "type": "minecraft:skeleton",
-        "weight": 100,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 100
       },
       {
         "type": "minecraft:creeper",
-        "weight": 100,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 100
       }
     ],
+    "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []
   },
