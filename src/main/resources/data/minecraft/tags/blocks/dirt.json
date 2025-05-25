@@ -1,0 +1,7 @@
+{
+    "replace": false,
+    "values": [
+      "true_end:grass_block",
+      "true_end:dirt"
+    ]
+}
