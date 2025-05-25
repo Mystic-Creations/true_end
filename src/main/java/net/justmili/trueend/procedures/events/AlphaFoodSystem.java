@@ -53,7 +53,6 @@ public class AlphaFoodSystem {
         float newHealth = player.getHealth();
         boolean consumed = false;
 
-        // Check food and apply health
         if (stack.getItem() == Items.PORKCHOP) {
             newHealth += 1.5F; consumed = true;
         } else if (stack.getItem() == Items.COOKED_PORKCHOP) {
@@ -72,6 +71,10 @@ public class AlphaFoodSystem {
             newHealth += 6.0F; consumed = true;
         } else if (stack.getItem() == Items.BREAD) {
             newHealth += 2.5F; consumed = true;
+        } else if (stack.getItem() == Items.APPLE) {
+            newHealth += 2.0F; consumed = true;
+        } else if (stack.getItem() == Items.GOLDEN_APPLE){
+            newHealth += 10.0F; consumed = true;
         }
 
         if (consumed) {
@@ -82,6 +85,12 @@ public class AlphaFoodSystem {
             playEatSound(player.level(), player.getX(), player.getY(), player.getZ());
         }
 
+        if (!consumed) {
+            assert event != null;
+            if (event.isCancelable()) {
+                event.setCanceled(true);
+            }
+        }
         return consumed;
     }
 
