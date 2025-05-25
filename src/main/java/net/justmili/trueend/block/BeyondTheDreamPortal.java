@@ -30,6 +30,7 @@ import net.justmili.trueend.world.teleporter.BeyondTheDreamTeleporter;
 import net.justmili.trueend.world.teleporter.BeyondTheDreamPortalShape;
 import net.justmili.trueend.init.TrueEndParticleTypes;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
@@ -48,7 +49,7 @@ public class BeyondTheDreamPortal extends NetherPortalBlock {
             optional.get().createPortalBlocks();
             // Play the beacon power select sound
             if (!world.isClientSide()) {
-                world.playSound(null, pos, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.beacon.power_select")), SoundSource.BLOCKS, 1, 1);
+                world.playSound(null, pos, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.beacon.power_select"))), SoundSource.BLOCKS, 1, 1);
             }
         }
     }
@@ -82,7 +83,7 @@ public class BeyondTheDreamPortal extends NetherPortalBlock {
             world.addParticle((SimpleParticleType) (TrueEndParticleTypes.DREAM_PORTAL_PARTICLE.get()), px, py, pz, vx, vy, vz);
         }
         if (random.nextInt(110) == 0)
-            world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(("block.portal.ambient"))), SoundSource.BLOCKS, 0.5f, random.nextFloat() * 0.4f + 0.8f);
+            world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(("block.portal.ambient"))), SoundSource.BLOCKS, 0.5f, random.nextFloat() * 0.4f + 0.8f);
     }
 
     @Override

@@ -3,8 +3,8 @@ package net.justmili.trueend.procedures.events;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -46,38 +46,63 @@ public class AlphaFoodSystem {
         }
     }
 
-    private static boolean execute(@Nullable PlayerInteractEvent.RightClickItem event, @Nullable Player player, ItemStack stack) {
-        if (player == null) return false;
-        if (player.level().dimension() != BTD) return false;
+    //HELP I AM STUCK IN A LOOP AND I CAN'T FIX IT
+    //I need this to allow some foods, disallow other foods and allow other items like saddles, fishing rods etc to work
+
+    private static int execute(@Nullable PlayerInteractEvent.RightClickItem event, @Nullable Player player, ItemStack stack) {
+        if (player == null) return 0;
+        if (player.level().dimension() != BTD) return 0;
 
         float newHealth = player.getHealth();
-        boolean consumed = false;
+        int consumed = 0;
+        boolean other = false;
 
         if (stack.getItem() == Items.PORKCHOP) {
-            newHealth += 1.5F; consumed = true;
+            newHealth += 1.5F;
+            consumed = 1;
         } else if (stack.getItem() == Items.COOKED_PORKCHOP) {
-            newHealth += 4.0F; consumed = true;
+            newHealth += 4.0F;
+            consumed = 1;
         } else if (stack.getItem() == Items.BEEF) {
-            newHealth += 3.0F; consumed = true;
+            newHealth += 3.0F;
+            consumed = 1;
         } else if (stack.getItem() == Items.COOKED_BEEF) {
-            newHealth += 8.0F; consumed = true;
+            newHealth += 8.0F;
+            consumed = 1;
         } else if (stack.getItem() == Items.MUTTON) {
-            newHealth += 2.0F; consumed = true;
+            newHealth += 2.0F;
+            consumed = 1;
         } else if (stack.getItem() == Items.COOKED_MUTTON) {
-            newHealth += 6.0F; consumed = true;
+            newHealth += 6.0F;
+            consumed = 1;
         } else if (stack.getItem() == Items.CHICKEN) {
-            newHealth += 2.0F; consumed = true;
+            newHealth += 2.0F;
+            consumed = 1;
         } else if (stack.getItem() == Items.COOKED_CHICKEN) {
-            newHealth += 6.0F; consumed = true;
+            newHealth += 6.0F;
+            consumed = 1;
         } else if (stack.getItem() == Items.BREAD) {
-            newHealth += 2.5F; consumed = true;
+            newHealth += 2.5F;
+            consumed = 1;
         } else if (stack.getItem() == Items.APPLE) {
-            newHealth += 2.0F; consumed = true;
-        } else if (stack.getItem() == Items.GOLDEN_APPLE){
-            newHealth += 10.0F; consumed = true;
+            newHealth += 2.0F;
+            consumed = 1;
+        } else if (stack.getItem() == Items.GOLDEN_APPLE) {
+            newHealth += 10.0F;
+            consumed = 1;
+        } if (ItemStack.EMPTY.is(ItemTags.create(ResourceLocation.parse("true_end:btd_uneatables")))) {
+            consumed = 0;
+        } else {
+            consumed = 2;
+            other = true;
         }
 
-        if (consumed) {
+        if (other) {
+            System.out.println("Item is not a food");
+            System.out.println("Allowing onRightClickItem action...");
+        }
+
+        if (consumed == 1) {
             stack.shrink(1);
             player.getInventory().setChanged();
             float maxHealth = player.getMaxHealth();
@@ -85,7 +110,7 @@ public class AlphaFoodSystem {
             playEatSound(player.level(), player.getX(), player.getY(), player.getZ());
         }
 
-        if (!consumed) {
+        if (consumed == 0) {
             assert event != null;
             if (event.isCancelable()) {
                 event.setCanceled(true);
