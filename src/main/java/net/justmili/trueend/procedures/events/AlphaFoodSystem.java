@@ -4,7 +4,9 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import static net.justmili.trueend.TrueEnd.MODID;
 import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -22,28 +24,24 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber
 public class AlphaFoodSystem {
-
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         if (event.getHand() != InteractionHand.MAIN_HAND) return;
 
         Player player = event.getEntity();
         ItemStack stack = event.getItemStack();
-
-        if (player.getHealth() >= player.getMaxHealth()) {
-            if (event.isCancelable()) {
-                event.setCanceled(true);
-            }
-            return;
-        }
-
         int consumed = execute(event, player, stack);
 
-        if (consumed == 1 && event.isCancelable()) {
-            event.setCanceled(true);
-        } else if (consumed == 0 && event.isCancelable()) {
-            event.setCanceled(true);
+        //Debug stuff
+        String action = null;
+        if (consumed == 0) {
+            action = "Blocked Action";
+        } else if (consumed == 1) {
+            action = "Allowed Action";
+        } else if (consumed == 2) {
+            action = "Skipped Blocking Action";
         }
+        System.out.println("[DEBUG] " + MODID + ": Consumed = " + consumed + ", " + action);
     }
 
     private static int execute(@Nullable PlayerInteractEvent.RightClickItem event, @Nullable Player player, ItemStack stack) {
@@ -95,16 +93,22 @@ public class AlphaFoodSystem {
         }
 
         if (other) {
-            System.out.println("Item is not a food");
-            System.out.println("Allowing onRightClickItem action...");
+            System.out.println("[DEBUG] " + MODID + ": Not a food!");
         }
 
         if (consumed == 1) {
-            stack.shrink(1);
-            player.getInventory().setChanged();
-            float maxHealth = player.getMaxHealth();
-            player.setHealth(Math.min(newHealth, maxHealth));
-            playEatSound(player.level(), player.getX(), player.getY(), player.getZ());
+            assert event != null;
+            if (!healthCheck(event)) {
+                stack.shrink(1);
+                player.getInventory().setChanged();
+                float maxHealth = player.getMaxHealth();
+                player.setHealth(Math.min(newHealth, maxHealth));
+                playEatSound(player.level(), player.getX(), player.getY(), player.getZ());
+
+                event.setCanceled(true);
+            } else {
+                consumed = 0;
+            }
         }
 
         if (consumed == 0) {
@@ -113,7 +117,6 @@ public class AlphaFoodSystem {
                 event.setCanceled(true);
             }
         }
-
         return consumed;
     }
 
@@ -130,6 +133,20 @@ public class AlphaFoodSystem {
                         Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("entity.generic.eat"))),
                         SoundSource.NEUTRAL, 1.0f, (float) pitch, false);
             }
+        }
+    }
+
+    private static boolean healthCheck(PlayerInteractEvent.RightClickItem event) {
+        Player player = event.getEntity();
+        if (player.getHealth() >= player.getMaxHealth()) {
+            if (event.isCancelable()) {
+                event.setCanceled(true);
+            }
+            System.out.println("[DEBUG] true_end: Player at full health.");
+            return true;
+        } else {
+            System.out.println("[DEBUG] " + MODID + ": Player not at full health.");
+            return false;
         }
     }
 }

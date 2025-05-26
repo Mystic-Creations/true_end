@@ -28,7 +28,7 @@ public class HudOverlayHandler {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         assert player != null;
-        
+
         //Check if player is in BTD
         if (!player.level().dimension().equals(BTD)) return;
 
