@@ -50,9 +50,9 @@ public class TrueEnd {
 	public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
 	public static final String MODID = "true_end";
 
-	public TrueEnd() {
+	public TrueEnd(FMLJavaModLoadingContext modContext) {
 		MinecraftForge.EVENT_BUS.register(this);
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		IEventBus bus = modContext.getModEventBus();
 
 		TrueEndItems.REGISTRY.register(bus);
 

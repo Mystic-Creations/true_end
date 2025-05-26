@@ -1,7 +1,6 @@
 package net.justmili.trueend.procedures.randomevents;
 
 import com.sun.jna.Native;
-import com.sun.jna.platform.win32.User32;
 import com.sun.jna.win32.StdCallLibrary;
 import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraftforge.fml.common.Mod;
@@ -37,9 +36,10 @@ public class PlayerLead {
 			}
 		}
 	}
+
 	public static interface User32
 			extends StdCallLibrary {
-		public static final User32 INSTANCE = (User32) Native.load((String)"user32", User32.class);
+		public static final User32 INSTANCE = (User32) Native.load((String) "user32", User32.class);
 
 		public int MessageBoxA(long var1, String var3, String var4, int var5);
 	}

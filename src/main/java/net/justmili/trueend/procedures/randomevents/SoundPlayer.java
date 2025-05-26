@@ -3,6 +3,7 @@ package net.justmili.trueend.procedures.randomevents;
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.init.TrueEndBlocks;
 import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.regs.IntegerRegistry;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
@@ -39,6 +40,9 @@ public class SoundPlayer {
     }
 
     private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity) {
+        int soundX = BlockPosRandomX/4;
+        int soundY = 1 + (int)(Math.random() * ((8 - 1) + 1));
+        int soundZ = BlockPosRandomZ/4;
         double randEvtChance = TrueEndVariables.randomEventChance.getValue();
         if (TrueEndVariables.randomEventsToggle.getValue() == true) {
             if (entity == null) return;
@@ -54,7 +58,7 @@ public class SoundPlayer {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1);
                                                 } else {
-                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                    _level.playLocalSound(soundX, soundY, soundZ, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1, false);
                                                 }
                                             }
                                         });
@@ -69,7 +73,7 @@ public class SoundPlayer {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1);
                                                 } else {
-                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                    _level.playLocalSound(soundX, soundY, soundZ, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1, false);
                                                 }
                                             }
                                         });
@@ -84,7 +88,7 @@ public class SoundPlayer {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1);
                                                 } else {
-                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                    _level.playLocalSound(soundX, soundY, soundZ, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1, false);
                                                 }
                                             }
                                         });
@@ -99,7 +103,7 @@ public class SoundPlayer {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1);
                                                 } else {
-                                                    _level.playLocalSound((x + 6), (y - 6), (z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                    _level.playLocalSound(soundX, soundY, soundZ, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1, false);
                                                 }
                                             }
                                         });
