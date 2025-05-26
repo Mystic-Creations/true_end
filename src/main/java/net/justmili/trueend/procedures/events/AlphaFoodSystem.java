@@ -1,5 +1,10 @@
 package net.justmili.trueend.procedures.events;
 
+import java.util.Objects;
+
+import javax.annotation.Nullable;
+
+import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -15,14 +20,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
-
-import java.util.Objects;
-
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
-
 @Mod.EventBusSubscriber
 public class AlphaFoodSystem {
+
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         if (event.getHand() != InteractionHand.MAIN_HAND) return;
@@ -30,7 +30,6 @@ public class AlphaFoodSystem {
         Player player = event.getEntity();
         ItemStack stack = event.getItemStack();
 
-        // Cancel if already full health
         if (player.getHealth() >= player.getMaxHealth()) {
             if (event.isCancelable()) {
                 event.setCanceled(true);
@@ -38,16 +37,14 @@ public class AlphaFoodSystem {
             return;
         }
 
-        // Execute and cancel vanilla handling if consumed
-        if (execute(event, player, stack)) {
-            if (event.isCancelable()) {
-                event.setCanceled(true);
-            }
+        int consumed = execute(event, player, stack);
+
+        if (consumed == 1 && event.isCancelable()) {
+            event.setCanceled(true);
+        } else if (consumed == 0 && event.isCancelable()) {
+            event.setCanceled(true);
         }
     }
-
-    //HELP I AM STUCK IN A LOOP AND I CAN'T FIX IT
-    //I need this to allow some foods, disallow other foods and allow other items like saddles, fishing rods etc to work
 
     private static int execute(@Nullable PlayerInteractEvent.RightClickItem event, @Nullable Player player, ItemStack stack) {
         if (player == null) return 0;
@@ -90,7 +87,7 @@ public class AlphaFoodSystem {
         } else if (stack.getItem() == Items.GOLDEN_APPLE) {
             newHealth += 10.0F;
             consumed = 1;
-        } if (ItemStack.EMPTY.is(ItemTags.create(ResourceLocation.parse("true_end:btd_uneatables")))) {
+        } else if (stack.is(ItemTags.create(ResourceLocation.parse("true_end:btd_uneatables")))) {
             consumed = 0;
         } else {
             consumed = 2;
@@ -116,6 +113,7 @@ public class AlphaFoodSystem {
                 event.setCanceled(true);
             }
         }
+
         return consumed;
     }
 
@@ -135,4 +133,3 @@ public class AlphaFoodSystem {
         }
     }
 }
-

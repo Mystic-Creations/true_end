@@ -1,6 +1,5 @@
 package net.justmili.trueend.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -27,8 +26,7 @@ public class HudOverlayHandler {
         if (player == null) return;
 
         // Only run in Beyond The Dream (BTD)
-        boolean inBTD = player.level().dimension().equals(BTD);
-        if (!inBTD) return;
+        if (!player.level().dimension().equals(BTD)) return;
 
         NamedGuiOverlay overlay = event.getOverlay();
         ResourceLocation id = overlay.id();
@@ -45,34 +43,48 @@ public class HudOverlayHandler {
 
         if (id.equals(VanillaGuiOverlay.ARMOR_LEVEL.id())) {
             event.setCanceled(true);
-            int armor_x = w + 200;
-            int armor_y = h + 15;
 
             IGuiOverlay armorOverlay = overlay.overlay();
             GuiGraphics gui = event.getGuiGraphics();
             float pt = event.getPartialTick();
-            armorOverlay.render((ForgeGui) mc.gui, gui, pt, armor_x, armor_y);
+            armorOverlay.render((ForgeGui) mc.gui, gui, pt, w + 200, h + 16);
         }
-
         if (id.equals(VanillaGuiOverlay.PLAYER_HEALTH.id())) {
             event.setCanceled(true);
-            int health_y = h + 5;
 
-            IGuiOverlay armorOverlay = overlay.overlay();
+            IGuiOverlay healthOverlay = overlay.overlay();
             GuiGraphics gui = event.getGuiGraphics();
             float pt = event.getPartialTick();
-            armorOverlay.render((ForgeGui) mc.gui, gui, pt, w, health_y);
+            healthOverlay.render((ForgeGui) mc.gui, gui, pt, w, h + 6);
+        }
+        if (id.equals(VanillaGuiOverlay.AIR_LEVEL.id())) {
+            event.setCanceled(true);
+
+            if (player.getArmorValue() > 0) {
+                //if armor bar is rendered
+                IGuiOverlay airOverlay = overlay.overlay();
+                GuiGraphics gui = event.getGuiGraphics();
+                float pt = event.getPartialTick();
+                airOverlay.render((ForgeGui) mc.gui, gui, pt, w, h - 4);
+            } else {
+                //if armor bar is not rendered
+                IGuiOverlay airOverlay = overlay.overlay();
+                GuiGraphics gui = event.getGuiGraphics();
+                float pt = event.getPartialTick();
+                airOverlay.render((ForgeGui) mc.gui, gui, pt, w, h + 6);
+            }
         }
 
-        
         if (id.equals(VanillaGuiOverlay.MOUNT_HEALTH.id())) {
             event.setCanceled(true);
-            int mount_y = h + 5;
 
-            IGuiOverlay armorOverlay = overlay.overlay();
+            IGuiOverlay mountHpOverlay = overlay.overlay();
             GuiGraphics gui = event.getGuiGraphics();
             float pt = event.getPartialTick();
-            armorOverlay.render((ForgeGui) mc.gui, gui, pt, w, mount_y);
+            mountHpOverlay.render((ForgeGui) mc.gui, gui, pt, w, h - 5);
+        }
+        if (id.equals(VanillaGuiOverlay.JUMP_BAR.id())) {
+            event.setCanceled(true);
         }
     }
 }
