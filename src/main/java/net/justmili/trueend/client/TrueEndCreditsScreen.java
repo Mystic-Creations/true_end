@@ -5,50 +5,59 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 public class TrueEndCreditsScreen extends Screen {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrueEndCreditsScreen.class);
     private static final ResourceLocation TITLE_TEX = ResourceLocation.parse("true_end:textures/gui/title.png");
     private static final ResourceLocation TEXT_FILE  = ResourceLocation.parse("true_end:texts/credits.txt");
+    private static final ResourceLocation BG_TEXTURE = ResourceLocation.parse("true_end:textures/block/old_dirt.png");
 
     private final Runnable onClose;
     private final List<String> lines = new ArrayList<>();
     private float scroll = 0f;
 
-    /** Default: closes back to game when any key/Esc is pressed */
     public TrueEndCreditsScreen() {
-        this(() -> Minecraft.getInstance().setScreen(null));
+        this(() -> {
+            Minecraft.getInstance().getSoundManager().stop();
+            Minecraft.getInstance().setScreen(null);
+        });
     }
 
-    /** Allows custom onClose behavior */
     public TrueEndCreditsScreen(Runnable onClose) {
         super(Component.empty());
         this.onClose = onClose;
         loadCreditsText();
+        this.scroll = 0f;
     }
 
     private void loadCreditsText() {
-        try (var stream = Minecraft.getInstance()
-                .getResourceManager()
-                .open(TEXT_FILE);
-             var br     = new BufferedReader(new InputStreamReader(stream)))
-        {
+        try (var stream = Minecraft.getInstance().getResourceManager().open(TEXT_FILE);
+             var br     = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = br.readLine()) != null) {
+                assert Minecraft.getInstance().player != null;
                 lines.add(line.replace("PLAYERNAME",
-                        Minecraft.getInstance()
-                                .player
-                                .getName()
-                                .getString()));
+                        Minecraft.getInstance().player.getName().getString()));
             }
         } catch (Exception e) {
             LOGGER.error("Failed to load credits.txt", e);
@@ -56,43 +65,50 @@ public class TrueEndCreditsScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics gui) {
-        super.renderBackground(gui);
+    public void renderBackground(@NotNull GuiGraphics gui) {
+        // Tile the dirt texture to fill the screen
+        RenderSystem.setShaderTexture(0, BG_TEXTURE);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        int texSize = 32;
+        for (int x = 0; x < width; x += texSize) {
+            for (int y = 0; y < height; y += texSize) {
+                gui.blit(BG_TEXTURE, x, y, 0, 0, texSize, texSize, texSize, texSize);
+            }
+        }
     }
 
     @Override
-    public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(gui);
 
-        // Title
-        RenderSystem.setShaderTexture(0, TITLE_TEX);
-        int texW = 256, texH = 64;
-        int x = (this.width - texW) / 2, y = 20;
-        gui.blit(TITLE_TEX, x, y, 0, 0, texW, texH, texW, texH);
+        gui.fill(0, 0, width, height, 0x88000000);
 
-        // Scrolling text
+        float scrollSpeed = 25f;
+        scroll += scrollSpeed * (partialTicks / 20f);
+
+        RenderSystem.setShaderTexture(0, TITLE_TEX);
+        int texW = 384, texH = 96;
+        float titleX = (width - texW) / 2f;
+        float titleY = height - scroll;
+        gui.blit(TITLE_TEX, (int) titleX, (int) titleY, 0, 0, texW, texH, texW, texH);
+
         Font font = this.font;
-        int startY = 100 - (int) scroll;
+        float startY = titleY + texH + 20;
         for (int i = 0; i < lines.size(); i++) {
             String s = lines.get(i);
-            int tx = (this.width - font.width(s)) / 2;
-            int ty = startY + i * 12;
-            gui.drawString(font, s, tx, ty, 0xFFFFFF, true);
+            int w = font.width(s);
+            gui.drawString(font, s, (width - w) / 2, (int) (startY + i * 12), 0xFFFFFF, true);
         }
 
-        scroll += partialTicks * 0.5f;
         super.render(gui, mouseX, mouseY, partialTicks);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        onClose.run();
-        return true;
-    }
-
-    @Override
-    public boolean shouldCloseOnEsc() {
-        onClose.run();
-        return true;
+        if (keyCode == GLFW_KEY_ESCAPE) {
+            onClose.run();
+            return true;
+        }
+        return false;
     }
 }

@@ -1,6 +1,8 @@
 package net.justmili.trueend.procedures.events;
 
 import net.justmili.trueend.client.TrueEndCreditsScreen;
+import net.justmili.trueend.config.TrueEndConfig;
+import net.justmili.trueend.network.TrueEndVariables;
 import net.justmili.trueend.regs.DimKeyRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
@@ -12,6 +14,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimension
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static net.justmili.trueend.TrueEnd.MODID;
+import static net.justmili.trueend.config.TrueEndConfig.entries;
+import static net.justmili.trueend.network.TrueEndVariables.creditsToggle;
+
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CreditsDetect {
 
@@ -21,8 +27,8 @@ public class CreditsDetect {
 
     @SubscribeEvent
     public static void onDimensionChange(PlayerChangedDimensionEvent event) {
-        if (event.getFrom() == DimKeyRegistry.BTD && event.getTo() == Level.OVERWORLD) {
-            ticksUntilShow = 10;       
+        if (event.getFrom() == DimKeyRegistry.BTD && event.getTo() == Level.OVERWORLD && TrueEndVariables.creditsToggle.getValue() == true) {
+            ticksUntilShow = 10;
             tickHandlerEnabled = true;   
 
             Minecraft mc = Minecraft.getInstance();
@@ -54,6 +60,8 @@ public class CreditsDetect {
                 if (mc.screen == null && mc.player != null) {
                     mc.setScreen(new TrueEndCreditsScreen());
                 }
+                //Change this so the change will be permanent and not just for the time of the game session
+                TrueEndConfig.entries.put("creditsToggle", false);
             }
         }
     }
