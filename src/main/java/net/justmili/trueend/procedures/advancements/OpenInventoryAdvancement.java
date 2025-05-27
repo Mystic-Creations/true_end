@@ -2,9 +2,6 @@ package net.justmili.trueend.procedures.advancements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.TickEvent;
@@ -14,15 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.Advancement;
 
-import java.util.WeakHashMap;
-
-import static net.justmili.trueend.TrueEnd.MODID;
-
 @Mod.EventBusSubscriber
 public class OpenInventoryAdvancement {
-	// Track the last open container for each player
-	private static final WeakHashMap<Player, Boolean> wasInventoryOpen = new WeakHashMap<>();
-
 	@SubscribeEvent
 	public static void onGuiOpen(TickEvent.PlayerTickEvent event) {
 		if (event.phase != TickEvent.Phase.END) return;
@@ -32,7 +22,6 @@ public class OpenInventoryAdvancement {
 		boolean isInventory = mc.screen instanceof InventoryScreen;
 
 		if (isInventory) {
-			// Player has just opened their inventory
 			if (player instanceof ServerPlayer serverPlayer) {
 				Advancement advancement = serverPlayer.server.getAdvancements()
 						.getAdvancement(ResourceLocation.parse("true_end:story/open_inventory"));

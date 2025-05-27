@@ -46,12 +46,12 @@ public class DimSwapToNWAD {
 			return;
 		boolean currentKeepInv = TrueEndVariables.MapVariables.get(world).isDefaultKeepInv();
 
-		if (Math.random() < (TrueEndVariables.randomEventChance.getValue()*15)) {
+		if (Math.random() < (TrueEndVariables.randomEventChance.getValue()*5)) {
 			if (entity instanceof Player && damagesource.is(DamageTypes.IN_WALL) && !(entity instanceof ServerPlayer _plr2 && _plr2.level() instanceof ServerLevel
 					&& _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"))).isDone())) {
-				if (currentKeepInv == true) {
+				if (currentKeepInv) {
 					world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
-				} else if (currentKeepInv == false) {
+				} else if (!currentKeepInv) {
 					world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(false, world.getServer());
 				}
 				if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()) {

@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.datafixers.util.Pair;
+import net.justmili.trueend.config.TrueEndConfig;
 import net.justmili.trueend.world.liminal_forest.LiminalForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -53,6 +54,9 @@ public class TrueEnd {
 	public TrueEnd(FMLJavaModLoadingContext modContext) {
 		MinecraftForge.EVENT_BUS.register(this);
 		IEventBus bus = modContext.getModEventBus();
+
+		TrueEndConfig.load();
+		System.out.println("[DEBUG] " + MODID + ": Loaded Config");
 
 		TrueEndItems.REGISTRY.register(bus);
 

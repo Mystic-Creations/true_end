@@ -63,4 +63,8 @@ public class TrueEndConfig {
 		builder.setSavingRunnable(() -> serializer.serialize(entries));
 		return builder;
 	}
+
+	public static void load() {
+		entries = serializer.deserialize();
+	}
 }
