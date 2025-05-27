@@ -42,6 +42,7 @@ public class TrueEndVariables {
     public static DoubleListEntry entitySpawnChance;
     public static BooleanListEntry popupsToggle;
     public static BooleanListEntry fogToggle;
+    public static BooleanListEntry creditsToggle;
     public static IntegerListEntry btdConversationDelay;
     public static BooleanListEntry randomEventsToggle;
 

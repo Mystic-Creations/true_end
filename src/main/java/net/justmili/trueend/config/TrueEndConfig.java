@@ -25,7 +25,7 @@ public class TrueEndConfig {
 		builder.setShouldTabsSmoothScroll(true);
 		ConfigCategory gameplay = builder.getOrCreateCategory(Component.translatable("config.true_end.category.gameplay"));
 		ConfigCategory events = builder.getOrCreateCategory(Component.translatable("config.true_end.category.events"));
-		ConfigCategory render = builder.getOrCreateCategory(Component.translatable("config.true_end.category.render"));
+		ConfigCategory other = builder.getOrCreateCategory(Component.translatable("config.true_end.category.other"));
 		//entries.putIfAbsent("clearDreamItems", true);
 		//TrueEndVariables.clearDreamItems = entryBuilder.startBooleanToggle(Component.translatable("config.true_end.entry.cleardreamitems.title"), (boolean) entries.get("clearDreamItems")).setDefaultValue(true)
 		//		.setTooltip(Component.translatable("config.true_end.entry.cleardreamitems.tooltip")).setSaveConsumer(newValue -> entries.put("clearDreamItems", newValue)).build();
@@ -36,6 +36,9 @@ public class TrueEndConfig {
 		TrueEndVariables.randomEventChance = entryBuilder.startDoubleField(Component.translatable("config.true_end.entry.randomeventchance.title"), (double) entries.get("randomEventChance")).setDefaultValue(0.005d)
 				.setTooltip(Component.translatable("config.true_end.entry.randomeventchance.tooltip")).setMin(/*@int*/0).setMax(0.1).setRequirement(Requirement.isTrue(TrueEndVariables.randomEventsToggle))
 				.setSaveConsumer(newValue -> entries.put("randomEventChance", newValue)).build();
+		entries.putIfAbsent("fogToggle", true);
+		TrueEndVariables.fogToggle = entryBuilder.startBooleanToggle(Component.translatable("config.true_end.entry.btdfog.title"), (boolean) entries.get("fogToggle")).setDefaultValue(true)
+				.setTooltip(Component.translatable("config.true_end.entry.btdfog.tooltip")).setSaveConsumer(newValue -> entries.put("fogToggle", newValue)).build();
 		entries.putIfAbsent("entitySpawnChance", 0.008d);
 		TrueEndVariables.entitySpawnChance = entryBuilder.startDoubleField(Component.translatable("config.true_end.entry.entityspawning.title"), (double) entries.get("entitySpawnChance")).setDefaultValue(0.008d)
 				.setTooltip(Component.translatable("config.true_end.entry.entityspawning.tooltip")).setMin(/*@int*/0).setMax(0.1).setSaveConsumer(newValue -> entries.put("entitySpawnChance", newValue)).build();
@@ -45,16 +48,17 @@ public class TrueEndConfig {
 		entries.putIfAbsent("popupsToggle", true);
 		TrueEndVariables.popupsToggle = entryBuilder.startBooleanToggle(Component.translatable("config.true_end.entry.pop_ups.title"), (boolean) entries.get("popupsToggle")).setDefaultValue(true)
 				.setTooltip(Component.translatable("config.true_end.entry.pop_ups.tooltip")).setRequirement(Requirement.isTrue(TrueEndVariables.randomEventsToggle)).setSaveConsumer(newValue -> entries.put("popupsToggle", newValue)).build();
-		entries.putIfAbsent("fogToggle", true);
-		TrueEndVariables.fogToggle = entryBuilder.startBooleanToggle(Component.translatable("config.true_end.entry.btdfog.title"), (boolean) entries.get("fogToggle")).setDefaultValue(true)
-				.setTooltip(Component.translatable("config.true_end.entry.btdfog.tooltip")).setSaveConsumer(newValue -> entries.put("fogToggle", newValue)).build();
+		entries.putIfAbsent("creditsToggle", true);
+		TrueEndVariables.creditsToggle = entryBuilder.startBooleanToggle(Component.translatable("config.true_end.entry.credits.title"), (boolean) entries.get("creditsToggle")).setDefaultValue(true)
+				.setTooltip(Component.translatable("config.true_end.entry.credits.tooltip")).setSaveConsumer(newValue -> entries.put("creditsToggle", newValue)).build();
 		//gameplay.addEntry(TrueEndVariables.clearDreamItems);
 		gameplay.addEntry(TrueEndVariables.randomEventsToggle);
+		gameplay.addEntry(TrueEndVariables.fogToggle);
 		gameplay.addEntry(TrueEndVariables.btdConversationDelay);
 		events.addEntry(TrueEndVariables.randomEventChance);
 		events.addEntry(TrueEndVariables.entitySpawnChance);
 		events.addEntry(TrueEndVariables.popupsToggle);
-		render.addEntry(TrueEndVariables.fogToggle);
+		other.addEntry(TrueEndVariables.creditsToggle);
 		builder.setSavingRunnable(() -> serializer.serialize(entries));
 		return builder;
 	}

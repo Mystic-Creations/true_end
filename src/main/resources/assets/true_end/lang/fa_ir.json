@@ -73,7 +73,7 @@
   "config.true_end.screentitle": "True End / Config",
   "config.true_end.category.gameplay": "Gameplay",
   "config.true_end.category.events": "Events",
-  "config.true_end.category.render": "Render",
+  "config.true_end.category.other": "Other",
   "config.true_end.entry.cleardreamitems.title": "Clear Dream Items",
   "config.true_end.entry.cleardreamitems.tooltip": "If true, clears player's inventory at their first-time entry to Beyond The Dream (once and never again)",
   "config.true_end.entry.randomevents.title": "Random Events",
@@ -88,5 +88,7 @@
   "config.true_end.entry.btdconvodelay.tooltip": "Time in ticks between messages of 'The Voices' at first entry to Beyond The Dream",
   "config.true_end.entry.pop_ups.title": "Window Pop-Ups",
   "config.true_end.entry.pop_ups.tooltip": "Determines are event window pop-ups turned on or off",
+  "config.true_end.entry.credits.title": "Credits",
+  "config.true_end.entry.credits.tooltip": "When leaving Beyond The Dream for the first time and only that one time,\nyou'll be met with a credits scene to honor everyone who worked on this mod",
   "events.true_end.feelingwatched": "You feel watched..."
 }

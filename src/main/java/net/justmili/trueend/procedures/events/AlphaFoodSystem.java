@@ -142,10 +142,10 @@ public class AlphaFoodSystem {
             if (event.isCancelable()) {
                 event.setCanceled(true);
             }
-            System.out.println("[DEBUG] true_end: Player at full health");
+            System.out.println("[DEBUG] true_end: Player at full health.");
             return true;
         } else {
-            System.out.println("[DEBUG] " + MODID + ": Player not at full health");
+            System.out.println("[DEBUG] " + MODID + ": Player not at full health.");
             return false;
         }
     }
