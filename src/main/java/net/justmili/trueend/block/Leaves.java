@@ -1,37 +1,29 @@
 package net.justmili.trueend.block;
 
-import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.init.TrueEndBlocks;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.HalfTransparentBlock;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.ITagManager;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
-
-import java.util.Random;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class Leaves extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -40,10 +32,17 @@ public class Leaves extends Block implements SimpleWaterloggedBlock {
 
 	public static final TagKey<Block> woodTag = BlockTags.create(ResourceLocation.fromNamespaceAndPath("true_end", "wood"));
 
-
 	public Leaves() {
-		super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.GRASS).strength(0.2f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).randomTicks());
-		this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false).setValue(DISTANCE, 7));
+		super(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_LIGHT_GREEN)
+			.sound(SoundType.GRASS)
+			.strength(0.2f)
+			.noOcclusion()
+			.isRedstoneConductor((bs, br, bp) -> false)
+			.randomTicks());
+		this.registerDefaultState(this.stateDefinition.any()
+			.setValue(WATERLOGGED, false)
+			.setValue(DISTANCE, 7));
 	}
 
 	@Override
@@ -80,7 +79,7 @@ public class Leaves extends Block implements SimpleWaterloggedBlock {
 		int minDistance = 7;
 		for (Direction direction : Direction.values()) {
 			BlockState neighbor = world.getBlockState(currentPos.relative(direction));
-		if (ForgeRegistries.BLOCKS.tags().getTag(woodTag).contains(neighbor.getBlock())) {
+			if (ForgeRegistries.BLOCKS.tags().getTag(woodTag).contains(neighbor.getBlock())) {
 				minDistance = 1;
 				break;
 			} else if (neighbor.getBlock() instanceof Leaves) {
@@ -90,4 +89,9 @@ public class Leaves extends Block implements SimpleWaterloggedBlock {
 		world.scheduleTick(currentPos, this, 20);
 		return state.setValue(DISTANCE, minDistance);
 	}
+
+   @Override
+   public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    entity.causeFallDamage(fallDistance, 0.0F, level.damageSources().fall());
+   }
 }
