@@ -19,6 +19,7 @@ public class TrueEndConfig {
 	public static ConfigBuilder getConfigBuilder() {
 		ConfigBuilder builder = ConfigBuilder.create().setTitle(Component.literal("TrueEnd Config"));
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
+		builder.setSavingRunnable(() -> serializer.serialize(entries));
 		builder.setTitle(Component.translatable("config.true_end.screentitle"));
 		builder.setDefaultBackgroundTexture(ResourceLocation.parse("true_end:textures/block/old_planks.png"));
 		builder.setShouldTabsSmoothScroll(true);

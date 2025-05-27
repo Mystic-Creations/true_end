@@ -60,8 +60,8 @@ public class CreditsDetect {
                 if (mc.screen == null && mc.player != null) {
                     mc.setScreen(new TrueEndCreditsScreen());
                 }
-                //Change this so the change will be permanent and not just for the time of the game session
                 TrueEndConfig.entries.put("creditsToggle", false);
+                TrueEndConfig.serializer.serialize(TrueEndConfig.entries);
             }
         }
     }
