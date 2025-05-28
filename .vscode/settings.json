@@ -7,5 +7,7 @@
         "path": "C:/Program Files/Eclipse Adoptium/jdk-17.0.14.7-hotspot",
         "default": true
       }
-    ]
+    ],
+    "files.autoSave": "onFocusChange",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
