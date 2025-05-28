@@ -15,7 +15,7 @@ import net.justmili.trueend.TrueEnd;
 import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
-public class PlayerLead {
+public class SleepPopup {
 	@SubscribeEvent
 	public static void onPlayerInBed(PlayerSleepInBedEvent event) {
 		execute(event, event.getEntity().level());
