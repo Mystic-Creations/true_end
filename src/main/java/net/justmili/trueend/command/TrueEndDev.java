@@ -1,5 +1,6 @@
 package net.justmili.trueend.command;
 
+import net.justmili.trueend.procedures.DimSwapToBTD;
 import net.justmili.trueend.procedures.devcmd.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod;
@@ -123,7 +124,12 @@ public class TrueEndDev {
 
 					NWADTestKIF.execute(world, entity);
 					return 0;
-				}))));
+				})).then(Commands.literal("adaptTerrain").executes( arguments -> {
+					ServerLevel world = arguments.getSource().getLevel();
+					DimSwapToBTD.adaptTerrain(world, arguments.getSource().getEntity().blockPosition());
+					return 0;
+						}))
+				));
 	}
 
 }

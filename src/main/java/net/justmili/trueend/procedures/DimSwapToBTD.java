@@ -4,7 +4,6 @@ import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -17,6 +16,7 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -40,6 +40,10 @@ import static net.justmili.trueend.regs.IntegerRegistry.*;
 @Mod.EventBusSubscriber
 public class DimSwapToBTD {
     private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
+
+    public static final int HOUSE_PLATEAU_WIDTH = 7;
+    public static final int HOUSE_PLATEAU_LENGTH = 7;
+    public static final int TERRAIN_ADAPT_EXTENSION = 5;
 
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
@@ -245,4 +249,54 @@ public class DimSwapToBTD {
             TrueEnd.sendTellrawMessagesWithCooldown(player, conversation, convoDelay);
         });
     }
+
+    public static void adaptTerrain(ServerLevel world, BlockPos placePos) {
+        int plateauHeight = placePos.getY();
+
+        // make the plateau
+        for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
+            for (int z = 0; z < HOUSE_PLATEAU_LENGTH; z++) {
+                world.setBlock(new BlockPos(x+placePos.getX(), plateauHeight, z+placePos.getZ()), TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 0);
+            }
+        }
+
+        // now adapt the terrain
+
+        // adapt in -x direction
+        for (int z = 0; z < HOUSE_PLATEAU_LENGTH; z++) {
+            int furtherHeight = getLocalMax(world, new BlockPos(placePos.getX()-TERRAIN_ADAPT_EXTENSION, plateauHeight, z + placePos.getZ()));
+            for (int x = -TERRAIN_ADAPT_EXTENSION; x < 0; x++) {
+                int height = gradient(furtherHeight, plateauHeight, TERRAIN_ADAPT_EXTENSION, x);
+                world.setBlock(new BlockPos(x+placePos.getX(), height, z+placePos.getZ()), TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 0);
+            }
+        }
+
+    }
+
+    private static int gradient(int startHeight, int toHeight, int gradientLength, int spot) {
+        return (startHeight + toHeight - 1) / gradientLength * spot;
+    }
+
+    private static int getLocalMax(ServerLevel world, BlockPos pos) {
+        int max = world.getMaxBuildHeight() -1;
+        boolean hasHitY = false;
+        for (int y = world.getMaxBuildHeight() - 1; y >= 0; y--) {
+            if (y == pos.getY()) {
+                hasHitY = true;
+            }
+            if (world.getBlockState(new BlockPos(pos.getX(), y, pos.getZ())).getBlock() == Blocks.AIR) {
+                if (hasHitY) {
+                    // check if the new max if further then the old max
+                    if (Math.abs(y - pos.getY()) < Math.abs(max - pos.getY())) {
+                        max = y;
+                    }
+                    return max;
+                } else {
+                    max = y;
+                }
+            }
+        }
+        return max;
+    }
+
 }
