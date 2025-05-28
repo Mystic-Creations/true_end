@@ -5,31 +5,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 public class TrueEndCreditsScreen extends Screen {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrueEndCreditsScreen.class);
     private static final ResourceLocation TITLE_TEX = ResourceLocation.parse("true_end:textures/gui/title.png");
-    private static final ResourceLocation TEXT_FILE  = ResourceLocation.parse("true_end:texts/credits.txt");
+    private static final ResourceLocation TEXT_FILE = ResourceLocation.parse("true_end:texts/credits.txt");
     private static final ResourceLocation BG_TEXTURE = ResourceLocation.parse("true_end:textures/block/old_dirt.png");
 
     private final Runnable onClose;
@@ -52,7 +44,7 @@ public class TrueEndCreditsScreen extends Screen {
 
     private void loadCreditsText() {
         try (var stream = Minecraft.getInstance().getResourceManager().open(TEXT_FILE);
-             var br     = new BufferedReader(new InputStreamReader(stream))) {
+                var br = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 assert Minecraft.getInstance().player != null;

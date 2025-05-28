@@ -1,5 +1,6 @@
 package net.justmili.trueend.procedures.events;
 
+import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.client.TrueEndCreditsScreen;
 import net.justmili.trueend.config.TrueEndConfig;
 import net.justmili.trueend.network.TrueEndVariables;
@@ -28,7 +29,9 @@ public class CreditsDetect {
             tickHandlerEnabled = true;   
 
             Minecraft mc = Minecraft.getInstance();
-
+            TrueEnd.queueServerWork(2, () -> {
+                Minecraft.getInstance().getSoundManager().stop();
+            });
             if (mc.level != null && mc.player != null) {
                 mc.level.playLocalSound(
                     mc.player.getX(),
