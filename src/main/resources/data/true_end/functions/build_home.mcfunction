@@ -6,10 +6,6 @@ fill ~3 ~ ~3 ~-3 ~5 ~-4 air
 fill ~-1 ~ ~-5 ~1 ~5 ~-5 air
 
 # Terrain modifications / Terrain fill
-fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 true_end:grass_block replace #true_end:build_home_replacables_terrain
-fill ~-5 ~-2 ~-5 ~5 ~-2 ~5 true_end:dirt replace #true_end:build_home_replacables_terrain
-fill ~-5 ~-3 ~-5 ~5 ~-3 ~5 true_end:dirt replace #true_end:build_home_replacables_terrain
-fill ~-4 ~-4 ~-4 ~4 ~-4 ~4 true_end:dirt replace #true_end:build_home_replacables_terrain
 # Terrain modification / anti-water measures
 fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 true_end:cobblestone replace #true_end:build_home_replacables_fluid
 

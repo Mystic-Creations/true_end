@@ -1,6 +1,8 @@
 package net.justmili.trueend.command;
 
+import net.justmili.trueend.procedures.DimSwapToBTD;
 import net.justmili.trueend.procedures.devcmd.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,7 +40,22 @@ public class TrueEndDev {
 
 					TestBTDDirect.execute(world, entity);
 					return 0;
-				})).then(Commands.literal("testHome").executes(arguments -> {
+				})).then(Commands.literal("adaptTerrain").executes(arguments -> {
+					ServerLevel world = arguments.getSource().getLevel();
+					DimSwapToBTD.adaptTerrain(world, arguments.getSource().getEntity().blockPosition());
+					return 0;
+				})).then(Commands.literal("removeTrees").executes(arguments -> {
+					ServerLevel world = arguments.getSource().getLevel();
+					DimSwapToBTD.removeNearbyTrees(world, arguments.getSource().getEntity().blockPosition(), 3);
+					return 0;
+				})).then(Commands.literal("localheight").executes(arguments -> {
+					ServerLevel world = arguments.getSource().getLevel();
+					int localMax = DimSwapToBTD.getLocalMax(world, arguments.getSource().getEntity().blockPosition());
+					arguments.getSource().getEntity().sendSystemMessage(Component.literal(Integer.toString(localMax)));
+					return 0;
+				}))
+
+				.then(Commands.literal("testHome").executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 
 					double x = arguments.getSource().getPosition().x();
@@ -123,7 +140,8 @@ public class TrueEndDev {
 
 					NWADTestKIF.execute(world, entity);
 					return 0;
-				}))));
+				}))
+				));
 	}
 
 }

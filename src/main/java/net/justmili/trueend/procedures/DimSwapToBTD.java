@@ -1,10 +1,10 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.TrueEndVariables;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -17,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -29,9 +30,7 @@ import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.effect.MobEffectInstance;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
@@ -40,6 +39,10 @@ import static net.justmili.trueend.regs.IntegerRegistry.*;
 @Mod.EventBusSubscriber
 public class DimSwapToBTD {
     private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
+
+    public static final int HOUSE_PLATEAU_WIDTH = 7;
+    public static final int HOUSE_PLATEAU_LENGTH = 7;
+    public static final int TERRAIN_ADAPT_EXTENSION = 10;
 
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
@@ -79,23 +82,21 @@ public class DimSwapToBTD {
 
                 TrueEnd.queueServerWork(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    String[] searchBiomes = { "true_end:nostalgic_meadow", "true_end:lush_forest" };
-                    BlockPos initialSearchPos = TrueEnd.locateBiomes(nextLevel, worldSpawn, searchBiomes);
+                    BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:nostalgic_meadow");
                     if (initialSearchPos == null)
                         initialSearchPos = worldSpawn;
 
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
-                    BlockPos secondarySearchPos = TrueEnd.locateBiomes(nextLevel,
-                            new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), searchBiomes);
+                    BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel,
+                            new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), "true_end:nostalgic_meadow");
 
                     if (spawnPos == null) {
                         while (spawnPos == null) {
-                            secondarySearchPos = TrueEnd.locateBiomes(nextLevel,
+                            secondarySearchPos =
                                     new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
                                     BlockPosRandomY,
-                                    BlockPosRandomZ + BlockPosRandomX)),
-                                    searchBiomes);
+                                    BlockPosRandomZ + BlockPosRandomX));
 
                             spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
                         }
@@ -119,6 +120,7 @@ public class DimSwapToBTD {
 
                     TrueEnd.queueServerWork(5, () -> {
                         removeNearbyTrees(nextLevel, serverPlayer.blockPosition(), 15);
+                        adaptTerrain(nextLevel, serverPlayer.blockPosition());
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         sendFirstEntryConversation(serverPlayer, nextLevel);
                         serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP)
@@ -147,8 +149,11 @@ public class DimSwapToBTD {
     }
 
     public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
+        Queue<BlockPos> queue = new LinkedList<>();
+        Set<BlockPos> visited = new HashSet<>();
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
+        // Initial scan around the center to enqueue leaves/logs
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
@@ -156,13 +161,40 @@ public class DimSwapToBTD {
                     BlockState state = level.getBlockState(mutablePos);
                     Block block = state.getBlock();
 
-                    // Check if it's a log or leaves using Minecraft's built-in tags
-                    if (block.defaultBlockState().is(BlockTags.LEAVES)) {
-                        level.removeBlock(mutablePos, false);
+                    if (isTreeBlock(block)) {
+                        BlockPos foundPos = mutablePos.immutable();
+                        level.removeBlock(foundPos, true);
+                        queue.add(foundPos);
+                        visited.add(foundPos);
                     }
                 }
             }
         }
+
+        // Breadth-first loop to remove connected tree blocks
+        while (!queue.isEmpty()) {
+            BlockPos current = queue.poll();
+
+            for (Direction direction : Direction.values()) {
+                BlockPos neighbor = current.relative(direction);
+
+                if (!visited.contains(neighbor)) {
+                    BlockState neighborState = level.getBlockState(neighbor);
+                    Block neighborBlock = neighborState.getBlock();
+
+                    if (isTreeBlock(neighborBlock)) {
+                        level.removeBlock(neighbor, true);
+                        queue.add(neighbor);
+                        visited.add(neighbor);
+                    }
+                }
+            }
+        }
+    }
+
+    // Helper method to identify tree blocks (leaves or logs)
+    private static boolean isTreeBlock(Block block) {
+        return block.defaultBlockState().is(BlockTags.LEAVES) || block.defaultBlockState().is(BlockTags.LOGS);
     }
 
     public static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos centerPos) {
@@ -208,17 +240,28 @@ public class DimSwapToBTD {
         return null;
     }
 
+    private static final int MAX_TERRAIN_DROP = 7;
+    private static final int MAX_TERRAIN_ASCENT = 3;
+
     private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
-        int grassCount = 0;
+        // Get center terrain height
+        int centerY = getLocalMax(level, new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
+
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
-                BlockPos pos = center.offset(dx, 0, dz);
-                if (level.getBlockState(pos).is(TrueEndBlocks.GRASS_BLOCK.get()))
-                    grassCount++;
+                BlockPos pos = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1, center.getZ() + dz);
+                int terrainY = getLocalMax(level, pos);
+
+                int deltaY = terrainY - centerY;
+                if (deltaY > MAX_TERRAIN_ASCENT || -deltaY > MAX_TERRAIN_DROP) {
+                    return false;
+                }
             }
         }
-        return grassCount >= 80;
+
+        return true;
     }
+
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {
         if (world instanceof ServerLevel level && entity instanceof ServerPlayer player) {
@@ -245,4 +288,91 @@ public class DimSwapToBTD {
             TrueEnd.sendTellrawMessagesWithCooldown(player, conversation, convoDelay);
         });
     }
+
+    public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
+        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH/2, centerPos.getY(), centerPos.getZ() - HOUSE_PLATEAU_LENGTH/2);
+        int plateauHeight = placePos.getY();
+
+        // make the plateau
+        for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
+            for (int z = 0; z < HOUSE_PLATEAU_LENGTH; z++) {
+                BlockPos grassPos = new BlockPos(x + placePos.getX(), plateauHeight, z + placePos.getZ());
+                placeGrassWithDirt(world, grassPos);
+            }
+        }
+
+        int radius = TERRAIN_ADAPT_EXTENSION;
+        int centerX = placePos.getX() + HOUSE_PLATEAU_WIDTH / 2;
+        int centerZ = placePos.getZ() + HOUSE_PLATEAU_LENGTH / 2;
+        int maxDist = radius + Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2;
+
+        // circular terrain adaptation
+        for (int dx = -maxDist; dx <= maxDist; dx++) {
+            for (int dz = -maxDist; dz <= maxDist; dz++) {
+                int worldX = centerX + dx;
+                int worldZ = centerZ + dz;
+
+                double distFromCenter = Math.sqrt(dx * dx + dz * dz);
+                if (distFromCenter > radius + (double) Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2) continue;
+
+                int localX = worldX - placePos.getX();
+                int localZ = worldZ - placePos.getZ();
+                boolean insidePlateau = localX >= 0 && localX < HOUSE_PLATEAU_WIDTH && localZ >= 0 && localZ < HOUSE_PLATEAU_LENGTH;
+                if (insidePlateau) continue;
+
+                BlockPos checkPos = new BlockPos(worldX, plateauHeight, worldZ);
+                int targetHeight = getLocalMax(world, checkPos);
+
+                int dist = (int) Math.round(distFromCenter) - Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2;
+                if (dist < 0 || dist > radius) continue;
+
+                int height = gradient(targetHeight, plateauHeight, radius, dist);
+                BlockPos grassPos = new BlockPos(worldX, height, worldZ);
+                placeGrassWithDirt(world, grassPos);
+            }
+        }
+    }
+
+    // Helper method to place grass and fill with dirt until hitting stone
+    private static void placeGrassWithDirt(ServerLevel world, BlockPos pos) {
+        world.setBlock(pos, TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 3);
+        BlockPos.MutableBlockPos mutablePos = pos.mutable();
+
+        for (int y = pos.getY() - 1; y >= world.getMinBuildHeight(); y--) {
+            mutablePos.setY(y);
+            BlockState current = world.getBlockState(mutablePos);
+            if (current.is(Blocks.STONE)) {
+                break;
+            }
+            world.setBlock(mutablePos, Blocks.DIRT.defaultBlockState(), 3);
+        }
+    }
+
+    // Smooth gradient function
+    private static int gradient(int targetHeight, int centerHeight, int maxDist, int dist) {
+        float t = (float) dist / maxDist;
+        return Math.round(centerHeight * (1 - t) + targetHeight * t);
+    }
+
+    public static int getLocalMax(ServerLevel world, BlockPos pos) {
+        int maxY = world.getMaxBuildHeight() - 1;
+        int max = maxY;
+
+        for (int y = maxY; y >= 0; y--) {
+            BlockPos checkPos = new BlockPos(pos.getX(), y, pos.getZ());
+            if (world.getBlockState(checkPos).getBlock() != Blocks.AIR &&
+                    world.getBlockState(checkPos).getBlock() != TrueEndBlocks.WOOD.get() &&
+                    world.getBlockState(checkPos).getBlock() != TrueEndBlocks.LEAVES.get()) {
+                if (y < pos.getY()) {
+                    return y - 1;
+                } else {
+                    // Above or at posY: remember it as potential max
+                    max = y - 1;
+                }
+            }
+        }
+
+        return max;
+    }
+
 }
