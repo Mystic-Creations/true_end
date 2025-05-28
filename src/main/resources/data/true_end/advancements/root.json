@@ -5,10 +5,10 @@
       "item": "true_end:grass_block"
     },
     "title": {
-      "translate": "advancements.the_start_of_an_end.title"
+      "translate": "advancements.true_end.root.title"
     },
     "description": {
-      "translate": "advancements.the_start_of_an_end.descr"
+      "translate": "advancements.true_end.root.descr"
     },
     "frame": "task",
     "show_toast": false,

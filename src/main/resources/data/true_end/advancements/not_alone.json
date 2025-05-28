@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:air"
+    },
+    "title": {
+      "translate": "advancements.notalone.title"
+    },
+    "description": {
+      "translate": "advancements.notalone.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "true_end:root",
+  "criteria": {
+    "randomchance": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

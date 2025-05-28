@@ -1,16 +1,15 @@
 {
   "criteria": {
     "crafting_table": {
+      "trigger": "minecraft:placed_block",
       "conditions": {
-        "items": [
+        "location": [
           {
-            "items": [
-              "minecraft:crafting_table"
-            ]
+            "condition": "minecraft:block_state_property",
+            "block": "minecraft:crafting_table"
           }
         ]
-      },
-      "trigger": "minecraft:inventory_changed"
+      }
     }
   },
   "display": {
@@ -33,6 +32,5 @@
     [
       "crafting_table"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

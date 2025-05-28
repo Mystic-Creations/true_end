@@ -14,7 +14,7 @@
       "announce_to_chat": false,
       "hidden": true
     },
-    "parent": "true_end:the_start_of_an_end",
+    "parent": "true_end:root",
     "criteria": {
       "structureUnknownBaseFound": {
         "trigger": "minecraft:location",
