@@ -14,10 +14,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimension
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static net.justmili.trueend.TrueEnd.MODID;
-import static net.justmili.trueend.config.TrueEndConfig.entries;
-import static net.justmili.trueend.network.TrueEndVariables.creditsToggle;
-
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CreditsDetect {
 

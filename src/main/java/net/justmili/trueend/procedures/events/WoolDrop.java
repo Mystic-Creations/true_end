@@ -29,18 +29,14 @@ public class WoolDrop {
         Level world = sheep.level();
         if (world.isClientSide()) return;
 
-        // Snapshot original spawn_type before anything
         CompoundTag data = sheep.getPersistentData();
         String originalSpawnType = data.getString("forge:spawn_type");
 
-        // Only drop if not already sheared
         if (sheep.isSheared()) {
-            // Restore spawn_type and bail
             data.putString("forge:spawn_type", originalSpawnType);
             return;
         }
 
-        // Determine wool item by color
         DyeColor color = sheep.getColor();
         Item woolItem = switch (color) {
             case WHITE      -> Items.WHITE_WOOL;

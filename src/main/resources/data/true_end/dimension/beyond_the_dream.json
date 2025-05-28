@@ -20,12 +20,12 @@
         {
           "biome": "true_end:nostalgic_meadow",
           "parameters": {
-            "temperature": 0.4,
+            "temperature": 0,
             "humidity": 0.5,
-            "continentalness": 0.8,
-            "weirdness": -0.1,
-            "erosion": 0.3,
-            "depth": -0.1,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
             "offset": 0
           }
         }
