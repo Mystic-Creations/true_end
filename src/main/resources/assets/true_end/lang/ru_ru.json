@@ -49,7 +49,7 @@
   "advancements.mcstory.getting_wood.title": "Получи древесину",
   "advancements.mcstory.getting_wood.descr": "Ломай дерево пока из него не выподит древесина",
   "advancements.mcstory.open_inv.title": "Открой инвентарь",
-  "advancements.mcstory.open_inv.descr": "Нажми 'E' Чтобы открыть инвентарь.",
+  "advancements.mcstory.open_inv.descr": "Нажми 'У' Чтобы открыть инвентарь.",
   "advancements.mcstory.wooden_pick.title": "Время копать!",
   "advancements.mcstory.wooden_pick.descr": "Используй доски и палки чтобы создать кирку",
   "advancements.mcstory.wooden_sword.title": "Время для битвы!",
@@ -75,7 +75,7 @@
   "config.true_end.screentitle": "Истиная концовка / Конфигуратор",
   "config.true_end.category.gameplay": "Игровой процесс",
   "config.true_end.category.events": "События",
-  "config.true_end.category.other": "Other",
+  "config.true_end.category.other": "Другое",
   "config.true_end.entry.cleardreamitems.title": "Очистить вещи из грёзы",
   "config.true_end.entry.cleardreamitems.tooltip": "Если истина, очищает инвентарь игрока при первом заходи в измерение За Пределами Сна(только первый раз и никогда более)",
   "config.true_end.entry.randomevents.title": "Случайные события",
@@ -89,8 +89,8 @@
   "config.true_end.entry.btdconvodelay.title": "Задержка ЗПС Общения",
   "config.true_end.entry.btdconvodelay.tooltip": "Время в тиках между сообщениями от 'Голосов' при первом вхождении За Пределами Сна",
   "config.true_end.entry.pop_ups.title": "Всплывающие окна",
-  "config.true_end.entry.pop_ups.tooltip": "Turns pop-up error boxes on/off",
-  "config.true_end.entry.credits.title": "Credits",
-  "config.true_end.entry.credits.tooltip": "When leaving Beyond The Dream for the first time and only that one time,\nyou'll be met with a credits scene to honor everyone who worked on this mod",
-  "events.true_end.feelingwatched": "You feel watched..."
+  "config.true_end.entry.pop_ups.tooltip": "Включает/выключает всплывающие окна с ошибками",
+  "config.true_end.entry.credits.title": "Титры",
+  "config.true_end.entry.credits.tooltip": "Когда впервые покидаешь «За Пределами Сна»,\nвы увидите титры со всеми, кто работал над этим модом",
+  "events.true_end.feelingwatched": "Такое чувство, будто за мной наблюдают..."
 }
