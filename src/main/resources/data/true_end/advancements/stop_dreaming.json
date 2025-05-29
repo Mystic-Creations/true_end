@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "true_end:grass_block"
+      "item": "minecraft:red_bed"
     },
     "title": {
       "translate": "advancements.stop_dreaming.title"
