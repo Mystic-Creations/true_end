@@ -31,19 +31,20 @@ public class CreditsDetect {
             Minecraft mc = Minecraft.getInstance();
             TrueEnd.queueServerWork(2, () -> {
                 Minecraft.getInstance().getSoundManager().stop();
+
+                if (mc.level != null && mc.player != null) {
+                    mc.level.playLocalSound(
+                            mc.player.getX(),
+                            mc.player.getY(),
+                            mc.player.getZ(),
+                            SoundEvents.MUSIC_DISC_PIGSTEP,
+                            SoundSource.MUSIC,
+                            1.0f,
+                            1.0f,
+                            false
+                    );
+                }
             });
-            if (mc.level != null && mc.player != null) {
-                mc.level.playLocalSound(
-                    mc.player.getX(),
-                    mc.player.getY(),
-                    mc.player.getZ(),
-                    SoundEvents.MUSIC_DISC_PIGSTEP,
-                    SoundSource.MUSIC,
-                    1.0f,
-                    1.0f,
-                    false
-                );
-            }
         }
     }
 

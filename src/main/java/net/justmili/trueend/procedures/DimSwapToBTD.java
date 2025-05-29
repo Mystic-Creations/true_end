@@ -204,9 +204,12 @@ public class DimSwapToBTD {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
                     BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
                     BlockPos above = candidate.above();
+
                     BlockPos above2 = above.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && isFlatArea(level, candidate)
+                            && isYInSpawnRange(level, candidate)
                             && level.isEmptyBlock(above)
                             && level.isEmptyBlock(above2)
                             && level.getBrightness(LightLayer.SKY, above) >= 15
@@ -229,6 +232,7 @@ public class DimSwapToBTD {
                     BlockPos above = candidate.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && isYInSpawnRange(level, candidate)
                             && level.isEmptyBlock(above)
                             && isValidSpawnArea(level, candidate)) {
                         System.out.println("TRUE_END: Found fallback spawn: " + above);
@@ -258,8 +262,39 @@ public class DimSwapToBTD {
                 }
             }
         }
-
         return true;
+    }
+    public static boolean isFlatArea(ServerLevel level, BlockPos center) {
+        final int R = 3;
+        int cx = center.getX();
+        int cy = center.getY();
+        int cz = center.getZ();
+
+        for (int dx = -R; dx <= R; dx++) {
+            for (int dz = -R; dz <= R; dz++) {
+                BlockPos below = new BlockPos(cx + dx, cy - 1, cz + dz);
+                BlockPos below2 = below.below();
+                BlockPos atFeet = new BlockPos(cx + dx, cy, cz + dz);
+                if (!level.getBlockState(below).is(TrueEndBlocks.GRASS_BLOCK.get())) {
+                    return false;
+                }
+                BlockState stateAtFeet = level.getBlockState(atFeet);
+                BlockState stateBelow  = level.getBlockState(below);
+                BlockState stateBelow2 = level.getBlockState(below2);
+
+                if (stateAtFeet.is(Blocks.WATER) || stateBelow.is(Blocks.WATER) || stateBelow2.is(Blocks.WATER)) {
+                    return false;
+                }
+                if (stateAtFeet.is(TrueEndBlocks.SAND.get()) || stateBelow.is(TrueEndBlocks.SAND.get()) || stateBelow2.is(TrueEndBlocks.SAND.get())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
+        int y = pos.getY();
+        return y >= 66 && y <= 72;
     }
 
 
@@ -269,7 +304,6 @@ public class DimSwapToBTD {
                     .performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput(), command);
         }
     }
-
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
         int convoDelay = (int) TrueEndVariables.btdConversationDelay.getValue();
         String[] conversation = {
@@ -344,7 +378,7 @@ public class DimSwapToBTD {
             if (current.is(Blocks.STONE)) {
                 break;
             }
-            world.setBlock(mutablePos, Blocks.DIRT.defaultBlockState(), 3);
+            world.setBlock(mutablePos, TrueEndBlocks.DIRT.get().defaultBlockState(), 3);
         }
     }
 
@@ -371,7 +405,6 @@ public class DimSwapToBTD {
                 }
             }
         }
-
         return max;
     }
 
