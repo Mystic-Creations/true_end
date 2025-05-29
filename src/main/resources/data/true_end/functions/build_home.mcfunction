@@ -5,7 +5,6 @@ tp @s ~ ~ ~ 180 0
 fill ~3 ~ ~3 ~-3 ~5 ~-4 air
 fill ~-1 ~ ~-5 ~1 ~5 ~-5 air
 
-# Terrain modifications / Terrain fill
 # Terrain modification / anti-water measures
 fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 true_end:cobblestone replace #true_end:build_home_replacables_fluid
 
@@ -13,7 +12,6 @@ fill ~5 ~-1 ~-5 ~5 ~-16 ~-5 true_end:wood replace #true_end:build_home_replacabl
 fill ~-5 ~-1 ~-5 ~-5 ~-16 ~-5 true_end:wood replace #true_end:build_home_replacables_fluid
 fill ~-5 ~-1 ~5 ~-5 ~-16 ~5 true_end:wood replace #true_end:build_home_replacables_fluid
 fill ~5 ~-1 ~5 ~5 ~-16 ~5 true_end:wood replace #true_end:build_home_replacables_fluid
-
 
 # Floor and ceiling
 fill ~-2 ~-1 ~-2 ~2 ~-1 ~2 true_end:wooden_planks

@@ -149,4 +149,52 @@ public class AlphaFoodSystem {
             return false;
         }
     }
+
+    @SubscribeEvent
+    public static void onRightClickItem(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getHand() != InteractionHand.MAIN_HAND) return;
+
+        Player player = event.getEntity();
+        ItemStack stack = event.getItemStack();
+        int consumed = execute2(event, player, stack);
+
+        //Debug stuff
+        String action = null;
+        if (consumed == 0) {
+            action = "Blocked Action";
+        } else if (consumed == 1) {
+            action = "Allowed Action";
+        } else if (consumed == 2) {
+            action = "Skipped Blocking Action";
+        }
+        System.out.println("[DEBUG] " + MODID + ": Consumed = " + consumed + ", " + action);
+    }
+
+    private static int execute2(@Nullable PlayerInteractEvent.RightClickBlock event, @Nullable Player player, ItemStack stack) {
+        if (player == null) return 0;
+        if (player.level().dimension() != BTD) return 0;
+
+        int consumed = 0;
+        boolean other = false;
+
+        if (stack.is(ItemTags.create(ResourceLocation.parse("true_end:btd_uneatables")))) {
+            consumed = 0;
+        } else {
+            consumed = 2;
+            other = true;
+        }
+
+        if (other) {
+            System.out.println("[DEBUG] " + MODID + ": Not a food!");
+        }
+
+        if (consumed == 0) {
+            assert event != null;
+            if (event.isCancelable()) {
+                event.setCanceled(true);
+            }
+        }
+        return consumed;
+    }
+
 }

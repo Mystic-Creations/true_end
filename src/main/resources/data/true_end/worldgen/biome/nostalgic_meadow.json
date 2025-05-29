@@ -88,10 +88,7 @@
       "minecraft:cave",
       "minecraft:cave_extra_underground"
     ],
-    "liquid": [
-      "minecraft:cave",
-      "minecraft:cave_extra_underground"
-    ]
+    "liquid": []
   },
   "features": [
     [],
