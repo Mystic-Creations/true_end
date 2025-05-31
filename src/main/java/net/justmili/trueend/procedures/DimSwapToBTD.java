@@ -103,7 +103,7 @@ public class DimSwapToBTD {
                     }
 
                     if (spawnPos == null) {
-                        System.out.println("TRUE_END: Could not find ANY fallback spawn point!");
+                        System.out.println("[DEBUG] true_end: Could not find ANY fallback spawn point!");
                         spawnPos = nextLevel.getSharedSpawnPos();
                     }
 
@@ -214,7 +214,7 @@ public class DimSwapToBTD {
                             && level.isEmptyBlock(above2)
                             && level.getBrightness(LightLayer.SKY, above) >= 15
                             && isValidSpawnArea(level, candidate)) {
-                        System.out.println("TRUE_END: Found ideal spawn: " + above);
+                        System.out.println("[DEBUG] true_end: Found ideal spawn: " + above);
                         return above;
                     }
                 }
@@ -232,10 +232,11 @@ public class DimSwapToBTD {
                     BlockPos above = candidate.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            //&& isFlatArea(level, candidate)
                             && isYInSpawnRange(level, candidate)
                             && level.isEmptyBlock(above)
                             && isValidSpawnArea(level, candidate)) {
-                        System.out.println("TRUE_END: Found fallback spawn: " + above);
+                        System.out.println("[DEBUG] true_end: Found fallback spawn: " + above);
                         return above;
                     }
                 }
@@ -248,9 +249,7 @@ public class DimSwapToBTD {
     private static final int MAX_TERRAIN_ASCENT = 3;
 
     private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
-        // Get center terrain height
         int centerY = getLocalMax(level, new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
-
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
                 BlockPos pos = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1, center.getZ() + dz);
@@ -294,7 +293,7 @@ public class DimSwapToBTD {
     }
     public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
         int y = pos.getY();
-        return y >= 66 && y <= 72;
+        return y >= 66 && y <= 75;
     }
 
 
