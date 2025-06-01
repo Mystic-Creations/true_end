@@ -323,7 +323,7 @@ public class DimSwapToBTD {
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
-        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH/2, centerPos.getY(), centerPos.getZ() - HOUSE_PLATEAU_LENGTH/2);
+        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH/2, centerPos.getY() - 1, centerPos.getZ() - HOUSE_PLATEAU_LENGTH/2);
         int plateauHeight = placePos.getY();
 
         // make the plateau
