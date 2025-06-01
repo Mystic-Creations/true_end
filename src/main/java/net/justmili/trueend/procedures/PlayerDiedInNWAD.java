@@ -13,6 +13,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Objects;
+
 @Mod.EventBusSubscriber
 public class PlayerDiedInNWAD {
 
@@ -32,7 +34,7 @@ public class PlayerDiedInNWAD {
             event.getEntity().level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(setKeepInv, event.getEntity().getCommandSenderWorld().getServer());
 
             // grand advencment
-            Advancement advancement = event.getEntity().getServer().getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
+            Advancement advancement = Objects.requireNonNull(event.getEntity().getServer()).getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
             if (advancement != null) {
                 AdvancementProgress advancementProgress = ((ServerPlayer) event.getEntity()).getAdvancements().getOrStartProgress(advancement);
                 if (!advancementProgress.isDone()) {

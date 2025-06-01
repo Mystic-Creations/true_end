@@ -1,9 +1,19 @@
-## Additions
---------= Biomes
+## Additions/Changes
+--------= Worldgen
+- Alpha world generation
+- Farlands
+- The Dreaming tree is now more rare
 - Lush Forest / Beyond The Dream
-- Liminal Forest  / Overworld - Reality pouring into the dream (dev note: in progress)
+- Liminal Forest  / Overworld - Reality pouring into the dream
+- New small structure "Unknown Base", as if you're not alone
 
---------= Entities
+--------= Features (Brought from Alpha to ONLY Beyond The Dream)
+- Sheep drop their wool when hit
+- No attack cooldown
+- Alpha Food/Health System
+- No sprint
+- Version overlay
+- Alpha HUD
 
 --------= Blocks
 - Wooden Stairs
@@ -15,18 +25,19 @@
 - (Wooden) Pressure Plate
 - (Wooden) Button
 
+--------= Items
+- Dreamer's Compass / Leads you towards The Dreaming Tree (dev note: in progress)
+- Changd the look of the Mysterious Cube
+
 --------= Advancements
-- "Was I here?" - Discover a early-game base, that doesn't belong to you somewhere in your world
-- Old advancements ("Hot Topic", "On A Rail", "When Pigs Fly" etc)
+- "Was I here?" / Discover a early-game base, that doesn't belong to you somewhere in your world
+- Old advancements / "Hot Topic", "On A Rail", "When Pigs Fly" etc
 
---------= Spooky Elements
-- New small structure "Unknown Base", as if you're not alone
+--------= Other
 - Random Events (Random mining, walking sounds)
+- Config
 
---------= HUD Overlays
-- Version overlay while in Beyond The Dream
-
---------= Languages
+--------= New Supported Languages
 - Russian
 - Portuguese (Brazilian)
 - Persian (Farsi)
@@ -34,34 +45,13 @@
 
 ## Removed
 --------= Gamerules
-- btdConversationMessegeDelay (logic, replaced with a variable)
+- btdConversationMessegeDelay (logic, replaced with config)
 - logicHasVisitedBTDForTheFirstTime (logic, replaced with a variable)
 - keepInvDefaultGameplayValue (logic, replaced with a variable)
 
 --------= Biomes
 - Neverending Ocean
 
-## Changes
---------= Worldgen
-- Made worldgen in Beyond The Dream more alpha-like
-- Split Nostalgic Meadow into Meadow and Forest (Nostalgic Meadow & Lush Forest)
-
---------= Features
-- You can't sprint in Beyond The Dream anymore
-- While in Beyond The Dream, food/health system works like in alpha minecraft
-- Wool drops from sheep when hit (only in Beyond The Dream)
-
---------= Items
-- Changed the look of the Mysterious Cube
-
---------= Config
-- Switched from gamerules to config (dev note: in progress)
-
 ## Fixed Bugs
---------= Languages
-- Fixed spelling error in en_us and en_uk
-
---------= World
-- Bad Fallback Spawn              (dev note: kinda)
-
-## Known Bugs
+- Spelling errors
+- Bad spawn search (dev note: near done)

@@ -48,7 +48,7 @@ public class TrueEndDev {
 					ServerLevel world = arguments.getSource().getLevel();
 					DimSwapToBTD.removeNearbyTrees(world, arguments.getSource().getEntity().blockPosition(), 3);
 					return 0;
-				})).then(Commands.literal("localheight").executes(arguments -> {
+				})).then(Commands.literal("localHeight").executes(arguments -> {
 					ServerLevel world = arguments.getSource().getLevel();
 					int localMax = DimSwapToBTD.getLocalMax(world, arguments.getSource().getEntity().blockPosition());
 					arguments.getSource().getEntity().sendSystemMessage(Component.literal(Integer.toString(localMax)));

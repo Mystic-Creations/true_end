@@ -40,7 +40,7 @@ import static net.justmili.trueend.regs.IntegerRegistry.*;
 public class DimSwapToBTD {
     private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
 
-    public static final int HOUSE_PLATEAU_WIDTH = 7;
+    public static final int HOUSE_PLATEAU_WIDTH = 9;
     public static final int HOUSE_PLATEAU_LENGTH = 7;
     public static final int TERRAIN_ADAPT_EXTENSION = 10;
 
@@ -208,8 +208,8 @@ public class DimSwapToBTD {
                     BlockPos above2 = above.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
-                            && isFlatArea(level, candidate)
                             && isYInSpawnRange(level, candidate)
+                            && noBadBlocks(level, candidate)
                             && level.isEmptyBlock(above)
                             && level.isEmptyBlock(above2)
                             && level.getBrightness(LightLayer.SKY, above) >= 15
@@ -232,8 +232,8 @@ public class DimSwapToBTD {
                     BlockPos above = candidate.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
-                            //&& isFlatArea(level, candidate)
                             && isYInSpawnRange(level, candidate)
+                            && noBadBlocks(level, candidate)
                             && level.isEmptyBlock(above)
                             && isValidSpawnArea(level, candidate)) {
                         System.out.println("[DEBUG] true_end: Found fallback spawn: " + above);
@@ -263,7 +263,7 @@ public class DimSwapToBTD {
         }
         return true;
     }
-    public static boolean isFlatArea(ServerLevel level, BlockPos center) {
+    public static boolean noBadBlocks(ServerLevel level, BlockPos center) {
         final int R = 3;
         int cx = center.getX();
         int cy = center.getY();
@@ -271,20 +271,20 @@ public class DimSwapToBTD {
 
         for (int dx = -R; dx <= R; dx++) {
             for (int dz = -R; dz <= R; dz++) {
-                BlockPos below = new BlockPos(cx + dx, cy - 1, cz + dz);
-                BlockPos below2 = below.below();
                 BlockPos atFeet = new BlockPos(cx + dx, cy, cz + dz);
-                if (!level.getBlockState(below).is(TrueEndBlocks.GRASS_BLOCK.get())) {
-                    return false;
-                }
+                BlockPos below  = new BlockPos(cx + dx, cy - 1, cz + dz);
+                BlockPos below2 = below.below();
                 BlockState stateAtFeet = level.getBlockState(atFeet);
                 BlockState stateBelow  = level.getBlockState(below);
                 BlockState stateBelow2 = level.getBlockState(below2);
 
-                if (stateAtFeet.is(Blocks.WATER) || stateBelow.is(Blocks.WATER) || stateBelow2.is(Blocks.WATER)) {
-                    return false;
-                }
-                if (stateAtFeet.is(TrueEndBlocks.SAND.get()) || stateBelow.is(TrueEndBlocks.SAND.get()) || stateBelow2.is(TrueEndBlocks.SAND.get())) {
+                //Return false if any of these are found in the area
+                if (stateAtFeet.is(Blocks.WATER)
+                        || stateBelow .is(Blocks.WATER)
+                        || stateBelow2.is(Blocks.WATER)
+                        || stateAtFeet.is(TrueEndBlocks.SAND.get())
+                        || stateBelow .is(TrueEndBlocks.SAND.get())
+                        || stateBelow2.is(TrueEndBlocks.SAND.get())) {
                     return false;
                 }
             }
@@ -293,7 +293,7 @@ public class DimSwapToBTD {
     }
     public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
         int y = pos.getY();
-        return y >= 66 && y <= 75;
+        return y >= 66 && y <= 76;
     }
 
 
@@ -304,7 +304,7 @@ public class DimSwapToBTD {
         }
     }
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
-        int convoDelay = (int) TrueEndVariables.btdConversationDelay.getValue();
+        int convoDelay = TrueEndVariables.btdConversationDelay.getValue();
         String[] conversation = {
                 "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]"
                         .formatted(player.getName().getString()),
@@ -323,9 +323,8 @@ public class DimSwapToBTD {
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
-        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH/2, centerPos.getY(), centerPos.getZ() - HOUSE_PLATEAU_LENGTH/2);
+        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH/2, centerPos.getY() - 1, centerPos.getZ() - HOUSE_PLATEAU_LENGTH/2);
         int plateauHeight = placePos.getY();
-
         // make the plateau
         for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
             for (int z = 0; z < HOUSE_PLATEAU_LENGTH; z++) {
@@ -333,12 +332,10 @@ public class DimSwapToBTD {
                 placeGrassWithDirt(world, grassPos);
             }
         }
-
         int radius = TERRAIN_ADAPT_EXTENSION;
         int centerX = placePos.getX() + HOUSE_PLATEAU_WIDTH / 2;
         int centerZ = placePos.getZ() + HOUSE_PLATEAU_LENGTH / 2;
         int maxDist = radius + Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2;
-
         // circular terrain adaptation
         for (int dx = -maxDist; dx <= maxDist; dx++) {
             for (int dz = -maxDist; dz <= maxDist; dz++) {
@@ -365,7 +362,6 @@ public class DimSwapToBTD {
             }
         }
     }
-
     // Helper method to place grass and fill with dirt until hitting stone
     private static void placeGrassWithDirt(ServerLevel world, BlockPos pos) {
         world.setBlock(pos, TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 3);
@@ -380,13 +376,11 @@ public class DimSwapToBTD {
             world.setBlock(mutablePos, TrueEndBlocks.DIRT.get().defaultBlockState(), 3);
         }
     }
-
     // Smooth gradient function
     private static int gradient(int targetHeight, int centerHeight, int maxDist, int dist) {
         float t = (float) dist / maxDist;
         return Math.round(centerHeight * (1 - t) + targetHeight * t);
     }
-
     public static int getLocalMax(ServerLevel world, BlockPos pos) {
         int maxY = world.getMaxBuildHeight() - 1;
         int max = maxY;

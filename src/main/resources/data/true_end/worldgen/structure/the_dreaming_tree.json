@@ -10,6 +10,10 @@
     "absolute": 0
   },
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
-  "biomes": "true_end:nostalgic_meadow",
+  "biomes": [
+    "true_end:lush_forest",
+    "true_end:nostalgic_meadow"
+  ],
+
   "use_expansion_hack": false
 }
