@@ -94,6 +94,8 @@ public class DimSwapToBTD {
                         serverPlayer.connection
                                 .send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+
+                    executeCommand(nextLevel, serverPlayer, "function true_end:btd_global_spawn");
                 }
 
                 TrueEnd.queueServerWork(5, () -> {
@@ -136,6 +138,7 @@ public class DimSwapToBTD {
                     TrueEnd.queueServerWork(5, () -> {
                         removeNearbyTrees(nextLevel, serverPlayer.blockPosition(), 15);
                         adaptTerrain(nextLevel, serverPlayer.blockPosition());
+                        setGlobalSpawn(world, serverPlayer);
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         sendFirstEntryConversation(serverPlayer, nextLevel);
                         serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP)
@@ -162,9 +165,8 @@ public class DimSwapToBTD {
             }
         }
     }
-    
-    public static void setGlobalSpawn(LevelAccessor world, ServerPlayer player) {
-        TrueEndVariables.MapVariables.get(world).setBtdSpawn(player.getX(), player.getY(), player.getZ());
+    public static void setGlobalSpawn(LevelAccessor world, ServerPlayer serverPlayer) {
+        TrueEndVariables.MapVariables.get(world).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ());
     }
 
     public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
