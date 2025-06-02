@@ -3,7 +3,8 @@
     "air": [
       "minecraft:cave",
       "minecraft:cave_extra_underground"
-    ]
+    ],
+    "liquid": []
   },
   "downfall": 0.6,
   "effects": {

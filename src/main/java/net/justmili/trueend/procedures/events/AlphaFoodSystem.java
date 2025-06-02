@@ -26,27 +26,20 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class AlphaFoodSystem {
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        if (event.getHand() != InteractionHand.MAIN_HAND) return;
+        if (event.getHand() != InteractionHand.MAIN_HAND)
+            return;
 
         Player player = event.getEntity();
         ItemStack stack = event.getItemStack();
         int consumed = execute(event, player, stack);
-
-        //Debug stuff
-        String action = null;
-        if (consumed == 0) {
-            action = "Blocked Action";
-        } else if (consumed == 1) {
-            action = "Allowed Action";
-        } else if (consumed == 2) {
-            action = "Skipped Blocking Action";
-        }
-        System.out.println("[DEBUG] " + MODID + ": Consumed = " + consumed + ", " + action);
     }
 
-    private static int execute(@Nullable PlayerInteractEvent.RightClickItem event, @Nullable Player player, ItemStack stack) {
-        if (player == null) return 0;
-        if (player.level().dimension() != BTD) return 0;
+    private static int execute(@Nullable PlayerInteractEvent.RightClickItem event, @Nullable Player player,
+            ItemStack stack) {
+        if (player == null)
+            return 0;
+        if (player.level().dimension() != BTD)
+            return 0;
 
         float newHealth = player.getHealth();
         int consumed = 0;
@@ -89,11 +82,6 @@ public class AlphaFoodSystem {
             consumed = 0;
         } else {
             consumed = 2;
-            other = true;
-        }
-
-        if (other) {
-            System.out.println("[DEBUG] " + MODID + ": Not a food!");
         }
 
         if (consumed == 1) {
@@ -126,11 +114,13 @@ public class AlphaFoodSystem {
         if (world instanceof Level _level) {
             if (!_level.isClientSide()) {
                 _level.playSound(null, BlockPos.containing(x, y, z),
-                        Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("entity.generic.eat"))),
+                        Objects.requireNonNull(
+                                ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("entity.generic.eat"))),
                         SoundSource.NEUTRAL, 1.0f, (float) pitch);
             } else {
                 _level.playLocalSound(x, y, z,
-                        Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("entity.generic.eat"))),
+                        Objects.requireNonNull(
+                                ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("entity.generic.eat"))),
                         SoundSource.NEUTRAL, 1.0f, (float) pitch, false);
             }
         }
@@ -142,11 +132,44 @@ public class AlphaFoodSystem {
             if (event.isCancelable()) {
                 event.setCanceled(true);
             }
-            System.out.println("[DEBUG] true_end: Player at full health.");
             return true;
         } else {
-            System.out.println("[DEBUG] " + MODID + ": Player not at full health.");
             return false;
         }
     }
+
+    @SubscribeEvent
+    public static void onRightClickItem(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getHand() != InteractionHand.MAIN_HAND)
+            return;
+
+        Player player = event.getEntity();
+        ItemStack stack = event.getItemStack();
+        int consumed = execute2(event, player, stack);
+    }
+
+    private static int execute2(@Nullable PlayerInteractEvent.RightClickBlock event, @Nullable Player player,
+            ItemStack stack) {
+        if (player == null)
+            return 0;
+        if (player.level().dimension() != BTD)
+            return 0;
+
+        int consumed = 0;
+
+        if (stack.is(ItemTags.create(ResourceLocation.parse("true_end:btd_uneatables")))) {
+            consumed = 0;
+        } else {
+            consumed = 2;
+        }
+
+        if (consumed == 0) {
+            assert event != null;
+            if (event.isCancelable()) {
+                event.setCanceled(true);
+            }
+        }
+        return consumed;
+    }
+
 }

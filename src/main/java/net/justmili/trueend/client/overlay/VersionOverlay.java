@@ -47,10 +47,9 @@ public class VersionOverlay {
             if (flashTicks == 0) {
                 currentText = BASE_TEXT;
             }
-            /** Dynamic String Change
-             * 6000 - ticks between each random "glitch"
-             * "//2-6 ticks" - "glitch" string show time
-             */
+            // Dynamic String Change
+            // 6000 - ticks between each random "glitch"
+            // "//2-6 ticks" - "glitch" string show time
         } else if (random.nextInt(6000) == 0) {
             currentText = EGGS[random.nextInt(EGGS.length)];
             flashTicks = 2 + random.nextInt(5); // 2–4 ticks

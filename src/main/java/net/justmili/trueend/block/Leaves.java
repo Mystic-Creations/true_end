@@ -45,7 +45,7 @@ public class Leaves extends Block implements SimpleWaterloggedBlock {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(DISTANCE, 7)
-                .setValue(PERSISTENT, false));
+                .setValue(PERSISTENT, true));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Leaves extends Block implements SimpleWaterloggedBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
-        return this.defaultBlockState().setValue(WATERLOGGED, flag).setValue(DISTANCE, 7).setValue(PERSISTENT, false);
+        return this.defaultBlockState().setValue(WATERLOGGED, flag).setValue(DISTANCE, 7).setValue(PERSISTENT, true);
     }
 
     @Override

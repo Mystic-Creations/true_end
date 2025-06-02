@@ -26,6 +26,8 @@ import net.minecraft.core.BlockPos;
 
 import javax.annotation.Nullable;
 
+import java.util.Objects;
+
 import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
 
 @Mod.EventBusSubscriber
@@ -48,7 +50,7 @@ public class DimSwapToNWAD {
 
 		if (Math.random() < (TrueEndVariables.randomEventChance.getValue()*5)) {
 			if (entity instanceof Player && damagesource.is(DamageTypes.IN_WALL) && !(entity instanceof ServerPlayer _plr2 && _plr2.level() instanceof ServerLevel
-					&& _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"))).isDone())) {
+					&& _plr2.getAdvancements().getOrStartProgress(Objects.requireNonNull(_plr2.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream")))).isDone())) {
 				if (currentKeepInv) {
 					world.getLevelData().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, world.getServer());
 				} else if (!currentKeepInv) {

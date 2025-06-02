@@ -6,9 +6,15 @@
     }
   ],
   "placement": {
-    "type": "minecraft:random_spread",
-    "spacing": 80,
-    "separation": 64,
-    "salt": 1253544446
+    "type": "minecraft:concentric_rings",
+    "distance": 768,
+    "spread": 10,
+    "count": 3,
+    "preferred_biomes": [
+      "true_end:lush_forest",
+      "true_end:nostalgic_meadow"
+    ],
+    "salt": 1253544446,
+    "frequency_reduction_method": "default"
   }
 }

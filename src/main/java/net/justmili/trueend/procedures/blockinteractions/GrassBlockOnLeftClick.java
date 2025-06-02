@@ -1,5 +1,6 @@
 package net.justmili.trueend.procedures.blockinteractions;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -14,7 +15,7 @@ import net.minecraft.world.item.Items;
 import net.justmili.trueend.init.TrueEndBlocks;
 
 public class GrassBlockOnLeftClick {
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack item) {
         if (entity == null)
             return;
         if ((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).is(ItemTags.create(ResourceLocation.parse("minecraft:hoes")))) {
@@ -30,6 +31,10 @@ public class GrassBlockOnLeftClick {
                     entityToSpawn.setPickUpDelay(15);
                     _level.addFreshEntity(entityToSpawn);
                 }
+            }
+            if (item.hurt(1, RandomSource.create(), null)) {
+               item.shrink(1);
+                item.setDamageValue(0);
             }
         }
     }

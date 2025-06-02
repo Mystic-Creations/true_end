@@ -1,18 +1,18 @@
 package net.justmili.trueend.procedures.randomevents;
 
-import com.sun.jna.Native;
-import com.sun.jna.win32.StdCallLibrary;
+import net.justmili.trueend.interfaces.User32;
 import net.justmili.trueend.network.TrueEndVariables;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-
-import net.minecraft.world.level.LevelAccessor;
-
 import net.justmili.trueend.TrueEnd;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.awt.*;
 
 @Mod.EventBusSubscriber
 public class SleepPopup {
@@ -25,22 +25,32 @@ public class SleepPopup {
 		execute(null, world);
 	}
 
-	private static void execute(@Nullable Event event, LevelAccessor world) {
-		if (TrueEndVariables.randomEventsToggle.getValue() == true) {
-			if (TrueEndVariables.popupsToggle.getValue() == true) {
-				if (Math.random() < 0.2) {
-					TrueEnd.queueServerWork(20, () -> {
-						User32.INSTANCE.MessageBoxA(0L, "wake up.", " ", 0);
-					});
-				}
+	private static void execute(@Nullable Object event, LevelAccessor world) {
+		String osName = System.getProperty("os.name").toLowerCase();
+		if (osName.contains("win")) {
+			if (TrueEndVariables.randomEventsToggle.getValue()
+					&& TrueEndVariables.popupsToggle.getValue()
+					&& Math.random() < 0.99) {
+				TrueEnd.queueServerWork(20, () -> {
+					User32.INSTANCE.MessageBoxA(0L, "wake up.", " ", 0);
+				});
 			}
+		} else {
+			SwingUtilities.invokeLater(() -> {
+				String message = "wake up.";
+				String title   = "";
+
+				JOptionPane pane = new JOptionPane(
+						message,
+						JOptionPane.INFORMATION_MESSAGE
+				);
+
+				JDialog dialog = pane.createDialog(null, title);
+				dialog.setAlwaysOnTop(true);
+				dialog.setModal(true);
+				dialog.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
+				dialog.setVisible(true);
+			});
 		}
-	}
-
-	public static interface User32
-			extends StdCallLibrary {
-		public static final User32 INSTANCE = (User32) Native.load((String) "user32", User32.class);
-
-		public int MessageBoxA(long var1, String var3, String var4, int var5);
 	}
 }

@@ -19,7 +19,7 @@ public class BeyondTheDream {
         @SubscribeEvent
         @OnlyIn(Dist.CLIENT)
         public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
-            DimensionSpecialEffects customEffect = new DimensionSpecialEffects(112f, true, DimensionSpecialEffects.SkyType.NONE, false, false) {
+            DimensionSpecialEffects customEffect = new DimensionSpecialEffects(112f, true, DimensionSpecialEffects.SkyType.NORMAL, false, false) {
                 @Override
                 public @NotNull Vec3 getBrightnessDependentFogColor(@NotNull Vec3 color, float sunHeight) {
                     return color;

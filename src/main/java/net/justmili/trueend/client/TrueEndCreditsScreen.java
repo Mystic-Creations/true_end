@@ -61,7 +61,7 @@ public class TrueEndCreditsScreen extends Screen {
         // Tile the dirt texture to fill the screen
         RenderSystem.setShaderTexture(0, BG_TEXTURE);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        int texSize = 32;
+        int texSize = 48;
         for (int x = 0; x < width; x += texSize) {
             for (int y = 0; y < height; y += texSize) {
                 gui.blit(BG_TEXTURE, x, y, 0, 0, texSize, texSize, texSize, texSize);
@@ -75,11 +75,11 @@ public class TrueEndCreditsScreen extends Screen {
 
         gui.fill(0, 0, width, height, 0x88000000);
 
-        float scrollSpeed = 25f;
+        float scrollSpeed = 20f;
         scroll += scrollSpeed * (partialTicks / 20f);
 
         RenderSystem.setShaderTexture(0, TITLE_TEX);
-        int texW = 384, texH = 96;
+        int texW = 256, texH = 64;
         float titleX = (width - texW) / 2f;
         float titleY = height - scroll;
         gui.blit(TITLE_TEX, (int) titleX, (int) titleY, 0, 0, texW, texH, texW, texH);
