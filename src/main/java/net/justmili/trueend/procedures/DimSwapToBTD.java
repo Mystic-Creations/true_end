@@ -101,7 +101,6 @@ public class DimSwapToBTD {
                             spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
                         }
                     }
-
                     if (spawnPos == null) {
                         System.out.println("[DEBUG] true_end: Could not find ANY fallback spawn point!");
                         spawnPos = nextLevel.getSharedSpawnPos();
@@ -208,6 +207,7 @@ public class DimSwapToBTD {
                     BlockPos above2 = above.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && notOnAfuckingHill(level, candidate)
                             && isYInSpawnRange(level, candidate)
                             && noBadBlocks(level, candidate)
                             && level.isEmptyBlock(above)
@@ -232,6 +232,7 @@ public class DimSwapToBTD {
                     BlockPos above = candidate.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && notOnAfuckingHill(level, candidate)
                             && isYInSpawnRange(level, candidate)
                             && noBadBlocks(level, candidate)
                             && level.isEmptyBlock(above)
@@ -291,9 +292,28 @@ public class DimSwapToBTD {
         }
         return true;
     }
+    public static boolean notOnAfuckingHill(ServerLevel level, BlockPos center) {
+        final int STEEPNESS_LIMIT = 2;
+        int centerGroundY = getLocalMax(level, new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                if (dx == 0 && dz == 0) continue;
+                BlockPos neighborColumn = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1, center.getZ() + dz);
+                int neighborGroundY = getLocalMax(level, neighborColumn);
+
+                if (Math.abs(neighborGroundY - centerGroundY) > STEEPNESS_LIMIT) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
         int y = pos.getY();
-        return y >= 66 && y <= 76;
+        if (y >= 66 && y <= 76) {
+            return true;
+        }
+        return false;
     }
 
 
