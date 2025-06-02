@@ -80,6 +80,22 @@ public class DimSwapToBTD {
 
                 serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
+                TrueEndVariables.MapVariables getVariable = TrueEndVariables.MapVariables.get(world);
+                double btdSpawnX = getVariable.getBtdSpawnX();
+                double btdSpawnY = getVariable.getBtdSpawnY();
+                double btdSpawnZ = getVariable.getBtdSpawnZ();
+
+                if (btdSpawnY > 0) {
+                    System.out.println("[DEBUG] true_end: Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
+                    serverPlayer.teleportTo(nextLevel, btdSpawnX, btdSpawnY, btdSpawnZ,
+                            serverPlayer.getYRot(), serverPlayer.getXRot());
+                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+                    for (MobEffectInstance effect : serverPlayer.getActiveEffects())
+                        serverPlayer.connection
+                                .send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
+                    serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+                }
+
                 TrueEnd.queueServerWork(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
                     BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:nostalgic_meadow");
@@ -145,6 +161,10 @@ public class DimSwapToBTD {
                 });
             }
         }
+    }
+    
+    public static void setGlobalSpawn(LevelAccessor world, ServerPlayer player) {
+        TrueEndVariables.MapVariables.get(world).setBtdSpawn(player.getX(), player.getY(), player.getZ());
     }
 
     public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
