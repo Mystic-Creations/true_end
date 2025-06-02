@@ -19,19 +19,30 @@ import net.minecraftforge.fml.common.Mod;
 public class CreditsDetect {
     private static boolean tickHandlerEnabled = false;
     private static int ticksUntilShow = -1;
+    private static boolean hasShownCreditsThisSession = false;
 
     @SubscribeEvent
     public static void onDimensionChange(PlayerChangedDimensionEvent event) {
-        if (event.getFrom() == DimKeyRegistry.BTD && event.getTo() == Level.OVERWORLD && TrueEndVariables.creditsToggle.getValue() == true) {
+        if (hasShownCreditsThisSession) return;
+
+        if (event.getFrom() == DimKeyRegistry.BTD &&
+            event.getTo() == Level.OVERWORLD &&
+            TrueEndVariables.creditsToggle.getValue()) {
+
+            hasShownCreditsThisSession = true;
+
             ticksUntilShow = 10;
-            tickHandlerEnabled = true;   
+            tickHandlerEnabled = true;
+            TrueEndConfig.entries.put("creditsToggle", false);
+            TrueEndConfig.serializer.serialize(TrueEndConfig.entries);
 
             Minecraft mc = Minecraft.getInstance();
             TrueEnd.queueServerWork(2, () -> {
-                Minecraft.getInstance().getSoundManager().stop();
+                if (mc != null) {
+                    mc.getSoundManager().stop();
 
-                if (mc.level != null && mc.player != null) {
-                    mc.level.playLocalSound(
+                    if (mc.level != null && mc.player != null) {
+                        mc.level.playLocalSound(
                             mc.player.getX(),
                             mc.player.getY(),
                             mc.player.getZ(),
@@ -40,7 +51,8 @@ public class CreditsDetect {
                             1.0f,
                             1.0f,
                             false
-                    );
+                        );
+                    }
                 }
             });
         }
@@ -53,13 +65,11 @@ public class CreditsDetect {
         if (ticksUntilShow > 0) {
             ticksUntilShow--;
             if (ticksUntilShow == 0) {
-                tickHandlerEnabled = false; 
+                tickHandlerEnabled = false;
                 Minecraft mc = Minecraft.getInstance();
                 if (mc.screen == null && mc.player != null) {
                     mc.setScreen(new TrueEndCreditsScreen());
                 }
-                TrueEndConfig.entries.put("creditsToggle", false);
-                TrueEndConfig.serializer.serialize(TrueEndConfig.entries);
             }
         }
     }
