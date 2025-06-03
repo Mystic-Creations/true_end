@@ -30,6 +30,8 @@
   "block.true_end.obsidian": "Obsidian",
   "block.true_end.beyond_the_dream_portal": "Beyond The Dream Portal",
   "item.true_end.mysterious_cube": "Mysterious Cube",
+  "item.true_end.unknown_spawn_egg": "Unknown Spawn Egg",
+  "entity.true_end.unknown": "§kUnknown",
   "biome.true_end.nostalgic_meadow": "Nostalgic Meadow",
   "biome.true_end.lush_forest": "Lush Forest",
   "biome.true_end.liminal_forest": "Liminal Forest",

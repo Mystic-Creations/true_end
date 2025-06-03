@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "true_end:item/unknown_spawn_egg"
+  }
+}

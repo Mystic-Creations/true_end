@@ -42,5 +42,7 @@ public class TrueEndTabs {
 				tabData.accept(TrueEndBlocks.GLASS.get().asItem());
 				tabData.accept(TrueEndBlocks.OBSIDIAN.get().asItem());
 				tabData.accept(TrueEndItems.MYSTERIOUS_CUBE.get());
-			}).withSearchBar().build());
+				tabData.accept(TrueEndItems.UNKNOWN_SPAWN_EGG.get());
+			}).withSearchBar().build()
+	);
 }
