@@ -1,29 +1,32 @@
 package net.justmili.trueend.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.ambient.AmbientCreature;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.ambient.AmbientCreature;
 
 public class UnknownEntity extends AmbientCreature {
 
     private static final double MIN_DISTANCE = 28.0D;
     private static final double MAX_DISTANCE = 35.0D;
-    private static final double WALK_SPEED = 0.276D;
-    private static final double SPRINT_SPEED = 1.90D;
+    private static final double WALK_SPEED = 0.95D;
+    private static final double VIEW_CONE_THRESHOLD = 0.809;
+    private static final int MAX_VISIBLE_TICKS = 3 * 20;
 
-    private int sprintingTicks = 0;
+    private int visibleTicks = 0;
 
     public UnknownEntity(EntityType<? extends AmbientCreature> type, Level level) {
         super(type, level);
@@ -32,15 +35,15 @@ public class UnknownEntity extends AmbientCreature {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, WALK_SPEED)
-                .add(Attributes.FOLLOW_RANGE, 32.0D);
+                .add(Attributes.FOLLOW_RANGE, 96.0D);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, (float) MAX_DISTANCE));
+        this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 96.0F));
     }
 
     @Override
@@ -52,21 +55,40 @@ public class UnknownEntity extends AmbientCreature {
             return;
         }
 
-        LivingEntity nearest = this.level().getNearestPlayer(this, MAX_DISTANCE * 2);
-        if (nearest == null) {
-            return;
+        Player nearest = this.level().getNearestPlayer(this, 96.0D);
+        if (nearest == null) return;
+
+        Vec3 toEntity = this.position().subtract(nearest.position()).normalize();
+        Vec3 playerLook = nearest.getLookAngle().normalize();
+        double dot = toEntity.dot(playerLook);
+
+        if (this.hasLineOfSight(nearest) && dot > VIEW_CONE_THRESHOLD) {
+            visibleTicks++;
+            if (visibleTicks >= MAX_VISIBLE_TICKS) {
+                this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
+                this.discard();
+                return;
+            }
+        } else {
+            visibleTicks = 0;
         }
 
-        double dx = this.getX() - nearest.getX();
-        double dz = this.getZ() - nearest.getZ();
-        double dy = this.getY() - nearest.getY();
-        double distanceSq = dx * dx + dy * dy + dz * dz;
-        double distance = Math.sqrt(distanceSq);
+        double distance = this.distanceTo(nearest);
 
-        if (distance >= MIN_DISTANCE && distance <= MAX_DISTANCE) {
+        if (distance < MIN_DISTANCE) {
+            Vec3 dirAway = this.position().subtract(nearest.position()).normalize();
+            Vec3 target = nearest.position().add(dirAway.scale(MIN_DISTANCE));
+            this.getNavigation().moveTo(target.x, target.y, target.z, WALK_SPEED);
+        } else if (distance > MAX_DISTANCE) {
+            Vec3 dirTo = nearest.position().subtract(this.position()).normalize();
+            Vec3 target = nearest.position().subtract(dirTo.scale(MAX_DISTANCE));
+            this.getNavigation().moveTo(target.x, target.y, target.z, WALK_SPEED);
+        } else {
             BlockPos mobPos = this.blockPosition();
             int radius = 16;
-            BlockPos nearestLog = null;
+            BlockPos nearestWood = null;
+
+            Block trueEndWood = BuiltInRegistries.BLOCK.get(new ResourceLocation("true_end", "wood"));
 
             outer:
             for (int x = -radius; x <= radius; x++) {
@@ -74,59 +96,44 @@ public class UnknownEntity extends AmbientCreature {
                     for (int z = -radius; z <= radius; z++) {
                         BlockPos pos = mobPos.offset(x, y, z);
                         BlockState state = this.level().getBlockState(pos);
-                        if (state.is(Blocks.OAK_LOG)) {
-                            nearestLog = pos;
+                        if (state.is(trueEndWood)) {
+                            nearestWood = pos;
                             break outer;
                         }
                     }
                 }
             }
 
-            if (nearestLog != null) {
+            if (nearestWood != null) {
                 this.getNavigation().moveTo(
-                        nearestLog.getX() + 0.5,
-                        nearestLog.getY(),
-                        nearestLog.getZ() + 0.5,
-                        WALK_SPEED
+                    nearestWood.getX() + 0.5,
+                    nearestWood.getY(),
+                    nearestWood.getZ() + 0.5,
+                    WALK_SPEED
                 );
-            }
-
-            sprintingTicks = 0;
-            return;
-        }
-
-        if (distance > MAX_DISTANCE || distance < MIN_DISTANCE) {
-            Vec3 dir = new Vec3(nearest.getX() - this.getX(), nearest.getY() - this.getY(), nearest.getZ() - this.getZ()).normalize();
-            double targetX, targetZ;
-
-            if (distance > MAX_DISTANCE) {
-                targetX = nearest.getX() - dir.x * MAX_DISTANCE;
-                targetZ = nearest.getZ() - dir.z * MAX_DISTANCE;
             } else {
-                targetX = nearest.getX() - dir.x * MIN_DISTANCE;
-                targetZ = nearest.getZ() - dir.z * MIN_DISTANCE;
+                this.getNavigation().stop();
             }
-
-            double targetY = this.getY();
-            this.getNavigation().moveTo(targetX, targetY, targetZ, SPRINT_SPEED);
-            if (this.getNavigation().isInProgress()) {
-                sprintingTicks++;
-                if (sprintingTicks > 7 * 20) {
-                    this.discard();
-                    return;
-                }
-            } else {
-                sprintingTicks = 0;
-            }
-
-            return;
         }
+    }
 
-        sprintingTicks = 0;
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return true;
     }
 
     @Override
     public MobType getMobType() {
         return MobType.UNDEFINED;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return false;
     }
 }
