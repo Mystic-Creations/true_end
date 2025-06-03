@@ -1,15 +1,18 @@
 package net.justmili.trueend.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class UnknownEntity extends Monster {
@@ -44,7 +47,7 @@ public class UnknownEntity extends Monster {
         super.tick();
 
         if (this.isInWaterOrBubble()) {
-            this.discard(); 
+            this.discard();
             return;
         }
 
@@ -59,31 +62,62 @@ public class UnknownEntity extends Monster {
         double distanceSq = dx * dx + dy * dy + dz * dz;
         double distance = Math.sqrt(distanceSq);
 
-        if (distance > MAX_DISTANCE) {
-            sprintingTicks++;
-            if (sprintingTicks > 7 * 20) { 
-                this.discard();
-                return;
+        if (distance >= MIN_DISTANCE && distance <= MAX_DISTANCE) {
+            BlockPos mobPos = this.blockPosition();
+            int radius = 16;
+            BlockPos nearestLog = null;
+
+            outer:
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -4; y <= 4; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        BlockPos pos = mobPos.offset(x, y, z);
+                        BlockState state = this.level().getBlockState(pos);
+                        if (state.is(Blocks.OAK_LOG)) {
+                            nearestLog = pos;
+                            break outer;
+                        }
+                    }
+                }
             }
-            Vec3 dir = new Vec3(dx, dy, dz).normalize();
-            double targetX = nearest.getX() + dir.x * MAX_DISTANCE;
-            double targetY = this.getY();
-            double targetZ = nearest.getZ() + dir.z * MAX_DISTANCE;
-            this.getNavigation().moveTo(targetX, targetY, targetZ, SPRINT_SPEED);
+
+            if (nearestLog != null) {
+                this.getNavigation().moveTo(
+                        nearestLog.getX() + 0.5,
+                        nearestLog.getY(),
+                        nearestLog.getZ() + 0.5,
+                        WALK_SPEED
+                );
+            }
+
+            sprintingTicks = 0;
             return;
         }
 
-        if (distance < MIN_DISTANCE) {
-            sprintingTicks++;
-            if (sprintingTicks > 7 * 20) {
-                this.discard();
-                return;
+        if (distance > MAX_DISTANCE || distance < MIN_DISTANCE) {
+            Vec3 dir = new Vec3(nearest.getX() - this.getX(), nearest.getY() - this.getY(), nearest.getZ() - this.getZ()).normalize();
+            double targetX, targetZ;
+
+            if (distance > MAX_DISTANCE) {
+                targetX = nearest.getX() - dir.x * MAX_DISTANCE;
+                targetZ = nearest.getZ() - dir.z * MAX_DISTANCE;
+            } else {
+                targetX = nearest.getX() - dir.x * MIN_DISTANCE;
+                targetZ = nearest.getZ() - dir.z * MIN_DISTANCE;
             }
-            Vec3 dir = new Vec3(dx, dy, dz).normalize();
-            double targetX = nearest.getX() + dir.x * MIN_DISTANCE;
+
             double targetY = this.getY();
-            double targetZ = nearest.getZ() + dir.z * MIN_DISTANCE;
             this.getNavigation().moveTo(targetX, targetY, targetZ, SPRINT_SPEED);
+            if (this.getNavigation().isInProgress()) {
+                sprintingTicks++;
+                if (sprintingTicks > 7 * 20) {
+                    this.discard();
+                    return;
+                }
+            } else {
+                sprintingTicks = 0;
+            }
+
             return;
         }
 
