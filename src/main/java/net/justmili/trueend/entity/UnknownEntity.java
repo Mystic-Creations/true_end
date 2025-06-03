@@ -20,9 +20,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
 
 public class UnknownEntity extends AmbientCreature {
 
-    private static final double MIN_DISTANCE = 28.0D;
-    private static final double MAX_DISTANCE = 35.0D;
-    private static final double WALK_SPEED = 0.95D;
+    private static final double WALK_SPEED = 0.1D;
     private static final double VIEW_CONE_THRESHOLD = 0.809;
     private static final int MAX_VISIBLE_TICKS = 3 * 20;
 
@@ -58,6 +56,12 @@ public class UnknownEntity extends AmbientCreature {
         Player nearest = this.level().getNearestPlayer(this, 96.0D);
         if (nearest == null) return;
 
+        if (this.distanceTo(nearest) <= 8.0D) {
+            this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
+            this.discard();
+            return;
+        }
+
         Vec3 toEntity = this.position().subtract(nearest.position()).normalize();
         Vec3 playerLook = nearest.getLookAngle().normalize();
         double dot = toEntity.dot(playerLook);
@@ -73,47 +77,35 @@ public class UnknownEntity extends AmbientCreature {
             visibleTicks = 0;
         }
 
-        double distance = this.distanceTo(nearest);
+        BlockPos mobPos = this.blockPosition();
+        int radius = 16;
+        BlockPos nearestWood = null;
 
-        if (distance < MIN_DISTANCE) {
-            Vec3 dirAway = this.position().subtract(nearest.position()).normalize();
-            Vec3 target = nearest.position().add(dirAway.scale(MIN_DISTANCE));
-            this.getNavigation().moveTo(target.x, target.y, target.z, WALK_SPEED);
-        } else if (distance > MAX_DISTANCE) {
-            Vec3 dirTo = nearest.position().subtract(this.position()).normalize();
-            Vec3 target = nearest.position().subtract(dirTo.scale(MAX_DISTANCE));
-            this.getNavigation().moveTo(target.x, target.y, target.z, WALK_SPEED);
-        } else {
-            BlockPos mobPos = this.blockPosition();
-            int radius = 16;
-            BlockPos nearestWood = null;
+        Block trueEndWood = BuiltInRegistries.BLOCK.get(new ResourceLocation("true_end", "wood"));
 
-            Block trueEndWood = BuiltInRegistries.BLOCK.get(new ResourceLocation("true_end", "wood"));
-
-            outer:
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -4; y <= 4; y++) {
-                    for (int z = -radius; z <= radius; z++) {
-                        BlockPos pos = mobPos.offset(x, y, z);
-                        BlockState state = this.level().getBlockState(pos);
-                        if (state.is(trueEndWood)) {
-                            nearestWood = pos;
-                            break outer;
-                        }
+        outer:
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -4; y <= 4; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    BlockPos pos = mobPos.offset(x, y, z);
+                    BlockState state = this.level().getBlockState(pos);
+                    if (state.is(trueEndWood)) {
+                        nearestWood = pos;
+                        break outer;
                     }
                 }
             }
+        }
 
-            if (nearestWood != null) {
-                this.getNavigation().moveTo(
-                    nearestWood.getX() + 0.5,
-                    nearestWood.getY(),
-                    nearestWood.getZ() + 0.5,
-                    WALK_SPEED
-                );
-            } else {
-                this.getNavigation().stop();
-            }
+        if (nearestWood != null) {
+            this.getNavigation().moveTo(
+                nearestWood.getX() + 0.5,
+                nearestWood.getY(),
+                nearestWood.getZ() + 0.5,
+                WALK_SPEED
+            );
+        } else {
+            this.getNavigation().stop();
         }
     }
 
