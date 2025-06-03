@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.FriendlyByteBuf;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,10 +53,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.AbstractMap;
 
-@Mod("TrueEnd")
+@Mod("true_end")
 public class TrueEnd {
     public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
-    public static final String MODID = "TrueEnd";
+    public static final String MODID = "true_end";
 
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -72,7 +72,10 @@ public class TrueEnd {
         TrueEndEntities.ENTITY_TYPES.register(bus);
 
         bus.addListener(this::commonSetup);
-        bus.addListener(this::onEntityAttributeCreation);  
+        bus.addListener(this::onEntityAttributeCreation);
+
+        // ← Fixed listener reference: use EntityClient.registerEntityRenderers
+        bus.addListener(net.justmili.trueend.client.EntityClient::registerEntityRenderers);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -82,6 +85,7 @@ public class TrueEnd {
             ));
         });
     }
+
     @SubscribeEvent
     public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(TrueEndEntities.UNKNOWN.get(),
