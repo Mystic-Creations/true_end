@@ -43,7 +43,7 @@ public class EntityClient {
 
         @Override
         public ResourceLocation getTextureLocation(UnknownEntity entity) {
-            return new ResourceLocation(TrueEnd.MODID, "textures/entity/unknown.png");
+            return ResourceLocation.parse("true_end:textures/entity/unknown.png");
         }
     }
 }

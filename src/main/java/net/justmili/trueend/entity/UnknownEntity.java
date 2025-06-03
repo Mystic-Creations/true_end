@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class UnknownEntity extends Monster {
+public class UnknownEntity extends AmbientCreature {
 
     private static final double MIN_DISTANCE = 28.0D;
     private static final double MAX_DISTANCE = 35.0D;
@@ -24,7 +25,7 @@ public class UnknownEntity extends Monster {
 
     private int sprintingTicks = 0;
 
-    public UnknownEntity(EntityType<? extends Monster> type, Level level) {
+    public UnknownEntity(EntityType<? extends AmbientCreature> type, Level level) {
         super(type, level);
         this.setPersistenceRequired();
         this.navigation = new GroundPathNavigation(this, level);

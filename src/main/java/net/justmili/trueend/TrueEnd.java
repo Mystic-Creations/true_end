@@ -81,7 +81,7 @@ public class TrueEnd {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Regions.register(new LiminalForestRegion(
-                new ResourceLocation(MODID, "overworld_region"), 1
+                ResourceLocation.parse("true_end:overworld_region"), 1
             ));
         });
     }
@@ -94,7 +94,7 @@ public class TrueEnd {
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-        new ResourceLocation(MODID, MODID),
+            ResourceLocation.parse(MODID),
         () -> PROTOCOL_VERSION,
         PROTOCOL_VERSION::equals,
         PROTOCOL_VERSION::equals

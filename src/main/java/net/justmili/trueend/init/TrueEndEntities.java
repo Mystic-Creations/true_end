@@ -15,8 +15,8 @@ public class TrueEndEntities {
         DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, TrueEnd.MODID);
 
     public static final RegistryObject<EntityType<UnknownEntity>> UNKNOWN = ENTITY_TYPES.register(
-        "unknown", () -> EntityType.Builder.<UnknownEntity>of(UnknownEntity::new, MobCategory.MONSTER)
+        "unknown", () -> EntityType.Builder.<UnknownEntity>of(UnknownEntity::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
-            .build(new ResourceLocation(TrueEnd.MODID, "unknown").toString())
+            .build(ResourceLocation.parse("true_end:unknown").toString())
     );
 }
