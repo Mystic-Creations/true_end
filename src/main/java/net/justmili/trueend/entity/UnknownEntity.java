@@ -1,7 +1,9 @@
 package net.justmili.trueend.entity;
 
+import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -15,14 +17,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.ambient.AmbientCreature;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class UnknownEntity extends AmbientCreature {
 
-    private static final double WALK_SPEED = 0.1D;
-    private static final double VIEW_CONE_THRESHOLD = 0.809;
-    private static final int MAX_VISIBLE_TICKS = 3 * 20;
+    private static final double WALK_SPEED = 0.25D;
+    private static final double VIEW_CONE_THRESHOLD = 0.990;
+    private static final int MAX_VISIBLE_TICKS = 80;
 
     private int visibleTicks = 0;
 
@@ -48,17 +50,14 @@ public class UnknownEntity extends AmbientCreature {
     public void tick() {
         super.tick();
 
-        if (this.isInWaterOrBubble()) {
-            this.discard();
-            return;
-        }
-
         Player nearest = this.level().getNearestPlayer(this, 96.0D);
         if (nearest == null) return;
 
         if (this.distanceTo(nearest) <= 8.0D) {
             this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
             this.discard();
+            ServerLevel world = (ServerLevel) this.level();
+            TrueEndVariables.MapVariables.get(world).setUnknownInWorld(true);
             return;
         }
 
@@ -81,7 +80,7 @@ public class UnknownEntity extends AmbientCreature {
         int radius = 16;
         BlockPos nearestWood = null;
 
-        Block trueEndWood = BuiltInRegistries.BLOCK.get(new ResourceLocation("true_end", "wood"));
+        Block trueEndWood = ForgeRegistries.BLOCKS.getValue(ResourceLocation.parse("true_end:wood"));
 
         outer:
         for (int x = -radius; x <= radius; x++) {
@@ -89,6 +88,7 @@ public class UnknownEntity extends AmbientCreature {
                 for (int z = -radius; z <= radius; z++) {
                     BlockPos pos = mobPos.offset(x, y, z);
                     BlockState state = this.level().getBlockState(pos);
+                    assert trueEndWood != null;
                     if (state.is(trueEndWood)) {
                         nearestWood = pos;
                         break outer;
@@ -111,7 +111,7 @@ public class UnknownEntity extends AmbientCreature {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return true;
+        return false;
     }
 
     @Override
@@ -126,6 +126,6 @@ public class UnknownEntity extends AmbientCreature {
 
     @Override
     public boolean canBeCollidedWith() {
-        return false;
+        return true;
     }
 }

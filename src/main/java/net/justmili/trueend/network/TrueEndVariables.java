@@ -82,8 +82,10 @@ public class TrueEndVariables {
         private double btdSpawnX = 0.0;
         private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
+        private boolean unknownInWorld = false;
 
         public boolean isDefaultKeepInv() { return defaultKeepInv; }
+        public boolean isUnknownInWorld() { return unknownInWorld; }
         public IntegerListEntry getBtdConversationDelay() { return btdConversationDelay; }
         public DoubleListEntry getRandomEventChance() { return randomEventChance; }
         public BooleanListEntry getRandomEventToggle() { return randomEventsToggle; }
@@ -92,6 +94,7 @@ public class TrueEndVariables {
         public double getBtdSpawnZ() { return btdSpawnZ; }
 
         public void setDefaultKeepInv(boolean v) { defaultKeepInv = v; setDirty(); }
+        public void setUnknownInWorld(boolean v) { unknownInWorld = v; setDirty(); }
         //public void setClearDreamItemsToggle(BooleanListEntry v) { clearDreamItems = v; setDirty(); }
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
 
