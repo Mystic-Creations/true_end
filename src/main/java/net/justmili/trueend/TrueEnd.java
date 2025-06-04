@@ -6,11 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import com.mojang.datafixers.util.Pair;
 
 import net.justmili.trueend.config.TrueEndConfig;
-import net.justmili.trueend.init.TrueEndEntities;
-import net.justmili.trueend.init.TrueEndTabs;
-import net.justmili.trueend.init.TrueEndParticleTypes;
-import net.justmili.trueend.init.TrueEndItems;
-import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.*;
 import net.justmili.trueend.world.liminal_forest.LiminalForestRegion;
 
 import net.minecraft.core.BlockPos;
@@ -70,6 +66,8 @@ public class TrueEnd {
         TrueEndTabs.REGISTRY.register(bus);
         TrueEndParticleTypes.REGISTRY.register(bus);
         TrueEndEntities.ENTITY_TYPES.register(bus);
+        TrueEndMenus.REGISTRY.register(bus);
+        TrueEndSounds.REGISTRY.register(bus);
 
         bus.addListener(this::commonSetup);
         bus.addListener(this::onEntityAttributeCreation);

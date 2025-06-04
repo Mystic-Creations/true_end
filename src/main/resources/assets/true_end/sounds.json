@@ -1,0 +1,11 @@
+{
+  "easter_egg.vine_boom": {
+    "subtitle": "subtitles.easter_egg.vine_boom",
+    "sounds": [
+      {
+        "name": "true_end:vine_boom",
+        "stream": false
+      }
+    ]
+  }
+}

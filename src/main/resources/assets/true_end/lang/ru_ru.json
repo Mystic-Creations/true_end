@@ -75,6 +75,7 @@
   "advancements.mcstory.the_lie.descr": "Пшеница, сахар, молоко и яйца!",
   "gamerule.clearDreamItems": "Очистить вещи из грёзы",
   "gamerule.clearDreamItems.description": "Очищает инвентарь игрока, когда он заходит в измерение За Пределами Сна в первый раз",
+  "subtitles.easter_egg.vine_boom": "Vine Boom.",
   "config.true_end.screentitle": "Истиная концовка / Конфигуратор",
   "config.true_end.category.gameplay": "Игровой процесс",
   "config.true_end.category.events": "События",

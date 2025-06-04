@@ -23,7 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class UnknownEntity extends AmbientCreature {
 
     private static final double WALK_SPEED = 0.25D;
-    private static final int MAX_VISIBLE_TICKS = 90;
+    private static final int MAX_VISIBLE_TICKS = 60;
 
     private int visibleTicks = 0;
 
