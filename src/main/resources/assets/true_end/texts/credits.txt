@@ -19,6 +19,7 @@ VictorTBH
 
 §l// Art & Models //
 JustMili
+Milo*
 *MrJefferson
 *GaelFM
 *Mochila
@@ -33,7 +34,7 @@ RoroTheWizard
 
 §l// Ideas //
 JustMili
-Notmas
+Notmas*
 Eetgeenappels
 
 ----=====----
@@ -55,6 +56,11 @@ John Roboeye §f- Russian
 Eetgeenappels §f- Dutch
 Mahanhamisi §f- Persian (Farsi)
 
+----=====----
+
+§l// Contributors //
+Notmas - Ideas to make Beyond The Dream more alpha-like
+Milo - Funny image of Unknown (/trueend testScreen funny)
 
 
 
