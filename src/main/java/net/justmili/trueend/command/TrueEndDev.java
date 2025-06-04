@@ -22,7 +22,7 @@ public class TrueEndDev {
 
 	@SubscribeEvent
 	public static void registerCommand(RegisterCommandsEvent event) {
-		event.getDispatcher().register(Commands.literal("trueend")
+		event.getDispatcher().register(Commands.literal("trueend").requires(s -> s.hasPermission(4))
 						.then(Commands.literal("testScreen")
 								.then(Commands.literal("credits").executes(arguments -> {
 									Level world = arguments.getSource().getUnsidedLevel();
