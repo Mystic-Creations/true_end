@@ -1,22 +1,22 @@
 package net.justmili.trueend.procedures.randomevents;
 
+import java.util.List;
+
 import net.justmili.trueend.network.TrueEndVariables;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
 
 import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 
@@ -54,13 +54,10 @@ public class EntitySpawning {
 
                         double px = player.getX();
                         double pz = player.getZ();
-
                         double angle = world.getRandom().nextDouble() * Math.PI * 2.0;
-
-                        double minDist = 64.0;
-                        double maxDist = 95.0;
+                        double minDist = 35.0;
+                        double maxDist = 50.0;
                         double distance = minDist + world.getRandom().nextDouble() * (maxDist - minDist);
-
                         int spawnX = Mth.floor(px + Math.cos(angle) * distance);
                         int spawnZ = Mth.floor(pz + Math.sin(angle) * distance);
                         int spawnY = world.getHeight(Heightmap.Types.MOTION_BLOCKING, spawnX, spawnZ);
