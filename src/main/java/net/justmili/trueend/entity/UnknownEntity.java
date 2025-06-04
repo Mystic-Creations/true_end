@@ -23,8 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class UnknownEntity extends AmbientCreature {
 
     private static final double WALK_SPEED = 0.25D;
-    private static final double VIEW_CONE_THRESHOLD = 0.990;
-    private static final int MAX_VISIBLE_TICKS = 80;
+    private static final int MAX_VISIBLE_TICKS = 90;
 
     private int visibleTicks = 0;
 
@@ -56,16 +55,18 @@ public class UnknownEntity extends AmbientCreature {
         if (this.distanceTo(nearest) <= 8.0D) {
             this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
             this.discard();
-            ServerLevel world = (ServerLevel) this.level();
-            TrueEndVariables.MapVariables.get(world).setUnknownInWorld(true);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                TrueEndVariables.MapVariables.get(serverLevel).setUnknownInWorld(true);
+            }
             return;
         }
 
         Vec3 toEntity = this.position().subtract(nearest.position()).normalize();
         Vec3 playerLook = nearest.getLookAngle().normalize();
         double dot = toEntity.dot(playerLook);
+        double angleDegrees = Math.toDegrees(Math.acos(dot));
 
-        if (this.hasLineOfSight(nearest) && dot > VIEW_CONE_THRESHOLD) {
+        if (this.hasLineOfSight(nearest) && angleDegrees < 18.0) {
             visibleTicks++;
             if (visibleTicks >= MAX_VISIBLE_TICKS) {
                 this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
@@ -75,23 +76,22 @@ public class UnknownEntity extends AmbientCreature {
         } else {
             visibleTicks = 0;
         }
-
         BlockPos mobPos = this.blockPosition();
         int radius = 16;
         BlockPos nearestWood = null;
 
         Block trueEndWood = ForgeRegistries.BLOCKS.getValue(ResourceLocation.parse("true_end:wood"));
-
-        outer:
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -4; y <= 4; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    BlockPos pos = mobPos.offset(x, y, z);
-                    BlockState state = this.level().getBlockState(pos);
-                    assert trueEndWood != null;
-                    if (state.is(trueEndWood)) {
-                        nearestWood = pos;
-                        break outer;
+        if (trueEndWood != null) {
+            outer:
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -4; y <= 4; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        BlockPos pos = mobPos.offset(x, y, z);
+                        BlockState state = this.level().getBlockState(pos);
+                        if (state.is(trueEndWood)) {
+                            nearestWood = pos;
+                            break outer;
+                        }
                     }
                 }
             }
@@ -111,7 +111,7 @@ public class UnknownEntity extends AmbientCreature {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return false;
+        return true; 
     }
 
     @Override
