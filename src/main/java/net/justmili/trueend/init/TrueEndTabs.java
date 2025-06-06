@@ -17,6 +17,8 @@ public class TrueEndTabs {
 				tabData.accept(TrueEndBlocks.GRASS_BLOCK.get().asItem());
 				tabData.accept(TrueEndBlocks.DIRT.get().asItem());
 				tabData.accept(TrueEndBlocks.FARMLAND.get().asItem());
+				tabData.accept(TrueEndBlocks.FLOWER.get().asItem());
+				tabData.accept(TrueEndBlocks.ROSE.get().asItem());
 				tabData.accept(TrueEndBlocks.LEAVES.get().asItem());
 				tabData.accept(TrueEndBlocks.WOOD.get().asItem());
 				tabData.accept(TrueEndBlocks.WOOD_6_SIDED.get().asItem());

@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": [
+    "true_end:nostalgic_meadow",
+    "true_end:lush_forest"
+  ],
+  "features": "true_end:flower",
+  "step": "vegetal_decoration"
+}
