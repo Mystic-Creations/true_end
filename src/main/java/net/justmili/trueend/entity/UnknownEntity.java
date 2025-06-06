@@ -10,7 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,9 +20,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.EnumSet;
+
 public class UnknownEntity extends AmbientCreature {
 
-    private static final double WALK_SPEED = 0.25D;
+    private static final double WALK_SPEED = 0.45D;
     private static final int MAX_VISIBLE_TICKS = 60;
 
     private int visibleTicks = 0;
@@ -42,7 +44,7 @@ public class UnknownEntity extends AmbientCreature {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 96.0F));
+        this.goalSelector.addGoal(0, new AlwaysLookAtNearestPlayerGoal(this));
     }
 
     @Override
@@ -76,6 +78,7 @@ public class UnknownEntity extends AmbientCreature {
         } else {
             visibleTicks = 0;
         }
+
         BlockPos mobPos = this.blockPosition();
         int radius = 16;
         BlockPos nearestWood = null;
@@ -111,7 +114,7 @@ public class UnknownEntity extends AmbientCreature {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return true; 
+        return true;
     }
 
     @Override
@@ -127,5 +130,28 @@ public class UnknownEntity extends AmbientCreature {
     @Override
     public boolean canBeCollidedWith() {
         return true;
+    }
+
+    private static class AlwaysLookAtNearestPlayerGoal extends Goal {
+        private final Mob mob;
+
+        public AlwaysLookAtNearestPlayerGoal(Mob mob) {
+            this.mob = mob;
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return mob.level().getNearestPlayer(mob, 96.0D) != null;
+        }
+
+        @Override
+        public void tick() {
+            Player nearest = mob.level().getNearestPlayer(mob, 96.0D);
+            if (nearest != null) {
+                Vec3 target = nearest.getEyePosition();
+                mob.getLookControl().setLookAt(target.x, target.y, target.z);
+            }
+        }
     }
 }
