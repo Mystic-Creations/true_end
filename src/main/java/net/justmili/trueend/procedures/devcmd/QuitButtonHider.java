@@ -1,13 +1,15 @@
 package net.justmili.trueend.procedures.devcmd;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
+import java.util.Locale;
+
+import net.justmili.trueend.TrueEnd;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.justmili.trueend.procedures.QuitButtonControl;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -15,19 +17,17 @@ import net.minecraftforge.fml.common.Mod;
 public class QuitButtonHider {
 
     @SubscribeEvent
-    public static void onClientTick(ClientTickEvent event) {
-        if (event.phase != ClientTickEvent.Phase.END) return;
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.screen instanceof TitleScreen || mc.screen instanceof PauseScreen) {
-            for (AbstractWidget widget : mc.screen.children().stream()
-                .filter(w -> w instanceof AbstractWidget)
-                .map(w -> (AbstractWidget) w).toList()) {
-                if (widget instanceof Button button &&
-                        (button.getMessage().getString().contains("Quit")
-                          || button.getMessage().getString().contains("Save and Quit"))
-                        && QuitButtonControl.quitDisabled) {
-                    button.active = false;
-                    button.visible = false;
+    public static void onInitScreen(ScreenEvent.Init event) {
+        if (!TrueEnd.quitDisabled) return;
+
+        if (event.getScreen() instanceof TitleScreen || event.getScreen() instanceof PauseScreen) {
+            for (GuiEventListener listener : event.getScreen().children()) {
+                if (listener instanceof Button button) {
+                    String msg = button.getMessage().getString().toLowerCase(Locale.ROOT);
+                    if (msg.contains("quit") || msg.contains("save and quit")) {
+                        button.setMessage(Component.literal("YOU SHALL NOT PASS"));
+                        button.active = false;
+                    }
                 }
             }
         }

@@ -28,13 +28,6 @@ import net.justmili.trueend.init.TrueEndParticleTypes;
 import net.justmili.trueend.init.TrueEndSounds;
 import net.justmili.trueend.init.TrueEndTabs;
 import net.justmili.trueend.world.liminal_forest.LiminalForestRegion;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.gui.screens.PauseScreen;
-import net.justmili.trueend.procedures.devcmd.*;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -44,7 +37,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.biome.Biome;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -87,7 +79,6 @@ public class TrueEnd {
         bus.addListener(net.justmili.trueend.client.EntityClient::registerEntityRenderers);
 
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
-        MinecraftForge.EVENT_BUS.addListener(this::onClientTick);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -210,24 +201,5 @@ public class TrueEnd {
                 return 1;
             }))
         );
-    }
-
-    @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.screen instanceof TitleScreen || mc.screen instanceof PauseScreen) {
-            for (AbstractWidget widget : mc.screen.children().stream()
-                    .filter(w -> w instanceof AbstractWidget)
-                    .map(w -> (AbstractWidget) w).toList()) {
-                if (widget instanceof Button button &&
-                    (button.getMessage().getString().contains("Quit")
-                     || button.getMessage().getString().contains("Save and Quit"))
-                    && quitDisabled) {
-                    button.active = false;
-                    button.visible = false;
-                }
-            }
-        }
     }
 }
