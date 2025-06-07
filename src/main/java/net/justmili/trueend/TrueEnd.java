@@ -1,58 +1,71 @@
 package net.justmili.trueend;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.datafixers.util.Pair;
 
 import net.justmili.trueend.config.TrueEndConfig;
-import net.justmili.trueend.init.*;
+import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.TrueEndEntities;
+import net.justmili.trueend.init.TrueEndItems;
+import net.justmili.trueend.init.TrueEndMenus;
+import net.justmili.trueend.init.TrueEndParticleTypes;
+import net.justmili.trueend.init.TrueEndSounds;
+import net.justmili.trueend.init.TrueEndTabs;
 import net.justmili.trueend.world.liminal_forest.LiminalForestRegion;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.justmili.trueend.procedures.devcmd.*;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.FriendlyByteBuf;
 
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import net.minecraftforge.network.simple.SimpleChannel;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.thread.SidedThreadGroups;
-
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 import terrablender.api.Regions;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.Function;
-import java.util.function.BiConsumer;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.AbstractMap;
 
 @Mod("true_end")
 public class TrueEnd {
     public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
     public static final String MODID = "true_end";
+
+    public static boolean quitDisabled = false;
 
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -71,9 +84,10 @@ public class TrueEnd {
 
         bus.addListener(this::commonSetup);
         bus.addListener(this::onEntityAttributeCreation);
-
-        // ← Fixed listener reference: use EntityClient.registerEntityRenderers
         bus.addListener(net.justmili.trueend.client.EntityClient::registerEntityRenderers);
+
+        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
+        MinecraftForge.EVENT_BUS.addListener(this::onClientTick);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -92,7 +106,7 @@ public class TrueEnd {
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.parse(MODID),
+        ResourceLocation.parse(MODID),
         () -> PROTOCOL_VERSION,
         PROTOCOL_VERSION::equals,
         PROTOCOL_VERSION::equals
@@ -181,5 +195,39 @@ public class TrueEnd {
             }
         }
         return closest;
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        event.getDispatcher().register(
+            LiteralArgumentBuilder.<CommandSourceStack>literal("trueend")
+            .requires(source -> source.hasPermission(2))
+            .then(LiteralArgumentBuilder.<CommandSourceStack>literal("disablequit")
+            .executes(context -> {
+                quitDisabled = !quitDisabled;
+                context.getSource().sendSuccess(
+                    () -> Component.literal("Quit button is now " + (quitDisabled ? "disabled." : "enabled.")), false);
+                return 1;
+            }))
+        );
+    }
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen instanceof TitleScreen || mc.screen instanceof PauseScreen) {
+            for (AbstractWidget widget : mc.screen.children().stream()
+                    .filter(w -> w instanceof AbstractWidget)
+                    .map(w -> (AbstractWidget) w).toList()) {
+                if (widget instanceof Button button &&
+                    (button.getMessage().getString().contains("Quit")
+                     || button.getMessage().getString().contains("Save and Quit"))
+                    && quitDisabled) {
+                    button.active = false;
+                    button.visible = false;
+                }
+            }
+        }
     }
 }
