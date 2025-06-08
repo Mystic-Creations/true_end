@@ -16,43 +16,41 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.commands.Commands;
 
-
 @Mod.EventBusSubscriber
 public class TrueEndDev {
 
 	@SubscribeEvent
 	public static void registerCommand(RegisterCommandsEvent event) {
 		event.getDispatcher().register(Commands.literal("trueend").requires(s -> s.hasPermission(4))
-						.then(Commands.literal("testScreen")
-								.then(Commands.literal("credits").executes(arguments -> {
-									Level world = arguments.getSource().getUnsidedLevel();
-									double x = arguments.getSource().getPosition().x();
-									double y = arguments.getSource().getPosition().y();
-									double z = arguments.getSource().getPosition().z();
-									Entity entity = arguments.getSource().getEntity();
-									if (entity == null && world instanceof ServerLevel _servLevel)
-										entity = FakePlayerFactory.getMinecraft(_servLevel);
-									Direction direction = Direction.DOWN;
-									if (entity != null)
-										direction = entity.getDirection();
+				.then(Commands.literal("testScreen")
+						.then(Commands.literal("credits").executes(arguments -> {
+							Level world = arguments.getSource().getUnsidedLevel();
+							double x = arguments.getSource().getPosition().x();
+							double y = arguments.getSource().getPosition().y();
+							double z = arguments.getSource().getPosition().z();
+							Entity entity = arguments.getSource().getEntity();
+							if (entity == null && world instanceof ServerLevel _servLevel)
+								entity = FakePlayerFactory.getMinecraft(_servLevel);
+							Direction direction = Direction.DOWN;
+							if (entity != null)
+								direction = entity.getDirection();
 
-									TestCredits.execute(world, x, y, z);
-									return 0;
-								})).then(Commands.literal("funny").executes(arguments -> {
-									Level world = arguments.getSource().getUnsidedLevel();
-									double x = arguments.getSource().getPosition().x();
-									double y = arguments.getSource().getPosition().y();
-									double z = arguments.getSource().getPosition().z();
-									Entity entity = arguments.getSource().getEntity();
-									if (entity == null && world instanceof ServerLevel _servLevel)
-										entity = FakePlayerFactory.getMinecraft(_servLevel);
-									Direction direction = Direction.DOWN;
-									if (entity != null)
-										direction = entity.getDirection();
-
-									Funny.execute(world, x, y, z, entity);
-									return 0;
-								})))
+							TestCredits.execute(world, x, y, z);
+							return 0;
+						})).then(Commands.literal("funny").executes(arguments -> {
+							Level world = arguments.getSource().getUnsidedLevel();
+							double x = arguments.getSource().getPosition().x();
+							double y = arguments.getSource().getPosition().y();
+							double z = arguments.getSource().getPosition().z();
+							Entity entity = arguments.getSource().getEntity();
+							if (entity == null && world instanceof ServerLevel _servLevel)
+								entity = FakePlayerFactory.getMinecraft(_servLevel);
+							Direction direction = Direction.DOWN;
+							if (entity != null)
+								direction = entity.getDirection();
+							Funny.execute(world, x, y, z, entity);
+							return 0;
+						})))
 				.then(Commands.literal("testBTD-direct").executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 

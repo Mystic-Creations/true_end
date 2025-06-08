@@ -57,8 +57,6 @@ public class TrueEnd {
     public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
     public static final String MODID = "true_end";
 
-    public static boolean quitDisabled = false;
-
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
         IEventBus bus = modContext.getModEventBus();
@@ -77,49 +75,43 @@ public class TrueEnd {
         bus.addListener(this::commonSetup);
         bus.addListener(this::onEntityAttributeCreation);
         bus.addListener(net.justmili.trueend.client.EntityClient::registerEntityRenderers);
-
-        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Regions.register(new LiminalForestRegion(
-                ResourceLocation.parse("true_end:overworld_region"), 1
-            ));
+                    ResourceLocation.parse("true_end:overworld_region"), 1));
         });
     }
 
     @SubscribeEvent
     public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(TrueEndEntities.UNKNOWN.get(),
-                  net.justmili.trueend.entity.UnknownEntity.createAttributes().build());
+                net.justmili.trueend.entity.UnknownEntity.createAttributes().build());
     }
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-        ResourceLocation.parse(MODID),
-        () -> PROTOCOL_VERSION,
-        PROTOCOL_VERSION::equals,
-        PROTOCOL_VERSION::equals
-    );
+            ResourceLocation.parse(MODID),
+            () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals,
+            PROTOCOL_VERSION::equals);
     private static int messageID = 0;
 
     public static <T> void addNetworkMessage(Class<T> messageType,
-                                             BiConsumer<T, FriendlyByteBuf> encoder,
-                                             Function<FriendlyByteBuf, T> decoder,
-                                             BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
+            BiConsumer<T, FriendlyByteBuf> encoder,
+            Function<FriendlyByteBuf, T> decoder,
+            BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
         PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
         messageID++;
     }
 
-    private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue =
-        new ConcurrentLinkedQueue<>();
+    private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
     public static void queueServerWork(int tick, Runnable action) {
         if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
             workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
     }
-
     @SubscribeEvent
     public void tick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
@@ -150,7 +142,6 @@ public class TrueEnd {
             player.sendSystemMessage(component);
         }
     }
-
     public static void sendTellrawMessagesWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
         for (int i = 0; i < messages.length; i++) {
             String msg = messages[i];
@@ -163,14 +154,13 @@ public class TrueEnd {
                 .map(biomeKey -> biomeKey.location().toString().equals(biomeNamespaced))
                 .orElse(false);
     }
-
     public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
         Pair<BlockPos, Holder<Biome>> result = level.getLevel()
-            .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
-        if (result == null) return null;
+                .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
+        if (result == null)
+            return null;
         return result.getFirst();
     }
-
     public static BlockPos locateBiomes(ServerLevel level, BlockPos startPos, String[] biomesNamespaced) {
         List<BlockPos> biomePositions = new ArrayList<>();
         for (String biomeNamespaced : biomesNamespaced) {
@@ -186,20 +176,5 @@ public class TrueEnd {
             }
         }
         return closest;
-    }
-
-    @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(
-            LiteralArgumentBuilder.<CommandSourceStack>literal("trueend")
-            .requires(source -> source.hasPermission(2))
-            .then(LiteralArgumentBuilder.<CommandSourceStack>literal("disablequit")
-            .executes(context -> {
-                quitDisabled = !quitDisabled;
-                context.getSource().sendSuccess(
-                    () -> Component.literal("Quit button is now " + (quitDisabled ? "disabled." : "enabled.")), false);
-                return 1;
-            }))
-        );
     }
 }
