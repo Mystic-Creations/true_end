@@ -21,6 +21,7 @@ public class TrueEndTabs {
 				tabData.accept(TrueEndBlocks.ROSE.get().asItem());
 				tabData.accept(TrueEndBlocks.LEAVES.get().asItem());
 				tabData.accept(TrueEndBlocks.WOOD.get().asItem());
+				tabData.accept(TrueEndBlocks.SAPLING.get().asItem());
 				tabData.accept(TrueEndBlocks.WOOD_6_SIDED.get().asItem());
 				tabData.accept(TrueEndBlocks.WOODEN_PLANKS.get().asItem());
 				tabData.accept(TrueEndBlocks.WOODEN_STAIRS.get().asItem());

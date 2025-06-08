@@ -1,6 +1,10 @@
 package net.justmili.trueend.init;
 
 import net.justmili.trueend.block.*;
+import net.justmili.trueend.world.tree.AlphaTreeGrower;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.DeferredRegister;
@@ -69,4 +73,6 @@ public class TrueEndBlocks {
 	public static final RegistryObject<Block> SAND = REGISTRY.register("sand", Sand::new);
 	public static final RegistryObject<Block> FLOWER = REGISTRY.register("flower", Flower::new);
 	public static final RegistryObject<Block> ROSE = REGISTRY.register("rose", Rose::new);
+	public static final RegistryObject<Block> SAPLING = REGISTRY.register("sapling", Sapling::new);
+
 }

@@ -47,6 +47,7 @@ public class TrueEndItems {
 	// do something to not make the game tint the item
 	public static final RegistryObject<Item> FLOWER = block(TrueEndBlocks.FLOWER);
 	public static final RegistryObject<Item> ROSE = block(TrueEndBlocks.ROSE);
+	public static final RegistryObject<Item> SAPLING = block(TrueEndBlocks.SAPLING);
 
 	private static RegistryObject<Item> block(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
