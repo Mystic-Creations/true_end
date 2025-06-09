@@ -25,18 +25,14 @@ public class LiminalForestRegion extends Region
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper)
     {
         VanillaParameterOverlayBuilder builder = new VanillaParameterOverlayBuilder();
-        // Overlap Vanilla's parameters with our own for our COLD_BLUE biome.
-        // The parameters for this biome are chosen arbitrarily.
         new ParameterUtils.ParameterPointListBuilder()
-                .temperature(ParameterUtils.Temperature.span(ParameterUtils.Temperature.FROZEN, ParameterUtils.Temperature.ICY))
+                .temperature(ParameterUtils.Temperature.span(ParameterUtils.Temperature.NEUTRAL, ParameterUtils.Temperature.WARM))
                 .humidity(ParameterUtils.Humidity.span(ParameterUtils.Humidity.ARID, ParameterUtils.Humidity.DRY))
                 .continentalness(ParameterUtils.Continentalness.INLAND)
                 .erosion(ParameterUtils.Erosion.EROSION_0, ParameterUtils.Erosion.EROSION_1)
                 .depth(ParameterUtils.Depth.SURFACE, ParameterUtils.Depth.FLOOR)
                 .weirdness(ParameterUtils.Weirdness.MID_SLICE_NORMAL_ASCENDING, ParameterUtils.Weirdness.MID_SLICE_NORMAL_DESCENDING)
                 .build().forEach(point -> builder.add(point, TrueEndBiomes.LIMINAL_FOREST));
-
-        // Add our points to the mapper
         builder.build().forEach(mapper);
     }
 }

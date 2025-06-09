@@ -2,10 +2,14 @@ package net.justmili.trueend.procedures.randomevents;
 
 import java.util.List;
 
+import net.justmili.trueend.TrueEnd;
+import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.TrueEndEntities;
 import net.justmili.trueend.network.TrueEndVariables;
 import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -17,7 +21,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber
 public class EntitySpawning {
@@ -54,8 +57,8 @@ public class EntitySpawning {
                         double px = player.getX();
                         double pz = player.getZ();
                         double angle = world.getRandom().nextDouble() * Math.PI * 2.0;
-                        double minDist = 35.0;
-                        double maxDist = 50.0;
+                        double minDist = 32.0;
+                        double maxDist = (Minecraft.getInstance().gameRenderer.getRenderDistance() * 16) - 16;
                         double distance = minDist + world.getRandom().nextDouble() * (maxDist - minDist);
                         int spawnX = Mth.floor(px + Math.cos(angle) * distance);
                         int spawnZ = Mth.floor(pz + Math.sin(angle) * distance);
@@ -64,24 +67,15 @@ public class EntitySpawning {
                         BlockPos groundPos = new BlockPos(spawnX, spawnY, spawnZ);
                         Block groundBlock = world.getBlockState(groundPos).getBlock();
 
-                        Block grassBlock = ForgeRegistries.BLOCKS.getValue(
-                                ResourceLocation.parse("true_end:grass_block"));
-                        Block stoneBlock = ForgeRegistries.BLOCKS.getValue(
-                                ResourceLocation.parse("true_end:stone"));
-                        Block sandBlock = ForgeRegistries.BLOCKS.getValue(
-                                ResourceLocation.parse("true_end:sand"));
-                        if (groundBlock != grassBlock && groundBlock != stoneBlock && groundBlock != sandBlock) {
-                            System.err.println(
-                                    "[DEBUG] true_end: Entity spawn failed, attempted to spawn on blacklisted block."
-                            );
-                            return;
-                        }
+                        Block grassBlock = TrueEndBlocks.GRASS_BLOCK.get();
+                        Block stoneBlock = TrueEndBlocks.STONE.get();
+                        Block sandBlock = TrueEndBlocks.SAND.get();
 
-                        BlockPos posOne = new BlockPos(spawnX, spawnY + 1, spawnZ);
-                        BlockPos posTwo = new BlockPos(spawnX, spawnY + 2, spawnZ);
-                        if (world.isEmptyBlock(posOne) && world.isEmptyBlock(posTwo)) {
-                            EntityType<?> unknownType = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.parse("true_end:unknown"));
-                            if (unknownType != null) {
+                        if (groundBlock == grassBlock && groundBlock == stoneBlock && groundBlock == sandBlock) {
+                            BlockPos posOne = new BlockPos(spawnX, spawnY + 1, spawnZ);
+                            BlockPos posTwo = new BlockPos(spawnX, spawnY + 2, spawnZ);
+                            if (world.isEmptyBlock(posOne) && world.isEmptyBlock(posTwo)) {
+                                EntityType<?> unknownType = TrueEndEntities.UNKNOWN.get();
                                 Entity unknownEntity = unknownType.create(world);
                                 if (unknownEntity != null) {
                                     unknownEntity.moveTo(spawnX + 0.5, spawnY + 1.0, spawnZ + 0.5,
@@ -97,6 +91,10 @@ public class EntitySpawning {
                                     TrueEndVariables.MapVariables.get(world).setUnknownInWorld(true);
                                 }
                             }
+                        } else {
+                            System.err.println(
+                                    "[DEBUG] true_end: Entity spawn failed, attempted to spawn on blacklisted block."
+                            );
                         }
                     } else {
                         System.err.println(
