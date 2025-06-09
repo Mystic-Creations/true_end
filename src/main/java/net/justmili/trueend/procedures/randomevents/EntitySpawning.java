@@ -3,6 +3,7 @@ package net.justmili.trueend.procedures.randomevents;
 import java.util.List;
 
 import net.justmili.trueend.network.TrueEndVariables;
+import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -17,8 +18,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 
 @Mod.EventBusSubscriber
 public class EntitySpawning {
@@ -89,6 +88,7 @@ public class EntitySpawning {
                                             world.getRandom().nextFloat() * 360.0F,
                                             0.0F);
 
+                                    unknownEntity.getPersistentData().putBoolean("PersistenceRequired", true);
                                     world.addFreshEntity(unknownEntity);
 
                                     System.out.println(
