@@ -71,25 +71,23 @@ public class EntitySpawning {
                         Block stoneBlock = TrueEndBlocks.STONE.get();
                         Block sandBlock = TrueEndBlocks.SAND.get();
 
-                        if (groundBlock == grassBlock && groundBlock == stoneBlock && groundBlock == sandBlock) {
+                        if (groundBlock == grassBlock) {
                             BlockPos posOne = new BlockPos(spawnX, spawnY + 1, spawnZ);
                             BlockPos posTwo = new BlockPos(spawnX, spawnY + 2, spawnZ);
                             if (world.isEmptyBlock(posOne) && world.isEmptyBlock(posTwo)) {
                                 EntityType<?> unknownType = TrueEndEntities.UNKNOWN.get();
                                 Entity unknownEntity = unknownType.create(world);
-                                if (unknownEntity != null) {
-                                    unknownEntity.moveTo(spawnX + 0.5, spawnY + 1.0, spawnZ + 0.5,
-                                            world.getRandom().nextFloat() * 360.0F,
-                                            0.0F);
+                                unknownEntity.moveTo(spawnX + 0.5, spawnY + 1.0, spawnZ + 0.5,
+                                        world.getRandom().nextFloat() * 360.0F,
+                                        0.0F);
 
-                                    unknownEntity.getPersistentData().putBoolean("PersistenceRequired", true);
-                                    world.addFreshEntity(unknownEntity);
+                                unknownEntity.getPersistentData().putBoolean("PersistenceRequired", true);
+                                world.addFreshEntity(unknownEntity);
 
-                                    System.out.println(
-                                            "[DEBUG] true_end: Spawned 'unknown' at X=" + spawnX + ", Y=" + (spawnY + 1) + ", Z=" + spawnZ
-                                    );
-                                    TrueEndVariables.MapVariables.get(world).setUnknownInWorld(true);
-                                }
+                                System.out.println(
+                                        "[DEBUG] true_end: Spawned 'unknown' at X=" + spawnX + ", Y=" + (spawnY + 1) + ", Z=" + spawnZ
+                                );
+                                TrueEndVariables.MapVariables.get(world).setUnknownInWorld(true);
                             }
                         } else {
                             System.err.println(

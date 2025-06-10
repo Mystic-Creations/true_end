@@ -4,7 +4,6 @@
 Big thanks to everyone who has worked on and supported this project.
 It would not be possible without you all <3
 
-
 ------=========------
 
 §l// Programming //
@@ -12,14 +11,12 @@ JustMili
 Eetgeenappels
 Mahanhamisi
 VictorTBH
-*Fortsumter
-*MrJefferson
 
 ----=====----
 
 §l// Art & Models //
 JustMili
-Milo*
+Mahanhamisi
 *MrJefferson
 *GaelFM
 *Mochila
@@ -58,13 +55,13 @@ Mahanhamisi §f- Persian (Farsi)
 
 ----=====----
 
+§l// Colaborators //
+ShinHoa / twitch.tv/shinhoaz
+
+----=====----
+
 §l// Contributors //
 Notmas - Ideas to make Beyond The Dream more alpha-like
-Milo - Funny image of Unknown (/trueend testScreen funny)
-
-
-
-
 
 ----=====----
 
@@ -222,8 +219,6 @@ There's nothing more here
 
 
 Genuine, why
-
-
 
 
 

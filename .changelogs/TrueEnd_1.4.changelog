@@ -42,9 +42,9 @@
 
 --------= New Supported Languages
 - Russian
-- Portuguese (Brazilian)
+- Portuguese (Brazilian)          (dev note: in progress)
 - Persian (Farsi)
-- Spanish (Spain)                 (dev note: translation in progress)
+- Spanish (Spain)                 (dev note: awaiting)
 
 ## Removed
 --------= Gamerules
@@ -55,6 +55,5 @@
 --------= Biomes
 - Neverending Ocean
 
-## Fixed Bugs
-- Spelling errors
-- Bad spawn search (dev note: near done)
+# Fixed Bugs
+- Anything we could fix, we did
