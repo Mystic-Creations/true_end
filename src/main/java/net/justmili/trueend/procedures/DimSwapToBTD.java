@@ -86,7 +86,7 @@ public class DimSwapToBTD {
                 double btdSpawnZ = getVariable.getBtdSpawnZ();
 
                 if (btdSpawnY > 0) {
-                    System.out.println("[DEBUG] true_end: Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
+                    TrueEnd.LOGGER.info("[DEBUG] true_end: Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
                     serverPlayer.teleportTo(nextLevel, btdSpawnX, btdSpawnY, btdSpawnZ,
                             serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
@@ -124,7 +124,7 @@ public class DimSwapToBTD {
                         }
                     }
                     if (spawnPos == null) {
-                        System.out.println("[DEBUG] true_end: Could not find ANY fallback spawn point!");
+                        TrueEnd.LOGGER.info("[DEBUG] true_end: Could not find ANY fallback spawn point!");
                         spawnPos = nextLevel.getSharedSpawnPos();
                     }
 
@@ -240,7 +240,7 @@ public class DimSwapToBTD {
                             && level.isEmptyBlock(above2)
                             && level.getBrightness(LightLayer.SKY, above) >= 15
                             && isValidSpawnArea(level, candidate)) {
-                        System.out.println("[DEBUG] true_end: Found ideal spawn: " + above);
+                        TrueEnd.LOGGER.info("[DEBUG] true_end: Found ideal spawn: {}", above);
                         return above;
                     }
                 }
@@ -263,7 +263,7 @@ public class DimSwapToBTD {
                             && noBadBlocks(level, candidate)
                             && level.isEmptyBlock(above)
                             && isValidSpawnArea(level, candidate)) {
-                        System.out.println("[DEBUG] true_end: Found fallback spawn: " + above);
+                        TrueEnd.LOGGER.info("[DEBUG] true_end: Found fallback spawn: {}", above);
                         return above;
                     }
                 }
