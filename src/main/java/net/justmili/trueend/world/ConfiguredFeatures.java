@@ -33,7 +33,7 @@ public class ConfiguredFeatures {
 
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.parse(TrueEnd.MODID + name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.parse(TrueEnd.MODID +":"+ name));
     }
 
     private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstapContext<ConfiguredFeature<?, ?>> context,
