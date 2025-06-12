@@ -46,7 +46,7 @@ public class EntitySpawning {
             if (TrueEndVariables.randomEventsToggle.getValue()) {
                 if (Math.random() < TrueEndVariables.entitySpawnChance.getValue()) {
                     if (!TrueEndVariables.MapVariables.get(world).isUnknownInWorld()) {
-                        System.out.println("[DEBUG] true_end: Searching for 'Unknown' spawn position...");
+                        TrueEnd.LOGGER.info("Searching for 'Unknown' entity spawn position...");
 
                         List<ServerPlayer> players = world.players();
                         if (players.isEmpty()) {
@@ -71,7 +71,7 @@ public class EntitySpawning {
                         Block stoneBlock = TrueEndBlocks.STONE.get();
                         Block sandBlock = TrueEndBlocks.SAND.get();
 
-                        if (groundBlock == grassBlock) {
+                        if (groundBlock == grassBlock || groundBlock == stoneBlock || grassBlock == sandBlock) {
                             BlockPos posOne = new BlockPos(spawnX, spawnY + 1, spawnZ);
                             BlockPos posTwo = new BlockPos(spawnX, spawnY + 2, spawnZ);
                             if (world.isEmptyBlock(posOne) && world.isEmptyBlock(posTwo)) {
@@ -84,20 +84,14 @@ public class EntitySpawning {
                                 unknownEntity.getPersistentData().putBoolean("PersistenceRequired", true);
                                 world.addFreshEntity(unknownEntity);
 
-                                System.out.println(
-                                        "[DEBUG] true_end: Spawned 'unknown' at X=" + spawnX + ", Y=" + (spawnY + 1) + ", Z=" + spawnZ
-                                );
+                                TrueEnd.LOGGER.info("Spawned 'unknown' at X={}, Y={}, Z={}", spawnX, spawnY + 1, spawnZ);
                                 TrueEndVariables.MapVariables.get(world).setUnknownInWorld(true);
                             }
                         } else {
-                            System.err.println(
-                                    "[DEBUG] true_end: Entity spawn failed, attempted to spawn on blacklisted block."
-                            );
+                            TrueEnd.LOGGER.error("Entity spawn attempt failed, tried to spawn on a blacklisted block.");
                         }
                     } else {
-                        System.err.println(
-                                "[DEBUG] true_end: Attempted to spawn 'Unknown' but failed, entity already in the world"
-                        );
+                        System.err.println("Entity spawn attempt failed, entity already in the world.");
                     }
                 }
             }

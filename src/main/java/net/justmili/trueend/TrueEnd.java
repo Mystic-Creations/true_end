@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.datafixers.util.Pair;
 
 import net.justmili.trueend.config.TrueEndConfig;
@@ -28,7 +27,6 @@ import net.justmili.trueend.init.TrueEndParticleTypes;
 import net.justmili.trueend.init.TrueEndSounds;
 import net.justmili.trueend.init.TrueEndTabs;
 import net.justmili.trueend.world.liminal_forest.LiminalForestRegion;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,7 +36,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -62,7 +59,6 @@ public class TrueEnd {
         IEventBus bus = modContext.getModEventBus();
 
         TrueEndConfig.load();
-        System.out.println("[DEBUG] " + MODID + ": Loaded Config");
 
         TrueEndItems.REGISTRY.register(bus);
         TrueEndBlocks.REGISTRY.register(bus);
@@ -112,6 +108,7 @@ public class TrueEnd {
         if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
             workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
     }
+
     @SubscribeEvent
     public void tick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
@@ -142,6 +139,7 @@ public class TrueEnd {
             player.sendSystemMessage(component);
         }
     }
+
     public static void sendTellrawMessagesWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
         for (int i = 0; i < messages.length; i++) {
             String msg = messages[i];
@@ -154,6 +152,7 @@ public class TrueEnd {
                 .map(biomeKey -> biomeKey.location().toString().equals(biomeNamespaced))
                 .orElse(false);
     }
+
     public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
         Pair<BlockPos, Holder<Biome>> result = level.getLevel()
                 .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
@@ -161,6 +160,7 @@ public class TrueEnd {
             return null;
         return result.getFirst();
     }
+
     public static BlockPos locateBiomes(ServerLevel level, BlockPos startPos, String[] biomesNamespaced) {
         List<BlockPos> biomePositions = new ArrayList<>();
         for (String biomeNamespaced : biomesNamespaced) {

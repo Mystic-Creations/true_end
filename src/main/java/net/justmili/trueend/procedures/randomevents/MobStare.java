@@ -3,6 +3,7 @@ package net.justmili.trueend.procedures.randomevents;
 import java.util.List;
 import java.util.Random;
 
+import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -33,22 +34,26 @@ public class MobStare {
     }
 
     public static void execute(LevelAccessor world) {
-        if (!(world instanceof ServerLevel level)) return;
+        if (!(world instanceof ServerLevel level))
+            return;
 
-        if (random.nextDouble() >= TrueEndVariables.randomEventChance.getValue()) return;
+        if (random.nextDouble() >= TrueEndVariables.randomEventChance.getValue())
+            return;
 
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
             BlockPos playerPos = player.blockPosition();
             AABB area = new AABB(playerPos).inflate(32.0);
             List<Mob> mobs = level.getEntitiesOfClass(Mob.class, area);
             for (Mob mob : mobs) {
-                if (!mob.isAlive()) continue;
-                System.out.println("[DEBUG] " + MODID + ": MobStare Random Event Started");
-                mob.getLookControl().setLookAt(player, 30.0f, 30.0f);
+                if (mob.isAlive()) {
+                    TrueEnd.LOGGER.info("MobStare Random Event Executed");
+                    mob.getLookControl().setLookAt(player, 30.0f, 30.0f);
+                }
             }
         }
     }
 }
-// Notes:
-// - Random chance not working right
-// - mobs looking at the player only for a second and then stopping
+// Issues:
+// Mobs don't freeze walking while looking
+// The staring despite now working longer, it's not long enough (it's supposed to from like 10s to like 15min)
+// Random chance should be hooked up to Math.random

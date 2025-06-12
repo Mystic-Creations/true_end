@@ -86,7 +86,7 @@ public class DimSwapToBTD {
                 double btdSpawnZ = getVariable.getBtdSpawnZ();
 
                 if (btdSpawnY > 0) {
-                    TrueEnd.LOGGER.info("[DEBUG] true_end: Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
+                    TrueEnd.LOGGER.info("Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
                     serverPlayer.teleportTo(nextLevel, btdSpawnX, btdSpawnY, btdSpawnZ,
                             serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
@@ -111,12 +111,12 @@ public class DimSwapToBTD {
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
 
                     BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel,
-                            new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), "true_end:nostalgic_meadow");
+                            new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
+                            "true_end:nostalgic_meadow");
 
                     if (spawnPos == null) {
                         while (spawnPos == null) {
-                            secondarySearchPos =
-                                    new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
+                            secondarySearchPos = new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
                                     BlockPosRandomY,
                                     BlockPosRandomZ + BlockPosRandomX));
 
@@ -124,7 +124,7 @@ public class DimSwapToBTD {
                         }
                     }
                     if (spawnPos == null) {
-                        TrueEnd.LOGGER.info("[DEBUG] true_end: Could not find ANY fallback spawn point!");
+                        TrueEnd.LOGGER.error("Could not find ANY fallback spawn point!");
                         spawnPos = nextLevel.getSharedSpawnPos();
                     }
 
@@ -169,8 +169,10 @@ public class DimSwapToBTD {
             }
         }
     }
+
     public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
-        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ());
+        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
+                serverPlayer.getZ());
     }
 
     public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
@@ -240,7 +242,7 @@ public class DimSwapToBTD {
                             && level.isEmptyBlock(above2)
                             && level.getBrightness(LightLayer.SKY, above) >= 15
                             && isValidSpawnArea(level, candidate)) {
-                        TrueEnd.LOGGER.info("[DEBUG] true_end: Found ideal spawn: {}", above);
+                        TrueEnd.LOGGER.info("Found ideal spawn: {}", above);
                         return above;
                     }
                 }
@@ -263,7 +265,7 @@ public class DimSwapToBTD {
                             && noBadBlocks(level, candidate)
                             && level.isEmptyBlock(above)
                             && isValidSpawnArea(level, candidate)) {
-                        TrueEnd.LOGGER.info("[DEBUG] true_end: Found fallback spawn: {}", above);
+                        TrueEnd.LOGGER.info("Found fallback spawn: {}", above);
                         return above;
                     }
                 }
@@ -290,6 +292,7 @@ public class DimSwapToBTD {
         }
         return true;
     }
+
     public static boolean noBadBlocks(ServerLevel level, BlockPos center) {
         final int R = 3;
         int cx = center.getX();
@@ -299,18 +302,18 @@ public class DimSwapToBTD {
         for (int dx = -R; dx <= R; dx++) {
             for (int dz = -R; dz <= R; dz++) {
                 BlockPos atFeet = new BlockPos(cx + dx, cy, cz + dz);
-                BlockPos below  = new BlockPos(cx + dx, cy - 1, cz + dz);
+                BlockPos below = new BlockPos(cx + dx, cy - 1, cz + dz);
                 BlockPos below2 = below.below();
                 BlockState stateAtFeet = level.getBlockState(atFeet);
-                BlockState stateBelow  = level.getBlockState(below);
+                BlockState stateBelow = level.getBlockState(below);
                 BlockState stateBelow2 = level.getBlockState(below2);
 
-                //Return false if any of these are found in the area
+                // Return false if any of these are found in the area
                 if (stateAtFeet.is(Blocks.WATER)
-                        || stateBelow .is(Blocks.WATER)
+                        || stateBelow.is(Blocks.WATER)
                         || stateBelow2.is(Blocks.WATER)
                         || stateAtFeet.is(TrueEndBlocks.SAND.get())
-                        || stateBelow .is(TrueEndBlocks.SAND.get())
+                        || stateBelow.is(TrueEndBlocks.SAND.get())
                         || stateBelow2.is(TrueEndBlocks.SAND.get())) {
                     return false;
                 }
@@ -318,13 +321,17 @@ public class DimSwapToBTD {
         }
         return true;
     }
+
     public static boolean notOnAfuckingHill(ServerLevel level, BlockPos center) {
         final int STEEPNESS_LIMIT = 2;
-        int centerGroundY = getLocalMax(level, new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
+        int centerGroundY = getLocalMax(level,
+                new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
-                if (dx == 0 && dz == 0) continue;
-                BlockPos neighborColumn = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1, center.getZ() + dz);
+                if (dx == 0 && dz == 0)
+                    continue;
+                BlockPos neighborColumn = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1,
+                        center.getZ() + dz);
                 int neighborGroundY = getLocalMax(level, neighborColumn);
 
                 if (Math.abs(neighborGroundY - centerGroundY) > STEEPNESS_LIMIT) {
@@ -334,6 +341,7 @@ public class DimSwapToBTD {
         }
         return true;
     }
+
     public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
         int y = pos.getY();
         if (y >= 66 && y <= 76) {
@@ -342,13 +350,13 @@ public class DimSwapToBTD {
         return false;
     }
 
-
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {
         if (world instanceof ServerLevel level && entity instanceof ServerPlayer player) {
             level.getServer().getCommands()
                     .performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput(), command);
         }
     }
+
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
         int convoDelay = TrueEndVariables.btdConversationDelay.getValue();
         String[] conversation = {
@@ -369,7 +377,8 @@ public class DimSwapToBTD {
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
-        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH/2, centerPos.getY() - 1, centerPos.getZ() - HOUSE_PLATEAU_LENGTH/2);
+        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH / 2, centerPos.getY() - 1,
+                centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2);
         int plateauHeight = placePos.getY();
         // make the plateau
         for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
@@ -389,18 +398,22 @@ public class DimSwapToBTD {
                 int worldZ = centerZ + dz;
 
                 double distFromCenter = Math.sqrt(dx * dx + dz * dz);
-                if (distFromCenter > radius + (double) Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2) continue;
+                if (distFromCenter > radius + (double) Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2)
+                    continue;
 
                 int localX = worldX - placePos.getX();
                 int localZ = worldZ - placePos.getZ();
-                boolean insidePlateau = localX >= 0 && localX < HOUSE_PLATEAU_WIDTH && localZ >= 0 && localZ < HOUSE_PLATEAU_LENGTH;
-                if (insidePlateau) continue;
+                boolean insidePlateau = localX >= 0 && localX < HOUSE_PLATEAU_WIDTH && localZ >= 0
+                        && localZ < HOUSE_PLATEAU_LENGTH;
+                if (insidePlateau)
+                    continue;
 
                 BlockPos checkPos = new BlockPos(worldX, plateauHeight, worldZ);
                 int targetHeight = getLocalMax(world, checkPos);
 
                 int dist = (int) Math.round(distFromCenter) - Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2;
-                if (dist < 0 || dist > radius) continue;
+                if (dist < 0 || dist > radius)
+                    continue;
 
                 int height = gradient(targetHeight, plateauHeight, radius, dist);
                 BlockPos grassPos = new BlockPos(worldX, height, worldZ);
@@ -408,6 +421,7 @@ public class DimSwapToBTD {
             }
         }
     }
+
     // Helper method to place grass and fill with dirt until hitting stone
     private static void placeGrassWithDirt(ServerLevel world, BlockPos pos) {
         world.setBlock(pos, TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 3);
@@ -422,11 +436,13 @@ public class DimSwapToBTD {
             world.setBlock(mutablePos, TrueEndBlocks.DIRT.get().defaultBlockState(), 3);
         }
     }
+
     // Smooth gradient function
     private static int gradient(int targetHeight, int centerHeight, int maxDist, int dist) {
         float t = (float) dist / maxDist;
         return Math.round(centerHeight * (1 - t) + targetHeight * t);
     }
+
     public static int getLocalMax(ServerLevel world, BlockPos pos) {
         int maxY = world.getMaxBuildHeight() - 1;
         int max = maxY;
