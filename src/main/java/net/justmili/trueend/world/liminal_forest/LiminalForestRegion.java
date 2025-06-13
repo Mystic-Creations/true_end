@@ -1,7 +1,7 @@
 package net.justmili.trueend.world.liminal_forest;
 
 import com.mojang.datafixers.util.Pair;
-import net.justmili.trueend.world.TrueEndBiomes;
+import net.justmili.trueend.init.TrueEndBiomes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

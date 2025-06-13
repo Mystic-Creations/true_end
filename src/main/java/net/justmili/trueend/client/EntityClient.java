@@ -33,17 +33,11 @@ public class EntityClient {
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)),
                 0.5f
             );
-            this.addLayer(new HumanoidArmorLayer<>(
-                this,
-                new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
-                new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
-                context.getModelManager()
-            ));
         }
 
         @Override
         public ResourceLocation getTextureLocation(UnknownEntity entity) {
-            return ResourceLocation.parse("true_end:textures/entity/unknown/unknown.png");
+            return ResourceLocation.parse("true_end:textures/entity/unknown/unknown_0.png");
         }
     }
 }

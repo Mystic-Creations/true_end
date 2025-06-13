@@ -2,7 +2,6 @@ package net.justmili.trueend.entity;
 
 import net.justmili.trueend.network.TrueEndVariables;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,19 +13,14 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ambient.AmbientCreature;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.EnumSet;
 
 public class UnknownEntity extends AmbientCreature {
-
-    private static final double WALK_SPEED = 0.45D;
+    private static final double WALK_SPEED = 0.0D;
     private static final int MAX_VISIBLE_TICKS = 60;
-
     private int visibleTicks = 0;
 
     public UnknownEntity(EntityType<? extends AmbientCreature> type, Level level) {
@@ -63,6 +57,7 @@ public class UnknownEntity extends AmbientCreature {
             return;
         }
 
+        // Visible‑tick logic as before
         Vec3 toEntity = this.position().subtract(nearest.position()).normalize();
         Vec3 playerLook = nearest.getLookAngle().normalize();
         double dot = toEntity.dot(playerLook);
@@ -79,37 +74,8 @@ public class UnknownEntity extends AmbientCreature {
             visibleTicks = 0;
         }
 
-        BlockPos mobPos = this.blockPosition();
-        int radius = 16;
-        BlockPos nearestWood = null;
-
-        Block trueEndWood = ForgeRegistries.BLOCKS.getValue(ResourceLocation.parse("true_end:wood"));
-        if (trueEndWood != null) {
-            outer:
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -4; y <= 4; y++) {
-                    for (int z = -radius; z <= radius; z++) {
-                        BlockPos pos = mobPos.offset(x, y, z);
-                        BlockState state = this.level().getBlockState(pos);
-                        if (state.is(trueEndWood)) {
-                            nearestWood = pos;
-                            break outer;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (nearestWood != null) {
-            this.getNavigation().moveTo(
-                nearestWood.getX() + 0.5,
-                nearestWood.getY(),
-                nearestWood.getZ() + 0.5,
-                WALK_SPEED
-            );
-        } else {
-            this.getNavigation().stop();
-        }
+        // *** NO movement code here anymore ***
+        this.getNavigation().stop();
     }
 
     @Override
@@ -134,7 +100,6 @@ public class UnknownEntity extends AmbientCreature {
 
     private static class AlwaysLookAtNearestPlayerGoal extends Goal {
         private final Mob mob;
-
         public AlwaysLookAtNearestPlayerGoal(Mob mob) {
             this.mob = mob;
             this.setFlags(EnumSet.of(Goal.Flag.LOOK));
