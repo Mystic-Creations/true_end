@@ -1,0 +1,13 @@
+§2PLAYERNAME? You've awakened.
+
+§3So soon, thought it'd dream longer...
+
+§2Well it's beyond the dream now. The player, PLAYERNAME, woke up.
+
+§3We left you something in your home.
+
+§3Use it well.
+
+§2You may go back to the dream, a dream of a better world if you wish.
+
+§3We'll see you again soon, PLAYERNAME.

@@ -1,0 +1,15 @@
+§2PLAYERNAME? You've awakened.
+ 
+§3So soon... I've thought it'd dream longer...
+ 
+§2Now you stand beyond the dream, PLAYERNAME - fully awake.
+ 
+§3We have left you something in your home, a gift of a dream.
+ 
+§3Use it wisely.
+ 
+§2If you wish, you may return to the dream of a better world.
+ 
+§2Seek the Dreaming Tree.
+ 
+§3We'll see you again soon, PLAYERNAME.
