@@ -326,8 +326,8 @@ public class DimSwapToBTD {
         final int STEEPNESS_LIMIT = 2;
         int centerGroundY = getLocalMax(level,
                 new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dz = -1; dz <= 1; dz++) {
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -7; dz <= 7; dz++) {
                 if (dx == 0 && dz == 0)
                     continue;
                 BlockPos neighborColumn = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1,
