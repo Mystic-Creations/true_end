@@ -7,7 +7,9 @@
 - Liminal Forest  / Overworld - Reality seeping into the dream
 - New small structure "Unknown Base", as if you're not alone
 
---------= Features (Brought from Alpha to ONLY Beyond The Dream)
+--------= Features
+
+(Brought from Alpha to ONLY Beyond The Dream)
 - Sheep drop their wool when hit
 - No attack cooldown
 - Alpha Food/Health System
@@ -24,6 +26,9 @@
 - (Wooden) Trapdoor
 - (Wooden) Pressure Plate
 - (Wooden) Button
+- Red Flower
+- Yellow Flower (yes that's how they were called in alpha)
+- Sapling (dev note: in progress, getting fixed)
 
 --------= Items
 - Dreamer's Compass / Leads you towards The Dreaming Tree (dev note: in progress)
@@ -36,7 +41,7 @@
 - Old advancements / "Hot Topic", "On A Rail", "When Pigs Fly" etc
 
 --------= Other
-- Random Events (Random mining, walking sounds)
+- Random Events
 - Config
 - Mod Credits
 
@@ -48,12 +53,17 @@
 
 ## Removed
 --------= Gamerules
-- btdConversationMessegeDelay (logic, replaced with config)
-- logicHasVisitedBTDForTheFirstTime (logic, replaced with a variable)
-- keepInvDefaultGameplayValue (logic, replaced with a variable)
+- btdConversationMessegeDelay
+- logicHasVisitedBTDForTheFirstTime
+- keepInvDefaultGameplayValue
 
 --------= Biomes
 - Neverending Ocean
 
 # Fixed Bugs
 - Anything we could fix, we did
+
+## Other technical stuff
+- Fixed spawn search for BTD       (dev note: still not perfect)
+- Optimized block interactions for the Redstone Ore and Grass Block
+- Old logic gamerules replaced with variables and config, clearDreamItems gamerule still exists tho

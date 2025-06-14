@@ -1,17 +1,22 @@
 package net.justmili.trueend.block;
 
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,7 +34,8 @@ import java.util.Objects;
 
 public class Dirt extends Block {
     public Dirt() {
-        super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.5f)
+                .randomTicks());
     }
 
     @Override
@@ -39,9 +45,7 @@ public class Dirt extends Block {
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-        if (!canBeGrass(state, world, pos)) {
-            // Keep as dirt
-        } else {
+        if (canBeGrass(state, world, pos)) {
             if (!world.isClientSide()) {
                 world.setBlock(pos, TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 3);
             }
@@ -49,48 +53,60 @@ public class Dirt extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
-        super.use(blockstate, world, pos, entity, hand, hit);
+    public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (entity.getMainHandItem().is(ItemTags.HOES)) {
+        float pitch = 0.9f + world.getRandom().nextFloat() * 0.2f;
+
+        if (player.getMainHandItem().is(ItemTags.HOES)) {
             world.setBlock(BlockPos.containing(x, y, z), TrueEndBlocks.FARMLAND.get().defaultBlockState(), 3);
-            if (world.isClientSide()) {
-                world.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.BLOCKS, 1, 1, false);
-            } else {
-                world.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("item.hoe.till"))), SoundSource.BLOCKS, 1, 1, false);
-            }
+            world.playSound(null, x, y, z, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0f, pitch);
+            player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            getSeeds(world, x, y, z, player, player);
+
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }
 
-private static boolean canBeGrass(BlockState state, LevelReader world, BlockPos pos) {
-    BlockPos abovePos = pos.above();
-    BlockState aboveState = world.getBlockState(abovePos);
-
-    // Check if there's a block above, if so, don't turn into grass.
-    if (!aboveState.isAir()) {
-        return false;
-    }
-
-    // Check for adjacent grass blocks in a 3x3x3 area
-    for (int x = -1; x <= 1; x++) {
-        for (int y = -1; y <= 1; y++) { // Added y loop for vertical check
-            for (int z = -1; z <= 1; z++) {
-                if (x == 0 && y == 0 && z == 0) { // Skip the current block
-                    continue;
-                }
-                BlockPos neighborPos = pos.offset(x, y, z);
-                BlockState neighborState = world.getBlockState(neighborPos);
-
-                if (neighborState.is(TrueEndBlocks.GRASS_BLOCK.get())) {
-                    return true;
+    public static void getSeeds(LevelAccessor world, double x, double y, double z, Entity entity, Player player) {
+        if (entity == null)
+            return;
+        if (player.getMainHandItem().is(ItemTags.HOES)) {
+            if (Math.random() < 0.125) {
+                if (world instanceof ServerLevel _level) {
+                    ItemEntity entityToSpawn = new ItemEntity(_level, x, (y + 1.1), z, new ItemStack(Items.WHEAT_SEEDS));
+                    entityToSpawn.setPickUpDelay(15);
+                    _level.addFreshEntity(entityToSpawn);
                 }
             }
         }
     }
-    return false;
-	}
+
+    private static boolean canBeGrass(BlockState state, LevelReader world, BlockPos pos) {
+        BlockPos abovePos = pos.above();
+        BlockState aboveState = world.getBlockState(abovePos);
+
+        if (!aboveState.isAir()) {
+            return false;
+        }
+
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x == 0 && y == 0 && z == 0) {
+                        continue;
+                    }
+                    BlockPos neighborPos = pos.offset(x, y, z);
+                    BlockState neighborState = world.getBlockState(neighborPos);
+
+                    if (neighborState.is(TrueEndBlocks.GRASS_BLOCK.get())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
