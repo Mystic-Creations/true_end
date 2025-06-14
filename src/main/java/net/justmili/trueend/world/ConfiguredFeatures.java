@@ -18,19 +18,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 
 public class ConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ALPHA_TREE = registerKey("alpha_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ALPHA_TREE_BIG = registerKey("nether_sapphire_ore");
-
-    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
-        register(context, ALPHA_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(TrueEndBlocks.WOOD.get()),
-                new StraightTrunkPlacer(5, 4, 3),
-
-                BlockStateProvider.simple(TrueEndBlocks.LEAVES.get()),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(2), 3),
-
-                new TwoLayersFeatureSize(1, 0, 2)).build());
-    }
-
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ALPHA_TREE_BIG = registerKey("alpha_tree_big");
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.parse(TrueEnd.MODID +":"+ name));

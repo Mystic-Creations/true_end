@@ -36,6 +36,7 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal(
             "btdSpawnX/Y/Z: " + btdSpawnX + "/" + btdSpawnY + "/" + btdSpawnZ
         ));
+        source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
         // Configurable
         source.sendSystemMessage(Component.literal("\n----= Configurable"));
         //source.sendSystemMessage(Component.literal("clearDreamItems: " + TrueEndVariables.clearDreamItems.getValue()));
