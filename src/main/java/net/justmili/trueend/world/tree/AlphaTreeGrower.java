@@ -9,7 +9,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class AlphaTreeGrower extends AbstractTreeGrower {
     @Override
-    protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource p_222910_, boolean p_222911_) {
-        return ConfiguredFeatures.ALPHA_TREE;
+    protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean p_222911_) {
+        if (random.nextDouble() > 0.9) {
+            return ConfiguredFeatures.ALPHA_TREE;
+        } else {
+            return ConfiguredFeatures.ALPHA_TREE_BIG;
+        }
     }
 }
