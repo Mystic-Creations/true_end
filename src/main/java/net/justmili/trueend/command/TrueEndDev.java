@@ -1,10 +1,16 @@
 package net.justmili.trueend.command;
 
+import net.justmili.trueend.entity.UnknownEntity;
+import net.justmili.trueend.init.TrueEndEntities;
 import net.justmili.trueend.procedures.DimSwapToBTD;
 import net.justmili.trueend.procedures.devcmd.*;
 import net.justmili.trueend.procedures.devcmd.screentests.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -15,6 +21,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.commands.Commands;
+
+import java.util.Random;
 
 @Mod.EventBusSubscriber
 public class TrueEndDev {
@@ -75,6 +83,25 @@ public class TrueEndDev {
 				})).then(Commands.literal("removeTrees").executes(arguments -> {
 					ServerLevel world = arguments.getSource().getLevel();
 					DimSwapToBTD.removeNearbyTrees(world, arguments.getSource().getEntity().blockPosition(), 3);
+					return 0;
+				})).then(Commands.literal("spawnUnknown").executes(arguments -> {
+					ServerLevel world = arguments.getSource().getLevel();
+					BlockPos blockPos = arguments.getSource().getEntity().blockPosition();
+					blockPos = blockPos.mutable().offset(10,0,0);
+					EntityType<?> unknownType = TrueEndEntities.UNKNOWN.get();
+					Entity unknownEntity = unknownType.create(world);
+
+					double minDist = 32.0;
+					double maxDist = (Minecraft.getInstance().gameRenderer.getRenderDistance() * 16) - 16;
+
+					Random random = new Random();
+
+					double dist = random.nextDouble() * (maxDist - minDist) + minDist;
+
+					unknownEntity.setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+
+					unknownEntity.getPersistentData().putBoolean("PersistenceRequired", true);
+					world.addFreshEntity(unknownEntity);
 					return 0;
 				})).then(Commands.literal("localHeight").executes(arguments -> {
 					ServerLevel world = arguments.getSource().getLevel();
