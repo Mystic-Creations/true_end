@@ -44,6 +44,9 @@ public class DimSwapToBTD {
     public static final int HOUSE_PLATEAU_LENGTH = 7;
     public static final int TERRAIN_ADAPT_EXTENSION = 10;
 
+    public static final int MAX_FALLBACK_SEARCH_TRIES = 20;
+    public static final BlockPos ABSOLUTE_FALLBACK_POS = new BlockPos (0, 120, 12550832);
+
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
         if (event.getAdvancement().getId().equals(ResourceLocation.parse("true_end:stop_dreaming"))) {
@@ -115,17 +118,25 @@ public class DimSwapToBTD {
                             "true_end:nostalgic_meadow");
 
                     if (spawnPos == null) {
-                        while (spawnPos == null) {
+                        for (int i = 0;i <= MAX_FALLBACK_SEARCH_TRIES;i++) {
                             secondarySearchPos = new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
                                     BlockPosRandomY,
                                     BlockPosRandomZ + BlockPosRandomX));
 
                             spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
+                            if (spawnPos != null) {
+                                break;
+                            }
                         }
                     }
+
+                    boolean adaptTerrain;
+
                     if (spawnPos == null) {
-                        TrueEnd.LOGGER.error("Could not find ANY fallback spawn point!");
-                        spawnPos = nextLevel.getSharedSpawnPos();
+                        adaptTerrain = false;
+                        spawnPos = ABSOLUTE_FALLBACK_POS;
+                    } else {
+                        adaptTerrain = true;
                     }
 
                     BlockPos finalSpawnPos = spawnPos;
@@ -141,7 +152,9 @@ public class DimSwapToBTD {
 
                     TrueEnd.queueServerWork(5, () -> {
                         removeNearbyTrees(nextLevel, serverPlayer.blockPosition(), 15);
-                        adaptTerrain(nextLevel, serverPlayer.blockPosition());
+                        if (adaptTerrain) {
+                            adaptTerrain(nextLevel, serverPlayer.blockPosition());
+                        }
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         setGlobalSpawn(nextLevel, serverPlayer);
                         sendFirstEntryConversation(serverPlayer, nextLevel);
