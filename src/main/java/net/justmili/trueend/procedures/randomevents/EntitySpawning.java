@@ -13,14 +13,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jline.utils.DiffHelper;
 
 @Mod.EventBusSubscriber
 public class EntitySpawning {
@@ -42,10 +45,26 @@ public class EntitySpawning {
             return;
         }
 
+        // Difficulty-based multiplier
+        Difficulty difficulty;
+        double chanceMultiplier = 0.0;
+        difficulty = ((LevelAccessor) world).getDifficulty();
+        if (difficulty == Difficulty.PEACEFUL) {
+            chanceMultiplier = 0.1;
+        } else if (difficulty == Difficulty.EASY) {
+            chanceMultiplier = 0.5;
+        } else if (difficulty == Difficulty.NORMAL) {
+            chanceMultiplier = 1.0;
+        } else if (difficulty == Difficulty.HARD) {
+            chanceMultiplier = 3.0;
+        }
+
+        //The IF's
         if (world.dimension() == BTD) {
             if (TrueEndVariables.randomEventsToggle.getValue()) {
-                if (Math.random() < TrueEndVariables.entitySpawnChance.getValue()) {
+                if (Math.random() < (TrueEndVariables.entitySpawnChance.getValue() * chanceMultiplier)) {
                     if (!TrueEndVariables.MapVariables.get(world).isUnknownInWorld()) {
+                        //Spawning
                         TrueEnd.LOGGER.info("Searching for 'Unknown' entity spawn position...");
 
                         List<ServerPlayer> players = world.players();
