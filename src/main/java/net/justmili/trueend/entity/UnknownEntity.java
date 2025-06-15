@@ -48,7 +48,7 @@ public class UnknownEntity extends AmbientCreature {
         Player nearest = this.level().getNearestPlayer(this, 96.0D);
         if (nearest == null) return;
 
-        if (this.distanceTo(nearest) <= 8.0D) {
+        if (this.distanceTo(nearest) <= 6.0D) {
             this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
             this.discard();
             if (this.level() instanceof ServerLevel serverLevel) {
@@ -74,7 +74,6 @@ public class UnknownEntity extends AmbientCreature {
             visibleTicks = 0;
         }
 
-        // *** NO movement code here anymore ***
         this.getNavigation().stop();
     }
 

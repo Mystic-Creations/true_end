@@ -64,6 +64,6 @@
 - Anything we could fix, we did
 
 ## Other technical stuff
-- Fixed spawn search for BTD       (dev note: still not perfect)
+- Fixed spawn search for BTD (better spawn search, fallback spawn search and added absolute fallback spawn search that puts you in the farlands)
 - Optimized block interactions for the Redstone Ore and Grass Block
 - Old logic gamerules replaced with variables and config, clearDreamItems gamerule still exists tho

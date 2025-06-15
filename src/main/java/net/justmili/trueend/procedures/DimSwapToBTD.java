@@ -45,7 +45,7 @@ public class DimSwapToBTD {
     public static final int TERRAIN_ADAPT_EXTENSION = 10;
 
     public static final int MAX_FALLBACK_SEARCH_TRIES = 20;
-    public static final BlockPos ABSOLUTE_FALLBACK_POS = new BlockPos (0, 120, 12550832);
+    public static final BlockPos ABSOLUTE_FALLBACK_POS = new BlockPos(0, 120, 12550832);
 
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
@@ -118,7 +118,7 @@ public class DimSwapToBTD {
                             "true_end:nostalgic_meadow");
 
                     if (spawnPos == null) {
-                        for (int i = 0;i <= MAX_FALLBACK_SEARCH_TRIES;i++) {
+                        for (int i = 0; i <= MAX_FALLBACK_SEARCH_TRIES; i++) {
                             secondarySearchPos = new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
                                     BlockPosRandomY,
                                     BlockPosRandomZ + BlockPosRandomX));
@@ -131,23 +131,24 @@ public class DimSwapToBTD {
                     }
 
                     boolean adaptTerrain;
+                    boolean absoluteFallbackPlatform;
 
                     if (spawnPos == null) {
                         adaptTerrain = false;
+                        absoluteFallbackPlatform = true;
                         spawnPos = ABSOLUTE_FALLBACK_POS;
                     } else {
                         adaptTerrain = true;
+                        absoluteFallbackPlatform = false;
                     }
 
                     BlockPos finalSpawnPos = spawnPos;
                     BlockPos secFinalSpawnPos = secondarySearchPos;
 
-                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5,
-                            serverPlayer.getYRot(), serverPlayer.getXRot());
+                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
                     for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                        serverPlayer.connection
-                                .send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
+                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
                     TrueEnd.queueServerWork(5, () -> {
@@ -156,27 +157,26 @@ public class DimSwapToBTD {
                             adaptTerrain(nextLevel, serverPlayer.blockPosition());
                         }
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
+                        if (absoluteFallbackPlatform) {
+                            executeCommand(nextLevel, serverPlayer, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
+                        }
                         setGlobalSpawn(nextLevel, serverPlayer);
                         sendFirstEntryConversation(serverPlayer, nextLevel);
-                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP)
-                                .ifPresent(data -> data.setBeenBeyond(true));
+                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                         if (secFinalSpawnPos == null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(),
-                                            finalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(), finalSpawnPos.getZ()));
                         }
                         if (secFinalSpawnPos != null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY(),
-                                            secFinalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY(), secFinalSpawnPos.getZ()));
                         }
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
                     if (nextLevel.getGameRules().getBoolean(TrueEndGameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false,
-                                nextLevel.getServer());
+                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
             }
