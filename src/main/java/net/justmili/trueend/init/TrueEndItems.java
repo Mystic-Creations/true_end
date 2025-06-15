@@ -1,5 +1,6 @@
 package net.justmili.trueend.init;
 
+import net.justmili.trueend.item.DreamersCompass;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
@@ -44,10 +45,10 @@ public class TrueEndItems {
 	public static final RegistryObject<Item> SAND = block(TrueEndBlocks.SAND);
 	public static final RegistryObject<Item> MYSTERIOUS_CUBE = REGISTRY.register("mysterious_cube", MysteriousCube::new);
 	public static final RegistryObject<Item> UNKNOWN_SPAWN_EGG = REGISTRY.register("unknown_spawn_egg", () -> new ForgeSpawnEggItem(TrueEndEntities.UNKNOWN, -16777216, -1, new Item.Properties()));
-	// do something to not make the game tint the item
 	public static final RegistryObject<Item> FLOWER = block(TrueEndBlocks.FLOWER);
 	public static final RegistryObject<Item> ROSE = block(TrueEndBlocks.ROSE);
 	public static final RegistryObject<Item> SAPLING = block(TrueEndBlocks.SAPLING);
+	public static final RegistryObject<Item> DREAMERS_COMPASS = REGISTRY.register("dreamers_compass", DreamersCompass::new);
 
 	private static RegistryObject<Item> block(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
