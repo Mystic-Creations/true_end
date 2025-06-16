@@ -184,8 +184,7 @@ public class DimSwapToBTD {
     }
 
     public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
-        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
-                serverPlayer.getZ());
+        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ());
     }
 
     public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
@@ -390,8 +389,7 @@ public class DimSwapToBTD {
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
-        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH / 2, centerPos.getY() - 1,
-                centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2);
+        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH / 2, centerPos.getY() - 1, centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2);
         int plateauHeight = placePos.getY();
         // make the plateau
         for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
@@ -475,5 +473,5 @@ public class DimSwapToBTD {
         }
         return max;
     }
-
 }
+

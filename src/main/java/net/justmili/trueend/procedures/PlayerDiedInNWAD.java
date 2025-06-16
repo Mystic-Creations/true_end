@@ -33,7 +33,7 @@ public class PlayerDiedInNWAD {
             // set to orignal value to gamerule
             event.getEntity().level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(setKeepInv, event.getEntity().getCommandSenderWorld().getServer());
 
-            // grand advencment
+            // grant advencment
             Advancement advancement = Objects.requireNonNull(event.getEntity().getServer()).getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
             if (advancement != null) {
                 AdvancementProgress advancementProgress = ((ServerPlayer) event.getEntity()).getAdvancements().getOrStartProgress(advancement);
