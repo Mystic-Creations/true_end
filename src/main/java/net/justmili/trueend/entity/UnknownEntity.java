@@ -1,7 +1,6 @@
 package net.justmili.trueend.entity;
 
 import net.justmili.trueend.network.TrueEndVariables;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,9 +18,11 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
 import java.util.EnumSet;
 
 public class UnknownEntity extends AmbientCreature {
-    private static final double WALK_SPEED = 0.0D;
+    private static final double FOLLOW_RANGE = 128.0D;
     private static final int MAX_VISIBLE_TICKS = 60;
+    private static final int COOLDOWN_TICKS = 3600; // 3 minutes in ticks
     private int visibleTicks = 0;
+    private int existenceTicks = 0;
 
     public UnknownEntity(EntityType<? extends AmbientCreature> type, Level level) {
         super(type, level);
@@ -32,8 +33,8 @@ public class UnknownEntity extends AmbientCreature {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.MOVEMENT_SPEED, WALK_SPEED)
-                .add(Attributes.FOLLOW_RANGE, 96.0D);
+                .add(Attributes.MOVEMENT_SPEED, 0.0)
+                .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE);
     }
 
     @Override
@@ -44,20 +45,22 @@ public class UnknownEntity extends AmbientCreature {
     @Override
     public void tick() {
         super.tick();
-
-        Player nearest = this.level().getNearestPlayer(this, 96.0D);
-        if (nearest == null) return;
-
-        if (this.distanceTo(nearest) <= 6.0D) {
-            this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
-            this.discard();
-            if (this.level() instanceof ServerLevel serverLevel) {
-                TrueEndVariables.MapVariables.get(serverLevel).setUnknownInWorld(true);
-            }
+        existenceTicks++;
+        if (existenceTicks >= COOLDOWN_TICKS) {
+            playAndDespawn();
             return;
         }
 
-        // Visible‑tick logic as before
+        Player nearest = this.level().getNearestPlayer(this, FOLLOW_RANGE);
+        if (nearest == null) {
+            return;
+        }
+
+        if (this.distanceTo(nearest) <= 6.0D) {
+            playAndDespawn();
+            return;
+        }
+
         Vec3 toEntity = this.position().subtract(nearest.position()).normalize();
         Vec3 playerLook = nearest.getLookAngle().normalize();
         double dot = toEntity.dot(playerLook);
@@ -66,8 +69,7 @@ public class UnknownEntity extends AmbientCreature {
         if (this.hasLineOfSight(nearest) && angleDegrees < 18.0) {
             visibleTicks++;
             if (visibleTicks >= MAX_VISIBLE_TICKS) {
-                this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
-                this.discard();
+                playAndDespawn();
                 return;
             }
         } else {
@@ -75,6 +77,14 @@ public class UnknownEntity extends AmbientCreature {
         }
 
         this.getNavigation().stop();
+    }
+
+    private void playAndDespawn() {
+        this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            TrueEndVariables.MapVariables.get(serverLevel).setUnknownInWorld(false);
+        }
+        this.discard();
     }
 
     @Override
@@ -99,6 +109,7 @@ public class UnknownEntity extends AmbientCreature {
 
     private static class AlwaysLookAtNearestPlayerGoal extends Goal {
         private final Mob mob;
+
         public AlwaysLookAtNearestPlayerGoal(Mob mob) {
             this.mob = mob;
             this.setFlags(EnumSet.of(Goal.Flag.LOOK));
@@ -106,12 +117,12 @@ public class UnknownEntity extends AmbientCreature {
 
         @Override
         public boolean canUse() {
-            return mob.level().getNearestPlayer(mob, 96.0D) != null;
+            return mob.level().getNearestPlayer(mob, FOLLOW_RANGE) != null;
         }
 
         @Override
         public void tick() {
-            Player nearest = mob.level().getNearestPlayer(mob, 96.0D);
+            Player nearest = mob.level().getNearestPlayer(mob, FOLLOW_RANGE);
             if (nearest != null) {
                 Vec3 target = nearest.getEyePosition();
                 mob.getLookControl().setLookAt(target.x, target.y, target.z);

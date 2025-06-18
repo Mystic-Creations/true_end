@@ -38,6 +38,7 @@ public class EntitySpawning {
         if (world.getGameTime() % TICK_INTERVAL != 0) return;
         if (world.dimension() == Level.END) return;
         if (!TrueEndVariables.randomEventsToggle.getValue()) return;
+        //REMOVE THIS DEBUG MESSAGE BEFORE FINAL BUILD
         if (TrueEndVariables.MapVariables.get(world).isUnknownInWorld()) {
             TrueEnd.LOGGER.error("Entity spawn attempt failed: 'Unknown' already in world.");
             return;
