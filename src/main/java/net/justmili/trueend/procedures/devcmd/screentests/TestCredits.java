@@ -1,7 +1,7 @@
 package net.justmili.trueend.procedures.devcmd.screentests;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.client.TrueEndCreditsScreen;
+import net.justmili.trueend.client.CreditsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,7 +28,7 @@ public class TestCredits {
                 );
                 TrueEnd.queueServerWork(2, () -> {
                     if (mc.screen == null && mc.player != null) {
-                        mc.setScreen(new TrueEndCreditsScreen());
+                        mc.setScreen(new CreditsScreen());
                     }
                 });
             }

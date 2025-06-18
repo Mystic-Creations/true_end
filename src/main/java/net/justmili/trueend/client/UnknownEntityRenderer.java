@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = TrueEnd.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class EntityClient {
+public class UnknownEntityRenderer {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -44,7 +44,7 @@ public class EntityClient {
             // int skin = 0;
             // skin = (int) (Math.random() * 4);
             // return ResourceLocation.parse("true_end:textures/entity/unknown/unknown_"+skin+".png");
-            return ResourceLocation.parse("true_end:textures/entity/unknown/unknown_2.png");
+            return ResourceLocation.parse("true_end:textures/entity/unknown/unknown_0.png");
         }
     }
 }

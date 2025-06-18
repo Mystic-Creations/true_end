@@ -156,20 +156,20 @@ public class DimSwapToBTD {
                         if (adaptTerrain) {
                             adaptTerrain(nextLevel, serverPlayer.blockPosition());
                         }
-                        executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         if (absoluteFallbackPlatform) {
                             executeCommand(nextLevel, serverPlayer, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
                         }
+                        executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         setGlobalSpawn(nextLevel, serverPlayer);
                         sendFirstEntryConversation(serverPlayer, nextLevel);
                         serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                         if (secFinalSpawnPos == null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY(), finalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY()-1, finalSpawnPos.getZ()));
                         }
                         if (secFinalSpawnPos != null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY(), secFinalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY()-1, secFinalSpawnPos.getZ()));
                         }
                         HAS_PROCESSED.remove(serverPlayer);
                     });

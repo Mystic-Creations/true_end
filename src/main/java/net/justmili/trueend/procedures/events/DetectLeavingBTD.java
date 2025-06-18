@@ -1,7 +1,7 @@
 package net.justmili.trueend.procedures.events;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.client.TrueEndCreditsScreen;
+import net.justmili.trueend.client.CreditsScreen;
 import net.justmili.trueend.config.TrueEndConfig;
 import net.justmili.trueend.network.TrueEndVariables;
 import net.justmili.trueend.regs.DimKeyRegistry;
@@ -16,7 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class CreditsDetect {
+public class DetectLeavingBTD {
     private static boolean tickHandlerEnabled = false;
     private static int ticksUntilShow = -1;
     private static boolean hasShownCreditsThisSession = false;
@@ -68,7 +68,7 @@ public class CreditsDetect {
                 tickHandlerEnabled = false;
                 Minecraft mc = Minecraft.getInstance();
                 if (mc.screen == null && mc.player != null) {
-                    mc.setScreen(new TrueEndCreditsScreen());
+                    mc.setScreen(new CreditsScreen());
                 }
             }
         }

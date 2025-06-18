@@ -10,6 +10,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import net.justmili.trueend.client.UnknownEntityRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -70,7 +71,7 @@ public class TrueEnd {
 
         bus.addListener(this::commonSetup);
         bus.addListener(this::onEntityAttributeCreation);
-        bus.addListener(net.justmili.trueend.client.EntityClient::registerEntityRenderers);
+        bus.addListener(UnknownEntityRenderer::registerEntityRenderers);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
