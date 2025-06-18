@@ -11,8 +11,8 @@
     "spread": 10,
     "count": 3,
     "preferred_biomes": [
-      "true_end:lush_forest",
-      "true_end:nostalgic_meadow"
+      "true_end:forest",
+      "true_end:plains"
     ],
     "salt": 1253544446,
     "frequency_reduction_method": "default"

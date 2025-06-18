@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "true_end:nostalgic_meadow"
+    "true_end:plains",
+    "true_end:forest"
   ]
 }

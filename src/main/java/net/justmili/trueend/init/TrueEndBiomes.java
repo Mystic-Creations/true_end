@@ -6,6 +6,5 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 
 public class TrueEndBiomes {
-    public static final ResourceKey<Biome> LIMINAL_FOREST = ResourceKey.create(Registries.BIOME, ResourceLocation.parse("true_end:liminal_forest"));
-
+    public static final ResourceKey<Biome> SEEPING_REALITY = ResourceKey.create(Registries.BIOME, ResourceLocation.parse("true_end:seeping_reality"));
 }

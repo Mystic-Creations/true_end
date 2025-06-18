@@ -27,7 +27,7 @@ import net.justmili.trueend.init.TrueEndMenus;
 import net.justmili.trueend.init.TrueEndParticleTypes;
 import net.justmili.trueend.init.TrueEndSounds;
 import net.justmili.trueend.init.TrueEndTabs;
-import net.justmili.trueend.world.liminal_forest.LiminalForestRegion;
+import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
@@ -76,7 +76,7 @@ public class TrueEnd {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Regions.register(new LiminalForestRegion(
+            Regions.register(new SeepingForestRegion(
                     ResourceLocation.parse("true_end:overworld_region"), 1));
         });
     }

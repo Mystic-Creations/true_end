@@ -6,7 +6,7 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
-          "biome": "true_end:lush_forest",
+          "biome": "true_end:forest",
           "parameters": {
             "temperature": 0,
             "humidity": -0.5,
@@ -18,7 +18,7 @@
           }
         },
         {
-          "biome": "true_end:nostalgic_meadow",
+          "biome": "true_end:plains",
           "parameters": {
             "temperature": 0,
             "humidity": 0.5,

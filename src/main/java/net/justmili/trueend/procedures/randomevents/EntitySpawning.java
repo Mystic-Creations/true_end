@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class EntitySpawning {
-    private static final long TICK_INTERVAL = 200L;
+    private static final long TICK_INTERVAL = 1200L;
     private static final int MAX_ATTEMPTS = 16;
 
     @SubscribeEvent

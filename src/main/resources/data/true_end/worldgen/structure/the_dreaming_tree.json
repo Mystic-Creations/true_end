@@ -11,8 +11,8 @@
   },
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
   "biomes": [
-    "true_end:lush_forest",
-    "true_end:nostalgic_meadow"
+    "true_end:forest",
+    "true_end:plains"
   ],
 
   "use_expansion_hack": false

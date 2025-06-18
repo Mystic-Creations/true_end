@@ -107,7 +107,7 @@ public class DimSwapToBTD {
 
                 TrueEnd.queueServerWork(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:nostalgic_meadow");
+                    BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:plains");
                     if (initialSearchPos == null)
                         initialSearchPos = worldSpawn;
 
@@ -115,7 +115,7 @@ public class DimSwapToBTD {
 
                     BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel,
                             new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
-                            "true_end:nostalgic_meadow");
+                            "true_end:plains");
 
                     if (spawnPos == null) {
                         for (int i = 0; i <= MAX_FALLBACK_SEARCH_TRIES; i++) {
@@ -145,10 +145,12 @@ public class DimSwapToBTD {
                     BlockPos finalSpawnPos = spawnPos;
                     BlockPos secFinalSpawnPos = secondarySearchPos;
 
-                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, serverPlayer.getYRot(), serverPlayer.getXRot());
+                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5,
+                            serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
                     for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
+                        serverPlayer.connection
+                                .send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
                     TrueEnd.queueServerWork(5, () -> {
@@ -157,26 +159,31 @@ public class DimSwapToBTD {
                             adaptTerrain(nextLevel, serverPlayer.blockPosition());
                         }
                         if (absoluteFallbackPlatform) {
-                            executeCommand(nextLevel, serverPlayer, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
+                            executeCommand(nextLevel, serverPlayer,
+                                    "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
                         }
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         setGlobalSpawn(nextLevel, serverPlayer);
                         sendFirstEntryConversation(serverPlayer, nextLevel);
-                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
+                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP)
+                                .ifPresent(data -> data.setBeenBeyond(true));
                         if (secFinalSpawnPos == null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY()-1, finalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY() - 1,
+                                            finalSpawnPos.getZ()));
                         }
                         if (secFinalSpawnPos != null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY()-1, secFinalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY() - 1,
+                                            secFinalSpawnPos.getZ()));
                         }
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
                     if (nextLevel.getGameRules().getBoolean(TrueEndGameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
+                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false,
+                                nextLevel.getServer());
                     }
                 });
             }
@@ -184,7 +191,8 @@ public class DimSwapToBTD {
     }
 
     public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
-        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ());
+        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
+                serverPlayer.getZ());
     }
 
     public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
@@ -246,7 +254,7 @@ public class DimSwapToBTD {
 
                     BlockPos above2 = above.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
-                            && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && level.getBiome(candidate).is(ResourceLocation.parse("true_end:plains"))
                             && notOnAfuckingHill(level, candidate)
                             && isYInSpawnRange(level, candidate)
                             && noBadBlocks(level, candidate)
@@ -271,7 +279,7 @@ public class DimSwapToBTD {
                     BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
                     BlockPos above = candidate.above();
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
-                            && level.getBiome(candidate).is(ResourceLocation.parse("true_end:nostalgic_meadow"))
+                            && level.getBiome(candidate).is(ResourceLocation.parse("true_end:plains"))
                             && notOnAfuckingHill(level, candidate)
                             && isYInSpawnRange(level, candidate)
                             && noBadBlocks(level, candidate)
@@ -389,7 +397,8 @@ public class DimSwapToBTD {
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
-        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH / 2, centerPos.getY() - 1, centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2);
+        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH / 2, centerPos.getY() - 1,
+                centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2);
         int plateauHeight = placePos.getY();
         // make the plateau
         for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
@@ -474,4 +483,3 @@ public class DimSwapToBTD {
         return max;
     }
 }
-

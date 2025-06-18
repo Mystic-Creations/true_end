@@ -42,7 +42,9 @@
     [],
     [],
     [
-      "true_end:liminal_tree"
+      "true_end:seeping_tree",
+      "true_end:alpha_tree",
+      "true_end:alpha_tree_big"
     ],
     []
   ],

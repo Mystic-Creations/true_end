@@ -1,4 +1,4 @@
-package net.justmili.trueend.world.liminal_forest;
+package net.justmili.trueend.world.seeping_reality;
 
 import com.mojang.datafixers.util.Pair;
 import net.justmili.trueend.init.TrueEndBiomes;
@@ -14,25 +14,24 @@ import terrablender.api.VanillaParameterOverlayBuilder;
 
 import java.util.function.Consumer;
 
-public class LiminalForestRegion extends Region
-{
-    public LiminalForestRegion(ResourceLocation name, int weight)
-    {
+public class SeepingForestRegion extends Region {
+    public SeepingForestRegion(ResourceLocation name, int weight) {
         super(name, RegionType.OVERWORLD, weight);
     }
 
     @Override
-    public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper)
-    {
+    public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
         VanillaParameterOverlayBuilder builder = new VanillaParameterOverlayBuilder();
         new ParameterUtils.ParameterPointListBuilder()
-                .temperature(ParameterUtils.Temperature.span(ParameterUtils.Temperature.NEUTRAL, ParameterUtils.Temperature.WARM))
+                .temperature(ParameterUtils.Temperature.span(ParameterUtils.Temperature.NEUTRAL,
+                        ParameterUtils.Temperature.WARM))
                 .humidity(ParameterUtils.Humidity.span(ParameterUtils.Humidity.ARID, ParameterUtils.Humidity.DRY))
                 .continentalness(ParameterUtils.Continentalness.INLAND)
                 .erosion(ParameterUtils.Erosion.EROSION_0, ParameterUtils.Erosion.EROSION_1)
                 .depth(ParameterUtils.Depth.SURFACE, ParameterUtils.Depth.FLOOR)
-                .weirdness(ParameterUtils.Weirdness.MID_SLICE_NORMAL_ASCENDING, ParameterUtils.Weirdness.MID_SLICE_NORMAL_DESCENDING)
-                .build().forEach(point -> builder.add(point, TrueEndBiomes.LIMINAL_FOREST));
+                .weirdness(ParameterUtils.Weirdness.MID_SLICE_NORMAL_ASCENDING,
+                        ParameterUtils.Weirdness.MID_SLICE_NORMAL_DESCENDING)
+                .build().forEach(point -> builder.add(point, TrueEndBiomes.SEEPING_REALITY));
         builder.build().forEach(mapper);
     }
 }
