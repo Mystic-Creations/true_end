@@ -44,11 +44,11 @@ import static net.justmili.trueend.regs.IntegerRegistry.*;
 public class DimSwapToBTD {
     private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
 
+    //Vars
     public static final int HOUSE_PLATEAU_WIDTH = 9;
     public static final int HOUSE_PLATEAU_LENGTH = 7;
     public static final int TERRAIN_ADAPT_EXTENSION = 10;
-
-    public static final int MAX_FALLBACK_SEARCH_TRIES = 20;
+    public static final int MAX_FALLBACK_SEARCH_TRIES = 24;
     public static final BlockPos ABSOLUTE_FALLBACK_POS = new BlockPos(0, 120, 12550832);
 
     @SubscribeEvent
@@ -57,7 +57,6 @@ public class DimSwapToBTD {
             execute(event, event.getEntity().level(), event.getEntity());
         }
     }
-
     private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
         if (!(entity instanceof ServerPlayer serverPlayer))
             return;
@@ -74,17 +73,13 @@ public class DimSwapToBTD {
                     && serverPlayer.level() instanceof ServerLevel overworld
                     && serverPlayer.getAdvancements().getOrStartProgress(
                             Objects.requireNonNull(serverPlayer.server.getAdvancements()
-                                    .getAdvancement(ResourceLocation.parse("true_end:stop_dreaming"))))
-                            .isDone()) {
-
+                                    .getAdvancement(ResourceLocation.parse("true_end:stop_dreaming")))).isDone()) {
                 HAS_PROCESSED.put(serverPlayer, true);
-
                 ServerLevel nextLevel = serverPlayer.server.getLevel(BTD);
                 if (nextLevel == null || serverPlayer.level().dimension() == BTD) {
                     HAS_PROCESSED.remove(serverPlayer);
                     return;
                 }
-
                 serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
                 TrueEndVariables.MapVariables getVariable = TrueEndVariables.MapVariables.get(nextLevel);
@@ -116,7 +111,6 @@ public class DimSwapToBTD {
                         initialSearchPos = worldSpawn;
 
                     BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
-
                     BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel,
                             new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
                             "true_end:plains");
@@ -153,99 +147,39 @@ public class DimSwapToBTD {
                             serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
                     for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                        serverPlayer.connection
-                                .send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
+                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
-                    TrueEnd.queueServerWork(5, () -> {
+                    TrueEnd.queueServerWork(4, () -> {
+                        if (absoluteFallbackPlatform) {
+                            executeCommand(nextLevel, serverPlayer, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
+                        }
                         removeNearbyTrees(nextLevel, serverPlayer.blockPosition(), 15);
                         if (adaptTerrain) {
                             adaptTerrain(nextLevel, serverPlayer.blockPosition());
                         }
-                        if (absoluteFallbackPlatform) {
-                            executeCommand(nextLevel, serverPlayer,
-                                    "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
-                        }
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         setGlobalSpawn(nextLevel, serverPlayer);
                         sendFirstEntryConversation(serverPlayer, nextLevel);
-                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP)
-                                .ifPresent(data -> data.setBeenBeyond(true));
+                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                         if (secFinalSpawnPos == null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY() - 1,
-                                            finalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY() - 1, finalSpawnPos.getZ()));
                         }
                         if (secFinalSpawnPos != null) {
                             nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY() - 1,
-                                            secFinalSpawnPos.getZ()));
+                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY() - 1, secFinalSpawnPos.getZ()));
                         }
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
                     if (nextLevel.getGameRules().getBoolean(TrueEndGameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false,
-                                nextLevel.getServer());
+                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
             }
         }
-    }
-
-    public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
-        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
-                serverPlayer.getZ());
-    }
-
-    public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
-        Queue<BlockPos> queue = new LinkedList<>();
-        Set<BlockPos> visited = new HashSet<>();
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-
-        // Initial scan around the center to enqueue leaves/logs
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    mutablePos.set(center.getX() + x, center.getY() + y, center.getZ() + z);
-                    BlockState state = level.getBlockState(mutablePos);
-                    Block block = state.getBlock();
-
-                    if (isTreeBlock(block)) {
-                        BlockPos foundPos = mutablePos.immutable();
-                        level.removeBlock(foundPos, true);
-                        queue.add(foundPos);
-                        visited.add(foundPos);
-                    }
-                }
-            }
-        }
-
-        // Breadth-first loop to remove connected tree blocks
-        while (!queue.isEmpty()) {
-            BlockPos current = queue.poll();
-
-            for (Direction direction : Direction.values()) {
-                BlockPos neighbor = current.relative(direction);
-
-                if (!visited.contains(neighbor)) {
-                    BlockState neighborState = level.getBlockState(neighbor);
-                    Block neighborBlock = neighborState.getBlock();
-
-                    if (isTreeBlock(neighborBlock)) {
-                        level.removeBlock(neighbor, true);
-                        queue.add(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-        }
-    }
-
-    // Helper method to identify tree blocks (leaves or logs)
-    private static boolean isTreeBlock(Block block) {
-        return block.defaultBlockState().is(BlockTags.LEAVES) || block.defaultBlockState().is(BlockTags.LOGS);
     }
 
     public static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos centerPos) {
@@ -255,8 +189,8 @@ public class DimSwapToBTD {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
                     BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
                     BlockPos above = candidate.above();
-
                     BlockPos above2 = above.above();
+
                     if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:plains"))
                             && notOnAfuckingHill(level, candidate)
@@ -298,136 +232,9 @@ public class DimSwapToBTD {
         return null;
     }
 
-    private static final int MAX_TERRAIN_DROP = 7;
-    private static final int MAX_TERRAIN_ASCENT = 3;
-
-    private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
-        int centerY = getLocalMax(level, new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
-        for (int dx = -3; dx <= 3; dx++) {
-            for (int dz = -3; dz <= 3; dz++) {
-                BlockPos pos = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1, center.getZ() + dz);
-                int terrainY = getLocalMax(level, pos);
-
-                int deltaY = terrainY - centerY;
-                if (deltaY > MAX_TERRAIN_ASCENT || -deltaY > MAX_TERRAIN_DROP) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public static boolean noBadBlocks(ServerLevel level, BlockPos center) {
-        final int R = 3;
-        int cx = center.getX();
-        int cy = center.getY();
-        int cz = center.getZ();
-
-        for (int dx = -R; dx <= R; dx++) {
-            for (int dz = -R; dz <= R; dz++) {
-                BlockPos atFeet = new BlockPos(cx + dx, cy, cz + dz);
-                BlockPos below = new BlockPos(cx + dx, cy - 1, cz + dz);
-                BlockPos below2 = below.below();
-                BlockState stateAtFeet = level.getBlockState(atFeet);
-                BlockState stateBelow = level.getBlockState(below);
-                BlockState stateBelow2 = level.getBlockState(below2);
-
-                // Return false if any of these are found in the area
-                if (stateAtFeet.is(Blocks.WATER)
-                        || stateBelow.is(Blocks.WATER)
-                        || stateBelow2.is(Blocks.WATER)
-                        || stateAtFeet.is(TrueEndBlocks.SAND.get())
-                        || stateBelow.is(TrueEndBlocks.SAND.get())
-                        || stateBelow2.is(TrueEndBlocks.SAND.get())) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public static boolean notOnAfuckingHill(ServerLevel level, BlockPos center) {
-        final int STEEPNESS_LIMIT = 2;
-        int centerGroundY = getLocalMax(level,
-                new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
-        for (int dx = -7; dx <= 7; dx++) {
-            for (int dz = -7; dz <= 7; dz++) {
-                if (dx == 0 && dz == 0)
-                    continue;
-                BlockPos neighborColumn = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1,
-                        center.getZ() + dz);
-                int neighborGroundY = getLocalMax(level, neighborColumn);
-
-                if (Math.abs(neighborGroundY - centerGroundY) > STEEPNESS_LIMIT) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
-        int y = pos.getY();
-        if (y >= 66 && y <= 76) {
-            return true;
-        }
-        return false;
-    }
-
-    private static void executeCommand(LevelAccessor world, Entity entity, String command) {
-        if (world instanceof ServerLevel level && entity instanceof ServerPlayer player) {
-            level.getServer().getCommands()
-                    .performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput(), command);
-        }
-    }
-
-    private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
-        int convoDelay = TrueEndVariables.btdConversationDelay.getValue();
-        ResourceLocation textFile = ResourceLocation.parse("true_end:texts/first_entry.txt");
-        List<String> jsonLines = new ArrayList<>();
-        BufferedReader br;
-
-        // Load file with fallback
-        try {
-            var resource = world.getServer().getResourceManager().open(textFile);
-            br = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            TrueEnd.LOGGER.warn("Failed to load first_entry.txt via ResourceManager, falling back", e);
-            InputStream is = DimSwapToBTD.class.getClassLoader().getResourceAsStream("assets/true_end/texts/first_entry.txt");
-            if (is == null) {
-                TrueEnd.LOGGER.error("Cannot find first_entry.txt on classpath");
-                return;
-            }
-            br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-        }
-
-        //TXT to JSON
-        try {
-            String line1;
-            while ((line1 = br.readLine()) != null) {
-                String raw1 = line1.replace("PLAYERNAME", player.getName().getString());
-                String line2 = br.readLine();
-                String raw2 = (line2 != null) ? line2.replace("PLAYERNAME", player.getName().getString()) : "";
-                String combined = raw1 + (raw2.isEmpty() ? "" : "\n" + raw2);
-                String escaped = combined.replace("\"", "\\\"");
-                String json = "{\"text\":\"" + escaped + "\"}";
-                jsonLines.add(json);
-            }
-        } catch (Exception ex) {
-            TrueEnd.LOGGER.error("Error reading first_entry.txt", ex);
-            return;
-        } finally {
-            try { br.close(); } catch (Exception ignored) {}
-        }
-
-        //Play text
-        TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendTellrawMessagesWithCooldown(
-                    player,
-                    jsonLines.toArray(new String[0]),
-                    convoDelay
-            );
-        });
+    public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
+        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
+                serverPlayer.getZ());
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
@@ -475,7 +282,6 @@ public class DimSwapToBTD {
             }
         }
     }
-
     // Helper method to place grass and fill with dirt until hitting stone
     private static void placeGrassWithDirt(ServerLevel world, BlockPos pos) {
         world.setBlock(pos, TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 3);
@@ -490,13 +296,11 @@ public class DimSwapToBTD {
             world.setBlock(mutablePos, TrueEndBlocks.DIRT.get().defaultBlockState(), 3);
         }
     }
-
     // Smooth gradient function
     private static int gradient(int targetHeight, int centerHeight, int maxDist, int dist) {
         float t = (float) dist / maxDist;
         return Math.round(centerHeight * (1 - t) + targetHeight * t);
     }
-
     public static int getLocalMax(ServerLevel world, BlockPos pos) {
         int maxY = world.getMaxBuildHeight() - 1;
         int max = maxY;
@@ -515,5 +319,178 @@ public class DimSwapToBTD {
             }
         }
         return max;
+    }
+
+    // Helper method to identify tree blocks (leaves or logs)
+    private static boolean isTreeBlock(Block block) {
+        return block.defaultBlockState().is(BlockTags.LEAVES) || block.defaultBlockState().is(BlockTags.LOGS);
+    }
+
+    private static final int MAX_TERRAIN_DROP = 7;
+    private static final int MAX_TERRAIN_ASCENT = 3;
+
+    private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
+        int centerY = getLocalMax(level, new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                BlockPos pos = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1, center.getZ() + dz);
+                int terrainY = getLocalMax(level, pos);
+
+                int deltaY = terrainY - centerY;
+                if (deltaY > MAX_TERRAIN_ASCENT || -deltaY > MAX_TERRAIN_DROP) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
+        Queue<BlockPos> queue = new LinkedList<>();
+        Set<BlockPos> visited = new HashSet<>();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+
+        // Initial scan around the center to enqueue leaves/logs
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    mutablePos.set(center.getX() + x, center.getY() + y, center.getZ() + z);
+                    BlockState state = level.getBlockState(mutablePos);
+                    Block block = state.getBlock();
+
+                    if (isTreeBlock(block)) {
+                        BlockPos foundPos = mutablePos.immutable();
+                        level.removeBlock(foundPos, true);
+                        queue.add(foundPos);
+                        visited.add(foundPos);
+                    }
+                }
+            }
+        }
+        // Breadth-first loop to remove connected tree blocks
+        while (!queue.isEmpty()) {
+            BlockPos current = queue.poll();
+
+            for (Direction direction : Direction.values()) {
+                BlockPos neighbor = current.relative(direction);
+
+                if (!visited.contains(neighbor)) {
+                    BlockState neighborState = level.getBlockState(neighbor);
+                    Block neighborBlock = neighborState.getBlock();
+
+                    if (isTreeBlock(neighborBlock)) {
+                        level.removeBlock(neighbor, true);
+                        queue.add(neighbor);
+                        visited.add(neighbor);
+                    }
+                }
+            }
+        }
+    }
+
+    public static boolean noBadBlocks(ServerLevel level, BlockPos center) {
+        final int R = 3;
+        int cx = center.getX();
+        int cy = center.getY();
+        int cz = center.getZ();
+
+        for (int dx = -R; dx <= R; dx++) {
+            for (int dz = -R; dz <= R; dz++) {
+                BlockPos atFeet = new BlockPos(cx + dx, cy, cz + dz);
+                BlockPos below = new BlockPos(cx + dx, cy - 1, cz + dz);
+                BlockPos below2 = below.below();
+                BlockState stateAtFeet = level.getBlockState(atFeet);
+                BlockState stateBelow = level.getBlockState(below);
+                BlockState stateBelow2 = level.getBlockState(below2);
+
+                // Return false if any of these are found in the area
+                if (stateAtFeet.is(Blocks.WATER)
+                        || stateBelow.is(Blocks.WATER)
+                        || stateBelow2.is(Blocks.WATER)
+                        || stateAtFeet.is(TrueEndBlocks.SAND.get())
+                        || stateBelow.is(TrueEndBlocks.SAND.get())
+                        || stateBelow2.is(TrueEndBlocks.SAND.get())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean notOnAfuckingHill(ServerLevel level, BlockPos center) {
+        final int STEEPNESS_LIMIT = 2;
+        int centerGroundY = getLocalMax(level,
+                new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
+        for (int dx = -6; dx <= 6; dx++) {
+            for (int dz = -6; dz <= 6; dz++) {
+                if (dx == 0 && dz == 0)
+                    continue;
+                BlockPos neighborColumn = new BlockPos(center.getX() + dx, level.getMaxBuildHeight() - 1, center.getZ() + dz);
+                int neighborGroundY = getLocalMax(level, neighborColumn);
+
+                if (Math.abs(neighborGroundY - centerGroundY) > STEEPNESS_LIMIT) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
+        int y = pos.getY();
+        if (y >= 66 && y <= 80) {
+            return true;
+        }
+        return false;
+    }
+
+    private static void executeCommand(LevelAccessor world, Entity entity, String command) {
+        if (world instanceof ServerLevel level && entity instanceof ServerPlayer player) {
+            level.getServer().getCommands().performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput(), command);
+        }
+    }
+
+    private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
+        int convoDelay = TrueEndVariables.btdConversationDelay.getValue();
+        ResourceLocation textFile = ResourceLocation.parse("true_end:texts/first_entry.txt");
+        List<String> jsonLines = new ArrayList<>();
+        BufferedReader br;
+
+        // Load file with fallback
+        try {
+            var resource = world.getServer().getResourceManager().open(textFile);
+            br = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            TrueEnd.LOGGER.warn("Failed to load first_entry.txt via ResourceManager, falling back", e);
+            InputStream is = DimSwapToBTD.class.getClassLoader().getResourceAsStream("assets/true_end/texts/first_entry.txt");
+            if (is == null) {
+                TrueEnd.LOGGER.error("Cannot find first_entry.txt on classpath");
+                return;
+            }
+            br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+        }
+
+        //TXT to JSON
+        try {
+            String line1;
+            while ((line1 = br.readLine()) != null) {
+                String raw1 = line1.replace("PLAYERNAME", player.getName().getString());
+                String line2 = br.readLine();
+                String raw2 = (line2 != null) ? line2.replace("PLAYERNAME", player.getName().getString()) : "";
+                String combined = raw1 + (raw2.isEmpty() ? "" : "\n" + raw2);
+                String escaped = combined.replace("\"", "\\\"");
+                String json = "{\"text\":\"" + escaped + "\"}";
+                jsonLines.add(json);
+            }
+        } catch (Exception ex) {
+            TrueEnd.LOGGER.error("Error reading first_entry.txt", ex);
+            return;
+        } finally {
+            try { br.close(); } catch (Exception ignored) {} }
+
+        //Play text
+        TrueEnd.queueServerWork(45, () -> {
+            TrueEnd.sendTellrawMessagesWithCooldown(player, jsonLines.toArray(new String[0]), convoDelay);
+        });
     }
 }
