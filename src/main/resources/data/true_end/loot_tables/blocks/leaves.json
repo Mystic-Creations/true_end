@@ -1,8 +1,8 @@
 {
-  "type": "minecraft:block",
+  "type": "true_end:block",
   "pools": [
     {
-      "bonus_rolls": 0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:alternatives",
@@ -38,14 +38,33 @@
                 }
               ],
               "name": "true_end:leaves"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:survives_explosion"
+                },
+                {
+                  "chances": [
+                    0.05,
+                    0.0625,
+                    0.083333336,
+                    0.1
+                  ],
+                  "condition": "minecraft:table_bonus",
+                  "enchantment": "minecraft:fortune"
+                }
+              ],
+              "name": "true_end:sapling"
             }
           ]
         }
       ],
-      "rolls": 1
+      "rolls": 1.0
     },
     {
-      "bonus_rolls": 0,
+      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:inverted",
@@ -98,8 +117,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 2,
-                "min": 1
+                "max": 2.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             },
@@ -110,10 +129,10 @@
           "name": "minecraft:stick"
         }
       ],
-      "rolls": 1
+      "rolls": 1.0
     },
     {
-      "bonus_rolls": 0,
+      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:inverted",
@@ -167,7 +186,7 @@
           "name": "minecraft:apple"
         }
       ],
-      "rolls": 1
+      "rolls": 1.0
     }
   ],
   "random_sequence": "true_end:blocks/leaves"

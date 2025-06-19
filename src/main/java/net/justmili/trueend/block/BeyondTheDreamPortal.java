@@ -1,5 +1,7 @@
 package net.justmili.trueend.block;
 
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.material.MapColor;
 
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,7 +22,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
@@ -39,19 +40,22 @@ public class BeyondTheDreamPortal extends NetherPortalBlock {
     }
 
     @Override
-    public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+    public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+        return false;
     }
+
+    @Override
+    public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {}
+
     public static void portalSpawn(Level world, BlockPos pos) {
         Optional<BeyondTheDreamPortalShape> optional = BeyondTheDreamPortalShape.findEmptyPortalShape(world, pos, Direction.Axis.X);
         if (optional.isPresent()) {
             optional.get().createPortalBlocks();
-            // Play the beacon power select sound
             if (!world.isClientSide()) {
                 world.playSound(null, pos, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.beacon.power_select"))), SoundSource.BLOCKS, 1, 1);
             }
         }
     }
-
     @Override
     public BlockState updateShape(BlockState p_54928_, Direction p_54929_, BlockState p_54930_, LevelAccessor p_54931_, BlockPos p_54932_, BlockPos p_54933_) {
         Direction.Axis direction$axis = p_54929_.getAxis();
@@ -59,7 +63,6 @@ public class BeyondTheDreamPortal extends NetherPortalBlock {
         boolean flag = direction$axis1 != direction$axis && direction$axis.isHorizontal();
         return !flag && !p_54930_.is(this) && !(new BeyondTheDreamPortalShape(p_54931_, p_54932_, direction$axis1)).isComplete() ? Blocks.AIR.defaultBlockState() : super.updateShape(p_54928_, p_54929_, p_54930_, p_54931_, p_54932_, p_54933_);
     }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
@@ -78,10 +81,10 @@ public class BeyondTheDreamPortal extends NetherPortalBlock {
                 pz = pos.getZ() + 0.5 + 0.25 * j;
                 vz = random.nextFloat() * 2 * j;
             }
-            world.addParticle((SimpleParticleType) (TrueEndParticleTypes.DREAM_PORTAL_PARTICLE.get()), px, py, pz, vx, vy, vz);
+            world.addParticle(TrueEndParticleTypes.DREAM_PORTAL_PARTICLE.get(), px, py, pz, vx, vy, vz);
         }
         if (random.nextInt(110) == 0)
-            world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(("block.portal.ambient"))), SoundSource.BLOCKS, 0.5f, random.nextFloat() * 0.4f + 0.8f);
+            world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(("block.portal.ambient")))), SoundSource.BLOCKS, 0.5f, random.nextFloat() * 0.4f + 0.8f);
     }
 
     @Override
@@ -98,8 +101,7 @@ public class BeyondTheDreamPortal extends NetherPortalBlock {
             }
         }
     }
-
     private void teleportToDimension(Entity entity, BlockPos pos, ResourceKey<Level> destinationType) {
-        entity.changeDimension(entity.getServer().getLevel(destinationType), new BeyondTheDreamTeleporter(entity.getServer().getLevel(destinationType), pos));
+        entity.changeDimension(Objects.requireNonNull(Objects.requireNonNull(entity.getServer()).getLevel(destinationType)), new BeyondTheDreamTeleporter(entity.getServer().getLevel(destinationType), pos));
     }
 }

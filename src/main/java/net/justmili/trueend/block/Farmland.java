@@ -2,6 +2,7 @@ package net.justmili.trueend.block;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.IPlantable;
 import net.justmili.trueend.init.TrueEndBlocks;
@@ -132,6 +133,11 @@ public class Farmland extends Block {
 	static {
 		MOISTURE = BlockStateProperties.MOISTURE;
 		SHAPE = Block.box((double)0.0F, (double)0.0F, (double)0.0F, (double)16.0F, (double)15.0F, (double)16.0F);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return true;
 	}
 
 		@Override

@@ -1,6 +1,7 @@
 
 package net.justmili.trueend.block;
 
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -21,6 +22,11 @@ public class Wood6Sided extends Block {
 	public Wood6Sided() {
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2f));
 		this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y));
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return true;
 	}
 
 	@Override

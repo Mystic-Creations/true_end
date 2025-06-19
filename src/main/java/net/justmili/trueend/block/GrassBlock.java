@@ -32,6 +32,11 @@ public class GrassBlock extends Block {
     }
 
     @Override
+    public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+        return true;
+    }
+
+    @Override
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
         return 15;
     }

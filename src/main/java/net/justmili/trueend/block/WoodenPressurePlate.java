@@ -1,6 +1,7 @@
 
 package net.justmili.trueend.block;
 
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -14,6 +15,11 @@ import net.minecraft.core.BlockPos;
 public class WoodenPressurePlate extends PressurePlateBlock {
 	public WoodenPressurePlate() {
 		super(Sensitivity.EVERYTHING, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(0.5f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).forceSolidOn(), BlockSetType.OAK);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return true;
 	}
 
 	@Override

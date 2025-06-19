@@ -1,10 +1,8 @@
 
 package net.justmili.trueend.block;
 
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -18,6 +16,11 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 public class WoodenFence extends FenceBlock {
 	public WoodenFence() {
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2f, 3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false).forceSolidOn());
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return true;
 	}
 
 	@Override

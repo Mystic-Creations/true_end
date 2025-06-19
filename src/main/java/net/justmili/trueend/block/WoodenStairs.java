@@ -1,6 +1,7 @@
 
 package net.justmili.trueend.block;
 
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.StairBlock;
@@ -14,6 +15,11 @@ import net.minecraft.world.level.material.MapColor;
 public class WoodenStairs extends StairBlock {
 	public WoodenStairs() {
 		super(() -> Blocks.AIR.defaultBlockState(), BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2f, 3f));
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return true;
 	}
 
 	@Override

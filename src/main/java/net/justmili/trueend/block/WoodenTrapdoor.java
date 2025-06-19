@@ -2,6 +2,7 @@
 package net.justmili.trueend.block;
 
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +16,11 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 public class WoodenTrapdoor extends TrapDoorBlock {
 	public WoodenTrapdoor() {
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false), BlockSetType.OAK);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return true;
 	}
 
 	@Override

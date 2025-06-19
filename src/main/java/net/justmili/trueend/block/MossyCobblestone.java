@@ -1,6 +1,8 @@
 
 package net.justmili.trueend.block;
 
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.SoundType;
@@ -12,6 +14,11 @@ import net.minecraft.world.level.material.MapColor;
 public class MossyCobblestone extends Block {
 	public MossyCobblestone() {
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2f, 6f).requiresCorrectToolForDrops());
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return player.getInventory().getSelected().getItem() instanceof PickaxeItem;
 	}
 
 	@Override

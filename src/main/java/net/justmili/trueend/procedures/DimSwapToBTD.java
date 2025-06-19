@@ -110,7 +110,7 @@ public class DimSwapToBTD {
                     if (initialSearchPos == null)
                         initialSearchPos = worldSpawn;
 
-                    BlockPos spawnPos = findIdealSpawnPoint(nextLevel, initialSearchPos);
+                    BlockPos spawnPos = findSpawn(nextLevel, initialSearchPos);
                     BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel,
                             new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
                             "true_end:plains");
@@ -121,7 +121,7 @@ public class DimSwapToBTD {
                                     BlockPosRandomY,
                                     BlockPosRandomZ + BlockPosRandomX));
 
-                            spawnPos = findFallbackSpawn(nextLevel, secondarySearchPos);
+                            spawnPos = fallbackSpawn(nextLevel, secondarySearchPos);
                             if (spawnPos != null) {
                                 break;
                             }
@@ -182,7 +182,7 @@ public class DimSwapToBTD {
         }
     }
 
-    public static BlockPos findIdealSpawnPoint(ServerLevel level, BlockPos centerPos) {
+    public static BlockPos findSpawn(ServerLevel level, BlockPos centerPos) {
         int searchRadius = 24;
         for (int y = 75; y >= 64; y--) {
             for (int x = -searchRadius; x <= searchRadius; x++) {
@@ -209,7 +209,7 @@ public class DimSwapToBTD {
         return null;
     }
 
-    public static BlockPos findFallbackSpawn(ServerLevel level, BlockPos centerPos) {
+    public static BlockPos fallbackSpawn(ServerLevel level, BlockPos centerPos) {
         int searchRadius = 32;
         for (int y = level.getMaxBuildHeight() - 16; y >= level.getMinBuildHeight() + 8; y--) {
             for (int x = -searchRadius; x <= searchRadius; x++) {
@@ -451,7 +451,6 @@ public class DimSwapToBTD {
     }
 
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
-        int convoDelay = TrueEndVariables.btdConversationDelay.getValue();
         ResourceLocation textFile = ResourceLocation.parse("true_end:texts/first_entry.txt");
         List<String> jsonLines = new ArrayList<>();
         BufferedReader br;
@@ -490,7 +489,7 @@ public class DimSwapToBTD {
 
         //Play text
         TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendTellrawMessagesWithCooldown(player, jsonLines.toArray(new String[0]), convoDelay);
+            TrueEnd.sendTellrawMessagesWithCooldown(player, jsonLines.toArray(new String[0]), TrueEndVariables.btdConversationDelay.getValue());
         });
     }
 }

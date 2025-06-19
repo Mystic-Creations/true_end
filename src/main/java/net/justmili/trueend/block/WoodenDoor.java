@@ -1,6 +1,7 @@
 package net.justmili.trueend.block;
 
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -15,6 +16,11 @@ public class WoodenDoor extends DoorBlock {
     public WoodenDoor() {
         super(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR).sound(SoundType.WOOD).strength(3f).noOcclusion().isRedstoneConductor((state, reader, pos) -> false), BlockSetType.OAK);
     }
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return true;
+	}
 
     @Override
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
