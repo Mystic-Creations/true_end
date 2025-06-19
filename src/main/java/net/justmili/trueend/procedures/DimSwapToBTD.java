@@ -30,6 +30,10 @@ import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.effect.MobEffectInstance;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -379,20 +383,50 @@ public class DimSwapToBTD {
 
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
         int convoDelay = TrueEndVariables.btdConversationDelay.getValue();
-        String[] conversation = {
-                "[\"\",{\"text\":\"\\n\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\"? You've awakened.\",\"color\":\"dark_green\"},{\"text\":\"\\n\"}]"
-                        .formatted(player.getName().getString()),
-                "{\"text\":\"So soon, thought it'd dream longer...\",\"color\":\"dark_aqua\"}",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"Well, it's beyond the dream now. The player, \",\"color\":\"dark_green\"},{\"selector\":\"%s\",\"color\":\"dark_green\"},{\"text\":\", woke up.\",\"color\":\"dark_green\"}]"
-                        .formatted(player.getName().getString()),
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"We left something for you in your home.\",\"color\":\"dark_aqua\"}]",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"Use it well.\",\"color\":\"dark_aqua\"}]",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"You may go back to the dream, a dream of a better world if you wish.\",\"color\":\"dark_green\"}]",
-                "[\"\",{\"text\":\"\\n\"},{\"text\":\"We'll see you again soon, \",\"color\":\"dark_aqua\"},{\"selector\":\"%s\",\"color\":\"dark_aqua\"},{\"text\":\".\",\"color\":\"dark_aqua\"},{\"text\":\"\\n\"}]"
-                        .formatted(player.getName().getString())
-        };
+        ResourceLocation textFile = ResourceLocation.parse("true_end:texts/first_entry.txt");
+        List<String> jsonLines = new ArrayList<>();
+        BufferedReader br;
+
+        // Load file with fallback
+        try {
+            var resource = world.getServer().getResourceManager().open(textFile);
+            br = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            TrueEnd.LOGGER.warn("Failed to load first_entry.txt via ResourceManager, falling back", e);
+            InputStream is = DimSwapToBTD.class.getClassLoader().getResourceAsStream("assets/true_end/texts/first_entry.txt");
+            if (is == null) {
+                TrueEnd.LOGGER.error("Cannot find first_entry.txt on classpath");
+                return;
+            }
+            br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+        }
+
+        //TXT to JSON
+        try {
+            String line1;
+            while ((line1 = br.readLine()) != null) {
+                String raw1 = line1.replace("PLAYERNAME", player.getName().getString());
+                String line2 = br.readLine();
+                String raw2 = (line2 != null) ? line2.replace("PLAYERNAME", player.getName().getString()) : "";
+                String combined = raw1 + (raw2.isEmpty() ? "" : "\n" + raw2);
+                String escaped = combined.replace("\"", "\\\"");
+                String json = "{\"text\":\"" + escaped + "\"}";
+                jsonLines.add(json);
+            }
+        } catch (Exception ex) {
+            TrueEnd.LOGGER.error("Error reading first_entry.txt", ex);
+            return;
+        } finally {
+            try { br.close(); } catch (Exception ignored) {}
+        }
+
+        //Play text
         TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendTellrawMessagesWithCooldown(player, conversation, convoDelay);
+            TrueEnd.sendTellrawMessagesWithCooldown(
+                    player,
+                    jsonLines.toArray(new String[0]),
+                    convoDelay
+            );
         });
     }
 
