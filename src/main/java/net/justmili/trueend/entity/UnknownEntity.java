@@ -80,7 +80,7 @@ public class UnknownEntity extends AmbientCreature {
     }
 
     private void playAndDespawn() {
-        this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
+        this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.MASTER, 1.0F, 1.0F);
         if (this.level() instanceof ServerLevel serverLevel) {
             TrueEndVariables.MapVariables.get(serverLevel).setUnknownInWorld(false);
         }

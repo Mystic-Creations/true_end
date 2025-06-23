@@ -7,9 +7,9 @@
   ],
   "placement": {
     "type": "minecraft:concentric_rings",
-    "distance": 768,
-    "spread": 10,
-    "count": 3,
+    "distance": 512,
+    "spread": 8,
+    "count": 10,
     "preferred_biomes": [
       "true_end:forest",
       "true_end:plains"

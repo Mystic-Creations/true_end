@@ -72,21 +72,21 @@ public class RedstoneOre extends Block {
 		return RenderShape.MODEL;
 	}
 
-@Override
-public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-    if (state.getValue(LIT)) {
-        for (int i = 0; i < 15; ++i) {
-            double dx = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 1.2;  // Spread on the X-axis
-            double dy = pos.getY() + 0.5 + (random.nextDouble() - 0.5) * 1.2;  // Spread on the Y-axis
-            double dz = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 1.2;  // Spread on the Z-axis
-            level.addParticle(
-                new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F),  // Red color, size 1.0F
-                dx, dy, dz,  // Particle location with increased spread
-                0.0, 0.0, 0.0  // No velocity
-            );
-        }
-    }
-}
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+	    if (state.getValue(LIT)) {
+	        for (int i = 0; i < 15; ++i) {
+	            double dx = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 1.2;  // Spread on the X-axis
+	            double dy = pos.getY() + 0.5 + (random.nextDouble() - 0.5) * 1.2;  // Spread on the Y-axis
+	            double dz = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 1.2;  // Spread on the Z-axis
+	            level.addParticle(
+	                new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F),  // Red color, size 1.0F
+	                dx, dy, dz,  // Particle location with increased spread
+	                0.0, 0.0, 0.0  // No velocity
+				);
+        	}
+    	}
+	}
 
 
 	@Override

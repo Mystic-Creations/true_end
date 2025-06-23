@@ -8,6 +8,7 @@ repositories {
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     maven { url = "https://maven.shedaniel.me/" }
+    flatDir { dirs 'libs' }
 }
 
 version = '1.4_Forge-1.20.1-TestBuild_10-yymmdd'
