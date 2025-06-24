@@ -16,7 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 
-import net.justmili.trueend.init.TrueEndMenus;
+import net.justmili.trueend.init.Guis;
 
 import java.util.function.Supplier;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class BlackScreenMenu extends AbstractContainerMenu implements Supplier<M
     private BlockEntity boundBlockEntity = null;
 
     public BlackScreenMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        super(TrueEndMenus.BLACK_SCREEN.get(), id);
+        super(Guis.BLACK_SCREEN.get(), id);
         this.entity = inv.player;
         this.world = inv.player.level();
         this.internal = new ItemStackHandler(0);

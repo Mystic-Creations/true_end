@@ -2,8 +2,8 @@ package net.justmili.trueend.procedures.events;
 
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.client.CreditsScreen;
-import net.justmili.trueend.config.TrueEndConfig;
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.config.Config;
+import net.justmili.trueend.network.Variables;
 import net.justmili.trueend.regs.DimKeyRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
@@ -27,14 +27,14 @@ public class DetectLeavingBTD {
 
         if (event.getFrom() == DimKeyRegistry.BTD &&
             event.getTo() == Level.OVERWORLD &&
-            TrueEndVariables.creditsToggle.getValue()) {
+            Variables.creditsToggle.getValue()) {
 
             hasShownCreditsThisSession = true;
 
             ticksUntilShow = 10;
             tickHandlerEnabled = true;
-            TrueEndConfig.entries.put("creditsToggle", false);
-            TrueEndConfig.serializer.serialize(TrueEndConfig.entries);
+            Config.entries.put("creditsToggle", false);
+            Config.serializer.serialize(Config.entries);
 
             Minecraft mc = Minecraft.getInstance();
             TrueEnd.queueServerWork(2, () -> {

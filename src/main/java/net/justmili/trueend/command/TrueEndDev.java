@@ -1,13 +1,11 @@
 package net.justmili.trueend.command;
 
-import net.justmili.trueend.entity.UnknownEntity;
-import net.justmili.trueend.init.TrueEndEntities;
+import net.justmili.trueend.init.Entities;
 import net.justmili.trueend.procedures.DimSwapToBTD;
 import net.justmili.trueend.procedures.devcmd.*;
 import net.justmili.trueend.procedures.devcmd.screentests.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -88,7 +86,7 @@ public class TrueEndDev {
 					ServerLevel world = arguments.getSource().getLevel();
 					BlockPos blockPos = arguments.getSource().getEntity().blockPosition();
 					blockPos = blockPos.mutable().offset(10,0,0);
-					EntityType<?> unknownType = TrueEndEntities.UNKNOWN.get();
+					EntityType<?> unknownType = Entities.UNKNOWN.get();
 					Entity unknownEntity = unknownType.create(world);
 
 					double minDist = 32.0;

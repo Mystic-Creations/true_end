@@ -1,8 +1,8 @@
 package net.justmili.trueend.client;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.entity.UnknownEntity;
-import net.justmili.trueend.init.TrueEndEntities;
+import net.justmili.trueend.entity.Unknown;
+import net.justmili.trueend.init.Entities;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -23,10 +23,10 @@ public class UnknownEntityRenderer {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(TrueEndEntities.UNKNOWN.get(), UnknownRenderer::new);
+        event.registerEntityRenderer(Entities.UNKNOWN.get(), UnknownRenderer::new);
     }
 
-    public static class UnknownRenderer extends MobRenderer<UnknownEntity, HumanoidModel<UnknownEntity>> {
+    public static class UnknownRenderer extends MobRenderer<Unknown, HumanoidModel<Unknown>> {
         public UnknownRenderer(EntityRendererProvider.Context context) {
             super(
                     context,
@@ -35,12 +35,12 @@ public class UnknownEntityRenderer {
         }
 
         @Override
-        public boolean shouldRender(UnknownEntity entity, Frustum frustum, double camX, double camY, double camZ) {
+        public boolean shouldRender(Unknown entity, Frustum frustum, double camX, double camY, double camZ) {
             return true;
         }
 
         @Override
-        public ResourceLocation getTextureLocation(UnknownEntity entity) {
+        public ResourceLocation getTextureLocation(Unknown entity) {
             // int skin = 0;
             // skin = (int) (Math.random() * 4);
             // return ResourceLocation.parse("true_end:textures/entity/unknown/unknown_"+skin+".png");

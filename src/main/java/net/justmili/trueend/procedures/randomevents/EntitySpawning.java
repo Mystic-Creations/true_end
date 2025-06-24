@@ -3,8 +3,8 @@ package net.justmili.trueend.procedures.randomevents;
 import java.util.List;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.init.TrueEndEntities;
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.init.Entities;
+import net.justmili.trueend.network.Variables;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -37,9 +37,9 @@ public class EntitySpawning {
 
         if (world.getGameTime() % TICK_INTERVAL != 0) return;
         if (world.dimension() == Level.END) return;
-        if (!TrueEndVariables.randomEventsToggle.getValue()) return;
+        if (!Variables.randomEventsToggle.getValue()) return;
         //REMOVE THIS DEBUG MESSAGE BEFORE FINAL BUILD
-        if (TrueEndVariables.MapVariables.get(world).isUnknownInWorld()) {
+        if (Variables.MapVariables.get(world).isUnknownInWorld()) {
             TrueEnd.LOGGER.error("Entity spawn attempt failed: 'Unknown' already in world.");
             return;
         }
@@ -56,7 +56,7 @@ public class EntitySpawning {
         } else if (difficulty == Difficulty.HARD) {
             chanceMultiplier = 2.0;
         }
-        if (Math.random() >= (TrueEndVariables.entitySpawnChance.getValue() * chanceMultiplier)) {
+        if (Math.random() >= (Variables.entitySpawnChance.getValue() * chanceMultiplier)) {
             return;
         }
 
@@ -87,7 +87,7 @@ public class EntitySpawning {
                 continue;
             }
 
-            EntityType<?> type = TrueEndEntities.UNKNOWN.get();
+            EntityType<?> type = Entities.UNKNOWN.get();
             Entity entity = type.create(world);
             if (entity == null) {
                 TrueEnd.LOGGER.error("Entity spawn failed: couldn't instantiate 'Unknown'.");
@@ -97,7 +97,7 @@ public class EntitySpawning {
             entity.getPersistentData().putBoolean("PersistenceRequired", true);
             world.addFreshEntity(entity);
 
-            TrueEndVariables.MapVariables.get(world).setUnknownInWorld(true);
+            Variables.MapVariables.get(world).setUnknownInWorld(true);
             TrueEnd.LOGGER.info("Spawned 'Unknown' at {} on {} after {} attempts.", entity.blockPosition(), groundState, attempt + 1);
             return;
         }

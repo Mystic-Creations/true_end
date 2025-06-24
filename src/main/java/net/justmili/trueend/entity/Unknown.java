@@ -1,6 +1,6 @@
 package net.justmili.trueend.entity;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,14 +17,14 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
 
 import java.util.EnumSet;
 
-public class UnknownEntity extends AmbientCreature {
+public class Unknown extends AmbientCreature {
     private static final double FOLLOW_RANGE = 128.0D;
     private static final int MAX_VISIBLE_TICKS = 60;
     private static final int COOLDOWN_TICKS = 3600; // 3 minutes in ticks
     private int visibleTicks = 0;
     private int existenceTicks = 0;
 
-    public UnknownEntity(EntityType<? extends AmbientCreature> type, Level level) {
+    public Unknown(EntityType<? extends AmbientCreature> type, Level level) {
         super(type, level);
         this.setPersistenceRequired();
         this.navigation = new GroundPathNavigation(this, level);
@@ -82,7 +82,7 @@ public class UnknownEntity extends AmbientCreature {
     private void playAndDespawn() {
         this.level().playSound(null, this.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.MASTER, 1.0F, 1.0F);
         if (this.level() instanceof ServerLevel serverLevel) {
-            TrueEndVariables.MapVariables.get(serverLevel).setUnknownInWorld(false);
+            Variables.MapVariables.get(serverLevel).setUnknownInWorld(false);
         }
         this.discard();
     }

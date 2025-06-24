@@ -1,6 +1,6 @@
 package net.justmili.trueend.procedures.advancements;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.resources.ResourceLocation;
@@ -29,8 +29,8 @@ public class NotAlone {
     private static void execute(@Nullable Event event, Entity entity) {
         if (entity == null)
             return;
-        if (TrueEndVariables.randomEventsToggle.getValue()) {
-            if (Math.random() < TrueEndVariables.randomEventChance.getValue() / 2) {
+        if (Variables.randomEventsToggle.getValue()) {
+            if (Math.random() < Variables.randomEventChance.getValue() / 2) {
                 if ((entity.level().dimension()) == BTD) {
                     if (entity instanceof ServerPlayer _player) {
                         Advancement _adv = _player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));

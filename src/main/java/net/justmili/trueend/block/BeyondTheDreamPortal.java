@@ -1,5 +1,6 @@
 package net.justmili.trueend.block;
 
+import net.justmili.trueend.init.Particles;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.material.MapColor;
@@ -27,7 +28,6 @@ import net.minecraft.core.BlockPos;
 
 import net.justmili.trueend.world.teleporter.BeyondTheDreamTeleporter;
 import net.justmili.trueend.world.teleporter.BeyondTheDreamPortalShape;
-import net.justmili.trueend.init.TrueEndParticleTypes;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -81,7 +81,7 @@ public class BeyondTheDreamPortal extends NetherPortalBlock {
                 pz = pos.getZ() + 0.5 + 0.25 * j;
                 vz = random.nextFloat() * 2 * j;
             }
-            world.addParticle(TrueEndParticleTypes.DREAM_PORTAL_PARTICLE.get(), px, py, pz, vx, vy, vz);
+            world.addParticle(Particles.DREAM_PORTAL_PARTICLE.get(), px, py, pz, vx, vy, vz);
         }
         if (random.nextInt(110) == 0)
             world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(("block.portal.ambient")))), SoundSource.BLOCKS, 0.5f, random.nextFloat() * 0.4f + 0.8f);

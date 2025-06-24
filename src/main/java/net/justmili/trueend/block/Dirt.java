@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
 
-import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.Blocks;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -41,7 +41,7 @@ public class Dirt extends Block {
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (canBeGrass(state, world, pos)) {
             if (!world.isClientSide()) {
-                world.setBlock(pos, TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 3);
+                world.setBlock(pos, Blocks.GRASS_BLOCK.get().defaultBlockState(), 3);
             }
         }
     }
@@ -54,7 +54,7 @@ public class Dirt extends Block {
         float pitch = 0.9f + world.getRandom().nextFloat() * 0.2f;
 
         if (player.getMainHandItem().is(ItemTags.HOES)) {
-            world.setBlock(BlockPos.containing(x, y, z), TrueEndBlocks.FARMLAND.get().defaultBlockState(), 3);
+            world.setBlock(BlockPos.containing(x, y, z), Blocks.FARMLAND.get().defaultBlockState(), 3);
             world.playSound(null, x, y, z, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0f, pitch);
             player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
@@ -80,7 +80,7 @@ public class Dirt extends Block {
                     BlockPos neighborPos = pos.offset(x, y, z);
                     BlockState neighborState = world.getBlockState(neighborPos);
 
-                    if (neighborState.is(TrueEndBlocks.GRASS_BLOCK.get())) {
+                    if (neighborState.is(Blocks.GRASS_BLOCK.get())) {
                         return true;
                     }
                 }

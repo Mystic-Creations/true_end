@@ -1,7 +1,7 @@
 package net.justmili.trueend.world.seeping_reality;
 
 import com.mojang.datafixers.util.Pair;
-import net.justmili.trueend.init.TrueEndBiomes;
+import net.justmili.trueend.init.Biomes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +31,7 @@ public class SeepingForestRegion extends Region {
                 .depth(ParameterUtils.Depth.SURFACE, ParameterUtils.Depth.FLOOR)
                 .weirdness(ParameterUtils.Weirdness.MID_SLICE_NORMAL_ASCENDING,
                         ParameterUtils.Weirdness.MID_SLICE_NORMAL_DESCENDING)
-                .build().forEach(point -> builder.add(point, TrueEndBiomes.SEEPING_REALITY));
+                .build().forEach(point -> builder.add(point, Biomes.SEEPING_REALITY));
         builder.build().forEach(mapper);
     }
 }

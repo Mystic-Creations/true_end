@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import net.justmili.trueend.client.UnknownEntityRenderer;
+import net.justmili.trueend.entity.Unknown;
+import net.justmili.trueend.init.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,14 +21,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.datafixers.util.Pair;
 
-import net.justmili.trueend.config.TrueEndConfig;
-import net.justmili.trueend.init.TrueEndBlocks;
-import net.justmili.trueend.init.TrueEndEntities;
-import net.justmili.trueend.init.TrueEndItems;
-import net.justmili.trueend.init.TrueEndMenus;
-import net.justmili.trueend.init.TrueEndParticleTypes;
-import net.justmili.trueend.init.TrueEndSounds;
-import net.justmili.trueend.init.TrueEndTabs;
+import net.justmili.trueend.config.Config;
 import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -59,15 +54,15 @@ public class TrueEnd {
         MinecraftForge.EVENT_BUS.register(this);
         IEventBus bus = modContext.getModEventBus();
 
-        TrueEndConfig.load();
+        Config.load();
 
-        TrueEndItems.REGISTRY.register(bus);
-        TrueEndBlocks.REGISTRY.register(bus);
-        TrueEndTabs.REGISTRY.register(bus);
-        TrueEndParticleTypes.REGISTRY.register(bus);
-        TrueEndEntities.ENTITY_TYPES.register(bus);
-        TrueEndMenus.REGISTRY.register(bus);
-        TrueEndSounds.REGISTRY.register(bus);
+        Items.REGISTRY.register(bus);
+        Blocks.REGISTRY.register(bus);
+        Tabs.REGISTRY.register(bus);
+        Particles.REGISTRY.register(bus);
+        Entities.ENTITY_TYPES.register(bus);
+        Guis.REGISTRY.register(bus);
+        Sounds.REGISTRY.register(bus);
 
         bus.addListener(this::commonSetup);
         bus.addListener(this::onEntityAttributeCreation);
@@ -83,8 +78,8 @@ public class TrueEnd {
 
     @SubscribeEvent
     public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(TrueEndEntities.UNKNOWN.get(),
-                net.justmili.trueend.entity.UnknownEntity.createAttributes().build());
+        event.put(Entities.UNKNOWN.get(),
+                Unknown.createAttributes().build());
     }
 
     private static final String PROTOCOL_VERSION = "1";

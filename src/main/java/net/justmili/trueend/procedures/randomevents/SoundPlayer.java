@@ -1,10 +1,8 @@
 package net.justmili.trueend.procedures.randomevents;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.init.TrueEndBlocks;
-import net.justmili.trueend.network.TrueEndVariables;
-import net.justmili.trueend.regs.IntegerRegistry;
-import net.minecraft.world.level.block.Blocks;
+import net.justmili.trueend.init.Blocks;
+import net.justmili.trueend.network.Variables;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,15 +41,15 @@ public class SoundPlayer {
         int soundX = BlockPosRandomX/4;
         int soundY = 1 + (int)(Math.random() * ((8 - 1) + 1));
         int soundZ = BlockPosRandomZ/4;
-        double randEvtChance = TrueEndVariables.randomEventChance.getValue();
-        if (TrueEndVariables.randomEventsToggle.getValue() == true) {
+        double randEvtChance = Variables.randomEventChance.getValue();
+        if (Variables.randomEventsToggle.getValue() == true) {
             if (entity == null) return;
-            entity.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> {
+            entity.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
                 if (data.hasBeenBeyond()) {
                     if ((entity.level().dimension()) == NWAD || (entity.level().dimension()) == OVERWORLD) {
                         if (Math.random() < randEvtChance) {
                             if (Math.random() < randEvtChance) {
-                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.GRASS_BLOCK) {
                                     for (int index0 = 0; index0 < randomRepeatCount; index0++) {
                                         TrueEnd.queueServerWork(6, () -> {
                                             if (world instanceof Level _level) {
@@ -66,7 +64,7 @@ public class SoundPlayer {
                                 }
                             }
                             if (Math.random() < randEvtChance) {
-                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.DIRT.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.ROOTED_DIRT) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.DIRT.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.ROOTED_DIRT) {
                                     for (int index1 = 0; index1 < randomRepeatCount; index1++) {
                                         TrueEnd.queueServerWork(6, () -> {
                                             if (world instanceof Level _level) {
@@ -81,7 +79,7 @@ public class SoundPlayer {
                                 }
                             }
                             if (Math.random() < randEvtChance) {
-                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == TrueEndBlocks.STONE.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.STONE) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.STONE.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.STONE) {
                                     for (int index2 = 0; index2 < randomRepeatCount; index2++) {
                                         TrueEnd.queueServerWork(8, () -> {
                                             if (world instanceof Level _level) {
@@ -96,7 +94,7 @@ public class SoundPlayer {
                                 }
                             }
                             if (Math.random() < randEvtChance) {
-                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.DEEPSLATE) {
+                                if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.DEEPSLATE) {
                                     for (int index3 = 0; index3 < (randomRepeatCount - 1); index3++) {
                                         TrueEnd.queueServerWork(8, () -> {
                                             if (world instanceof Level _level) {

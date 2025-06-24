@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.IPlantable;
-import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.piston.MovingPistonBlock;
@@ -34,7 +33,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.FarmlandWaterManager;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.IPlantable;
 
 public class Farmland extends Block {
 	public static final IntegerProperty MOISTURE;
@@ -58,7 +56,7 @@ public class Farmland extends Block {
 	}
 
 	public BlockState getStateForPlacement(BlockPlaceContext p_53249_) {
-		return !this.defaultBlockState().canSurvive(p_53249_.getLevel(), p_53249_.getClickedPos()) ? TrueEndBlocks.DIRT.get().defaultBlockState() : super.getStateForPlacement(p_53249_);
+		return !this.defaultBlockState().canSurvive(p_53249_.getLevel(), p_53249_.getClickedPos()) ? Blocks.DIRT.get().defaultBlockState() : super.getStateForPlacement(p_53249_);
 	}
 
 	public boolean useShapeForLightOcclusion(BlockState p_53295_) {
@@ -91,7 +89,7 @@ public class Farmland extends Block {
 	}
 
 	public void fallOn(Level p_153227_, BlockState p_153228_, BlockPos p_153229_, Entity p_153230_, float p_153231_) {
-		if (!p_153227_.isClientSide && ForgeHooks.onFarmlandTrample(p_153227_, p_153229_, TrueEndBlocks.DIRT.get().defaultBlockState(), p_153231_, p_153230_)) {
+		if (!p_153227_.isClientSide && ForgeHooks.onFarmlandTrample(p_153227_, p_153229_, Blocks.DIRT.get().defaultBlockState(), p_153231_, p_153230_)) {
 			turnToDirt(p_153230_, p_153228_, p_153227_, p_153229_);
 		}
 
@@ -99,7 +97,7 @@ public class Farmland extends Block {
 	}
 
 	public static void turnToDirt(@Nullable Entity p_270981_, BlockState p_270402_, Level p_270568_, BlockPos p_270551_) {
-		BlockState blockstate = pushEntitiesUp(p_270402_, TrueEndBlocks.DIRT.get().defaultBlockState(), p_270568_, p_270551_);
+		BlockState blockstate = pushEntitiesUp(p_270402_, Blocks.DIRT.get().defaultBlockState(), p_270568_, p_270551_);
 		p_270568_.setBlockAndUpdate(p_270551_, blockstate);
 		p_270568_.gameEvent(GameEvent.BLOCK_CHANGE, p_270551_, Context.of(p_270981_, blockstate));
 	}

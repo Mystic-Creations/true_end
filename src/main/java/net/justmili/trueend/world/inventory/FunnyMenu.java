@@ -16,7 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 
-import net.justmili.trueend.init.TrueEndMenus;
+import net.justmili.trueend.init.Guis;
 
 import java.util.function.Supplier;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class FunnyMenu extends AbstractContainerMenu implements Supplier<Map<Int
     private BlockEntity boundBlockEntity = null;
 
     public FunnyMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        super(TrueEndMenus.FUNNY.get(), id);
+        super(Guis.FUNNY.get(), id);
         this.entity = inv.player;
         this.world = inv.player.level();
         this.internal = new ItemStackHandler(0);
