@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 public class Config {
-	public static final GsonSerializer serializer = new GsonSerializer("TrueEnd_COMMON");
+	public static final GsonSerializer serializer = new GsonSerializer("TrueEnd_SERVER");
 	public static Map<String, Object> entries;
 
 	public static ConfigBuilder getConfigBuilder() {
