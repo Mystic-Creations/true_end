@@ -1,6 +1,6 @@
 package net.justmili.trueend.world.dimension;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
@@ -27,7 +27,7 @@ public class BeyondTheDream {
 
                 @Override
                 public boolean isFoggyAt(int x, int y) {
-                    return TrueEndVariables.fogToggle.getValue();
+                    return Variables.fogToggle.getValue();
                 }
             };
             event.register(ResourceLocation.parse("true_end:beyond_the_dream"), customEffect);

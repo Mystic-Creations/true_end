@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.sounds.SoundEvents;
 
-import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class GrassBlock extends Block {
@@ -45,7 +45,7 @@ public class GrassBlock extends Block {
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (!canStayGrass(world, pos)) {
             if (!world.isClientSide()) {
-                world.setBlock(pos, TrueEndBlocks.DIRT.get().defaultBlockState(), 3);
+                world.setBlock(pos, Blocks.DIRT.get().defaultBlockState(), 3);
             }
         }
     }
@@ -53,7 +53,7 @@ public class GrassBlock extends Block {
     private static boolean canStayGrass(LevelReader world, BlockPos pos) {
         BlockPos abovePos = pos.above();
         BlockState aboveState = world.getBlockState(abovePos);
-        if (aboveState.is(TrueEndBlocks.LEAVES.get())) {
+        if (aboveState.is(Blocks.LEAVES.get())) {
             return true;
         }
         return aboveState.getLightBlock(world, abovePos) <= 0;
@@ -67,7 +67,7 @@ public class GrassBlock extends Block {
         float pitch = 0.9f + world.getRandom().nextFloat() * 0.2f;
 
         if (player.getMainHandItem().is(ItemTags.HOES)) {
-            world.setBlock(BlockPos.containing(x, y, z), TrueEndBlocks.FARMLAND.get().defaultBlockState(), 3);
+            world.setBlock(BlockPos.containing(x, y, z), Blocks.FARMLAND.get().defaultBlockState(), 3);
             world.playSound(null, x, y, z, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0f, pitch);
             player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
             getSeeds(world, x, y, z, player, player);

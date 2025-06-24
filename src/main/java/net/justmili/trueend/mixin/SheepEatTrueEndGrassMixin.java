@@ -1,13 +1,12 @@
 package net.justmili.trueend.mixin;
 
-import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.EatBlockGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.spongepowered.asm.mixin.Final;
@@ -37,7 +36,7 @@ public class SheepEatTrueEndGrassMixin {
             cir.setReturnValue(false);
         } else {
             BlockPos blockpos = this.mob.blockPosition();
-            cir.setReturnValue(IS_TALL_GRASS.test(this.level.getBlockState(blockpos)) || this.level.getBlockState(blockpos.below()).is(TrueEndBlocks.GRASS_BLOCK.get()));
+            cir.setReturnValue(IS_TALL_GRASS.test(this.level.getBlockState(blockpos)) || this.level.getBlockState(blockpos.below()).is(Blocks.GRASS_BLOCK.get()));
         }
     }
 
@@ -54,18 +53,18 @@ public class SheepEatTrueEndGrassMixin {
                 this.mob.ate();
             } else {
                 BlockPos blockpos1 = blockpos.below();
-                if (this.level.getBlockState(blockpos1).is(Blocks.GRASS_BLOCK)) {
+                if (this.level.getBlockState(blockpos1).is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)) {
                     if (ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                        this.level.levelEvent(2001, blockpos1, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
-                        this.level.setBlock(blockpos1, Blocks.DIRT.defaultBlockState(), 2);
+                        this.level.levelEvent(2001, blockpos1, Block.getId(net.minecraft.world.level.block.Blocks.GRASS_BLOCK.defaultBlockState()));
+                        this.level.setBlock(blockpos1, net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState(), 2);
                     }
 
                     this.mob.ate();
                 }
-                if (this.level.getBlockState(blockpos1).is(TrueEndBlocks.GRASS_BLOCK.get())) {
+                if (this.level.getBlockState(blockpos1).is(Blocks.GRASS_BLOCK.get())) {
                     if (ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                        this.level.levelEvent(2001, blockpos1, Block.getId(TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState()));
-                        this.level.setBlock(blockpos1, TrueEndBlocks.DIRT.get().defaultBlockState(), 2);
+                        this.level.levelEvent(2001, blockpos1, Block.getId(Blocks.GRASS_BLOCK.get().defaultBlockState()));
+                        this.level.setBlock(blockpos1, Blocks.DIRT.get().defaultBlockState(), 2);
                     }
 
                     this.mob.ate();

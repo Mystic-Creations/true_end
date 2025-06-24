@@ -1,10 +1,6 @@
 package net.justmili.trueend.init;
 
 import net.justmili.trueend.block.*;
-import net.justmili.trueend.world.tree.AlphaTreeGrower;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SaplingBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.DeferredRegister;
@@ -41,7 +37,7 @@ import net.justmili.trueend.block.Flower;
 import net.justmili.trueend.block.Rose;
 import net.justmili.trueend.TrueEnd;
 
-public class TrueEndBlocks {
+public class Blocks {
 	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, TrueEnd.MODID);
 	public static final RegistryObject<Block> DIRT = REGISTRY.register("dirt", Dirt::new);
 	public static final RegistryObject<Block> GRASS_BLOCK = REGISTRY.register("grass_block", GrassBlock::new);

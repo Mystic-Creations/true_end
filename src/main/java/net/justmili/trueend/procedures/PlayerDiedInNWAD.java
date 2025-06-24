@@ -1,6 +1,6 @@
 package net.justmili.trueend.procedures;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +28,7 @@ public class PlayerDiedInNWAD {
         if (event.getEntity().level().dimension().location().toString().equals("true_end:nightmare_within_a_dream")) {
 
             // get orignal keepinventory gamerule
-            boolean setKeepInv = TrueEndVariables.MapVariables.get(world).isDefaultKeepInv();
+            boolean setKeepInv = Variables.MapVariables.get(world).isDefaultKeepInv();
 
             // set to orignal value to gamerule
             event.getEntity().level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(setKeepInv, event.getEntity().getCommandSenderWorld().getServer());

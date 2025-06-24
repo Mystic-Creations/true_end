@@ -1,6 +1,6 @@
 package net.justmili.trueend.procedures;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
@@ -17,15 +17,14 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import net.justmili.trueend.init.TrueEndGameRules;
-import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.GameRules;
+import net.justmili.trueend.init.Blocks;
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.effect.MobEffectInstance;
 
@@ -65,7 +64,7 @@ public class DimSwapToBTD {
             return;
 
         AtomicBoolean hasVisited = new AtomicBoolean(false);
-        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> {
+        serverPlayer.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
             hasVisited.set(data.hasBeenBeyond());
         });
         if (!hasVisited.get()) {
@@ -82,7 +81,7 @@ public class DimSwapToBTD {
                 }
                 serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-                TrueEndVariables.MapVariables getVariable = TrueEndVariables.MapVariables.get(nextLevel);
+                Variables.MapVariables getVariable = Variables.MapVariables.get(nextLevel);
                 double btdSpawnX = getVariable.getBtdSpawnX();
                 double btdSpawnY = getVariable.getBtdSpawnY();
                 double btdSpawnZ = getVariable.getBtdSpawnZ();
@@ -98,7 +97,7 @@ public class DimSwapToBTD {
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
                     sendFirstEntryConversation(serverPlayer, nextLevel);
                     executeCommand(nextLevel, serverPlayer, "function true_end:btd_global_spawn");
-                    serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP)
+                    serverPlayer.getCapability(Variables.PLAYER_VARS_CAP)
                             .ifPresent(data -> data.setBeenBeyond(true));
                     HAS_PROCESSED.remove(serverPlayer);
                     return;
@@ -161,21 +160,21 @@ public class DimSwapToBTD {
                         executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
                         setGlobalSpawn(nextLevel, serverPlayer);
                         sendFirstEntryConversation(serverPlayer, nextLevel);
-                        serverPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
+                        serverPlayer.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                         if (secFinalSpawnPos == null) {
-                            nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
+                            nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
                                     data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY() - 1, finalSpawnPos.getZ()));
                         }
                         if (secFinalSpawnPos != null) {
-                            nextLevel.getCapability(TrueEndVariables.MAP_VARIABLES_CAP).ifPresent(
+                            nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
                                     data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY() - 1, secFinalSpawnPos.getZ()));
                         }
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
-                    if (nextLevel.getGameRules().getBoolean(TrueEndGameRules.CLEAR_DREAM_ITEMS)) {
+                    if (nextLevel.getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(TrueEndGameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
+                        nextLevel.getGameRules().getRule(GameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
             }
@@ -191,7 +190,7 @@ public class DimSwapToBTD {
                     BlockPos above = candidate.above();
                     BlockPos above2 = above.above();
 
-                    if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
+                    if (level.getBlockState(candidate).is(Blocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:plains"))
                             && notOnAfuckingHill(level, candidate)
                             && isYInSpawnRange(level, candidate)
@@ -216,7 +215,7 @@ public class DimSwapToBTD {
                 for (int z = -searchRadius; z <= searchRadius; z++) {
                     BlockPos candidate = centerPos.offset(x, y - centerPos.getY(), z);
                     BlockPos above = candidate.above();
-                    if (level.getBlockState(candidate).is(TrueEndBlocks.GRASS_BLOCK.get())
+                    if (level.getBlockState(candidate).is(Blocks.GRASS_BLOCK.get())
                             && level.getBiome(candidate).is(ResourceLocation.parse("true_end:plains"))
                             && notOnAfuckingHill(level, candidate)
                             && isYInSpawnRange(level, candidate)
@@ -233,7 +232,7 @@ public class DimSwapToBTD {
     }
 
     public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
-        TrueEndVariables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
+        Variables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
                 serverPlayer.getZ());
     }
 
@@ -284,16 +283,16 @@ public class DimSwapToBTD {
     }
     // Helper method to place grass and fill with dirt until hitting stone
     private static void placeGrassWithDirt(ServerLevel world, BlockPos pos) {
-        world.setBlock(pos, TrueEndBlocks.GRASS_BLOCK.get().defaultBlockState(), 3);
+        world.setBlock(pos, Blocks.GRASS_BLOCK.get().defaultBlockState(), 3);
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
         for (int y = pos.getY() - 1; y >= world.getMinBuildHeight(); y--) {
             mutablePos.setY(y);
             BlockState current = world.getBlockState(mutablePos);
-            if (current.is(Blocks.STONE)) {
+            if (current.is(net.minecraft.world.level.block.Blocks.STONE)) {
                 break;
             }
-            world.setBlock(mutablePos, TrueEndBlocks.DIRT.get().defaultBlockState(), 3);
+            world.setBlock(mutablePos, Blocks.DIRT.get().defaultBlockState(), 3);
         }
     }
     // Smooth gradient function
@@ -307,9 +306,9 @@ public class DimSwapToBTD {
 
         for (int y = maxY; y >= 0; y--) {
             BlockPos checkPos = new BlockPos(pos.getX(), y, pos.getZ());
-            if (world.getBlockState(checkPos).getBlock() != Blocks.AIR &&
-                    world.getBlockState(checkPos).getBlock() != TrueEndBlocks.WOOD.get() &&
-                    world.getBlockState(checkPos).getBlock() != TrueEndBlocks.LEAVES.get()) {
+            if (world.getBlockState(checkPos).getBlock() != net.minecraft.world.level.block.Blocks.AIR &&
+                    world.getBlockState(checkPos).getBlock() != Blocks.WOOD.get() &&
+                    world.getBlockState(checkPos).getBlock() != Blocks.LEAVES.get()) {
                 if (y < pos.getY()) {
                     return y - 1;
                 } else {
@@ -404,12 +403,12 @@ public class DimSwapToBTD {
                 BlockState stateBelow2 = level.getBlockState(below2);
 
                 // Return false if any of these are found in the area
-                if (stateAtFeet.is(Blocks.WATER)
-                        || stateBelow.is(Blocks.WATER)
-                        || stateBelow2.is(Blocks.WATER)
-                        || stateAtFeet.is(TrueEndBlocks.SAND.get())
-                        || stateBelow.is(TrueEndBlocks.SAND.get())
-                        || stateBelow2.is(TrueEndBlocks.SAND.get())) {
+                if (stateAtFeet.is(net.minecraft.world.level.block.Blocks.WATER)
+                        || stateBelow.is(net.minecraft.world.level.block.Blocks.WATER)
+                        || stateBelow2.is(net.minecraft.world.level.block.Blocks.WATER)
+                        || stateAtFeet.is(Blocks.SAND.get())
+                        || stateBelow.is(Blocks.SAND.get())
+                        || stateBelow2.is(Blocks.SAND.get())) {
                     return false;
                 }
             }
@@ -489,7 +488,7 @@ public class DimSwapToBTD {
 
         //Play text
         TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendTellrawMessagesWithCooldown(player, jsonLines.toArray(new String[0]), TrueEndVariables.btdConversationDelay.getValue());
+            TrueEnd.sendTellrawMessagesWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay.getValue());
         });
     }
 }

@@ -1,7 +1,7 @@
 package net.justmili.trueend.procedures.devcmd.screentests;
 
 import io.netty.buffer.Unpooled;
-import net.justmili.trueend.init.TrueEndSounds;
+import net.justmili.trueend.init.Sounds;
 import net.justmili.trueend.world.inventory.FunnyMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -64,7 +64,7 @@ public class Funny {
                     mc.player.getX(),
                     mc.player.getY(),
                     mc.player.getZ(),
-                    TrueEndSounds.VINE_BOOM.get(),
+                    Sounds.VINE_BOOM.get(),
                     SoundSource.MASTER,
                     1.0f,
                     1.0f,

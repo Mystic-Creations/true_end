@@ -1,6 +1,6 @@
 package net.justmili.trueend.procedures.events.worldupdates;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -35,7 +35,7 @@ public class UpdateDefaultKeepInv {
 		ServerLevel world = (ServerLevel) player.level();
 		if (!((entity.level().dimension()) == NWAD)) {
 			boolean getKeepInventory = world.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
-			TrueEndVariables.MapVariables.get(world).setDefaultKeepInv(getKeepInventory);
+			Variables.MapVariables.get(world).setDefaultKeepInv(getKeepInventory);
 		}
 	}
 	@SubscribeEvent
@@ -52,7 +52,7 @@ public class UpdateDefaultKeepInv {
 		ServerLevel world = (ServerLevel) player.level();
 		if (!((entity.level().dimension()) == NWAD)) {
 			boolean getKeepInventory = world.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
-			TrueEndVariables.MapVariables.get(world).setDefaultKeepInv(getKeepInventory);
+			Variables.MapVariables.get(world).setDefaultKeepInv(getKeepInventory);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package net.justmili.trueend.procedures.devcmd;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
@@ -12,7 +12,7 @@ public class PrintVars {
         if (player == null || source == null)
             return;
 
-		TrueEndVariables.MapVariables getVariable = TrueEndVariables.MapVariables.get(world);
+		Variables.MapVariables getVariable = Variables.MapVariables.get(world);
 
         int btdSpawnX = (int) getVariable.getBtdSpawnX();
         int btdSpawnY = (int) getVariable.getBtdSpawnY();
@@ -21,8 +21,8 @@ public class PrintVars {
         // Per-Player Variables
         source.sendSystemMessage(Component.literal("----= Per-Player"));
         for (ServerPlayer otherPlayer : player.server.getPlayerList().getPlayers()) {
-            TrueEndVariables.PlayerVariables vars =
-                otherPlayer.getCapability(TrueEndVariables.PLAYER_VARS_CAP).orElse(new TrueEndVariables.PlayerVariables());
+            Variables.PlayerVariables vars =
+                otherPlayer.getCapability(Variables.PLAYER_VARS_CAP).orElse(new Variables.PlayerVariables());
             // use hasBeenBeyond() getter instead of private field
             source.sendSystemMessage(Component.literal(
                 "beenBeyond (" + otherPlayer.getName().getString() + "): " + vars.hasBeenBeyond()
@@ -31,7 +31,7 @@ public class PrintVars {
 
         // Global Variables
         source.sendSystemMessage(Component.literal("\n----= Global"));
-        TrueEndVariables.MapVariables globalVars = TrueEndVariables.MapVariables.get(world);
+        Variables.MapVariables globalVars = Variables.MapVariables.get(world);
         source.sendSystemMessage(Component.literal("defaultKeepInv: " + globalVars.isDefaultKeepInv()));
         source.sendSystemMessage(Component.literal(
             "btdSpawnX/Y/Z: " + btdSpawnX + "/" + btdSpawnY + "/" + btdSpawnZ
@@ -40,11 +40,11 @@ public class PrintVars {
         // Configurable
         source.sendSystemMessage(Component.literal("\n----= Configurable"));
         //source.sendSystemMessage(Component.literal("clearDreamItems: " + TrueEndVariables.clearDreamItems.getValue()));
-        source.sendSystemMessage(Component.literal("btdConversationDelay: " + TrueEndVariables.btdConversationDelay.getValue()));
-        source.sendSystemMessage(Component.literal("randomEventChance: " + TrueEndVariables.randomEventChance.getValue()));
-        source.sendSystemMessage(Component.literal("entitySpawnChance: " + TrueEndVariables.entitySpawnChance.getValue()));
-        source.sendSystemMessage(Component.literal("popupsToggle: " + TrueEndVariables.popupsToggle.getValue()));
-        source.sendSystemMessage(Component.literal("fogToggle: " + TrueEndVariables.fogToggle.getValue()));
+        source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay.getValue()));
+        source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance.getValue()));
+        source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance.getValue()));
+        source.sendSystemMessage(Component.literal("popupsToggle: " + Variables.popupsToggle.getValue()));
+        source.sendSystemMessage(Component.literal("fogToggle: " + Variables.fogToggle.getValue()));
 
 
     }

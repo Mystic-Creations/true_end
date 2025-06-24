@@ -1,10 +1,9 @@
 package net.justmili.trueend.procedures.randomevents;
 
 import net.justmili.trueend.interfaces.User32;
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,17 +30,17 @@ public class SleepPopup {
 		if (player.isSleeping()) {
 			String osName = System.getProperty("os.name").toLowerCase();
 			if (osName.contains("win")) {
-				if (TrueEndVariables.randomEventsToggle.getValue()
-						&& TrueEndVariables.popupsToggle.getValue()
-						&& Math.random() < TrueEndVariables.randomEventChance.getValue()) {
+				if (Variables.randomEventsToggle.getValue()
+						&& Variables.popupsToggle.getValue()
+						&& Math.random() < Variables.randomEventChance.getValue()) {
 					TrueEnd.queueServerWork(20, () -> {
 						User32.INSTANCE.MessageBoxA(0L, "wake up.", " ", 0);
 					});
 				}
 			} else {
-				if (TrueEndVariables.randomEventsToggle.getValue()
-						&& TrueEndVariables.popupsToggle.getValue()
-						&& Math.random() < TrueEndVariables.randomEventChance.getValue()) {
+				if (Variables.randomEventsToggle.getValue()
+						&& Variables.popupsToggle.getValue()
+						&& Math.random() < Variables.randomEventChance.getValue()) {
 					TrueEnd.queueServerWork(20, () -> {
 						SwingUtilities.invokeLater(() -> {
 							String message = "wake up.";

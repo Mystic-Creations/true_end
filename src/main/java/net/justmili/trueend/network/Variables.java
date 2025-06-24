@@ -31,11 +31,11 @@ import net.justmili.trueend.TrueEnd;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class TrueEndVariables {
-    public static final Capability<TrueEndVariables.PlayerVariables> PLAYER_VARS_CAP =
+public class Variables {
+    public static final Capability<Variables.PlayerVariables> PLAYER_VARS_CAP =
         CapabilityManager.get(new CapabilityToken<>() {});
 
-    public static final Capability<TrueEndVariables.MapVariables> MAP_VARIABLES_CAP =
+    public static final Capability<Variables.MapVariables> MAP_VARIABLES_CAP =
             CapabilityManager.get(new CapabilityToken<>() {});
     public static BooleanListEntry clearDreamItems;
     public static DoubleListEntry randomEventChance;

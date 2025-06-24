@@ -15,7 +15,6 @@ import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.NetherPortalBlock;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.ai.village.poi.PoiRecord;
@@ -32,7 +31,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.BlockUtil;
 
-import net.justmili.trueend.init.TrueEndBlocks;
+import net.justmili.trueend.init.Blocks;
 
 import java.util.function.Function;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class BeyondTheDreamTeleporter implements ITeleporter {
 	@SubscribeEvent
 	public static void registerPointOfInterest(RegisterEvent event) {
 		event.register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
-			PoiType poiType = new PoiType(ImmutableSet.copyOf(TrueEndBlocks.BEYOND_THE_DREAM_PORTAL.get().getStateDefinition().getPossibleStates()), 0, 1);
+			PoiType poiType = new PoiType(ImmutableSet.copyOf(Blocks.BEYOND_THE_DREAM_PORTAL.get().getStateDefinition().getPossibleStates()), 0, 1);
 			registerHelper.register("beyond_the_dream_portal", poiType);
 			poi = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
 		});
@@ -146,7 +145,7 @@ public class BeyondTheDreamTeleporter implements ITeleporter {
 			for (int i3 = -1; i3 < 2; ++i3) {
 				for (int j3 = 0; j3 < 2; ++j3) {
 					for (int k3 = -1; k3 < 3; ++k3) {
-						BlockState blockstate1 = k3 < 0 ? TrueEndBlocks.OBSIDIAN.get().defaultBlockState() : Blocks.AIR.defaultBlockState();
+						BlockState blockstate1 = k3 < 0 ? Blocks.OBSIDIAN.get().defaultBlockState() : net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
 						blockpos$mutableblockpos.setWithOffset(blockpos, j3 * direction.getStepX() + i3 * direction1.getStepX(), k3, j3 * direction.getStepZ() + i3 * direction1.getStepZ());
 						this.level.setBlockAndUpdate(blockpos$mutableblockpos, blockstate1);
 					}
@@ -157,11 +156,11 @@ public class BeyondTheDreamTeleporter implements ITeleporter {
 			for (int j2 = -1; j2 < 4; ++j2) {
 				if (l1 == -1 || l1 == 2 || j2 == -1 || j2 == 3) {
 					blockpos$mutableblockpos.setWithOffset(blockpos, l1 * direction.getStepX(), j2, l1 * direction.getStepZ());
-					this.level.setBlock(blockpos$mutableblockpos, TrueEndBlocks.OBSIDIAN.get().defaultBlockState(), 3);
+					this.level.setBlock(blockpos$mutableblockpos, Blocks.OBSIDIAN.get().defaultBlockState(), 3);
 				}
 			}
 		}
-		BlockState blockstate = TrueEndBlocks.BEYOND_THE_DREAM_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, p_77668_);
+		BlockState blockstate = Blocks.BEYOND_THE_DREAM_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, p_77668_);
 		for (int k2 = 0; k2 < 2; ++k2) {
 			for (int l2 = 0; l2 < 3; ++l2) {
 				blockpos$mutableblockpos.setWithOffset(blockpos, k2 * direction.getStepX(), l2, k2 * direction.getStepZ());

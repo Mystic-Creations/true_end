@@ -1,6 +1,6 @@
 package net.justmili.trueend.procedures;
 
-import net.justmili.trueend.network.TrueEndVariables;
+import net.justmili.trueend.network.Variables;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -46,9 +46,9 @@ public class DimSwapToNWAD {
 	private static void execute(@Nullable Event event, LevelAccessor world, DamageSource damagesource, Entity entity) {
 		if (damagesource == null || entity == null)
 			return;
-		boolean currentKeepInv = TrueEndVariables.MapVariables.get(world).isDefaultKeepInv();
+		boolean currentKeepInv = Variables.MapVariables.get(world).isDefaultKeepInv();
 
-		if (Math.random() < (TrueEndVariables.randomEventChance.getValue()*5)) {
+		if (Math.random() < (Variables.randomEventChance.getValue()*5)) {
 			if (entity instanceof Player && damagesource.is(DamageTypes.IN_WALL) && !(entity instanceof ServerPlayer _plr2 && _plr2.level() instanceof ServerLevel
 					&& _plr2.getAdvancements().getOrStartProgress(Objects.requireNonNull(_plr2.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream")))).isDone())) {
 				if (currentKeepInv) {
