@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+import static net.justmili.trueend.init.Dimensions.BTD;
 
 @Mod.EventBusSubscriber
 public class FeelingWatched {

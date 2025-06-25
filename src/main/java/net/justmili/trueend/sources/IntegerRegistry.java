@@ -1,4 +1,4 @@
-package net.justmili.trueend.regs;
+package net.justmili.trueend.sources;
 
 import net.minecraftforge.fml.common.Mod;
 

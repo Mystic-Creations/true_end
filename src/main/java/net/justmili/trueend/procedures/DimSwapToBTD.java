@@ -1,6 +1,7 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.Variables;
+import net.justmili.trueend.procedures.events.PlayerInvManager;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
@@ -36,8 +37,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
-import static net.justmili.trueend.regs.IntegerRegistry.*;
+import static net.justmili.trueend.init.Dimensions.BTD;
+import static net.justmili.trueend.sources.IntegerRegistry.*;
 
 @Mod.EventBusSubscriber
 public class DimSwapToBTD {
@@ -172,6 +173,7 @@ public class DimSwapToBTD {
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
+                    PlayerInvManager.savePlayerInventory(serverPlayer);
                     if (nextLevel.getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
                         nextLevel.getGameRules().getRule(GameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
@@ -320,15 +322,9 @@ public class DimSwapToBTD {
         return max;
     }
 
-    // Helper method to identify tree blocks (leaves or logs)
-    private static boolean isTreeBlock(Block block) {
-        return block.defaultBlockState().is(BlockTags.LEAVES) || block.defaultBlockState().is(BlockTags.LOGS);
-    }
-
-    private static final int MAX_TERRAIN_DROP = 7;
-    private static final int MAX_TERRAIN_ASCENT = 3;
-
     private static boolean isValidSpawnArea(ServerLevel level, BlockPos center) {
+        int MAX_TERRAIN_DROP = 7;
+        int MAX_TERRAIN_ASCENT = 3;
         int centerY = getLocalMax(level, new BlockPos(center.getX(), level.getMaxBuildHeight() - 1, center.getZ()));
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
@@ -344,6 +340,10 @@ public class DimSwapToBTD {
         return true;
     }
 
+    // Helper method to identify tree blocks (leaves or logs)
+    private static boolean isTreeBlock(Block block) {
+        return block.defaultBlockState().is(BlockTags.LEAVES) || block.defaultBlockState().is(BlockTags.LOGS);
+    }
     public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
         Queue<BlockPos> queue = new LinkedList<>();
         Set<BlockPos> visited = new HashSet<>();
@@ -415,7 +415,6 @@ public class DimSwapToBTD {
         }
         return true;
     }
-
     public static boolean notOnAfuckingHill(ServerLevel level, BlockPos center) {
         final int STEEPNESS_LIMIT = 2;
         int centerGroundY = getLocalMax(level,
@@ -434,13 +433,9 @@ public class DimSwapToBTD {
         }
         return true;
     }
-
     public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
         int y = pos.getY();
-        if (y >= 66 && y <= 80) {
-            return true;
-        }
-        return false;
+        return y >= 66 && y <= 80;
     }
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {
@@ -450,23 +445,12 @@ public class DimSwapToBTD {
     }
 
     private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
-        ResourceLocation textFile = ResourceLocation.parse("true_end:texts/first_entry.txt");
         List<String> jsonLines = new ArrayList<>();
-        BufferedReader br;
 
-        // Load file with fallback
-        try {
-            var resource = world.getServer().getResourceManager().open(textFile);
-            br = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            TrueEnd.LOGGER.warn("Failed to load first_entry.txt via ResourceManager, falling back", e);
-            InputStream is = DimSwapToBTD.class.getClassLoader().getResourceAsStream("assets/true_end/texts/first_entry.txt");
-            if (is == null) {
-                TrueEnd.LOGGER.error("Cannot find first_entry.txt on classpath");
-                return;
-            }
-            br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-        }
+        BufferedReader br;
+        InputStream is = DimSwapToBTD.class.getClassLoader().getResourceAsStream("assets/true_end/texts/first_entry.txt");
+        assert is != null;
+        br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
         //TXT to JSON
         try {
@@ -480,15 +464,15 @@ public class DimSwapToBTD {
                 String json = "{\"text\":\"" + escaped + "\"}";
                 jsonLines.add(json);
             }
-        } catch (Exception ex) {
-            TrueEnd.LOGGER.error("Error reading first_entry.txt", ex);
+        } catch (Exception e) {
+            TrueEnd.LOGGER.error("Error reading first_entry.txt", e);
             return;
         } finally {
             try { br.close(); } catch (Exception ignored) {} }
 
         //Play text
         TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendTellrawMessagesWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay.getValue());
+            TrueEnd.sendMessegeWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay.getValue());
         });
     }
 }

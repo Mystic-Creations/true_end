@@ -1,6 +1,6 @@
-package net.justmili.trueend.procedures.events;
+package net.justmili.trueend.procedures.alphafeatures;
 
-import net.justmili.trueend.regs.DimKeyRegistry;
+import net.justmili.trueend.init.Dimensions;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -11,9 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.core.jmx.Server;
-
-import java.util.UUID;
 
 
 @Mod.EventBusSubscriber
@@ -43,7 +40,7 @@ public class NoCooldown {
         AttributeInstance attackSpeedAttr = player.getAttribute(Attributes.ATTACK_SPEED);
         if (attackSpeedAttr == null) return;
 
-        if (toDim.equals(DimKeyRegistry.BTD)) {
+        if (toDim.equals(Dimensions.BTD)) {
             attackSpeedAttr.addPermanentModifier(modifier);
         } else {
             attackSpeedAttr.removeModifier(modifier);

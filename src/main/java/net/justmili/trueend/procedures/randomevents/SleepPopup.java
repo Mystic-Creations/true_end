@@ -1,9 +1,10 @@
 package net.justmili.trueend.procedures.randomevents;
 
-import net.justmili.trueend.interfaces.User32;
+import net.justmili.trueend.sources.User32;
 import net.justmili.trueend.network.Variables;
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,6 +28,9 @@ public class SleepPopup {
 	}
 
 	private static void execute(@Nullable Object event, LevelAccessor world, Player player) {
+		if (player.level().dimension() != Level.OVERWORLD)
+			return;
+
 		if (player.isSleeping()) {
 			String osName = System.getProperty("os.name").toLowerCase();
 			if (osName.contains("win")) {
@@ -34,7 +38,7 @@ public class SleepPopup {
 						&& Variables.popupsToggle.getValue()
 						&& Math.random() < Variables.randomEventChance.getValue()) {
 					TrueEnd.queueServerWork(20, () -> {
-						User32.INSTANCE.MessageBoxA(0L, "wake up.", " ", 0);
+						User32.INSTANCE.MessageBoxA(0L, "wake up.", "", 0);
 					});
 				}
 			} else {

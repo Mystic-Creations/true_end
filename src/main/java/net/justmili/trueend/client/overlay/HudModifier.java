@@ -1,4 +1,4 @@
-package net.justmili.trueend.client;
+package net.justmili.trueend.client.overlay;
 
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.client.Minecraft;
@@ -15,10 +15,10 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+import static net.justmili.trueend.init.Dimensions.BTD;
 
 @Mod.EventBusSubscriber(modid = TrueEnd.MODID, value = Dist.CLIENT)
-public class HudOverlayHandler {
+public class HudModifier {
 
     //This has to be here
     private static boolean jumpBarActive = false;

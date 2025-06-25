@@ -32,7 +32,7 @@ import net.justmili.trueend.world.teleporter.BeyondTheDreamPortalShape;
 import java.util.Objects;
 import java.util.Optional;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+import static net.justmili.trueend.init.Dimensions.BTD;
 
 public class BeyondTheDreamPortal extends NetherPortalBlock {
     public BeyondTheDreamPortal() {

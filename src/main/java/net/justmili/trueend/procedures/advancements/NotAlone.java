@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+import static net.justmili.trueend.init.Dimensions.BTD;
 
 public class NotAlone {
     @SubscribeEvent

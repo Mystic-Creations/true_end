@@ -20,9 +20,8 @@ import javax.annotation.Nullable;
 
 import java.util.Objects;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
-import static net.justmili.trueend.regs.DimKeyRegistry.OVERWORLD;
-import static net.justmili.trueend.regs.IntegerRegistry.*;
+import static net.justmili.trueend.init.Dimensions.NWAD;
+import static net.justmili.trueend.sources.IntegerRegistry.*;
 
 @Mod.EventBusSubscriber
 public class SoundPlayer {
@@ -46,7 +45,7 @@ public class SoundPlayer {
             if (entity == null) return;
             entity.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
                 if (data.hasBeenBeyond()) {
-                    if ((entity.level().dimension()) == NWAD || (entity.level().dimension()) == OVERWORLD) {
+                    if ((entity.level().dimension()) == NWAD || (entity.level().dimension()) == Level.OVERWORLD) {
                         if (Math.random() < randEvtChance) {
                             if (Math.random() < randEvtChance) {
                                 if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.GRASS_BLOCK) {

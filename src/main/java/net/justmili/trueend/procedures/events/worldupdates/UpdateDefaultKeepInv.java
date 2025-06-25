@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nullable;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.NWAD;
+import static net.justmili.trueend.init.Dimensions.NWAD;
 
 @Mod.EventBusSubscriber
 public class UpdateDefaultKeepInv {

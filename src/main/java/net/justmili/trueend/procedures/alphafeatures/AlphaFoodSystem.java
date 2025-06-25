@@ -1,11 +1,8 @@
-package net.justmili.trueend.procedures.events;
+package net.justmili.trueend.procedures.alphafeatures;
 
 import java.util.Objects;
 
 import javax.annotation.Nullable;
-
-import static net.justmili.trueend.TrueEnd.MODID;
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +18,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import static net.justmili.trueend.init.Dimensions.BTD;
 
 @Mod.EventBusSubscriber
 public class AlphaFoodSystem {

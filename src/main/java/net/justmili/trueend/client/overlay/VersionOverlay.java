@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Random;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+import static net.justmili.trueend.init.Dimensions.BTD;
 import static net.justmili.trueend.TrueEnd.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)

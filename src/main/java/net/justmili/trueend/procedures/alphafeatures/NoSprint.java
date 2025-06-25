@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.events;
+package net.justmili.trueend.procedures.alphafeatures;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
-import static net.justmili.trueend.regs.DimKeyRegistry.BTD;
+import static net.justmili.trueend.init.Dimensions.BTD;
 
 @Mod.EventBusSubscriber
 public class NoSprint {

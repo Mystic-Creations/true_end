@@ -4,7 +4,6 @@ import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.client.CreditsScreen;
 import net.justmili.trueend.config.Config;
 import net.justmili.trueend.network.Variables;
-import net.justmili.trueend.regs.DimKeyRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,8 +14,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimension
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static net.justmili.trueend.init.Dimensions.BTD;
+
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class DetectLeavingBTD {
+public class PlayCredits {
     private static boolean tickHandlerEnabled = false;
     private static int ticksUntilShow = -1;
     private static boolean hasShownCreditsThisSession = false;
@@ -25,7 +26,7 @@ public class DetectLeavingBTD {
     public static void onDimensionChange(PlayerChangedDimensionEvent event) {
         if (hasShownCreditsThisSession) return;
 
-        if (event.getFrom() == DimKeyRegistry.BTD &&
+        if (event.getFrom() == BTD &&
             event.getTo() == Level.OVERWORLD &&
             Variables.creditsToggle.getValue()) {
 
