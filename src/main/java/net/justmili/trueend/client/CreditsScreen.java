@@ -52,14 +52,13 @@ public class CreditsScreen extends Screen {
                         Minecraft.getInstance().player.getName().getString()));
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to load credits.txt", e);
+            LOGGER.error("Failed to read credits.txt", e);
         }
     }
 
     @Override
     protected void init() {
         super.init();
-        LOGGER.info("CreditsScreen initialized. Font is ready: {}", this.font != null);
     }
 
     @Override

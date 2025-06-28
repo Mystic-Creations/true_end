@@ -5,7 +5,7 @@ import net.justmili.trueend.client.CreditsScreen;
 import net.justmili.trueend.config.Config;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.client.Minecraft;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,6 +13,9 @@ import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Objects;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
 
@@ -21,6 +24,7 @@ public class PlayCredits {
     private static boolean tickHandlerEnabled = false;
     private static int ticksUntilShow = -1;
     private static boolean hasShownCreditsThisSession = false;
+    private static final Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
     public static void onDimensionChange(PlayerChangedDimensionEvent event) {
@@ -37,25 +41,22 @@ public class PlayCredits {
             Config.entries.put("creditsToggle", false);
             Config.serializer.serialize(Config.entries);
 
-            Minecraft mc = Minecraft.getInstance();
             TrueEnd.queueServerWork(2, () -> {
-                if (mc != null) {
-                    mc.getSoundManager().stop();
-
-                    if (mc.level != null && mc.player != null) {
-                        mc.level.playLocalSound(
-                            mc.player.getX(),
-                            mc.player.getY(),
-                            mc.player.getZ(),
-                            SoundEvents.MUSIC_DISC_PIGSTEP,
-                            SoundSource.MUSIC,
-                            1.0f,
-                            1.0f,
-                            false
-                        );
-                    }
+                if (mc.player != null) {
+                    double x = mc.player.getX();
+                    double y = mc.player.getY();
+                    double z = mc.player.getZ();
+                    playSound(x, y, z);
                 }
             });
+        }
+    }
+
+    public static void playSound(double x, double y, double z) {
+        mc.getSoundManager().stop();
+
+        if (mc.level != null && mc.player != null) {
+            mc.level.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("music_disc.pigstep"))), SoundSource.MASTER, 1, 1, false);
         }
     }
 
