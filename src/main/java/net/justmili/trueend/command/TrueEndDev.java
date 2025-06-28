@@ -74,41 +74,7 @@ public class TrueEndDev {
 
 					TestBTDDirect.execute(world, entity);
 					return 0;
-				})).then(Commands.literal("adaptTerrain").executes(arguments -> {
-					ServerLevel world = arguments.getSource().getLevel();
-					DimSwapToBTD.adaptTerrain(world, arguments.getSource().getEntity().blockPosition());
-					return 0;
-				})).then(Commands.literal("removeTrees").executes(arguments -> {
-					ServerLevel world = arguments.getSource().getLevel();
-					DimSwapToBTD.removeNearbyTrees(world, arguments.getSource().getEntity().blockPosition(), 3);
-					return 0;
-				})).then(Commands.literal("spawnUnknown").executes(arguments -> {
-					ServerLevel world = arguments.getSource().getLevel();
-					BlockPos blockPos = arguments.getSource().getEntity().blockPosition();
-					blockPos = blockPos.mutable().offset(10,0,0);
-					EntityType<?> unknownType = Entities.UNKNOWN.get();
-					Entity unknownEntity = unknownType.create(world);
-
-					double minDist = 32.0;
-					double maxDist = (Minecraft.getInstance().gameRenderer.getRenderDistance() * 16) - 16;
-
-					Random random = new Random();
-
-					double dist = random.nextDouble() * (maxDist - minDist) + minDist;
-
-					unknownEntity.setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-
-					unknownEntity.getPersistentData().putBoolean("PersistenceRequired", true);
-					world.addFreshEntity(unknownEntity);
-					return 0;
-				})).then(Commands.literal("localHeight").executes(arguments -> {
-					ServerLevel world = arguments.getSource().getLevel();
-					int localMax = DimSwapToBTD.getLocalMax(world, arguments.getSource().getEntity().blockPosition());
-					arguments.getSource().getEntity().sendSystemMessage(Component.literal(Integer.toString(localMax)));
-					return 0;
-				}))
-
-				.then(Commands.literal("testHome").executes(arguments -> {
+				})).then(Commands.literal("testHome").executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 
 					double x = arguments.getSource().getPosition().x();

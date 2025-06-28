@@ -1,22 +1,28 @@
 package net.justmili.trueend.procedures.events;
 
 import net.justmili.trueend.TrueEnd;
+import net.justmili.trueend.init.GameRules;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
 import java.util.Random;
 
+import static net.justmili.trueend.init.Dimensions.BTD;
+
 public class PlayerInvManager {
     private static final double RETURN_CHANCE = 0.90;
     private static final Random RAND = new Random();
 
-    /** Call this before inventory clearing */
     public static void savePlayerInventory(ServerPlayer player) {
         CompoundTag root = new CompoundTag();
 
@@ -108,5 +114,18 @@ public class PlayerInvManager {
         } catch (Exception e) {
             TrueEnd.LOGGER.error("Failed to restore TEholder for player {}", player.getName().getString(), e);
         }
+    }
+
+    @SubscribeEvent
+    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (event.getFrom() != BTD || event.getTo() != Level.OVERWORLD) return;
+        if (!player.level().getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) return;
+
+        player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
+            if (data.hasBeenBeyond()) {
+                PlayerInvManager.restorePlayerInventory(player);
+            }
+        });
     }
 }

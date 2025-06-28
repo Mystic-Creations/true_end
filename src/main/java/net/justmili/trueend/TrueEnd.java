@@ -1,5 +1,6 @@
 package net.justmili.trueend;
 
+import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,8 +14,10 @@ import com.google.gson.JsonSyntaxException;
 import net.justmili.trueend.entity.renderer.UnknownEntityRenderer;
 import net.justmili.trueend.entity.Unknown;
 import net.justmili.trueend.init.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

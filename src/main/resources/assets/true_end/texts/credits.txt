@@ -46,14 +46,14 @@ Mahanhamisi
 ----=====----
 
 §l// Translators //
-JustMili §f- English (US)
-*CW §f- English (UK)
-*GaelFM §f- Spanish (ES)
-Mary §f- Portuguese (BR)
-JustMili §f- Polish
-John Roboeye §f- Russian
-Eetgeenappels §f- Dutch
-Mahanhamisi §f- Persian (Farsi)
+JustMili - English (US)
+*CW - English (UK)
+*GaelFM - Spanish (ES)
+Mary - Portuguese (BR)
+JustMili - Polish
+John Roboeye - Russian
+Eetgeenappels - Dutch
+Mahanhamisi - Persian (Farsi)
 
 ----=====----
 
