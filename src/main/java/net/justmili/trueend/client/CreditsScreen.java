@@ -1,22 +1,22 @@
 package net.justmili.trueend.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class CreditsScreen extends Screen {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreditsScreen.class);
@@ -44,7 +44,7 @@ public class CreditsScreen extends Screen {
 
     private void loadCreditsText() {
         try (var stream = Minecraft.getInstance().getResourceManager().open(TEXT_FILE);
-                var br = new BufferedReader(new InputStreamReader(stream))) {
+             var br = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 assert Minecraft.getInstance().player != null;
@@ -57,8 +57,13 @@ public class CreditsScreen extends Screen {
     }
 
     @Override
+    protected void init() {
+        super.init();
+        LOGGER.info("CreditsScreen initialized. Font is ready: {}", this.font != null);
+    }
+
+    @Override
     public void renderBackground(@NotNull GuiGraphics gui) {
-        // Tile the dirt texture to fill the screen
         RenderSystem.setShaderTexture(0, BG_TEXTURE);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         int texSize = 48;
@@ -72,7 +77,6 @@ public class CreditsScreen extends Screen {
     @Override
     public void render(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(gui);
-
         gui.fill(0, 0, width, height, 0x88000000);
 
         float scrollSpeed = 20f;
@@ -83,13 +87,13 @@ public class CreditsScreen extends Screen {
         float titleX = (width - texW) / 2f;
         float titleY = height - scroll;
         gui.blit(TITLE_TEX, (int) titleX, (int) titleY, 0, 0, texW, texH, texW, texH);
-
-        Font font = this.font;
-        float startY = titleY + texH + 20;
-        for (int i = 0; i < lines.size(); i++) {
-            String s = lines.get(i);
-            int w = font.width(s);
-            gui.drawString(font, s, (width - w) / 2, (int) (startY + i * 12), 0xFFFFFF, true);
+        if (this.font != null) {
+            float startY = titleY + texH + 20;
+            for (int i = 0; i < lines.size(); i++) {
+                String s = lines.get(i);
+                int w = this.font.width(s);
+                gui.drawString(this.font, s, (width - w) / 2, (int) (startY + i * 12), 0xFFFFFF, true);
+            }
         }
 
         super.render(gui, mouseX, mouseY, partialTicks);
