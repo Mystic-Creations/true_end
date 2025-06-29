@@ -5,10 +5,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.justmili.trueend.TrueEnd;
 import org.jetbrains.annotations.NotNull;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -19,7 +18,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class CreditsScreen extends Screen {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreditsScreen.class);
     private static final ResourceLocation TITLE_TEX = ResourceLocation.parse("true_end:textures/gui/title.png");
     private static final ResourceLocation TEXT_FILE = ResourceLocation.parse("true_end:texts/credits.txt");
     private static final ResourceLocation BG_TEXTURE = ResourceLocation.parse("true_end:textures/block/old_dirt.png");
@@ -52,7 +50,7 @@ public class CreditsScreen extends Screen {
                         Minecraft.getInstance().player.getName().getString()));
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to read credits.txt", e);
+            TrueEnd.LOGGER.error("Failed to read credits.txt", e);
         }
     }
 

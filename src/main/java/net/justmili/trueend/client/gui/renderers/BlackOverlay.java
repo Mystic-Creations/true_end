@@ -1,37 +1,23 @@
-package net.justmili.trueend.client.gui;
+package net.justmili.trueend.client.gui.renderers;
 
-import net.minecraft.world.level.Level;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 
-import net.justmili.trueend.world.inventory.BlackScreenMenu;
-
-import java.util.HashMap;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
-public class BlackScreen extends AbstractContainerScreen<BlackScreenMenu> {
-    private final static HashMap<String, Object> guistate = BlackScreenMenu.guistate;
-    private final Level world;
-    private final int x, y, z;
-    private final Player entity;
+public class BlackOverlay extends AbstractContainerScreen<net.justmili.trueend.client.gui.inventory.BlackOverlay> {
 
-    public BlackScreen(BlackScreenMenu container, Inventory inventory, Component text) {
+    public BlackOverlay(net.justmili.trueend.client.gui.inventory.BlackOverlay container, Inventory inventory, Component text) {
         super(container, inventory, text);
-        this.world = container.world;
-        this.x = container.x;
-        this.y = container.y;
-        this.z = container.z;
-        this.entity = container.entity;
-        this.imageWidth = 433;
-        this.imageHeight = 246;
     }
 
-    private static final ResourceLocation texture = ResourceLocation.parse("true_end:textures/screens/black_screen.png");
+    @Override
+    public boolean isPauseScreen() {
+        return true;
+    }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
@@ -42,10 +28,31 @@ public class BlackScreen extends AbstractContainerScreen<BlackScreenMenu> {
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
-        RenderSystem.setShaderColor(1, 1, 1, 1);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        guiGraphics.blit(texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+        RenderSystem.setShaderTexture(0, ResourceLocation.parse("true_end:textures/screens/funny.png"));
+
+        final int texW = 1280;
+        final int texH = 720;
+        int winW = this.width;
+        int winH = this.height;
+        float scaleX = (float) winW / texW;
+        float scaleY = (float) winH / texH;
+
+        var pose = guiGraphics.pose();
+        pose.pushPose();
+        pose.scale(scaleX, scaleY, 1f);
+
+        guiGraphics.blit(
+                ResourceLocation.parse("true_end:textures/screens/black_screen.png"),
+                0, 0,
+                0, 0,
+                texW, texH,
+                texW, texH
+        );
+        pose.popPose();
+
         RenderSystem.disableBlend();
     }
 

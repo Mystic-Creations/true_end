@@ -75,9 +75,17 @@ public class TrueEnd {
     }
 
     @SubscribeEvent
-    public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(Entities.UNKNOWN.get(),
-                Unknown.createAttributes().build());
+    public void tick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            List<AbstractMap.SimpleEntry<Runnable, Integer>> actions = new ArrayList<>();
+            workQueue.forEach(work -> {
+                work.setValue(work.getValue() - 1);
+                if (work.getValue() == 0)
+                    actions.add(work);
+            });
+            actions.forEach(e -> e.getKey().run());
+            workQueue.removeAll(actions);
+        }
     }
 
     private static final String PROTOCOL_VERSION = "1";
@@ -92,6 +100,12 @@ public class TrueEnd {
     public static void queueServerWork(int tick, Runnable action) {
         if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
             workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
+    }
+
+    @SubscribeEvent
+    public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+        event.put(Entities.UNKNOWN.get(),
+                Unknown.createAttributes().build());
     }
 
     public static void jsonFormattingCheck(ServerPlayer player, String message) {
@@ -112,20 +126,6 @@ public class TrueEnd {
         for (int i = 0; i < messages.length; i++) {
             String msg = messages[i];
             queueServerWork(1 + cooldown * i, () -> jsonFormattingCheck(player, msg));
-        }
-    }
-
-    @SubscribeEvent
-    public void tick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            List<AbstractMap.SimpleEntry<Runnable, Integer>> actions = new ArrayList<>();
-            workQueue.forEach(work -> {
-                work.setValue(work.getValue() - 1);
-                if (work.getValue() == 0)
-                    actions.add(work);
-            });
-            actions.forEach(e -> e.getKey().run());
-            workQueue.removeAll(actions);
         }
     }
 

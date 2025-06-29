@@ -8,8 +8,6 @@ import net.minecraft.world.level.Level;
 import static net.justmili.trueend.procedures.events.PlayCredits.playSound;
 
 public class TestCredits {
-
-
     public static void execute(Level world, double x, double y, double z) {
         TrueEnd.queueServerWork(2, () -> {
             Minecraft mc = Minecraft.getInstance();
@@ -18,9 +16,7 @@ public class TestCredits {
             if (mc.level != null && mc.player != null) {
                 playSound(x, y, z);
                 TrueEnd.queueServerWork(2, () -> {
-                    if (mc.screen == null && mc.player != null) {
-                        mc.setScreen(new CreditsScreen());
-                    }
+                    mc.setScreen(new CreditsScreen());
                 });
             }
         });

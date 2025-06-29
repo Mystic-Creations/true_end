@@ -1,8 +1,9 @@
 
-package net.justmili.trueend.world.inventory;
+package net.justmili.trueend.client.gui.inventory;
 
-import net.minecraftforge.items.ItemStackHandler;
+import net.justmili.trueend.init.Guis;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
@@ -16,31 +17,26 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 
-import net.justmili.trueend.init.Guis;
-
 import java.util.function.Supplier;
 import java.util.Map;
 import java.util.HashMap;
 
-public class FunnyMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
-    public final static HashMap<String, Object> guistate = new HashMap<>();
+public class BlackOverlay extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
     public final Level world;
     public final Player entity;
     public int x, y, z;
     private ContainerLevelAccess access = ContainerLevelAccess.NULL;
-    private IItemHandler internal;
     private final Map<Integer, Slot> customSlots = new HashMap<>();
-    private boolean bound = false;
-    private Supplier<Boolean> boundItemMatcher = null;
-    private Entity boundEntity = null;
-    private BlockEntity boundBlockEntity = null;
+    private final Supplier<Boolean> boundItemMatcher = null;
+    private final Entity boundEntity = null;
+    private final BlockEntity boundBlockEntity = null;
 
-    public FunnyMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        super(Guis.FUNNY.get(), id);
+    public BlackOverlay(int id, Inventory inv, FriendlyByteBuf extraData) {
+        super(Guis.BLACK_SCREEN.get(), id);
         this.entity = inv.player;
         this.world = inv.player.level();
-        this.internal = new ItemStackHandler(0);
-        BlockPos pos = null;
+        new ItemStackHandler(0);
+        BlockPos pos;
         if (extraData != null) {
             pos = extraData.readBlockPos();
             this.x = pos.getX();
@@ -52,12 +48,12 @@ public class FunnyMenu extends AbstractContainerMenu implements Supplier<Map<Int
 
     @Override
     public boolean stillValid(Player player) {
-        if (this.bound) {
+        boolean bound = false;
+        if (bound) {
             if (this.boundItemMatcher != null)
                 return this.boundItemMatcher.get();
             else if (this.boundBlockEntity != null)
-                return AbstractContainerMenu.stillValid(this.access, player,
-                        this.boundBlockEntity.getBlockState().getBlock());
+                return AbstractContainerMenu.stillValid(this.access, player, this.boundBlockEntity.getBlockState().getBlock());
             else if (this.boundEntity != null)
                 return this.boundEntity.isAlive();
         }

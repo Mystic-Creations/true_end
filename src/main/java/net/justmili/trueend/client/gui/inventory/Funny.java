@@ -1,8 +1,8 @@
 
-package net.justmili.trueend.world.inventory;
+package net.justmili.trueend.client.gui.inventory;
 
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
@@ -22,24 +22,21 @@ import java.util.function.Supplier;
 import java.util.Map;
 import java.util.HashMap;
 
-public class BlackScreenMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
-    public final static HashMap<String, Object> guistate = new HashMap<>();
+public class Funny extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
     public final Level world;
     public final Player entity;
     public int x, y, z;
     private ContainerLevelAccess access = ContainerLevelAccess.NULL;
-    private IItemHandler internal;
     private final Map<Integer, Slot> customSlots = new HashMap<>();
-    private boolean bound = false;
-    private Supplier<Boolean> boundItemMatcher = null;
-    private Entity boundEntity = null;
-    private BlockEntity boundBlockEntity = null;
+    private final Supplier<Boolean> boundItemMatcher = null;
+    private final Entity boundEntity = null;
+    private final BlockEntity boundBlockEntity = null;
 
-    public BlackScreenMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        super(Guis.BLACK_SCREEN.get(), id);
+    public Funny(int id, Inventory inv, FriendlyByteBuf extraData) {
+        super(Guis.FUNNY.get(), id);
         this.entity = inv.player;
         this.world = inv.player.level();
-        this.internal = new ItemStackHandler(0);
+        IItemHandler internal = new ItemStackHandler(0);
         BlockPos pos = null;
         if (extraData != null) {
             pos = extraData.readBlockPos();
@@ -52,11 +49,13 @@ public class BlackScreenMenu extends AbstractContainerMenu implements Supplier<M
 
     @Override
     public boolean stillValid(Player player) {
-        if (this.bound) {
+        boolean bound = false;
+        if (bound) {
             if (this.boundItemMatcher != null)
                 return this.boundItemMatcher.get();
             else if (this.boundBlockEntity != null)
-                return AbstractContainerMenu.stillValid(this.access, player, this.boundBlockEntity.getBlockState().getBlock());
+                return AbstractContainerMenu.stillValid(this.access, player,
+                        this.boundBlockEntity.getBlockState().getBlock());
             else if (this.boundEntity != null)
                 return this.boundEntity.isAlive();
         }
