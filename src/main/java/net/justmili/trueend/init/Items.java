@@ -22,6 +22,7 @@ public class Items {
 	public static final RegistryObject<Item> COBBLESTONE = block(Blocks.COBBLESTONE);
 	public static final RegistryObject<Item> MOSSY_COBBLESTONE = block(Blocks.MOSSY_COBBLESTONE);
 	public static final RegistryObject<Item> STONE = block(Blocks.STONE);
+	public static final RegistryObject<Item> UNBREAKABLE_STONE = block(Blocks.UNBREAKABLE_STONE);
 	public static final RegistryObject<Item> COAL_ORE = block(Blocks.COAL_ORE);
 	public static final RegistryObject<Item> IRON_ORE = block(Blocks.IRON_ORE);
 	public static final RegistryObject<Item> GOLD_ORE = block(Blocks.GOLD_ORE);

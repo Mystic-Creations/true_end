@@ -2,7 +2,6 @@
 package net.justmili.trueend.client.gui.inventory;
 
 import net.justmili.trueend.init.Guis;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.minecraft.world.level.block.entity.BlockEntity;

@@ -1,28 +1,17 @@
-package net.justmili.trueend.procedures.events;
+package net.justmili.trueend.sources.invmgr;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.init.GameRules;
-import net.justmili.trueend.network.Variables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
-import java.util.Random;
 
-import static net.justmili.trueend.init.Dimensions.BTD;
-
-public class PlayerInvManager {
-    private static final double RETURN_CHANCE = 0.90;
-    private static final Random RAND = new Random();
-
+public class NWADPlayerInvManager {
     public static void savePlayerInventory(ServerPlayer player) {
         CompoundTag root = new CompoundTag();
 
@@ -64,18 +53,17 @@ public class PlayerInvManager {
 
         // 3. Write to disk
         File configDir = FMLPaths.CONFIGDIR.get().toFile();
-        File out = new File(configDir, player.getUUID() + "_TEholder.dat");
+        File out = new File(configDir, player.getUUID() + "_NWAD.dat");
         try {
             NbtIo.writeCompressed(root, out);
         } catch (Exception e) {
-            TrueEnd.LOGGER.error("Failed to save TEholder for player {}", player.getName().getString(), e);
+            TrueEnd.LOGGER.error("Failed to save NWAD for player {}", player.getName().getString(), e);
         }
     }
 
-    /** Call this when player leaves the dream dimension */
     public static void restorePlayerInventory(ServerPlayer player) {
         File configDir = FMLPaths.CONFIGDIR.get().toFile();
-        File in = new File(configDir, player.getUUID() + "_TEholder.dat");
+        File in = new File(configDir, player.getUUID() + "_NWAD.dat");
         if (!in.exists()) return;
 
         try {
@@ -86,9 +74,7 @@ public class PlayerInvManager {
                 CompoundTag entry = (CompoundTag) t;
                 int slot = entry.getInt("Slot");
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                if (RAND.nextDouble() < RETURN_CHANCE) {
-                    player.getInventory().items.set(slot, stack);
-                }
+                player.getInventory().items.set(slot, stack);
             }
 
             ListTag armorList = root.getList("Armor", Tag.TAG_COMPOUND);
@@ -96,9 +82,7 @@ public class PlayerInvManager {
                 CompoundTag entry = (CompoundTag) t;
                 int slot = entry.getInt("Slot");
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                if (RAND.nextDouble() < RETURN_CHANCE) {
-                    player.getInventory().armor.set(slot, stack);
-                }
+                player.getInventory().armor.set(slot, stack);
             }
 
             ListTag offList = root.getList("Offhand", Tag.TAG_COMPOUND);
@@ -106,26 +90,11 @@ public class PlayerInvManager {
                 CompoundTag entry = (CompoundTag) t;
                 int slot = entry.getInt("Slot");
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                if (RAND.nextDouble() < RETURN_CHANCE) {
-                    player.getInventory().offhand.set(slot, stack);
-                }
+                player.getInventory().offhand.set(slot, stack);
             }
             in.delete();
         } catch (Exception e) {
-            TrueEnd.LOGGER.error("Failed to restore TEholder for player {}", player.getName().getString(), e);
+            TrueEnd.LOGGER.error("Failed to restore NWAD for player {}", player.getName().getString(), e);
         }
-    }
-
-    @SubscribeEvent
-    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        if (event.getFrom() != BTD || event.getTo() != Level.OVERWORLD) return;
-        if (!player.level().getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) return;
-
-        player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
-            if (data.hasBeenBeyond()) {
-                PlayerInvManager.restorePlayerInventory(player);
-            }
-        });
     }
 }

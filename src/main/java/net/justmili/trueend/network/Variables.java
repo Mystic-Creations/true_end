@@ -78,13 +78,11 @@ public class Variables {
     public static class MapVariables extends SavedData {
         public static final String DATA_NAME = "true_end_mapvars";
 
-        private boolean defaultKeepInv = false;
         private double btdSpawnX = 0.0;
         private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
         private boolean unknownInWorld = false;
 
-        public boolean isDefaultKeepInv() { return defaultKeepInv; }
         public boolean isUnknownInWorld() { return unknownInWorld; }
         public IntegerListEntry getBtdConversationDelay() { return btdConversationDelay; }
         public DoubleListEntry getRandomEventChance() { return randomEventChance; }
@@ -93,20 +91,17 @@ public class Variables {
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
 
-        public void setDefaultKeepInv(boolean v) { defaultKeepInv = v; setDirty(); }
         public void setUnknownInWorld(boolean v) { unknownInWorld = v; setDirty(); }
         //public void setClearDreamItemsToggle(BooleanListEntry v) { clearDreamItems = v; setDirty(); }
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
-            m.defaultKeepInv = nbt.getBoolean("defaultKeepInv");
             return m;
         }
 
         @Override
         public CompoundTag save(CompoundTag nbt) {
-            nbt.putBoolean("defaultKeepInv",  defaultKeepInv);
             return nbt;
         }
 
@@ -143,7 +138,6 @@ public class Variables {
         public static void handle(MapVariablesSyncMessage msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 MapVariables client = MapVariables.get(Minecraft.getInstance().level);
-                client.defaultKeepInv = msg.data.getBoolean("defaultKeepInv");
             });
             ctx.get().setPacketHandled(true);
         }

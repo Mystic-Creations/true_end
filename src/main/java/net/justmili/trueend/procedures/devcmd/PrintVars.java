@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 public class PrintVars {
 
@@ -32,7 +33,6 @@ public class PrintVars {
         // Global Variables
         source.sendSystemMessage(Component.literal("\n----= Global"));
         Variables.MapVariables globalVars = Variables.MapVariables.get(world);
-        source.sendSystemMessage(Component.literal("defaultKeepInv: " + globalVars.isDefaultKeepInv()));
         source.sendSystemMessage(Component.literal(
             "btdSpawnX/Y/Z: " + btdSpawnX + "/" + btdSpawnY + "/" + btdSpawnZ
         ));
@@ -46,6 +46,7 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal("popupsToggle: " + Variables.popupsToggle.getValue()));
         source.sendSystemMessage(Component.literal("fogToggle: " + Variables.fogToggle.getValue()));
 
-
+        source.sendSystemMessage(Component.literal("\n----= Paths"));
+        source.sendSystemMessage(Component.literal("CONFIGDIR: " + FMLPaths.CONFIGDIR.get()));
     }
 }

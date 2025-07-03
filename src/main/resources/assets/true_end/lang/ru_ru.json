@@ -17,6 +17,7 @@
   "block.true_end.dirt": "Dirt",
   "block.true_end.farmland": "Farmland",
   "block.true_end.stone": "Stone",
+  "block.true_end.unbreakable_stone": "Stone",
   "block.true_end.coal_ore": "Coal Ore",
   "block.true_end.iron_ore": "Iron Ore",
   "block.true_end.gold_ore": "Gold Ore",

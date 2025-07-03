@@ -70,5 +70,6 @@ public class Blocks {
 	public static final RegistryObject<Block> FLOWER = REGISTRY.register("flower", Flower::new);
 	public static final RegistryObject<Block> ROSE = REGISTRY.register("rose", Rose::new);
 	public static final RegistryObject<Block> SAPLING = REGISTRY.register("sapling", Sapling::new);
+	public static final RegistryObject<Block> UNBREAKABLE_STONE = REGISTRY.register("unbreakable_stone", UnbreakableStone::new);
 
 }

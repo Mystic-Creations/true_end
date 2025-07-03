@@ -1,7 +1,6 @@
 
 package net.justmili.trueend.client.gui.inventory;
 
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,8 +35,8 @@ public class Funny extends AbstractContainerMenu implements Supplier<Map<Integer
         super(Guis.FUNNY.get(), id);
         this.entity = inv.player;
         this.world = inv.player.level();
-        IItemHandler internal = new ItemStackHandler(0);
-        BlockPos pos = null;
+        new ItemStackHandler(0);
+        BlockPos pos;
         if (extraData != null) {
             pos = extraData.readBlockPos();
             this.x = pos.getX();
