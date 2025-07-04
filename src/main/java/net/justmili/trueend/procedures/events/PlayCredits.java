@@ -28,6 +28,7 @@ public class PlayCredits {
 
     @SubscribeEvent
     public static void onDimensionChange(PlayerChangedDimensionEvent event) {
+        if (Variables.creditsToggle.getValue() == true) hasShownCreditsThisSession = false;
         if (hasShownCreditsThisSession) return;
 
         if (event.getFrom() == BTD &&
