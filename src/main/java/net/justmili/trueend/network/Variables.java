@@ -79,6 +79,9 @@ public class Variables {
         private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
         private boolean unknownInWorld = false;
+        private int btdConversationDelay = 0;
+        private double randomEventChance = 0.0;
+        private boolean randomEventsToggle = false;
 
         public boolean isUnknownInWorld() { return unknownInWorld; }
         public int getBtdConversationDelay() { return btdConversationDelay; }
@@ -88,17 +91,54 @@ public class Variables {
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
 
-        public void setUnknownInWorld(boolean v) { unknownInWorld = v; setDirty(); }
-        //public void setClearDreamItemsToggle(BooleanListEntry v) { clearDreamItems = v; setDirty(); }
-        public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
+        public void setUnknownInWorld(boolean v) {
+            unknownInWorld = v;
+            setDirty();
+        }
+
+        public void setBtdSpawn(double x, double y, double z) {
+            btdSpawnX = x;
+            btdSpawnY = y;
+            btdSpawnZ = z;
+            setDirty();
+        }
+
+        public void setBtdConversationDelay(int delay) {
+            btdConversationDelay = delay;
+            setDirty();
+        }
+
+        public void setRandomEventChance(double chance) {
+            randomEventChance = chance;
+            setDirty();
+        }
+
+        public void setRandomEventsToggle(boolean toggle) {
+            randomEventsToggle = toggle;
+            setDirty();
+        }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
+            m.btdSpawnX = nbt.getDouble("btdSpawnX");
+            m.btdSpawnY = nbt.getDouble("btdSpawnY");
+            m.btdSpawnZ = nbt.getDouble("btdSpawnZ");
+            m.unknownInWorld = nbt.getBoolean("unknownInWorld");
+            m.btdConversationDelay = nbt.getInt("btdConversationDelay");
+            m.randomEventChance = nbt.getDouble("randomEventChance");
+            m.randomEventsToggle = nbt.getBoolean("randomEventsToggle");
             return m;
         }
 
         @Override
         public CompoundTag save(CompoundTag nbt) {
+            nbt.putDouble("btdSpawnX", btdSpawnX);
+            nbt.putDouble("btdSpawnY", btdSpawnY);
+            nbt.putDouble("btdSpawnZ", btdSpawnZ);
+            nbt.putBoolean("unknownInWorld", unknownInWorld);
+            nbt.putInt("btdConversationDelay", btdConversationDelay);
+            nbt.putDouble("randomEventChance", randomEventChance);
+            nbt.putBoolean("randomEventsToggle", randomEventsToggle);
             return nbt;
         }
 
@@ -110,8 +150,8 @@ public class Variables {
         public void syncAll(LevelAccessor world) {
             if (world instanceof ServerLevel lvl) {
                 TrueEnd.PACKET_HANDLER.send(
-                    PacketDistributor.DIMENSION.with(() -> lvl.dimension()),
-                    new MapVariablesSyncMessage(this)
+                        PacketDistributor.DIMENSION.with(() -> lvl.dimension()),
+                        new MapVariablesSyncMessage(this)
                 );
             }
         }
