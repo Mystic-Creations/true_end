@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class DreamersCompass extends CompassItem {
     private static final TagKey<Structure> STRUCTURE_KEY =
-        TagKey.create(Registries.STRUCTURE, new ResourceLocation("true_end", "night_within_a_dream"));
+        TagKey.create(Registries.STRUCTURE, ResourceLocation.parse("true_end:the_dreaming_tree"));
     public DreamersCompass() {
         super(new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
