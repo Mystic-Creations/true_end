@@ -1,7 +1,7 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.Variables;
-import net.justmili.trueend.sources.invmgr.NWADPlayerInvManager;
+import net.justmili.trueend.sources.invmgr.PlayerInvManager;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;
@@ -53,7 +53,7 @@ public class DimSwapToNWAD {
 		boolean hasAdvancement = adv != null && player.getAdvancements().getOrStartProgress(adv).isDone();
 		if (hasAdvancement) return;
 
-		NWADPlayerInvManager.savePlayerInventory(player);
+		PlayerInvManager.saveInvNWAD(player);
 		if (!world.isClientSide()) {
 			player.getInventory().clearContent();
 			player.setGameMode(GameType.ADVENTURE);
@@ -80,7 +80,7 @@ public class DimSwapToNWAD {
 		ResourceKey<Level> dim = diedIn.remove(uuid);
 		if (dim == null || dim != NWAD) return;
 
-		NWADPlayerInvManager.restorePlayerInventory(player);
+		PlayerInvManager.restoreInv(player);
 		player.setGameMode(GameType.SURVIVAL);
 
 		Advancement advancement = player.server.getAdvancements()
