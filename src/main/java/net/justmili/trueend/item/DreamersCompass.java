@@ -15,8 +15,6 @@ import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class DreamersCompass extends CompassItem {
@@ -52,9 +50,5 @@ public class DreamersCompass extends CompassItem {
                 tag.putBoolean("feet", true);
             }
         super.inventoryTick(stack, level, entity, slot, selected);
-    }
-    @Override
-    public boolean isFoil(ItemStack stack) {
-        return true;
     }
 }

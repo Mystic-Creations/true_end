@@ -1,9 +1,5 @@
 package net.justmili.trueend.config;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.Component;
-
-import net.justmili.trueend.network.Variables;
 import net.justmili.trueend.config.serializer.GsonSerializer;
 
 import java.util.Map;
