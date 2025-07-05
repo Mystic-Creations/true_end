@@ -32,14 +32,12 @@ public class CreditsScreen extends Screen {
             Minecraft.getInstance().setScreen(null);
         });
     }
-
     public CreditsScreen(Runnable onClose) {
-        super(Component.translatable("screen.true_end.credits"));
+        super(Component.empty());
         this.onClose = onClose;
         loadCreditsText();
         this.scroll = 0f;
     }
-
     private void loadCreditsText() {
         try (var stream = Minecraft.getInstance().getResourceManager().open(TEXT_FILE);
              var br = new BufferedReader(new InputStreamReader(stream))) {
@@ -53,7 +51,6 @@ public class CreditsScreen extends Screen {
             TrueEnd.LOGGER.error("Failed to read credits.txt", e);
         }
     }
-
     @Override
     protected void init() {
         super.init();
@@ -74,7 +71,6 @@ public class CreditsScreen extends Screen {
             }
         }
     }
-
     @Override
     public void render(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(gui);
@@ -96,7 +92,6 @@ public class CreditsScreen extends Screen {
         if (titleY + texH > 0 && titleY < scaledHeight) {
             gui.blit(TITLE_TEX, (int) titleX, (int) titleY, 0, 0, texW, texH, texW, texH);
         }
-
         if (this.font != null) {
             float startY = titleY + texH + 20;
             for (int i = 0; i < lines.size(); i++) {
@@ -112,7 +107,6 @@ public class CreditsScreen extends Screen {
 
         super.render(gui, mouseX, mouseY, partialTicks);
     }
-
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW_KEY_ESCAPE) {

@@ -20,13 +20,13 @@ public class renameme {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ItemProperties.register(
-                Items.DREAMERS_COMPASS.get(),
-                new ResourceLocation(TrueEnd.MODID, "angle"),
+                Items.DREAMERS_COMPASS.get(), ResourceLocation.parse("true_end:angle"),
                 (stack, world, entity, seed) -> {
                     if (world == null || entity == null) {
                         return 0F;
                     }
                     return CompassItem.getLodestoneAngle(stack, world, entity);
+                    //try using .getLodestonePosition()
                 }
             );
         });
