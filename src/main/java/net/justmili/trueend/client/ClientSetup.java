@@ -15,12 +15,5 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            ItemProperties.register(
-                Items.DREAMERS_COMPASS.get(),
-                new ResourceLocation("angle"),
-                CompassItem.createLodestoneCompassAngleModelPredicate()
-            );
-        });
     }
 }

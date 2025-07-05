@@ -2,7 +2,14 @@ package net.justmili.trueend.command;
 
 import net.justmili.trueend.procedures.devcmd.*;
 import net.justmili.trueend.procedures.devcmd.screentests.*;
+import net.minecraft.commands.arguments.ResourceOrTagKeyArgument;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.commands.LocateCommand;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -127,8 +134,18 @@ public class TrueEndDev {
 					Direction direction = Direction.DOWN;
 					if (entity != null)
 						direction = entity.getDirection();
-
 					BTDTest.execute(world, entity);
+					return 0;}))
+				.then(Commands.literal("findDammTree").executes(arguments -> {
+					BlockPos targetPos = arguments.getSource().getLevel().findNearestMapStructure(
+							TagKey.create(Registries.STRUCTURE, ResourceLocation.parse("true_end:the_dreaming_tree")),
+							arguments.getSource().getEntity().blockPosition(),
+							100,
+							true
+					);
+					if (targetPos != null) {
+						arguments.getSource().getEntity().sendSystemMessage(Component.literal("%d %d %d".formatted(targetPos.getX(), targetPos.getY(), targetPos.getZ())));
+					}
 					return 0;
 				})).then(Commands.literal("testNWAD").then(Commands.literal("keepInvTrue").executes(arguments -> {
 							Level world = arguments.getSource().getUnsidedLevel();

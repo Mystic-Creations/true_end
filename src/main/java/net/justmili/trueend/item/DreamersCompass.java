@@ -1,8 +1,13 @@
 package net.justmili.trueend.item;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -11,11 +16,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class DreamersCompass extends CompassItem {
-    private static final TagKey<Structure> STRUCTURE_KEY =
-        TagKey.create(Registries.STRUCTURE, ResourceLocation.parse("true_end:the_dreaming_tree"));
+    private static final ResourceKey<Structure> STRUCTURE_KEY =
+        ResourceKey.create(Registries.STRUCTURE, ResourceLocation.parse("true_end:the_dreaming_tree"));
     public DreamersCompass() {
         super(new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
@@ -25,23 +31,26 @@ public class DreamersCompass extends CompassItem {
             return;
         }
 
+        Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
+        HolderSet<Structure> holderSet = registry.getHolder(STRUCTURE_KEY).map(HolderSet::direct).orElseThrow();
+
+
         CompoundTag tag = stack.getOrCreateTag();
 
-        if (!tag.contains("LodestonePos") || !tag.contains("LodestoneDimension") || !tag.getBoolean("LodestoneTracked")) {
             BlockPos origin = entity.blockPosition();
-            BlockPos targetPos = serverLevel.findNearestMapStructure(
-                STRUCTURE_KEY,
-                origin,
-                100,
-                true
-            );
+            Pair<BlockPos, Holder<Structure>> result = serverLevel.getChunkSource().getGenerator().findNearestMapStructure
+                    (serverLevel,holderSet, origin, 100, false);
 
-            if (targetPos != null) {
-                tag.putLong("LodestonePos", targetPos.asLong());
+        tag.putBoolean("feet", false);
+            if (result != null) {
+                BlockPos targetPos = result.getFirst();
+                tag.putLong("LodestonePosX", targetPos.getX());
+                tag.putLong("LodestonePosY", targetPos.getY());
+                tag.putLong("LodestonePosZ", targetPos.getZ());
                 tag.putString("LodestoneDimension", serverLevel.dimension().location().toString());
                 tag.putBoolean("LodestoneTracked", true);
+                tag.putBoolean("feet", true);
             }
-        }
         super.inventoryTick(stack, level, entity, slot, selected);
     }
     @Override
