@@ -1,6 +1,5 @@
 package net.justmili.trueend;
 
-import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,13 +10,11 @@ import java.util.function.Predicate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import net.justmili.trueend.entity.renderer.UnknownEntityRenderer;
+import net.justmili.trueend.client.renderer.UnknownEntityRenderer;
 import net.justmili.trueend.entity.Unknown;
 import net.justmili.trueend.init.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,24 +44,24 @@ import terrablender.api.Regions;
 public class TrueEnd {
     public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
     public static final String MODID = "true_end";
+    public static IEventBus EVENT_BUS;
 
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
-        IEventBus bus = modContext.getModEventBus();
+        EVENT_BUS = modContext.getModEventBus();
 
         Config.load();
 
-        Items.REGISTRY.register(bus);
-        Blocks.REGISTRY.register(bus);
-        Tabs.REGISTRY.register(bus);
-        Particles.REGISTRY.register(bus);
-        Entities.ENTITY_TYPES.register(bus);
-        Guis.REGISTRY.register(bus);
-        Sounds.REGISTRY.register(bus);
+        Items.REGISTRY.register(EVENT_BUS);
+        Blocks.REGISTRY.register(EVENT_BUS);
+        Tabs.REGISTRY.register(EVENT_BUS);
+        Particles.REGISTRY.register(EVENT_BUS);
+        Entities.ENTITY_TYPES.register(EVENT_BUS);
+        Guis.REGISTRY.register(EVENT_BUS);
+        Sounds.REGISTRY.register(EVENT_BUS);
 
-        bus.addListener(this::commonSetup);
-        bus.addListener(this::onEntityAttributeCreation);
-        bus.addListener(UnknownEntityRenderer::registerEntityRenderers);
+        EVENT_BUS.addListener(this::commonSetup);
+        EVENT_BUS.addListener(this::onEntityAttributeCreation);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

@@ -1,8 +1,5 @@
 package net.justmili.trueend.network;
 
-import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
-import me.shedaniel.clothconfig2.gui.entries.DoubleListEntry;
-import me.shedaniel.clothconfig2.gui.entries.IntegerListEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -37,14 +34,14 @@ public class Variables {
 
     public static final Capability<Variables.MapVariables> MAP_VARIABLES_CAP =
             CapabilityManager.get(new CapabilityToken<>() {});
-    public static BooleanListEntry clearDreamItems;
-    public static DoubleListEntry randomEventChance;
-    public static DoubleListEntry entitySpawnChance;
-    public static BooleanListEntry popupsToggle;
-    public static BooleanListEntry fogToggle;
-    public static BooleanListEntry creditsToggle;
-    public static IntegerListEntry btdConversationDelay;
-    public static BooleanListEntry randomEventsToggle;
+    public static boolean clearDreamItems;
+    public static double randomEventChance;
+    public static double entitySpawnChance;
+    public static boolean popupsToggle;
+    public static boolean fogToggle;
+    public static boolean creditsToggle;
+    public static int btdConversationDelay;
+    public static boolean randomEventsToggle;
 
     // Register messages and capabilities
     @SubscribeEvent
@@ -84,9 +81,9 @@ public class Variables {
         private boolean unknownInWorld = false;
 
         public boolean isUnknownInWorld() { return unknownInWorld; }
-        public IntegerListEntry getBtdConversationDelay() { return btdConversationDelay; }
-        public DoubleListEntry getRandomEventChance() { return randomEventChance; }
-        public BooleanListEntry getRandomEventToggle() { return randomEventsToggle; }
+        public int getBtdConversationDelay() { return btdConversationDelay; }
+        public double getRandomEventChance() { return randomEventChance; }
+        public boolean getRandomEventToggle() { return randomEventsToggle; }
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }

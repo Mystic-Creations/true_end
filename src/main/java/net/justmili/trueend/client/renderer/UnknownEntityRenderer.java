@@ -1,4 +1,4 @@
-package net.justmili.trueend.entity.renderer;
+package net.justmili.trueend.client.renderer;
 
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.entity.Unknown;

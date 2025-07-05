@@ -46,7 +46,7 @@ public class DimSwapToNWAD {
 		if (world == null || source == null || entity == null) return;
 		if (!(entity instanceof ServerPlayer player)) return;
 		if (!source.is(DamageTypes.IN_WALL)) return;
-		if (RAND.nextDouble() >= Variables.randomEventChance.getValue() * 2) return;
+		if (RAND.nextDouble() >= Variables.randomEventChance * 2) return;
 
 		Advancement adv = player.server.getAdvancements()
 				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));

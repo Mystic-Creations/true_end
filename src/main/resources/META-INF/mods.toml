@@ -28,9 +28,3 @@ mixinClasses = ["net.justmili.trueend.mixin.TrueEndMixin"]
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.true_end]]
-    modId="cloth_config"
-    mandatory=true
-    versionRange="[11.1.136,)"
-    ordering="NONE"
-    side="BOTH"

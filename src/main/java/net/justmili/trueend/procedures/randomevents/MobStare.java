@@ -37,8 +37,8 @@ public class MobStare {
             updateStare(server);
             return;
         }
-        if (Variables.randomEventsToggle.getValue() == true) {
-            if (stareMap.isEmpty() && RANDOM.nextDouble() < Variables.randomEventChance.getValue()) {
+        if (Variables.randomEventsToggle == true) {
+            if (stareMap.isEmpty() && RANDOM.nextDouble() < Variables.randomEventChance) {
                 lastEventTick = worldTick;
                 TrueEnd.LOGGER.info("[MobStare] Starting stare event");
 

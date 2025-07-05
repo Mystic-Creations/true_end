@@ -29,8 +29,8 @@ public class NotAlone {
     private static void execute(@Nullable Event event, Entity entity) {
         if (entity == null)
             return;
-        if (Variables.randomEventsToggle.getValue()) {
-            if (Math.random() < Variables.randomEventChance.getValue() / 2) {
+        if (Variables.randomEventsToggle) {
+            if (Math.random() < Variables.randomEventChance / 2) {
                 if ((entity.level().dimension()) == BTD) {
                     if (entity instanceof ServerPlayer _player) {
                         Advancement _adv = _player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));

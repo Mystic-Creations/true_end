@@ -27,7 +27,7 @@ public class BeyondTheDream {
 
                 @Override
                 public boolean isFoggyAt(int x, int y) {
-                    return Variables.fogToggle.getValue();
+                    return Variables.fogToggle;
                 }
             };
             event.register(ResourceLocation.parse("true_end:beyond_the_dream"), customEffect);
