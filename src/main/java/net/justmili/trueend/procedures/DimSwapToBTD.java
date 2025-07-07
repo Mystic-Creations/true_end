@@ -175,7 +175,6 @@ public class DimSwapToBTD {
                     PlayerInvManager.saveInvBTD(serverPlayer);
                     if (nextLevel.getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(GameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
             }

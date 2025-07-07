@@ -8,7 +8,10 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -205,7 +208,6 @@ public class PlayerInvManager {
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
             if (data.hasBeenBeyond()) {
-                TrueEnd.LOGGER.info("ATTEMPTING INVENTORY RESTORE");
                 player.getInventory().clearContent();
                 PlayerInvManager.restoreInvWithChance(player);
             }
