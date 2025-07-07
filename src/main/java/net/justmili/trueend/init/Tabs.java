@@ -46,6 +46,8 @@ public class Tabs {
 				tabData.accept(Blocks.OBSIDIAN.get().asItem());
 				tabData.accept(Items.MYSTERIOUS_CUBE.get());
 				tabData.accept(Items.DREAMERS_COMPASS.get());
+				tabData.accept(Items.MUSIC_DISC_FARLANDS.get());
+				tabData.accept(Items.MUSIC_DISC_NEVER_ALONE.get());
 			}).withSearchBar().build()
 	);
 }

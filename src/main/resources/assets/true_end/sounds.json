@@ -1,24 +1,33 @@
 {
-  "music.music_disc_farlands": {
-    "sounds": [
-      {
-        "name": "true_end:music/disc_farlands",
-        "stream": true
-      }
-    ]
-  },
-  "music.music_disc_never_alone": {
-    "sounds": [
-      {
-        "name": "true_end:music/disc_never_alone",
-        "stream": true
-      }
-    ]
-  },
   "easter_egg.vine_boom": {
+    "subtitle": "subtitles.easter_egg.vine_boom",
     "sounds": [
       {
-        "name": "true_end:easter_egg/vine_boom",
+        "name": "true_end:vine_boom",
+        "stream": false
+      }
+    ]
+  },
+  "music_disc.farlands": {
+    "sounds": [
+      {
+        "name": "true_end:music_disc_farlands",
+        "stream": false
+      }
+    ]
+  },
+  "music_disc.never_alone": {
+    "sounds": [
+      {
+        "name": "true_end:music_disc_never_alone",
+        "stream": false
+      }
+    ]
+  },
+  "music.modcredits": {
+    "sounds": [
+      {
+        "name": "true_end:back_in_the_game",
         "stream": false
       }
     ]

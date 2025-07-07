@@ -2,6 +2,8 @@ package net.justmili.trueend.init;
 
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.item.DreamersCompass;
+import net.justmili.trueend.item.MusicDiscFarlands;
+import net.justmili.trueend.item.MusicDiscNeverAlone;
 import net.justmili.trueend.item.MysteriousCube;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
@@ -51,8 +53,9 @@ public class Items {
 	public static final RegistryObject<Item> MYSTERIOUS_CUBE = REGISTRY.register("mysterious_cube", MysteriousCube::new);
 	public static final RegistryObject<Item> UNKNOWN_SPAWN_EGG = REGISTRY.register("unknown_spawn_egg", () ->new ForgeSpawnEggItem(Entities.UNKNOWN, -16777216, -1, new Item.Properties()));
 	public static final RegistryObject<Item> DREAMERS_COMPASS = REGISTRY.register("dreamers_compass", DreamersCompass::new);
-	public static final RegistryObject<Item> MUSIC_DISC_FARLANDS = registerDisc("music_disc_farlands", Sounds.MUSIC_DISC_FARLANDS, Rarity.RARE, 2400);
-	public static final RegistryObject<Item> MUSIC_DISC_NEVER_ALONE = registerDisc("music_disc_never_alone", Sounds.MUSIC_DISC_NEVER_ALONE, Rarity.UNCOMMON, 2600);
+	public static final RegistryObject<Item> MUSIC_DISC_FARLANDS = REGISTRY.register("music_disc_farlands", MusicDiscFarlands::new);
+	public static final RegistryObject<Item> MUSIC_DISC_NEVER_ALONE = REGISTRY.register("music_disc_never_alone", MusicDiscNeverAlone::new);
+
 
 	private static RegistryObject<Item> block(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
