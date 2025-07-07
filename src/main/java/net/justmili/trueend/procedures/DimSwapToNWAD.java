@@ -1,7 +1,6 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.Variables;
-import net.justmili.trueend.sources.invmgr.PlayerInvManager;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;

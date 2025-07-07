@@ -1,4 +1,4 @@
-package net.justmili.trueend.sources.invmgr;
+package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.init.GameRules;
@@ -8,13 +8,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
@@ -23,7 +19,6 @@ import java.util.Random;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
 
-@Mod.EventBusSubscriber(modid = TrueEnd.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PlayerInvManager {
     private static final double RETURN_CHANCE = 0.90;
     private static final Random RAND = new Random();

@@ -1,7 +1,6 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.Variables;
-import net.justmili.trueend.sources.invmgr.PlayerInvManager;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
