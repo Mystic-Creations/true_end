@@ -1,9 +1,24 @@
 {
-  "easter_egg.vine_boom": {
-    "subtitle": "subtitles.easter_egg.vine_boom",
+  "music.music_disc_farlands": {
     "sounds": [
       {
-        "name": "true_end:vine_boom",
+        "name": "true_end:music/disc_farlands",
+        "stream": true
+      }
+    ]
+  },
+  "music.music_disc_never_alone": {
+    "sounds": [
+      {
+        "name": "true_end:music/disc_never_alone",
+        "stream": true
+      }
+    ]
+  },
+  "easter_egg.vine_boom": {
+    "sounds": [
+      {
+        "name": "true_end:easter_egg/vine_boom",
         "stream": false
       }
     ]
