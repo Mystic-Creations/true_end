@@ -1,6 +1,7 @@
 
 package net.justmili.trueend.item;
 
+import net.justmili.trueend.init.Sounds;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.minecraft.world.level.Level;
@@ -9,14 +10,13 @@ import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
 public class MusicDiscFarlands extends RecordItem {
     public MusicDiscFarlands() {
-        super(8, () -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("true_end:music_disc.farlands")), new Item.Properties().stacksTo(1).rarity(Rarity.COMMON), 5180);
+        super(8, () -> ForgeRegistries.SOUND_EVENTS.getValue(Sounds.MUSIC_FARLANDS.getId()), new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 2540);
     }
 
     @Override

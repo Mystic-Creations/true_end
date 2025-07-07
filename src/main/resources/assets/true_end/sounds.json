@@ -9,25 +9,28 @@
     ]
   },
   "music_disc.farlands": {
+    "subtitle": "",
     "sounds": [
       {
-        "name": "true_end:music_disc_farlands",
-        "stream": false
+        "name": "true_end:music/farlands",
+        "stream": true
       }
     ]
   },
   "music_disc.never_alone": {
+    "subtitle": "",
     "sounds": [
       {
-        "name": "true_end:music_disc_never_alone",
-        "stream": false
+        "name": "true_end:music/never_alone",
+        "stream": true
       }
     ]
   },
   "music.modcredits": {
+    "subtitle": "",
     "sounds": [
       {
-        "name": "true_end:back_in_the_game",
+        "name": "true_end:music/back_in_the_game",
         "stream": false
       }
     ]

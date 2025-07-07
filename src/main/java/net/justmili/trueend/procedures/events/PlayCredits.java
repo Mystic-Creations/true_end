@@ -3,6 +3,7 @@ package net.justmili.trueend.procedures.events;
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.client.CreditsScreen;
 import net.justmili.trueend.config.Config;
+import net.justmili.trueend.init.Sounds;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -57,7 +58,7 @@ public class PlayCredits {
         mc.getSoundManager().stop();
 
         if (mc.level != null && mc.player != null) {
-            mc.level.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("music_disc.pigstep"))), SoundSource.MASTER, 1, 1, false);
+            mc.level.playLocalSound(x, y, z, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(Sounds.MOD_CREDITS_MUSIC.getId())), SoundSource.MASTER, 1, 1, false);
         }
     }
 

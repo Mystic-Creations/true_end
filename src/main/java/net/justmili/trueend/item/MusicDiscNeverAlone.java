@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MusicDiscNeverAlone extends RecordItem {
     public MusicDiscNeverAlone() {
-        super(8, () -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("true_end:music_disc.never_alone")), new Properties().stacksTo(1).rarity(Rarity.COMMON), 5180);
+        super(8, () -> ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("true_end:music_disc.never_alone")), new Properties().stacksTo(1).rarity(Rarity.RARE), 5180);
     }
 
     @Override

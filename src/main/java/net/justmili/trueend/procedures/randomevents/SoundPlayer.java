@@ -41,7 +41,7 @@ public class SoundPlayer {
         int soundY = 1 + (int)(Math.random() * ((8 - 1) + 1));
         int soundZ = BlockPosRandomZ/4;
         double randEvtChance = Variables.randomEventChance;
-        if (Variables.randomEventsToggle == true) {
+        if (Variables.randomEventsToggle) {
             if (entity == null) return;
             entity.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
                 if (data.hasBeenBeyond()) {
