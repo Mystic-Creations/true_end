@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 public class DreamersCompass extends CompassItem {
     private static final ResourceKey<Structure> STRUCTURE_KEY =
         ResourceKey.create(Registries.STRUCTURE, ResourceLocation.parse("true_end:the_dreaming_tree"));
+
     public DreamersCompass() {
         super(new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
@@ -31,13 +32,10 @@ public class DreamersCompass extends CompassItem {
 
         Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
         HolderSet<Structure> holderSet = registry.getHolder(STRUCTURE_KEY).map(HolderSet::direct).orElseThrow();
-
-
         CompoundTag tag = stack.getOrCreateTag();
+        BlockPos origin = entity.blockPosition();
 
-            BlockPos origin = entity.blockPosition();
-            Pair<BlockPos, Holder<Structure>> result = serverLevel.getChunkSource().getGenerator().findNearestMapStructure
-                    (serverLevel,holderSet, origin, 100, false);
+        Pair<BlockPos, Holder<Structure>> result = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderSet, origin, 100, false);
 
         tag.putBoolean("feet", false);
             if (result != null) {

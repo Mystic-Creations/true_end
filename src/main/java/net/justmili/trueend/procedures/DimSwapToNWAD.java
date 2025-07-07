@@ -55,7 +55,9 @@ public class DimSwapToNWAD {
 
 		PlayerInvManager.saveInvNWAD(player);
 		if (!world.isClientSide()) {
-			player.getInventory().clearContent();
+			//player.getInventory().clearContent();
+			//I turned off item clearing so player will have a bit
+			// more of a scare about losing their items even tho they're gonna get them back
 			player.setGameMode(GameType.ADVENTURE);
 			teleportToNWAD(player);
 		}

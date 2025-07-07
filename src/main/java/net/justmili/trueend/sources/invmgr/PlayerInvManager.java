@@ -9,25 +9,33 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.Random;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
 
+@Mod.EventBusSubscriber(modid = TrueEnd.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PlayerInvManager {
     private static final double RETURN_CHANCE = 0.90;
     private static final Random RAND = new Random();
+    private static final File configDir = FMLPaths.CONFIGDIR.get().resolve("true_end").toFile();
 
-    // BTD player inc managment
+    private static String makeBackupFilename(ServerPlayer player, String suffix) {
+        String rawName = Objects.requireNonNull(player.getServer()).getWorldData().getLevelName();
+        String clean = rawName.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        String uuid  = player.getUUID().toString().replace("-", "");
+        return uuid + "_" + clean + "_" + suffix + ".dat";
+    }
 
+    // BTD player inv management
     public static void saveInvBTD(ServerPlayer player) {
         CompoundTag root = new CompoundTag();
-
         ListTag mainList = new ListTag();
         for (int i = 0; i < player.getInventory().items.size(); i++) {
             ItemStack stack = player.getInventory().items.get(i);
@@ -39,7 +47,6 @@ public class PlayerInvManager {
             }
         }
         root.put("Inventory", mainList);
-
         ListTag armorList = new ListTag();
         for (int i = 0; i < player.getInventory().armor.size(); i++) {
             ItemStack stack = player.getInventory().armor.get(i);
@@ -51,7 +58,6 @@ public class PlayerInvManager {
             }
         }
         root.put("Armor", armorList);
-
         ListTag offList = new ListTag();
         for (int i = 0; i < player.getInventory().offhand.size(); i++) {
             ItemStack stack = player.getInventory().offhand.get(i);
@@ -64,9 +70,8 @@ public class PlayerInvManager {
         }
         root.put("Offhand", offList);
 
-        // 3. Write to disk
-        File configDir = FMLPaths.CONFIGDIR.get().toFile();
-        File out = new File(configDir, player.getUUID() + "_BTD.dat");
+        if (!configDir.exists()) configDir.mkdirs();
+        File out = new File(configDir, makeBackupFilename(player, "BTD"));
         try {
             NbtIo.writeCompressed(root, out);
         } catch (Exception e) {
@@ -75,13 +80,11 @@ public class PlayerInvManager {
     }
 
     public static void restoreInvWithChance(ServerPlayer player) {
-        File configDir = FMLPaths.CONFIGDIR.get().toFile();
-        File in = new File(configDir, player.getUUID() + "_BTD.dat");
+        File in = new File(configDir, makeBackupFilename(player, "BTD"));
         if (!in.exists()) return;
 
         try {
             CompoundTag root = NbtIo.readCompressed(in);
-
             ListTag mainList = root.getList("Inventory", Tag.TAG_COMPOUND);
             for (Tag t : mainList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -91,7 +94,6 @@ public class PlayerInvManager {
                     player.getInventory().items.set(slot, stack);
                 }
             }
-
             ListTag armorList = root.getList("Armor", Tag.TAG_COMPOUND);
             for (Tag t : armorList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -101,7 +103,6 @@ public class PlayerInvManager {
                     player.getInventory().armor.set(slot, stack);
                 }
             }
-
             ListTag offList = root.getList("Offhand", Tag.TAG_COMPOUND);
             for (Tag t : offList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -117,11 +118,9 @@ public class PlayerInvManager {
         }
     }
 
-    // NWAD player inc managment
-
+    // NWAD player inv management
     public static void saveInvNWAD(ServerPlayer player) {
         CompoundTag root = new CompoundTag();
-
         ListTag mainList = new ListTag();
         for (int i = 0; i < player.getInventory().items.size(); i++) {
             ItemStack stack = player.getInventory().items.get(i);
@@ -133,7 +132,6 @@ public class PlayerInvManager {
             }
         }
         root.put("Inventory", mainList);
-
         ListTag armorList = new ListTag();
         for (int i = 0; i < player.getInventory().armor.size(); i++) {
             ItemStack stack = player.getInventory().armor.get(i);
@@ -145,7 +143,6 @@ public class PlayerInvManager {
             }
         }
         root.put("Armor", armorList);
-
         ListTag offList = new ListTag();
         for (int i = 0; i < player.getInventory().offhand.size(); i++) {
             ItemStack stack = player.getInventory().offhand.get(i);
@@ -158,9 +155,8 @@ public class PlayerInvManager {
         }
         root.put("Offhand", offList);
 
-        // 3. Write to disk
-        File configDir = FMLPaths.CONFIGDIR.get().toFile();
-        File out = new File(configDir, player.getUUID() + "_NWAD.dat");
+
+        File out = new File(configDir, makeBackupFilename(player, "NWAD"));
         try {
             NbtIo.writeCompressed(root, out);
         } catch (Exception e) {
@@ -169,13 +165,11 @@ public class PlayerInvManager {
     }
 
     public static void restoreInv(ServerPlayer player) {
-        File configDir = FMLPaths.CONFIGDIR.get().toFile();
-        File in = new File(configDir, player.getUUID() + "_NWAD.dat");
+        File in = new File(configDir, makeBackupFilename(player, "NWAD"));
         if (!in.exists()) return;
 
         try {
             CompoundTag root = NbtIo.readCompressed(in);
-
             ListTag mainList = root.getList("Inventory", Tag.TAG_COMPOUND);
             for (Tag t : mainList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -183,7 +177,6 @@ public class PlayerInvManager {
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
                 player.getInventory().items.set(slot, stack);
             }
-
             ListTag armorList = root.getList("Armor", Tag.TAG_COMPOUND);
             for (Tag t : armorList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -191,7 +184,6 @@ public class PlayerInvManager {
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
                 player.getInventory().armor.set(slot, stack);
             }
-
             ListTag offList = root.getList("Offhand", Tag.TAG_COMPOUND);
             for (Tag t : offList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -208,11 +200,13 @@ public class PlayerInvManager {
     @SubscribeEvent
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        if (event.getFrom() != BTD || event.getTo() != Level.OVERWORLD) return;
+        if (event.getFrom() != BTD) return;
         if (!player.level().getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) return;
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
             if (data.hasBeenBeyond()) {
+                TrueEnd.LOGGER.info("ATTEMPTING INVENTORY RESTORE");
+                player.getInventory().clearContent();
                 PlayerInvManager.restoreInvWithChance(player);
             }
         });
