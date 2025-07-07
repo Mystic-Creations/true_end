@@ -1,18 +1,19 @@
 package net.justmili.trueend.init;
 
-import net.justmili.trueend.item.DreamersCompass;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.RegistryObject;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.DeferredRegister;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.BlockItem;
-
-import net.justmili.trueend.item.MysteriousCube;
 import net.justmili.trueend.TrueEnd;
+import net.justmili.trueend.item.DreamersCompass;
+import net.justmili.trueend.item.MysteriousCube;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class Items {
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, TrueEnd.MODID);
@@ -44,17 +45,23 @@ public class Items {
 	public static final RegistryObject<Item> GRAVEL = block(Blocks.GRAVEL);
 	public static final RegistryObject<Item> GLASS = block(Blocks.GLASS);
 	public static final RegistryObject<Item> SAND = block(Blocks.SAND);
-	public static final RegistryObject<Item> MYSTERIOUS_CUBE = REGISTRY.register("mysterious_cube", MysteriousCube::new);
-	public static final RegistryObject<Item> UNKNOWN_SPAWN_EGG = REGISTRY.register("unknown_spawn_egg", () -> new ForgeSpawnEggItem(Entities.UNKNOWN, -16777216, -1, new Item.Properties()));
 	public static final RegistryObject<Item> FLOWER = block(Blocks.FLOWER);
 	public static final RegistryObject<Item> ROSE = block(Blocks.ROSE);
 	public static final RegistryObject<Item> SAPLING = block(Blocks.SAPLING);
+	public static final RegistryObject<Item> MYSTERIOUS_CUBE = REGISTRY.register("mysterious_cube", MysteriousCube::new);
+	public static final RegistryObject<Item> UNKNOWN_SPAWN_EGG = REGISTRY.register("unknown_spawn_egg", () ->new ForgeSpawnEggItem(Entities.UNKNOWN, -16777216, -1, new Item.Properties()));
 	public static final RegistryObject<Item> DREAMERS_COMPASS = REGISTRY.register("dreamers_compass", DreamersCompass::new);
+	public static final RegistryObject<Item> MUSIC_DISC_FARLANDS = registerDisc("music_disc_farlands", Sounds.MUSIC_DISC_FARLANDS, Rarity.RARE, 2400);
+	public static final RegistryObject<Item> MUSIC_DISC_NEVER_ALONE = registerDisc("music_disc_never_alone", Sounds.MUSIC_DISC_NEVER_ALONE, Rarity.UNCOMMON, 2600);
 
 	private static RegistryObject<Item> block(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
 	}
 	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
+	}
+	private static RegistryObject<Item> registerDisc(String name, RegistryObject<SoundEvent> sound, Rarity rarity, int length) {
+		return REGISTRY.register(name, () ->
+			new RecordItem(15, sound.get(), new Item.Properties().stacksTo(1).rarity(rarity), length));
 	}
 }
