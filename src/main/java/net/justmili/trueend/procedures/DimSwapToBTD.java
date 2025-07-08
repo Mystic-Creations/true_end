@@ -469,7 +469,7 @@ public class DimSwapToBTD {
 
         //Play text
         TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendMessegeWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay);
+            TrueEnd.sendMessegeWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay.getValue());
         });
     }
 }

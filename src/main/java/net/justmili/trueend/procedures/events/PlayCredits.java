@@ -29,12 +29,12 @@ public class PlayCredits {
 
     @SubscribeEvent
     public static void onDimensionChange(PlayerChangedDimensionEvent event) {
-        if (Variables.creditsToggle == true) hasShownCreditsThisSession = false;
+        if (Variables.creditsToggle.getValue() == true) hasShownCreditsThisSession = false;
         if (hasShownCreditsThisSession) return;
 
         if (event.getFrom() == BTD &&
             event.getTo() == Level.OVERWORLD &&
-            Variables.creditsToggle) {
+            Variables.creditsToggle.getValue()) {
 
             hasShownCreditsThisSession = true;
 

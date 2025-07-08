@@ -9,7 +9,7 @@ displayName="True End"
 displayURL="https://modrinth.com/mod/true_end"
 logoFile="icon.png"
 authors="Mystic Creations Team"
-description="Defeated the dragon, but woke up in a familiar yet unknown place, shortly you realize it was all just a dream."
+description="Defeated the dragon, but woke up in a familiar yet unknown place, BUT it was all just a dream."
 
 [[mixin]]
 mixinClasses = ["net.justmili.trueend.mixin.TrueEndMixin"]
@@ -25,6 +25,13 @@ mixinClasses = ["net.justmili.trueend.mixin.TrueEndMixin"]
     modId="terrablender"
     mandatory=true
     versionRange="[3.0.1.10,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.true_end]]
+    modId="cloth_config"
+    mandatory=true
+    versionRange="[11.1.136,)"
     ordering="NONE"
     side="BOTH"
 

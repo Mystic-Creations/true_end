@@ -10,7 +10,6 @@ import java.util.function.Predicate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import net.justmili.trueend.client.renderer.UnknownEntityRenderer;
 import net.justmili.trueend.entity.Unknown;
 import net.justmili.trueend.init.*;
 import net.minecraft.network.chat.Component;
@@ -20,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.mojang.datafixers.util.Pair;
 
-import net.justmili.trueend.config.Config;
 import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -49,8 +47,6 @@ public class TrueEnd {
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
         EVENT_BUS = modContext.getModEventBus();
-
-        Config.load();
 
         Items.REGISTRY.register(EVENT_BUS);
         Blocks.REGISTRY.register(EVENT_BUS);
