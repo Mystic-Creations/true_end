@@ -2,16 +2,10 @@ package net.justmili.trueend.config;
 
 import net.justmili.trueend.network.Variables;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import org.apache.logging.log4j.MarkerManager;
 import org.apache.logging.log4j.Level;
-
-import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 
 import net.justmili.trueend.TrueEnd;
 
@@ -20,7 +14,6 @@ import java.util.HashMap;
 
 @Mod.EventBusSubscriber(modid = "true_end", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConfigInit {
-
 	@SubscribeEvent
 	public static void clientSetup(FMLCommonSetupEvent event) {
 		Map<String, Object> entries = Config.serializer.deserialize();
@@ -35,7 +28,7 @@ public class ConfigInit {
 		entries.putIfAbsent("btdConversationDelay", 40d);
 		entries.putIfAbsent("randomEventsToggle", true);
 
-		Variables.clearDreamItems = (boolean) entries.get("clearDreamItems");
+		//Variables.clearDreamItems = (boolean) entries.get("clearDreamItems");
 		Variables.randomEventChance = (double) entries.get("randomEventChance");
 		Variables.entitySpawnChance = (double) entries.get("entitySpawnChance");
 		Variables.popupsToggle = (boolean) entries.get("popupsToggle");

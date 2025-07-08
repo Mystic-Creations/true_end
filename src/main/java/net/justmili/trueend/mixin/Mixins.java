@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.server.MinecraftServer;
 
 @Mixin(MinecraftServer.class)
-public abstract class TrueEndMixin {
+public abstract class Mixins {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onServerInit(CallbackInfo ci) {

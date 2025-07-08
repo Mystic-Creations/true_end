@@ -12,7 +12,7 @@ authors="Mystic Creations Team"
 description="Defeated the dragon, but woke up in a familiar yet unknown place, shortly you realize it was all just a dream."
 
 [[mixin]]
-mixinClasses = ["net.justmili.trueend.mixin.TrueEndMixin"]
+mixinClasses = ["net.justmili.trueend.mixin.Mixins"]
 
 [[dependencies.true_end]]
     modId="minecraft"

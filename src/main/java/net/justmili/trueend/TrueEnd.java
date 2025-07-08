@@ -50,8 +50,6 @@ public class TrueEnd {
         MinecraftForge.EVENT_BUS.register(this);
         EVENT_BUS = modContext.getModEventBus();
 
-        Config.load();
-
         Items.REGISTRY.register(EVENT_BUS);
         Blocks.REGISTRY.register(EVENT_BUS);
         Tabs.REGISTRY.register(EVENT_BUS);

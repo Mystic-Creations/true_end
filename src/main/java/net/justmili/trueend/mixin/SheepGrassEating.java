@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.function.Predicate;
 
 @Mixin(EatBlockGoal.class)
-public class SheepEatTrueEndGrassMixin {
+public class SheepGrassEating {
 
     @Shadow @Final private Mob mob;
 

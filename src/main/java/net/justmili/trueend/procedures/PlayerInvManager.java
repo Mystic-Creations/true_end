@@ -7,7 +7,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.LevelResource;
@@ -24,7 +23,7 @@ import static net.justmili.trueend.init.Dimensions.BTD;
 public class PlayerInvManager {
     private static final double RETURN_CHANCE = 0.90;
     private static final Random RAND = new Random();
-    private static final File configDir = FMLPaths.CONFIGDIR.get().resolve("true_end").toFile();
+    private static final File saveDir = FMLPaths.CONFIGDIR.get().resolve("true_end").toFile();
 
     private static String makeBackupFilename(ServerPlayer player, String suffix) {
         Path worldFolder = player.getServer().getWorldPath(LevelResource.LEVEL_DATA_FILE).getParent();
@@ -71,8 +70,8 @@ public class PlayerInvManager {
         }
         root.put("Offhand", offList);
 
-        if (!configDir.exists()) configDir.mkdirs();
-        File out = new File(configDir, makeBackupFilename(player, "BTD"));
+        if (!saveDir.exists()) saveDir.mkdirs();
+        File out = new File(saveDir, makeBackupFilename(player, "BTD"));
         try {
             NbtIo.writeCompressed(root, out);
         } catch (Exception e) {
@@ -81,7 +80,7 @@ public class PlayerInvManager {
     }
 
     public static void restoreInvWithChance(ServerPlayer player) {
-        File in = new File(configDir, makeBackupFilename(player, "BTD"));
+        File in = new File(saveDir, makeBackupFilename(player, "BTD"));
         if (!in.exists()) return;
 
         try {
@@ -133,6 +132,7 @@ public class PlayerInvManager {
             }
         }
         root.put("Inventory", mainList);
+
         ListTag armorList = new ListTag();
         for (int i = 0; i < player.getInventory().armor.size(); i++) {
             ItemStack stack = player.getInventory().armor.get(i);
@@ -144,6 +144,7 @@ public class PlayerInvManager {
             }
         }
         root.put("Armor", armorList);
+
         ListTag offList = new ListTag();
         for (int i = 0; i < player.getInventory().offhand.size(); i++) {
             ItemStack stack = player.getInventory().offhand.get(i);
@@ -156,8 +157,7 @@ public class PlayerInvManager {
         }
         root.put("Offhand", offList);
 
-
-        File out = new File(configDir, makeBackupFilename(player, "NWAD"));
+        File out = new File(saveDir, makeBackupFilename(player, "NWAD"));
         try {
             NbtIo.writeCompressed(root, out);
         } catch (Exception e) {
@@ -166,7 +166,7 @@ public class PlayerInvManager {
     }
 
     public static void restoreInv(ServerPlayer player) {
-        File in = new File(configDir, makeBackupFilename(player, "NWAD"));
+        File in = new File(saveDir, makeBackupFilename(player, "NWAD"));
         if (!in.exists()) return;
 
         try {
@@ -192,6 +192,7 @@ public class PlayerInvManager {
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
                 player.getInventory().offhand.set(slot, stack);
             }
+
             in.delete();
         } catch (Exception e) {
             TrueEnd.LOGGER.error("Failed to restore NWAD for player {}", player.getName().getString(), e);

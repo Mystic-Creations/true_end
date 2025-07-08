@@ -17,5 +17,4 @@ public class ClientSetup {
     public static void onClientSetup(FMLClientSetupEvent event) {
         TrueEnd.EVENT_BUS.addListener(UnknownEntityRenderer::registerEntityRenderers);
     }
-
 }
