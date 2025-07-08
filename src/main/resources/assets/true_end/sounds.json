@@ -1,6 +1,6 @@
 {
-  "easter_egg.vine_boom": {
-    "subtitle": "subtitles.easter_egg.vine_boom",
+  "vine_boom": {
+    "subtitle": "subtitles.vine_boom",
     "sounds": [
       {
         "name": "true_end:vine_boom",
@@ -8,30 +8,30 @@
       }
     ]
   },
-  "music_disc.farlands": {
-    "subtitle": "",
+  "back_in_the_game": {
+    "subtitle": "subtitles.back_in_the_game",
     "sounds": [
       {
-        "name": "true_end:music/farlands",
-        "stream": true
-      }
-    ]
-  },
-  "music_disc.never_alone": {
-    "subtitle": "",
-    "sounds": [
-      {
-        "name": "true_end:music/never_alone",
-        "stream": true
-      }
-    ]
-  },
-  "music.modcredits": {
-    "subtitle": "",
-    "sounds": [
-      {
-        "name": "true_end:music/back_in_the_game",
+        "name": "true_end:back_in_the_game",
         "stream": false
+      }
+    ]
+  },
+  "farlands": {
+    "subtitle": "subtitles.farlands",
+    "sounds": [
+      {
+        "name": "true_end:farlands",
+        "stream": true
+      }
+    ]
+  },
+  "never_alone": {
+    "subtitle": "subtitles.never_alone",
+    "sounds": [
+      {
+        "name": "true_end:never_alone",
+        "stream": true
       }
     ]
   }
