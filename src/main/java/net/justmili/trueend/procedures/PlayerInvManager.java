@@ -7,14 +7,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
-import java.util.Objects;
+import java.nio.file.Path;
 import java.util.Random;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
@@ -25,10 +27,11 @@ public class PlayerInvManager {
     private static final File configDir = FMLPaths.CONFIGDIR.get().resolve("true_end").toFile();
 
     private static String makeBackupFilename(ServerPlayer player, String suffix) {
-        String rawName = Objects.requireNonNull(player.getServer()).getWorldData().getLevelName();
-        String clean = rawName.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        Path worldFolder = player.getServer().getWorldPath(LevelResource.LEVEL_DATA_FILE).getParent();
+        String folderName = worldFolder.getFileName().toString();
+        String cleanName = folderName.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
         String uuid  = player.getUUID().toString().replace("-", "");
-        return uuid + "_" + clean + "_" + suffix + ".dat";
+        return uuid + "_" + cleanName + "_" + suffix + ".dat";
     }
 
     // BTD player inv management
