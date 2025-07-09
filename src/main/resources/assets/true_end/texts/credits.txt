@@ -4,6 +4,7 @@
 Big thanks to everyone who has worked on and supported this project.
 It would not be possible without you all <3
 
+
 ------=========------
 
 §l// Programming //
@@ -64,19 +65,46 @@ ShinHoa / twitch.tv/shinhoaz
 ----=====----
 
 §l// Contributors //
-Notmas - Ideas to make Beyond The Dream more alpha-like
+Notmas - Gave ideas and the motivation
+to Mili to continue this project
 
 ----=====----
 
 §l// Patreons //
-🦗🦗🦗
+*insert cricket sounds*
+
+
+------=========------
+
+§l// Thanks to you all //
+
+From a buggy mess of a concept to a project that takes a whole team.
+This is the biggest project I ever started, belive it or not.
+There's been ups and downs and some panic here and there but we've made it.
+
+I'd like to thank you all for the support this mod has gotten.
+To everyone who played and worked on this project - Thank you.
+From the deepest parts of my heart, thank you.
+
+This isn't the end yet, there's more coming.
+Revamps, more blocks, more lore.
+
+- JustMili
 
 
 
 
 
-That's all folks!
-See ya' later, with more in next updates ;)
+
+
+See you all next time <3
+
+
+
+
+
+
+
 
 
 
@@ -98,3 +126,4 @@ See ya' later, with more in next updates ;)
 
 
 btw use "/trueend testScreen funny"
+also, enjoy the music :3

@@ -29,7 +29,7 @@ public class NightmareWithinADream {
 					return true;
 				}
 			};
-			event.register(ResourceLocation.parse("true_end:nightmare_within_a_dream"), customEffect);
+			event.register(ResourceLocation.parse("true_end:nwad"), customEffect);
 		}
 	}
 }
