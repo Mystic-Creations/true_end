@@ -35,6 +35,10 @@
   "block.true_end.sapling": "Саженец",
   "item.true_end.mysterious_cube": "Загадочный куб",
   "item.true_end.dreamers_compass": "Компас мечтателя",
+  "item.true_end.music_disc_farlands": "Музыкальная пластинка",
+  "item.true_end.music_disc_farlands.desc": "Drekil - Farlands",
+  "item.true_end.music_disc_never_alone": "Музыкальная пластинка",
+  "item.true_end.music_disc_never_alone.desc": "Drekil - Never Alone",
   "item.true_end.unknown_spawn_egg": "Яйцо призыва Неизвестного",
   "entity.true_end.unknown": "§kUnknown",
   "biome.true_end.plains": "Равнины",
@@ -101,5 +105,5 @@
   "config.true_end.entry.pop_ups.tooltip": "Включает/выключает всплывающие окна с ошибками",
   "config.true_end.entry.credits.title": "Титры",
   "config.true_end.entry.credits.tooltip": "Когда впервые покидаешь «За Пределами Сна»,вы увидите титры мода. Их можно включить заново или выключить вообще",
-  "events.true_end.feelingwatched": "You feel watched..."
+  "events.true_end.feelingwatched": "Такое чувство, будто за мной наблюдают..."
 }
