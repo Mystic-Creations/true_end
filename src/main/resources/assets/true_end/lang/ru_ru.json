@@ -105,5 +105,5 @@
   "config.true_end.entry.pop_ups.tooltip": "Включает/выключает всплывающие окна с ошибками",
   "config.true_end.entry.credits.title": "Титры",
   "config.true_end.entry.credits.tooltip": "Когда впервые покидаешь «За Пределами Сна»,вы увидите титры мода. Их можно включить заново или выключить вообще",
-  "events.true_end.feelingwatched": "Такое чувство, будто за мной наблюдают..."
+  "events.true_end.feelingwatched": "Такое чувство, будто за мной наблюдают.."
 }
