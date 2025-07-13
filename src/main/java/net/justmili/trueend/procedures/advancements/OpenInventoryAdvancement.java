@@ -6,8 +6,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.justmili.trueend.network.TrueEndModMessages;
-import net.justmili.trueend.network.packets.GrantInventoryAdvancementPackets;
+import net.justmili.trueend.init.Packets;
+import net.justmili.trueend.network.packets.InvOpenAdvPacket;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class OpenInventoryAdvancement {
@@ -21,7 +21,7 @@ public class OpenInventoryAdvancement {
         if (mc.screen instanceof InventoryScreen) {
             if (!hasOpenedInventory) {
                 hasOpenedInventory = true;
-                TrueEndModMessages.sendToServer(new GrantInventoryAdvancementPackets());
+                Packets.sendToServer(new InvOpenAdvPacket());
             }
         } else {
             hasOpenedInventory = false;

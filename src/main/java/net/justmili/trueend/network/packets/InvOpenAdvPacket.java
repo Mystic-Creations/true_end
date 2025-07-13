@@ -9,20 +9,17 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class GrantInventoryAdvancementPackets {
-    public GrantInventoryAdvancementPackets() {}
-
-    public GrantInventoryAdvancementPackets(FriendlyByteBuf buffer) {
-    }
-    public void toBytes(FriendlyByteBuf buffer) {
-    }
+public class InvOpenAdvPacket {
+    public InvOpenAdvPacket() {}
+    public InvOpenAdvPacket(FriendlyByteBuf buffer) {}
+    public void toBytes(FriendlyByteBuf buffer) {}
 
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ServerPlayer serverPlayer = context.getSender();
             if (serverPlayer == null) return;
-            ResourceLocation advancementId = new ResourceLocation("true_end", "story/open_inventory");
+            ResourceLocation advancementId = ResourceLocation.parse("true_end:story/open_inventory");
             Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(advancementId);
             if (advancement != null) {
                 AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);

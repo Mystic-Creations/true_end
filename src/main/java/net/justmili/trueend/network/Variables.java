@@ -1,8 +1,5 @@
 package net.justmili.trueend.network;
 
-import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
-import me.shedaniel.clothconfig2.gui.entries.DoubleListEntry;
-import me.shedaniel.clothconfig2.gui.entries.IntegerListEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,35 +30,35 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Variables {
     public static final Capability<Variables.PlayerVariables> PLAYER_VARS_CAP =
-        CapabilityManager.get(new CapabilityToken<>() {});
+            CapabilityManager.get(new CapabilityToken<>() {});
 
     public static final Capability<Variables.MapVariables> MAP_VARIABLES_CAP =
             CapabilityManager.get(new CapabilityToken<>() {});
-    public static BooleanListEntry clearDreamItems;
-    public static DoubleListEntry randomEventChance;
-    public static DoubleListEntry entitySpawnChance;
-    public static BooleanListEntry popupsToggle;
-    public static BooleanListEntry fogToggle;
-    public static BooleanListEntry creditsToggle;
-    public static IntegerListEntry btdConversationDelay;
-    public static BooleanListEntry randomEventsToggle;
+    public static boolean clearDreamItems;
+    public static double randomEventChance;
+    public static double entitySpawnChance;
+    public static boolean popupsToggle;
+    public static boolean fogToggle;
+    public static boolean creditsToggle;
+    public static int btdConversationDelay;
+    public static boolean randomEventsToggle;
 
     // Register messages and capabilities
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
         TrueEnd.PACKET_HANDLER.registerMessage(
-            0,
-            MapVariablesSyncMessage.class,
-            MapVariablesSyncMessage::encode,
-            MapVariablesSyncMessage::decode,
-            MapVariablesSyncMessage::handle
+                0,
+                MapVariablesSyncMessage.class,
+                MapVariablesSyncMessage::encode,
+                MapVariablesSyncMessage::decode,
+                MapVariablesSyncMessage::handle
         );
         TrueEnd.PACKET_HANDLER.registerMessage(
-            1,
-            PlayerVariablesSyncMessage.class,
-            PlayerVariablesSyncMessage::encode,
-            PlayerVariablesSyncMessage::decode,
-            PlayerVariablesSyncMessage::handle
+                1,
+                PlayerVariablesSyncMessage.class,
+                PlayerVariablesSyncMessage::encode,
+                PlayerVariablesSyncMessage::decode,
+                PlayerVariablesSyncMessage::handle
         );
     }
 
@@ -82,26 +79,66 @@ public class Variables {
         private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
         private boolean unknownInWorld = false;
+        private int btdConversationDelay = 0;
+        private double randomEventChance = 0.0;
+        private boolean randomEventsToggle = false;
 
         public boolean isUnknownInWorld() { return unknownInWorld; }
-        public IntegerListEntry getBtdConversationDelay() { return btdConversationDelay; }
-        public DoubleListEntry getRandomEventChance() { return randomEventChance; }
-        public BooleanListEntry getRandomEventToggle() { return randomEventsToggle; }
+        public int getBtdConversationDelay() { return btdConversationDelay; }
+        public double getRandomEventChance() { return randomEventChance; }
+        public boolean getRandomEventToggle() { return randomEventsToggle; }
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
 
-        public void setUnknownInWorld(boolean v) { unknownInWorld = v; setDirty(); }
-        //public void setClearDreamItemsToggle(BooleanListEntry v) { clearDreamItems = v; setDirty(); }
-        public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
+        public void setUnknownInWorld(boolean v) {
+            unknownInWorld = v;
+            setDirty();
+        }
+
+        public void setBtdSpawn(double x, double y, double z) {
+            btdSpawnX = x;
+            btdSpawnY = y;
+            btdSpawnZ = z;
+            setDirty();
+        }
+
+        public void setBtdConversationDelay(int delay) {
+            btdConversationDelay = delay;
+            setDirty();
+        }
+
+        public void setRandomEventChance(double chance) {
+            randomEventChance = chance;
+            setDirty();
+        }
+
+        public void setRandomEventsToggle(boolean toggle) {
+            randomEventsToggle = toggle;
+            setDirty();
+        }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
+            m.btdSpawnX = nbt.getDouble("btdSpawnX");
+            m.btdSpawnY = nbt.getDouble("btdSpawnY");
+            m.btdSpawnZ = nbt.getDouble("btdSpawnZ");
+            m.unknownInWorld = nbt.getBoolean("unknownInWorld");
+            m.btdConversationDelay = nbt.getInt("btdConversationDelay");
+            m.randomEventChance = nbt.getDouble("randomEventChance");
+            m.randomEventsToggle = nbt.getBoolean("randomEventsToggle");
             return m;
         }
 
         @Override
         public CompoundTag save(CompoundTag nbt) {
+            nbt.putDouble("btdSpawnX", btdSpawnX);
+            nbt.putDouble("btdSpawnY", btdSpawnY);
+            nbt.putDouble("btdSpawnZ", btdSpawnZ);
+            nbt.putBoolean("unknownInWorld", unknownInWorld);
+            nbt.putInt("btdConversationDelay", btdConversationDelay);
+            nbt.putDouble("randomEventChance", randomEventChance);
+            nbt.putBoolean("randomEventsToggle", randomEventsToggle);
             return nbt;
         }
 
@@ -113,8 +150,8 @@ public class Variables {
         public void syncAll(LevelAccessor world) {
             if (world instanceof ServerLevel lvl) {
                 TrueEnd.PACKET_HANDLER.send(
-                    PacketDistributor.DIMENSION.with(() -> lvl.dimension()),
-                    new MapVariablesSyncMessage(this)
+                        PacketDistributor.DIMENSION.with(() -> lvl.dimension()),
+                        new MapVariablesSyncMessage(this)
                 );
             }
         }
@@ -154,8 +191,8 @@ public class Variables {
 
         public void sync(ServerPlayer player) {
             TrueEnd.PACKET_HANDLER.send(
-                PacketDistributor.PLAYER.with(() -> player),
-                new PlayerVariablesSyncMessage(this)
+                    PacketDistributor.PLAYER.with(() -> player),
+                    new PlayerVariablesSyncMessage(this)
             );
         }
 
@@ -192,7 +229,7 @@ public class Variables {
         public static void handle(PlayerVariablesSyncMessage msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 Minecraft.getInstance().player.getCapability(PLAYER_VARS_CAP).ifPresent(v ->
-                    v.readNBT(msg.data)
+                        v.readNBT(msg.data)
                 );
             });
             ctx.get().setPacketHandled(true);
@@ -219,9 +256,9 @@ public class Variables {
             if (!evt.isWasDeath()) return;
             evt.getOriginal().reviveCaps();
             evt.getOriginal().getCapability(PLAYER_VARS_CAP).ifPresent(oldV ->
-                evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(newV ->
-                    newV.setBeenBeyond(oldV.hasBeenBeyond())
-                )
+                    evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(newV ->
+                            newV.setBeenBeyond(oldV.hasBeenBeyond())
+                    )
             );
         }
 

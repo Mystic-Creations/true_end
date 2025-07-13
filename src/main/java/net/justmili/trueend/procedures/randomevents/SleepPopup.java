@@ -34,17 +34,17 @@ public class SleepPopup {
 		if (player.isSleeping()) {
 			String osName = System.getProperty("os.name").toLowerCase();
 			if (osName.contains("win")) {
-				if (Variables.randomEventsToggle.getValue()
-						&& Variables.popupsToggle.getValue()
-						&& Math.random() < Variables.randomEventChance.getValue()) {
+				if (Variables.randomEventsToggle
+						&& Variables.popupsToggle
+						&& Math.random() < Variables.randomEventChance) {
 					TrueEnd.queueServerWork(20, () -> {
 						User32.INSTANCE.MessageBoxA(0L, "wake up.", "", 0);
 					});
 				}
 			} else {
-				if (Variables.randomEventsToggle.getValue()
-						&& Variables.popupsToggle.getValue()
-						&& Math.random() < Variables.randomEventChance.getValue()) {
+				if (Variables.randomEventsToggle
+						&& Variables.popupsToggle
+						&& Math.random() < Variables.randomEventChance) {
 					TrueEnd.queueServerWork(20, () -> {
 						SwingUtilities.invokeLater(() -> {
 							String message = "wake up.";

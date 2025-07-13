@@ -37,7 +37,7 @@ public class EntitySpawning {
 
         if (world.getGameTime() % TICK_INTERVAL != 0) return;
         if (world.dimension() == Level.END) return;
-        if (!Variables.randomEventsToggle.getValue()) return;
+        if (!Variables.randomEventsToggle) return;
         //REMOVE THIS DEBUG MESSAGE BEFORE FINAL BUILD
         if (Variables.MapVariables.get(world).isUnknownInWorld()) {
             TrueEnd.LOGGER.error("Entity spawn attempt failed: 'Unknown' already in world.");
@@ -56,7 +56,7 @@ public class EntitySpawning {
         } else if (difficulty == Difficulty.HARD) {
             chanceMultiplier = 2.0;
         }
-        if (Math.random() >= (Variables.entitySpawnChance.getValue() * chanceMultiplier)) {
+        if (Math.random() >= (Variables.entitySpawnChance * chanceMultiplier)) {
             return;
         }
 

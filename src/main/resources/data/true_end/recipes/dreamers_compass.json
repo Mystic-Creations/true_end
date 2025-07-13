@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " @ ",
+    "#O#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "true_end:wood"
+    },
+    "O": {
+      "item": "minecraft:compass"
+    },
+    "@": {
+      "item": "true_end:mysterious_cube"
+    }
+  },
+  "result": {
+    "item": "true_end:dreamers_compass",
+    "count": 1
+  }
+}

@@ -40,11 +40,11 @@ public class PrintVars {
         // Configurable
         source.sendSystemMessage(Component.literal("\n----= Configurable"));
         //source.sendSystemMessage(Component.literal("clearDreamItems: " + TrueEndVariables.clearDreamItems.getValue()));
-        source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay.getValue()));
-        source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance.getValue()));
-        source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance.getValue()));
-        source.sendSystemMessage(Component.literal("popupsToggle: " + Variables.popupsToggle.getValue()));
-        source.sendSystemMessage(Component.literal("fogToggle: " + Variables.fogToggle.getValue()));
+        source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));
+        source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance));
+        source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance));
+        source.sendSystemMessage(Component.literal("popupsToggle: " + Variables.popupsToggle));
+        source.sendSystemMessage(Component.literal("fogToggle: " + Variables.fogToggle));
 
         source.sendSystemMessage(Component.literal("\n----= Paths"));
         source.sendSystemMessage(Component.literal("CONFIGDIR: " + FMLPaths.CONFIGDIR.get()));

@@ -86,7 +86,6 @@ public class DimSwapToBTD {
                 double btdSpawnX = getVariable.getBtdSpawnX();
                 double btdSpawnY = getVariable.getBtdSpawnY();
                 double btdSpawnZ = getVariable.getBtdSpawnZ();
-
                 if (btdSpawnY > 0) {
                     TrueEnd.LOGGER.info("Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
                     serverPlayer.teleportTo(nextLevel, btdSpawnX, btdSpawnY, btdSpawnZ,
@@ -472,7 +471,7 @@ public class DimSwapToBTD {
 
         //Play text
         TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendMessegeWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay.getValue());
+            TrueEnd.sendMessegeWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay);
         });
     }
 }

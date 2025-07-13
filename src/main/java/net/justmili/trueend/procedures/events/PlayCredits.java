@@ -32,7 +32,7 @@ public class PlayCredits {
 
         if (event.getFrom() == BTD &&
             event.getTo() == Level.OVERWORLD &&
-            Variables.creditsToggle.getValue()) {
+            Variables.creditsToggle) {
 
             hasShownCreditsThisSession = true;
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Predicate;
 
+import net.justmili.trueend.init.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,14 +19,6 @@ import com.mojang.datafixers.util.Pair;
 import net.justmili.trueend.config.Config;
 import net.justmili.trueend.entity.Unknown;
 import net.justmili.trueend.entity.renderer.UnknownEntityRenderer;
-import net.justmili.trueend.init.Blocks;
-import net.justmili.trueend.init.Entities;
-import net.justmili.trueend.init.Guis;
-import net.justmili.trueend.init.Items;
-import net.justmili.trueend.init.Particles;
-import net.justmili.trueend.init.Sounds;
-import net.justmili.trueend.init.Tabs;
-import net.justmili.trueend.network.TrueEndModMessages;
 import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -51,6 +44,7 @@ import terrablender.api.Regions;
 public class TrueEnd {
     public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
     public static final String MODID = "true_end";
+    private static final String PROTOCOL_VERSION = "1";
 
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -71,11 +65,15 @@ public class TrueEnd {
         bus.addListener(UnknownEntityRenderer::registerEntityRenderers);
     }
 
+    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
+            ResourceLocation.parse(MODID), () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals,
+            PROTOCOL_VERSION::equals
+    );
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Regions.register(new SeepingForestRegion(
-                    ResourceLocation.parse("true_end:overworld_region"), 1));
-            TrueEndModMessages.register();
+            Regions.register(new SeepingForestRegion(ResourceLocation.parse("true_end:overworld_region"), 1));
+            Packets.register();
         });
     }
 
@@ -92,13 +90,6 @@ public class TrueEnd {
             workQueue.removeAll(actions);
         }
     }
-
-    private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.parse(MODID),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals);
 
     private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
@@ -118,7 +109,7 @@ public class TrueEnd {
         try {
             jsonElement = JsonParser.parseString(message);
         } catch (JsonSyntaxException e) {
-            LOGGER.error("Something went wrong while reading file: first_entry.txt");
+            LOGGER.error("Something went wrong while reading file");
             return;
         }
         Component component = Component.Serializer.fromJson(jsonElement);
@@ -126,7 +117,6 @@ public class TrueEnd {
             player.sendSystemMessage(component);
         }
     }
-
     public static void sendMessegeWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
         for (int i = 0; i < messages.length; i++) {
             String msg = messages[i];
@@ -141,10 +131,8 @@ public class TrueEnd {
     }
 
     public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
-        Pair<BlockPos, Holder<Biome>> result = level.getLevel()
-                .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
-        if (result == null)
-            return null;
+        Pair<BlockPos, Holder<Biome>> result = level.getLevel().findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
+        if (result == null) return null;
         return result.getFirst();
     }
 }

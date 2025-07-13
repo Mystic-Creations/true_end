@@ -4,9 +4,9 @@
 --------= Worldgen
 - Alpha world generation
 - Farlands
-- The Dreaming tree is now more rare
+- The Dreaming tree is now more rare and much MUCH more far away
 - Forest & Plains (used to be just the Nostalgic Meadow)
-- Seeping Reality / Overworld - Reality seeping into the dream
+- Seeping Reality / Overworld - Reality seeping into the dream, careful there
 - New small structure "Unknown Base", as if you're not alone
 
 --------= Features
@@ -29,22 +29,26 @@
 - (Wooden) Pressure Plate
 - (Wooden) Button
 - Red Flower
-- Yellow Flower (yes that's how they were called in alpha)
+- Yellow Flower
 - Sapling (dev note: in progress, getting fixed)
 
 --------= Items
-- Dreamer's Compass / Leads you towards The Dreaming Tree (dev note: in progress)
+- Dreamer's Compass / Leads you towards The Dreaming Tree
 - Changed the look of the Mysterious Cube
-- Music Disc "Far Lands" by Drekil (dev note: in progress)
-- Music Disc "Never Alone" by Drekil (dev note: in progress)
+- Music Disc "Far Lands" by Drekil
+- Music Disc "Never Alone" by Dreki
 
 --------= Advancements
 - "Was I here?" / Discover a early-game base, that doesn't belong to you somewhere in your world
 - Old advancements / "Hot Topic", "On A Rail", "When Pigs Fly" etc
+- Secret advancement
+
+--------= Entities
+- Unknown (he just startes at you from a distance, he'll do more with next updates)
 
 --------= Other
 - Random Events
-- Config
+- Config (Editable .json file)
 - Mod Credits
 
 --------= New Supported Languages
@@ -63,9 +67,21 @@
 - Neverending Ocean
 
 # Fixed Bugs
-- Anything we could fix, we did
+- Fixed BTD Spawn Search and Spawn Requirement Checks and added 'Absolute Fallback' (Farlands spawn)
+- Fixed blocks not having preferred tools, tool requirements etc.
+- Fixed 'Beyond The Dream' sky type and set it to Overworld sky type
+- Fixed inventory keeping/restore in 'Nightmare Within A Dream'
+- Fixed mod breaking in multiplayer (added multiplayer compatibility)
+- Fixed leaves suffocating the player
+- Fixed flammable slabs
+- Fixed some recipes missing
+- Fixed the door in the 'home' being oak and not custom
+- Fixed trees and leaves sticking to 'home' (added 'Remove Trees')
+- Fixed weird terrain sometimes under 'home' (added 'Adapt Terrain')
+And probably more but I forgot to update the changelog as we were fixing bugs
 
 ## Other technical stuff
 - Fixed spawn search for BTD (better spawn search, fallback spawn search and added absolute fallback spawn search that puts you in the farlands)
 - Optimized block interactions for the Redstone Ore and Grass Block
 - Old logic gamerules replaced with variables and config, clearDreamItems gamerule still exists tho
+- Renamed block id for leaves (tree_leaves -> leaves)
