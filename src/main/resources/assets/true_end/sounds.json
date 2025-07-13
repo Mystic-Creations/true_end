@@ -18,7 +18,6 @@
     ]
   },
   "farlands": {
-    "subtitle": "subtitles.farlands",
     "sounds": [
       {
         "name": "true_end:farlands",
@@ -27,7 +26,6 @@
     ]
   },
   "never_alone": {
-    "subtitle": "subtitles.never_alone",
     "sounds": [
       {
         "name": "true_end:never_alone",

@@ -1,32 +1,13 @@
 package net.justmili.trueend;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Predicate;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import net.justmili.trueend.client.renderer.UnknownEntityRenderer;
-import net.justmili.trueend.entity.Unknown;
-import net.justmili.trueend.init.*;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.mojang.datafixers.util.Pair;
-
-import net.justmili.trueend.config.Config;
-import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.biome.Biome;
+import com.mojang.datafixers.util.Pair;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -38,13 +19,29 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.justmili.trueend.entity.Unknown;
+import net.justmili.trueend.init.*;
+import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import terrablender.api.Regions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Predicate;
+
 
 @Mod("true_end")
 public class TrueEnd {
     public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
     public static final String MODID = "true_end";
     public static IEventBus EVENT_BUS;
+    private static final String PROTOCOL_VERSION = "1";
 
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -61,13 +58,18 @@ public class TrueEnd {
         EVENT_BUS.addListener(this::commonSetup);
         EVENT_BUS.addListener(this::onEntityAttributeCreation);
     }
-
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Regions.register(new SeepingForestRegion(
-                    ResourceLocation.parse("true_end:overworld_region"), 1));
+            Regions.register(new SeepingForestRegion(ResourceLocation.parse("true_end:overworld_region"), 1));
+            Packets.register();
         });
     }
+    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
+            ResourceLocation.parse(MODID),
+            () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals,
+            PROTOCOL_VERSION::equals
+    );
 
     @SubscribeEvent
     public void tick(TickEvent.ServerTickEvent event) {
@@ -83,15 +85,7 @@ public class TrueEnd {
         }
     }
 
-    private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.parse(MODID),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals);
-
     private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
-
     public static void queueServerWork(int tick, Runnable action) {
         if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
             workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
@@ -116,7 +110,6 @@ public class TrueEnd {
             player.sendSystemMessage(component);
         }
     }
-
     public static void sendMessegeWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
         for (int i = 0; i < messages.length; i++) {
             String msg = messages[i];
@@ -129,7 +122,6 @@ public class TrueEnd {
                 .map(biomeKey -> biomeKey.location().toString().equals(biomeNamespaced))
                 .orElse(false);
     }
-
     public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
         Pair<BlockPos, Holder<Biome>> result = level.getLevel()
                 .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
