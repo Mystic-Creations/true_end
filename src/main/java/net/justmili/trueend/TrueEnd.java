@@ -1,6 +1,5 @@
 package net.justmili.trueend;
 
-import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,27 +7,32 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Predicate;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import net.justmili.trueend.entity.renderer.UnknownEntityRenderer;
-import net.justmili.trueend.entity.Unknown;
-import net.justmili.trueend.init.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.mojang.datafixers.util.Pair;
 
 import net.justmili.trueend.config.Config;
+import net.justmili.trueend.entity.Unknown;
+import net.justmili.trueend.entity.renderer.UnknownEntityRenderer;
+import net.justmili.trueend.init.Blocks;
+import net.justmili.trueend.init.Entities;
+import net.justmili.trueend.init.Guis;
+import net.justmili.trueend.init.Items;
+import net.justmili.trueend.init.Particles;
+import net.justmili.trueend.init.Sounds;
+import net.justmili.trueend.init.Tabs;
+import net.justmili.trueend.network.TrueEndModMessages;
 import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -71,6 +75,7 @@ public class TrueEnd {
         event.enqueueWork(() -> {
             Regions.register(new SeepingForestRegion(
                     ResourceLocation.parse("true_end:overworld_region"), 1));
+            TrueEndModMessages.register();
         });
     }
 
