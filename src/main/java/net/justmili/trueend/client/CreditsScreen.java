@@ -5,12 +5,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.justmili.trueend.TrueEnd;
 import org.jetbrains.annotations.NotNull;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.justmili.trueend.TrueEnd;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -32,14 +32,12 @@ public class CreditsScreen extends Screen {
             Minecraft.getInstance().setScreen(null);
         });
     }
-
     public CreditsScreen(Runnable onClose) {
         super(Component.empty());
         this.onClose = onClose;
         loadCreditsText();
         this.scroll = 0f;
     }
-
     private void loadCreditsText() {
         try (var stream = Minecraft.getInstance().getResourceManager().open(TEXT_FILE);
              var br = new BufferedReader(new InputStreamReader(stream))) {
@@ -53,7 +51,6 @@ public class CreditsScreen extends Screen {
             TrueEnd.LOGGER.error("Failed to read credits.txt", e);
         }
     }
-
     @Override
     protected void init() {
         super.init();
@@ -61,47 +58,64 @@ public class CreditsScreen extends Screen {
 
     @Override
     public void renderBackground(@NotNull GuiGraphics gui) {
+        Minecraft mc = Minecraft.getInstance();
+        int scaledWidth = mc.getWindow().getGuiScaledWidth();
+        int scaledHeight = mc.getWindow().getGuiScaledHeight();
+
         RenderSystem.setShaderTexture(0, BG_TEXTURE);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         int texSize = 48;
-        for (int x = 0; x < width; x += texSize) {
-            for (int y = 0; y < height; y += texSize) {
+        for (int x = 0; x < scaledWidth; x += texSize) {
+            for (int y = 0; y < scaledHeight; y += texSize) {
                 gui.blit(BG_TEXTURE, x, y, 0, 0, texSize, texSize, texSize, texSize);
             }
         }
     }
-
     @Override
     public void render(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(gui);
-        gui.fill(0, 0, width, height, 0x88000000);
+
+        Minecraft mc = Minecraft.getInstance();
+        int scaledWidth = mc.getWindow().getGuiScaledWidth();
+        int scaledHeight = mc.getWindow().getGuiScaledHeight();
+
+        gui.fill(0, 0, scaledWidth, scaledHeight, 0x88000000);
 
         float scrollSpeed = 20f;
         scroll += scrollSpeed * (partialTicks / 20f);
 
         RenderSystem.setShaderTexture(0, TITLE_TEX);
         int texW = 256, texH = 64;
-        float titleX = (width - texW) / 2f;
-        float titleY = height - scroll;
-        gui.blit(TITLE_TEX, (int) titleX, (int) titleY, 0, 0, texW, texH, texW, texH);
+        float titleX = (scaledWidth - texW) / 2f;
+        float titleY = scaledHeight - scroll;
+
+        if (titleY + texH > 0 && titleY < scaledHeight) {
+            gui.blit(TITLE_TEX, (int) titleX, (int) titleY, 0, 0, texW, texH, texW, texH);
+        }
         if (this.font != null) {
             float startY = titleY + texH + 20;
             for (int i = 0; i < lines.size(); i++) {
+                float lineY = startY + i * 12;
+                if (lineY + 12 < 0) continue;
+                if (lineY > scaledHeight) break;
+
                 String s = lines.get(i);
                 int w = this.font.width(s);
-                gui.drawString(this.font, s, (width - w) / 2, (int) (startY + i * 12), 0xFFFFFF, true);
+                gui.drawString(this.font, s, (scaledWidth - w) / 2, (int) lineY, 0xFFFFFF, true);
             }
         }
 
         super.render(gui, mouseX, mouseY, partialTicks);
     }
-
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW_KEY_ESCAPE) {
             onClose.run();
             return true;
         }
+        return false;
+    }
+    public boolean isNarratable() {
         return false;
     }
 }

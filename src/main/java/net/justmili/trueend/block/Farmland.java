@@ -37,7 +37,6 @@ import net.minecraftforge.common.ForgeHooks;
 public class Farmland extends Block {
 	public static final IntegerProperty MOISTURE;
 	protected static final VoxelShape SHAPE;
-	public static final int MAX_MOISTURE = 7;
 
 	public Farmland() {
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
@@ -69,7 +68,7 @@ public class Farmland extends Block {
 
 	public void tick(BlockState p_221134_, ServerLevel p_221135_, BlockPos p_221136_, RandomSource p_221137_) {
 		if (!p_221134_.canSurvive(p_221135_, p_221136_)) {
-			turnToDirt((Entity)null, p_221134_, p_221135_, p_221136_);
+			turnToDirt(null, p_221134_, p_221135_, p_221136_);
 		}
 
 	}
@@ -78,12 +77,12 @@ public class Farmland extends Block {
 		int i = (Integer)p_221139_.getValue(MOISTURE);
 		if (!isNearWater(p_221140_, p_221141_) && !p_221140_.isRainingAt(p_221141_.above())) {
 			if (i > 0) {
-				p_221140_.setBlock(p_221141_, (BlockState)p_221139_.setValue(MOISTURE, i - 1), 2);
+				p_221140_.setBlock(p_221141_, p_221139_.setValue(MOISTURE, i - 1), 2);
 			} else if (!shouldMaintainFarmland(p_221140_, p_221141_)) {
-				turnToDirt((Entity)null, p_221139_, p_221140_, p_221141_);
+				turnToDirt(null, p_221139_, p_221140_, p_221141_);
 			}
 		} else if (i < 7) {
-			p_221140_.setBlock(p_221141_, (BlockState)p_221139_.setValue(MOISTURE, 7), 2);
+			p_221140_.setBlock(p_221141_, p_221139_.setValue(MOISTURE, 7), 2);
 		}
 
 	}
@@ -121,7 +120,7 @@ public class Farmland extends Block {
 	}
 
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53283_) {
-		p_53283_.add(new Property[]{MOISTURE});
+		p_53283_.add(MOISTURE);
 	}
 
 	public boolean isPathfindable(BlockState p_53267_, BlockGetter p_53268_, BlockPos p_53269_, PathComputationType p_53270_) {
@@ -130,7 +129,7 @@ public class Farmland extends Block {
 
 	static {
 		MOISTURE = BlockStateProperties.MOISTURE;
-		SHAPE = Block.box((double)0.0F, (double)0.0F, (double)0.0F, (double)16.0F, (double)15.0F, (double)16.0F);
+		SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 15.0F, 16.0F);
 	}
 
 	@Override

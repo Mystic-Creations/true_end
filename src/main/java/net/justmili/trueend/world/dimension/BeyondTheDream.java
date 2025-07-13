@@ -30,7 +30,7 @@ public class BeyondTheDream {
                     return Variables.fogToggle;
                 }
             };
-            event.register(ResourceLocation.parse("true_end:beyond_the_dream"), customEffect);
+            event.register(ResourceLocation.parse("true_end:btd"), customEffect);
         }
     }
 }

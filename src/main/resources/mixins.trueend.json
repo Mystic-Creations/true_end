@@ -4,8 +4,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "Farlands",
-    "SheepEatTrueEndGrassMixin",
-    "TrueEndMixin"
+    "SheepGrassEating",
+    "Mixins"
   ],
   "injectors": {
     "defaultRequire": 1

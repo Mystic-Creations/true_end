@@ -1,32 +1,23 @@
 We have a [Official Discord Server](https://discord.gg/7D7CpcvgcA) for reporting bugs, suggesting features, sneak peaks and more!
 
-Any mod content (textures, code, etc) pre-version-1.3 are under CC-BY-4.0 license, but 1.3 and onwards it's all licensed MIT
+All versions are now under the MIT license even if it says otherwise.
 
-Fabric port coming... some day ¯\_(ツ)_/¯
+Fabric port coming back soon
 
 <hr>
 
 # Description
-Remember the End Credits after beating the ender dragon that most of us just skip over? Well, this time, they're a bit important you see.
-With *True End*, you don't go back to your normal Minecraft world after beating the game, no, you end up in a familiar, yet a unknown world. You're told by the voices from the end credits that you've been sleeping, dreaming, dreaming of a better world.
+True End follows the part of the End Poem that talk's about that Minecraft is player's dream and basing itself on the dream theory.
+After defeating the dragon and jumping into the portal, the player will be met with not the overworld but the reality, the player woke up and is now *"Beyond The Dream"*, in a place that isn't like modern Minecraft but just like the good old Alpha (v1.1.2_01).
+The same voices as in the end poem will address the player in chat, surprised about player's awakening. Leaving you with a mysterious cube and a goal to reach, the player has to play through it and gather resources and prepare for quite the adventure to travel thousands of blocks, to go back to what the voices called the player's dream.
 
-Plot twist, you're not alone either.
-
-## Lore? Maybe? Idk lmao
-After finally defeating the game and killing the dragon, you jump into the portal to go back, but.. something's wrong;
-You hear voices, talking, talking about you.
-And once you're out of the portal, you can not see or move, the voices say you were dreaming, dreaming of a better world.
-You open your eyes, able to see and move again, yet you see that your things are gone, you don't recognize where you are,
-and you realize - *"It was all just a dream... "*.
-All you have, is your cozy little house, a couple of items in a chest and a motivation to keep dreaming.
-
+Although, despite it all, you are not alone in your world, there is something lurking in the distance.
 
 Wake up, *Player.*
 
 <details>
 <summary>Notes</summary>
-This mod isn't meant to be played in Multiplayer, but it is compatible (since version 1.4)
+The mod is playable in multiplayer with version 1.4 and above. Any older versions are gonna completely break when played on multiplayer.
 
-Inventory Clearing can/can't be disabled with gamerule "clearDreamItems" or via config,
-it's set to true by default, you can disable it by setting it to false.
+Clearing items when entering Beyond The Dream dimension for the first time can be toggled off and on with the clearDreamItems gamerule. It is set to true by default. (You still get some of your items back when you come back to the overworld and the clearing only ever happens once per player)
 </details>

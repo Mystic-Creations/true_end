@@ -7,25 +7,25 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Predicate;
 
-import net.justmili.trueend.init.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import net.justmili.trueend.client.renderer.UnknownEntityRenderer;
+import net.justmili.trueend.entity.Unknown;
+import net.justmili.trueend.init.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mojang.datafixers.util.Pair;
 
 import net.justmili.trueend.config.Config;
-import net.justmili.trueend.entity.Unknown;
-import net.justmili.trueend.entity.renderer.UnknownEntityRenderer;
 import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -44,36 +44,28 @@ import terrablender.api.Regions;
 public class TrueEnd {
     public static final Logger LOGGER = LogManager.getLogger(TrueEnd.class);
     public static final String MODID = "true_end";
-    private static final String PROTOCOL_VERSION = "1";
+    public static IEventBus EVENT_BUS;
 
     public TrueEnd(FMLJavaModLoadingContext modContext) {
         MinecraftForge.EVENT_BUS.register(this);
-        IEventBus bus = modContext.getModEventBus();
+        EVENT_BUS = modContext.getModEventBus();
 
-        Config.load();
+        Items.REGISTRY.register(EVENT_BUS);
+        Blocks.REGISTRY.register(EVENT_BUS);
+        Tabs.REGISTRY.register(EVENT_BUS);
+        Particles.REGISTRY.register(EVENT_BUS);
+        Entities.ENTITY_TYPES.register(EVENT_BUS);
+        Guis.REGISTRY.register(EVENT_BUS);
+        Sounds.REGISTRY.register(EVENT_BUS);
 
-        Items.REGISTRY.register(bus);
-        Blocks.REGISTRY.register(bus);
-        Tabs.REGISTRY.register(bus);
-        Particles.REGISTRY.register(bus);
-        Entities.ENTITY_TYPES.register(bus);
-        Guis.REGISTRY.register(bus);
-        Sounds.REGISTRY.register(bus);
-
-        bus.addListener(this::commonSetup);
-        bus.addListener(this::onEntityAttributeCreation);
-        bus.addListener(UnknownEntityRenderer::registerEntityRenderers);
+        EVENT_BUS.addListener(this::commonSetup);
+        EVENT_BUS.addListener(this::onEntityAttributeCreation);
     }
 
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.parse(MODID), () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Regions.register(new SeepingForestRegion(ResourceLocation.parse("true_end:overworld_region"), 1));
-            Packets.register();
+            Regions.register(new SeepingForestRegion(
+                    ResourceLocation.parse("true_end:overworld_region"), 1));
         });
     }
 
@@ -90,6 +82,13 @@ public class TrueEnd {
             workQueue.removeAll(actions);
         }
     }
+
+    private static final String PROTOCOL_VERSION = "1";
+    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
+            ResourceLocation.parse(MODID),
+            () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals,
+            PROTOCOL_VERSION::equals);
 
     private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
@@ -109,7 +108,7 @@ public class TrueEnd {
         try {
             jsonElement = JsonParser.parseString(message);
         } catch (JsonSyntaxException e) {
-            LOGGER.error("Something went wrong while reading file");
+            LOGGER.error("Something went wrong while reading file: first_entry.txt");
             return;
         }
         Component component = Component.Serializer.fromJson(jsonElement);
@@ -117,6 +116,7 @@ public class TrueEnd {
             player.sendSystemMessage(component);
         }
     }
+
     public static void sendMessegeWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
         for (int i = 0; i < messages.length; i++) {
             String msg = messages[i];
@@ -131,8 +131,10 @@ public class TrueEnd {
     }
 
     public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
-        Pair<BlockPos, Holder<Biome>> result = level.getLevel().findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
-        if (result == null) return null;
+        Pair<BlockPos, Holder<Biome>> result = level.getLevel()
+                .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
+        if (result == null)
+            return null;
         return result.getFirst();
     }
 }

@@ -10,8 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class Farlands {
     @Inject(method={"wrap"}, at={@At(value="TAIL")}, cancellable=true)
     private static void injectMethod(double value, CallbackInfoReturnable<Double> cir) {
-        double newValue = value;
         cir.cancel();
-        cir.setReturnValue((Double) newValue);
+        cir.setReturnValue(value);
     }
 }

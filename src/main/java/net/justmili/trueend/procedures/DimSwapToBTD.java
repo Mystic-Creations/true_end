@@ -1,7 +1,6 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.Variables;
-import net.justmili.trueend.sources.invmgr.BTDPlayerInvManager;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
@@ -172,10 +171,9 @@ public class DimSwapToBTD {
                         HAS_PROCESSED.remove(serverPlayer);
                     });
 
-                    BTDPlayerInvManager.savePlayerInventory(serverPlayer);
+                    PlayerInvManager.saveInvBTD(serverPlayer);
                     if (nextLevel.getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) {
                         serverPlayer.getInventory().clearContent();
-                        nextLevel.getGameRules().getRule(GameRules.CLEAR_DREAM_ITEMS).set(false, nextLevel.getServer());
                     }
                 });
             }

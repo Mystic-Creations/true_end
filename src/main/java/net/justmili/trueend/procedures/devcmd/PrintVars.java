@@ -39,7 +39,7 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
         // Configurable
         source.sendSystemMessage(Component.literal("\n----= Configurable"));
-        //source.sendSystemMessage(Component.literal("clearDreamItems: " + TrueEndVariables.clearDreamItems.getValue()));
+        //source.sendSystemMessage(Component.literal("clearDreamItems: " + TrueEndVariables.clearDreamItems));
         source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));
         source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance));
         source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance));

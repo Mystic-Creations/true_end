@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Variables {
     public static final Capability<Variables.PlayerVariables> PLAYER_VARS_CAP =
-            CapabilityManager.get(new CapabilityToken<>() {});
+        CapabilityManager.get(new CapabilityToken<>() {});
 
     public static final Capability<Variables.MapVariables> MAP_VARIABLES_CAP =
             CapabilityManager.get(new CapabilityToken<>() {});
@@ -47,18 +47,18 @@ public class Variables {
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
         TrueEnd.PACKET_HANDLER.registerMessage(
-                0,
-                MapVariablesSyncMessage.class,
-                MapVariablesSyncMessage::encode,
-                MapVariablesSyncMessage::decode,
-                MapVariablesSyncMessage::handle
+            0,
+            MapVariablesSyncMessage.class,
+            MapVariablesSyncMessage::encode,
+            MapVariablesSyncMessage::decode,
+            MapVariablesSyncMessage::handle
         );
         TrueEnd.PACKET_HANDLER.registerMessage(
-                1,
-                PlayerVariablesSyncMessage.class,
-                PlayerVariablesSyncMessage::encode,
-                PlayerVariablesSyncMessage::decode,
-                PlayerVariablesSyncMessage::handle
+            1,
+            PlayerVariablesSyncMessage.class,
+            PlayerVariablesSyncMessage::encode,
+            PlayerVariablesSyncMessage::decode,
+            PlayerVariablesSyncMessage::handle
         );
     }
 
@@ -191,8 +191,8 @@ public class Variables {
 
         public void sync(ServerPlayer player) {
             TrueEnd.PACKET_HANDLER.send(
-                    PacketDistributor.PLAYER.with(() -> player),
-                    new PlayerVariablesSyncMessage(this)
+                PacketDistributor.PLAYER.with(() -> player),
+                new PlayerVariablesSyncMessage(this)
             );
         }
 
@@ -229,7 +229,7 @@ public class Variables {
         public static void handle(PlayerVariablesSyncMessage msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 Minecraft.getInstance().player.getCapability(PLAYER_VARS_CAP).ifPresent(v ->
-                        v.readNBT(msg.data)
+                    v.readNBT(msg.data)
                 );
             });
             ctx.get().setPacketHandled(true);
@@ -256,9 +256,9 @@ public class Variables {
             if (!evt.isWasDeath()) return;
             evt.getOriginal().reviveCaps();
             evt.getOriginal().getCapability(PLAYER_VARS_CAP).ifPresent(oldV ->
-                    evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(newV ->
-                            newV.setBeenBeyond(oldV.hasBeenBeyond())
-                    )
+                evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(newV ->
+                    newV.setBeenBeyond(oldV.hasBeenBeyond())
+                )
             );
         }
 

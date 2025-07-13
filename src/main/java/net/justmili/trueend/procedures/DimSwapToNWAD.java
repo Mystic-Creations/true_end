@@ -1,7 +1,6 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.network.Variables;
-import net.justmili.trueend.sources.invmgr.NWADPlayerInvManager;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;
@@ -16,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -47,14 +47,17 @@ public class DimSwapToNWAD {
 		if (!source.is(DamageTypes.IN_WALL)) return;
 		if (RAND.nextDouble() >= Variables.randomEventChance * 2) return;
 
-		Advancement adv = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
+		Advancement adv = player.server.getAdvancements()
+				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
 		boolean hasAdvancement = adv != null && player.getAdvancements().getOrStartProgress(adv).isDone();
 		if (hasAdvancement) return;
 
-		// save & clear
-		NWADPlayerInvManager.savePlayerInventory(player);
+		PlayerInvManager.saveInvNWAD(player);
 		if (!world.isClientSide()) {
-			player.getInventory().clearContent();
+			//player.getInventory().clearContent();
+			//I turned off item clearing so player will have a bit
+			// more of a scare about losing their items even tho they're gonna get them back
+			player.setGameMode(GameType.ADVENTURE);
 			teleportToNWAD(player);
 		}
 	}
@@ -72,22 +75,22 @@ public class DimSwapToNWAD {
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerRespawnEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof ServerPlayer sp)) return;
+		if (!(entity instanceof ServerPlayer player)) return;
 
-		UUID uuid = sp.getUUID();
+		UUID uuid = player.getUUID();
 		ResourceKey<Level> dim = diedIn.remove(uuid);
 		if (dim == null || dim != NWAD) return;
 
-		NWADPlayerInvManager.restorePlayerInventory(sp);
+		PlayerInvManager.restoreInv(player);
+		player.setGameMode(GameType.SURVIVAL);
 
-		Advancement advancement = sp.server.getAdvancements()
+		Advancement advancement = player.server.getAdvancements()
 				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
-		if (advancement != null) {
-			AdvancementProgress progress = sp.getAdvancements().getOrStartProgress(advancement);
-			if (!progress.isDone()) {
-				for (String criteria : progress.getRemainingCriteria()) {
-					sp.getAdvancements().award(advancement, criteria);
-				}
+        assert advancement != null;
+        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
+		if (!progress.isDone()) {
+			for (String criteria : progress.getRemainingCriteria()) {
+				player.getAdvancements().award(advancement, criteria);
 			}
 		}
 	}
