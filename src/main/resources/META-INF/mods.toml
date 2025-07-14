@@ -28,3 +28,10 @@ mixinClasses = ["net.justmili.trueend.mixin.Mixins"]
     ordering="NONE"
     side="BOTH"
 
+[[dependencies.true_end]]
+    modId="curios"
+    mandatory=false
+    versionRange="[5.4.3,)"
+    ordering="NONE"
+    side="BOTH"
+
