@@ -24,9 +24,11 @@ public class PrintVars {
         for (ServerPlayer otherPlayer : player.server.getPlayerList().getPlayers()) {
             Variables.PlayerVariables vars =
                 otherPlayer.getCapability(Variables.PLAYER_VARS_CAP).orElse(new Variables.PlayerVariables());
-            // use hasBeenBeyond() getter instead of private field
             source.sendSystemMessage(Component.literal(
                 "beenBeyond (" + otherPlayer.getName().getString() + "): " + vars.hasBeenBeyond()
+            ));
+            source.sendSystemMessage(Component.literal(
+                    "liminalForestTicks (" + otherPlayer.getName().getString() + "): " + vars.getLiminalForestTime()
             ));
         }
 
