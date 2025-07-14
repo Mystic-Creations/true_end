@@ -37,19 +37,15 @@ public class DreamersCompass extends CompassItem {
         Pair<BlockPos, Holder<Structure>> result = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderSet, origin, 100, false);
 
         tag.putBoolean("feet", false);
-        if (result != null) {
-            final int WIDTH  = 35; // x‑axis
-            final int LENGTH = 40; // z‑axis
-            BlockPos cornerPos = result.getFirst();
-            BlockPos centerPos = cornerPos.offset(WIDTH / 2, 0, (LENGTH / 2)-4);
-
-            tag.putLong("LodestonePosX", centerPos.getX());
-            tag.putLong("LodestonePosY", centerPos.getY());
-            tag.putLong("LodestonePosZ", centerPos.getZ());
-            tag.putString("LodestoneDimension", serverLevel.dimension().location().toString());
-            tag.putBoolean("LodestoneTracked", true);
-            tag.putBoolean("feet", true);
-        }
+            if (result != null) {
+                BlockPos targetPos = result.getFirst();
+                tag.putLong("LodestonePosX", targetPos.getX());
+                tag.putLong("LodestonePosY", targetPos.getY());
+                tag.putLong("LodestonePosZ", targetPos.getZ());
+                tag.putString("LodestoneDimension", serverLevel.dimension().location().toString());
+                tag.putBoolean("LodestoneTracked", true);
+                tag.putBoolean("feet", true);
+            }
         super.inventoryTick(stack, level, entity, slot, selected);
     }
 }

@@ -44,4 +44,13 @@ public class MysteriousCube extends Item {
 			return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 		}
 	}
+
+	@Override
+	public boolean hasCraftingRemainingItem() {
+		return true;
+	}
+	@Override
+	public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+		return new ItemStack(this);
+	}
 }
