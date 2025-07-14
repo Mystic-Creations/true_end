@@ -1,13 +1,13 @@
 package net.justmili.trueend.command;
 
+import net.justmili.trueend.config.Config;
+import net.justmili.trueend.network.Variables;
 import net.justmili.trueend.procedures.devcmd.*;
 import net.justmili.trueend.procedures.devcmd.screentests.*;
-import net.minecraft.commands.arguments.ResourceOrTagKeyArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.commands.LocateCommand;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.commands.Commands;
 
 @Mod.EventBusSubscriber
-public class TrueEndDev {
+public class DeveloperCmd {
 
 	@SubscribeEvent
 	public static void registerCommand(RegisterCommandsEvent event) {

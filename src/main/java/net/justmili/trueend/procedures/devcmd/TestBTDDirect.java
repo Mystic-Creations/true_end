@@ -19,7 +19,7 @@ public class TestBTDDirect {
 						_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "gamemode spectator");
 			}
 		}
-		  TrueEnd.queueServerWork(2, () -> {
+		  TrueEnd.wait(2, () -> {
 			{
 				Entity _ent = entity;
 				if (!_ent.level().isClientSide() && _ent.getServer() != null) {

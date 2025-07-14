@@ -43,6 +43,7 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));
         source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance));
         source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance));
+        source.sendSystemMessage(Component.literal("creditsToggle: " + Variables.creditsToggle));
         source.sendSystemMessage(Component.literal("popupsToggle: " + Variables.popupsToggle));
         source.sendSystemMessage(Component.literal("fogToggle: " + Variables.fogToggle));
 

@@ -29,7 +29,7 @@ public class NWADTestKIF {
 						_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "gamerule keepInventory false");
 			}
 		}
-		TrueEnd.queueServerWork(5, () -> {
+		TrueEnd.wait(5, () -> {
 			entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.IN_WALL)), 1);
 		});
 	}

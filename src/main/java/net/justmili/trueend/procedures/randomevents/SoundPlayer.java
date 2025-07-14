@@ -50,7 +50,7 @@ public class SoundPlayer {
                             if (Math.random() < randEvtChance) {
                                 if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.GRASS_BLOCK.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.GRASS_BLOCK) {
                                     for (int index0 = 0; index0 < randomRepeatCount; index0++) {
-                                        TrueEnd.queueServerWork(6, () -> {
+                                        TrueEnd.wait(6, () -> {
                                             if (world instanceof Level _level) {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1);
@@ -65,7 +65,7 @@ public class SoundPlayer {
                             if (Math.random() < randEvtChance) {
                                 if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.DIRT.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.ROOTED_DIRT) {
                                     for (int index1 = 0; index1 < randomRepeatCount; index1++) {
-                                        TrueEnd.queueServerWork(6, () -> {
+                                        TrueEnd.wait(6, () -> {
                                             if (world instanceof Level _level) {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.gravel.break"))), SoundSource.NEUTRAL, 1, 1);
@@ -80,7 +80,7 @@ public class SoundPlayer {
                             if (Math.random() < randEvtChance) {
                                 if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == Blocks.STONE.get() || (world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.STONE) {
                                     for (int index2 = 0; index2 < randomRepeatCount; index2++) {
-                                        TrueEnd.queueServerWork(8, () -> {
+                                        TrueEnd.wait(8, () -> {
                                             if (world instanceof Level _level) {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.stone.break"))), SoundSource.NEUTRAL, 1, 1);
@@ -95,7 +95,7 @@ public class SoundPlayer {
                             if (Math.random() < randEvtChance) {
                                 if ((world.getBlockState(BlockPos.containing(x, y - 0.5, z))).getBlock() == net.minecraft.world.level.block.Blocks.DEEPSLATE) {
                                     for (int index3 = 0; index3 < (randomRepeatCount - 1); index3++) {
-                                        TrueEnd.queueServerWork(8, () -> {
+                                        TrueEnd.wait(8, () -> {
                                             if (world instanceof Level _level) {
                                                 if (!_level.isClientSide()) {
                                                     _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1);

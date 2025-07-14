@@ -102,7 +102,7 @@ public class DimSwapToBTD {
                     return;
                 }
 
-                TrueEnd.queueServerWork(5, () -> {
+                TrueEnd.wait(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
                     BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:plains");
                     if (initialSearchPos == null)
@@ -148,7 +148,7 @@ public class DimSwapToBTD {
                         serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 
-                    TrueEnd.queueServerWork(4, () -> {
+                    TrueEnd.wait(4, () -> {
                         if (absoluteFallbackPlatform) {
                             executeCommand(nextLevel, serverPlayer, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
                         }
@@ -468,8 +468,8 @@ public class DimSwapToBTD {
             try { br.close(); } catch (Exception ignored) {} }
 
         //Play text
-        TrueEnd.queueServerWork(45, () -> {
-            TrueEnd.sendMessegeWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay);
+        TrueEnd.wait(45, () -> {
+            TrueEnd.messageWithCooldown(player, jsonLines.toArray(new String[0]), Variables.btdConversationDelay);
         });
     }
 }

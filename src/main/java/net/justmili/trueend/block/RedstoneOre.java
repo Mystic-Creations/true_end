@@ -122,7 +122,7 @@ public class RedstoneOre extends Block {
 
 		int randomDelay = 1365 + RandomSource.create().nextInt(273);
 
-		TrueEnd.queueServerWork(randomDelay, () -> {
+		TrueEnd.wait(randomDelay, () -> {
 			BlockState _bs2 = world.getBlockState(pos);
 			if (_bs2.getBlock().getStateDefinition().getProperty("lit") instanceof BooleanProperty _booleanProp2)
 				world.setBlock(pos, _bs2.setValue(_booleanProp2, false), 3);

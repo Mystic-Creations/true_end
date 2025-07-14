@@ -40,10 +40,9 @@ public class PlayCredits {
 
             ticksUntilShow = 10;
             tickHandlerEnabled = true;
-            Config.entries.put("creditsToggle", false);
-            Config.serializer.serialize(Config.entries);
+            TrueEnd.updateConfig("creditsToggle", false);
 
-            TrueEnd.queueServerWork(2, () -> {
+            TrueEnd.wait(2, () -> {
                 if (mc.player != null) {
                     double x = mc.player.getX();
                     double y = mc.player.getY();

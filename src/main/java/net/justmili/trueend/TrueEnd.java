@@ -1,5 +1,7 @@
 package net.justmili.trueend;
 
+import net.justmili.trueend.config.Config;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -86,35 +88,41 @@ public class TrueEnd {
     }
 
     private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
-    public static void queueServerWork(int tick, Runnable action) {
+    public static void wait(int tick, Runnable action) {
         if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
             workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
+    }
+    public static void updateConfig(String key, Object value) {
+        Config.entries.put(key, value);
+        Config.serializer.serialize(Config.entries);
+
+        switch (key) {
+            case "randomEventChance" -> Variables.randomEventChance = (double)  value;
+            case "entitySpawnChance" -> Variables.entitySpawnChance = (double)  value;
+            case "btdConversationDelay" -> Variables.btdConversationDelay = (int) value;
+            case "creditsToggle" -> Variables.creditsToggle = (boolean) value;
+            case "fogToggle" -> Variables.fogToggle = (boolean) value;
+            case "popupsToggle" -> Variables.popupsToggle = (boolean) value;
+            default -> LOGGER.warn("updateConfig: unhandled key '{}'", key);
+        }
+    }
+    public static void messageWithCooldown(ServerPlayer player, String[] jsonLines, int cooldown) {
+        for (int i = 0; i < jsonLines.length; i++) {
+            String rawJson = jsonLines[i];
+            wait(1 + cooldown * i, () -> {
+                JsonElement jsonElement = JsonParser.parseString(rawJson);
+                Component component   = Component.Serializer.fromJson(jsonElement);
+                if (component != null) {
+                    player.sendSystemMessage(component);
+                }
+            });
+        }
     }
 
     @SubscribeEvent
     public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(Entities.UNKNOWN.get(),
                 Unknown.createAttributes().build());
-    }
-
-    public static void jsonFormattingCheck(ServerPlayer player, String message) {
-        JsonElement jsonElement;
-        try {
-            jsonElement = JsonParser.parseString(message);
-        } catch (JsonSyntaxException e) {
-            LOGGER.error("Something went wrong while reading file: first_entry.txt");
-            return;
-        }
-        Component component = Component.Serializer.fromJson(jsonElement);
-        if (component != null) {
-            player.sendSystemMessage(component);
-        }
-    }
-    public static void sendMessegeWithCooldown(ServerPlayer player, String[] messages, int cooldown) {
-        for (int i = 0; i < messages.length; i++) {
-            String msg = messages[i];
-            queueServerWork(1 + cooldown * i, () -> jsonFormattingCheck(player, msg));
-        }
     }
 
     private static Predicate<Holder<Biome>> isBiome(String biomeNamespaced) {

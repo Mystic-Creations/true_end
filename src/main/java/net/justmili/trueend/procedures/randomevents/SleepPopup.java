@@ -37,7 +37,7 @@ public class SleepPopup {
 				if (Variables.randomEventsToggle
 						&& Variables.popupsToggle
 						&& Math.random() < Variables.randomEventChance) {
-					TrueEnd.queueServerWork(20, () -> {
+					TrueEnd.wait(20, () -> {
 						User32.INSTANCE.MessageBoxA(0L, "wake up.", "", 0);
 					});
 				}
@@ -45,7 +45,7 @@ public class SleepPopup {
 				if (Variables.randomEventsToggle
 						&& Variables.popupsToggle
 						&& Math.random() < Variables.randomEventChance) {
-					TrueEnd.queueServerWork(20, () -> {
+					TrueEnd.wait(20, () -> {
 						SwingUtilities.invokeLater(() -> {
 							String message = "wake up.";
 							String title = "";
