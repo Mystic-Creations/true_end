@@ -24,7 +24,6 @@ public class PrintVars {
         for (ServerPlayer otherPlayer : player.server.getPlayerList().getPlayers()) {
             Variables.PlayerVariables vars =
                 otherPlayer.getCapability(Variables.PLAYER_VARS_CAP).orElse(new Variables.PlayerVariables());
-            // use hasBeenBeyond() getter instead of private field
             source.sendSystemMessage(Component.literal(
                 "beenBeyond (" + otherPlayer.getName().getString() + "): " + vars.hasBeenBeyond()
             ));
@@ -39,7 +38,6 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
         // Configurable
         source.sendSystemMessage(Component.literal("\n----= Configurable"));
-        //source.sendSystemMessage(Component.literal("clearDreamItems: " + TrueEndVariables.clearDreamItems));
         source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));
         source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance));
         source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance));

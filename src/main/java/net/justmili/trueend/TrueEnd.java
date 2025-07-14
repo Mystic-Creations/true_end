@@ -27,7 +27,6 @@ import net.justmili.trueend.world.seeping_reality.SeepingForestRegion;
 import terrablender.api.Regions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.AbstractMap;

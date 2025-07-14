@@ -19,7 +19,6 @@ public class ConfigInit {
 		Map<String, Object> entries = Config.serializer.deserialize();
 		entries = entries == null ? new HashMap<>() : entries;
 
-        //entries.putIfAbsent("clearDreamItems", true);
 		entries.putIfAbsent("randomEventChance", 0.005d);
 		entries.putIfAbsent("entitySpawnChance", 0.008d);
 		entries.putIfAbsent("popupsToggle", true);

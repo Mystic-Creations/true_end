@@ -22,5 +22,10 @@
       }
     }
   },
-  "parent": "true_end:root"
+  "parent": "true_end:root",
+  "rewards": {
+    "recipes": [
+      "true_end:dreamers_compass"
+    ]
+  }
 }
