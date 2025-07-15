@@ -41,6 +41,11 @@ public class ConfigCmd {
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", true)))
                                 .then(Commands.literal("false")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", false))))
+                        .then(Commands.literal("flashingLights")
+                                .then(Commands.literal("true")
+                                        .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", true)))
+                                .then(Commands.literal("false")
+                                        .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", false))))
         );
     }
 

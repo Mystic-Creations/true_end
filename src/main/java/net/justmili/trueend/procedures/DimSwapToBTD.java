@@ -47,7 +47,7 @@ public class DimSwapToBTD {
     public static final int HOUSE_PLATEAU_WIDTH = 9;
     public static final int HOUSE_PLATEAU_LENGTH = 7;
     public static final int TERRAIN_ADAPT_EXTENSION = 10;
-    public static final int MAX_FALLBACK_SEARCH_TRIES = 24;
+    public static final int MAX_FALLBACK_SEARCH_TRIES = 32;
     public static final BlockPos ABSOLUTE_FALLBACK_POS = new BlockPos(0, 120, 12550832);
 
     @SubscribeEvent

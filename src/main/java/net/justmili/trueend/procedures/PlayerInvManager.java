@@ -284,6 +284,18 @@ public class PlayerInvManager {
         }
     }
 
+    public static void clearCuriosSlots(ServerPlayer player) {
+        CompoundTag emptyCuriosInventory = new CompoundTag();
+        emptyCuriosInventory.put("Curios", new CompoundTag());
+        CompoundTag curiosTag = new CompoundTag();
+        curiosTag.put("curios:inventory", emptyCuriosInventory);
+        CompoundTag forgeCaps = new CompoundTag();
+        forgeCaps.put("ForgeCaps", curiosTag);
+
+        // And load it back into the player
+        player.load(forgeCaps);
+    }
+
     @SubscribeEvent
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;

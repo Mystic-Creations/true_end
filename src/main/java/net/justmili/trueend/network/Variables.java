@@ -42,8 +42,8 @@ public class Variables {
     public static boolean creditsToggle;
     public static int btdConversationDelay;
     public static boolean randomEventsToggle;
+    public static boolean flashingLights;
 
-    // Register messages and capabilities
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
         TrueEnd.PACKET_HANDLER.registerMessage(
@@ -64,14 +64,10 @@ public class Variables {
 
     @SubscribeEvent
     public static void onRegisterCaps(RegisterCapabilitiesEvent evt) {
-
         evt.register(PlayerVariables.class);
         evt.register(MapVariables.class);
     }
 
-    // --------------------
-    // -- MapVariables (global data saved per-world)
-    // --------------------
     public static class MapVariables extends SavedData {
         public static final String DATA_NAME = "true_end_mapvars";
 
@@ -82,41 +78,16 @@ public class Variables {
         private int btdConversationDelay = 0;
         private double randomEventChance = 0.0;
         private boolean randomEventsToggle = false;
+        private boolean flashingLights = false;
 
         public boolean isUnknownInWorld() { return unknownInWorld; }
-        public int getBtdConversationDelay() { return btdConversationDelay; }
-        public double getRandomEventChance() { return randomEventChance; }
-        public boolean getRandomEventToggle() { return randomEventsToggle; }
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
+        public boolean flashingLightsTogge() { return flashingLights; }
 
-        public void setUnknownInWorld(boolean v) {
-            unknownInWorld = v;
-            setDirty();
-        }
-
-        public void setBtdSpawn(double x, double y, double z) {
-            btdSpawnX = x;
-            btdSpawnY = y;
-            btdSpawnZ = z;
-            setDirty();
-        }
-
-        public void setBtdConversationDelay(int delay) {
-            btdConversationDelay = delay;
-            setDirty();
-        }
-
-        public void setRandomEventChance(double chance) {
-            randomEventChance = chance;
-            setDirty();
-        }
-
-        public void setRandomEventsToggle(boolean toggle) {
-            randomEventsToggle = toggle;
-            setDirty();
-        }
+        public void setUnknownInWorld(boolean v) { unknownInWorld = v ;setDirty(); }
+        public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
@@ -127,6 +98,7 @@ public class Variables {
             m.btdConversationDelay = nbt.getInt("btdConversationDelay");
             m.randomEventChance = nbt.getDouble("randomEventChance");
             m.randomEventsToggle = nbt.getBoolean("randomEventsToggle");
+            m.flashingLights = nbt.getBoolean("flashingLights");
             return m;
         }
 
@@ -139,6 +111,7 @@ public class Variables {
             nbt.putInt("btdConversationDelay", btdConversationDelay);
             nbt.putDouble("randomEventChance", randomEventChance);
             nbt.putBoolean("randomEventsToggle", randomEventsToggle);
+            nbt.putBoolean("flashingLights", flashingLights);
             return nbt;
         }
 

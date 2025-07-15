@@ -16,9 +16,9 @@ VictorTBH
 ----=====----
 
 §l// Art & Models //
+Mochila
 JustMili
 Mahanhamisi
-Mochila
 
 ----=====----
 
@@ -49,11 +49,10 @@ Mahanhamisi
 
 §l// Translators //
 JustMili - English (US)
-*CW - English (UK)
-*GaelFM - Spanish (ES)
+GaelFM - Spanish (ES)
 Mary - Portuguese (BR)
-JustMili - Polish
 John Roboeye - Russian
+JustMili - Polish
 Eetgeenappels - Dutch
 Mahanhamisi - Persian (Farsi)
 
@@ -65,8 +64,7 @@ ShinHoa / twitch.tv/shinhoaz
 ----=====----
 
 §l// Contributors //
-Notmas - Gave ideas and the motivation
-to Mili to continue this project
+Notmas - Ideas
 
 ----=====----
 
@@ -98,6 +96,8 @@ Revamps, more blocks, more lore.
 
 
 See you all next time <3
+
+
 
 
 

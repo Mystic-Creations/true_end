@@ -21,20 +21,22 @@ public class ConfigInit {
 
 		entries.putIfAbsent("randomEventChance", 0.005d);
 		entries.putIfAbsent("entitySpawnChance", 0.008d);
+		entries.putIfAbsent("btdConversationDelay", 40d);
+		entries.putIfAbsent("randomEventsToggle", true);
 		entries.putIfAbsent("popupsToggle", true);
 		entries.putIfAbsent("fogToggle", true);
 		entries.putIfAbsent("creditsToggle", true);
-		entries.putIfAbsent("btdConversationDelay", 40d);
-		entries.putIfAbsent("randomEventsToggle", true);
+		entries.putIfAbsent("flashingLights", true);
 
 		//Variables.clearDreamItems = (boolean) entries.get("clearDreamItems");
 		Variables.randomEventChance = (double) entries.get("randomEventChance");
 		Variables.entitySpawnChance = (double) entries.get("entitySpawnChance");
+		Variables.btdConversationDelay = Math.toIntExact(Math.round((double) entries.get("btdConversationDelay")));
+		Variables.randomEventsToggle = (boolean) entries.get("randomEventsToggle");
 		Variables.popupsToggle = (boolean) entries.get("popupsToggle");
 		Variables.fogToggle = (boolean) entries.get("fogToggle");
 		Variables.creditsToggle = (boolean) entries.get("creditsToggle");
-		Variables.btdConversationDelay = Math.toIntExact(Math.round((double) entries.get("btdConversationDelay")));
-		Variables.randomEventsToggle = (boolean) entries.get("randomEventsToggle");
+		Variables.flashingLights = (boolean) entries.get("flashingLights");
 
 		Config.entries = entries;
 		Config.serializer.serialize(Config.entries);
