@@ -1,6 +1,6 @@
 package net.justmili.trueend.procedures.randomevents;
 
-import net.justmili.trueend.sources.User32;
+import net.justmili.trueend.interfaces.User32;
 import net.justmili.trueend.network.Variables;
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.entity.player.Player;

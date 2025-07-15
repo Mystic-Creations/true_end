@@ -6,9 +6,7 @@ import org.apache.logging.log4j.MarkerManager;
 import org.apache.logging.log4j.Level;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
 import net.justmili.trueend.TrueEnd;
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -20,7 +18,7 @@ public class ConfigInit {
 		entries = entries == null ? new HashMap<>() : entries;
 
 		entries.putIfAbsent("randomEventChance", 0.005d);
-		entries.putIfAbsent("entitySpawnChance", 0.008d);
+		entries.putIfAbsent("entitySpawnChance", 0.05d);
 		entries.putIfAbsent("btdConversationDelay", 40d);
 		entries.putIfAbsent("randomEventsToggle", true);
 		entries.putIfAbsent("popupsToggle", true);
@@ -28,7 +26,6 @@ public class ConfigInit {
 		entries.putIfAbsent("creditsToggle", true);
 		entries.putIfAbsent("flashingLights", true);
 
-		//Variables.clearDreamItems = (boolean) entries.get("clearDreamItems");
 		Variables.randomEventChance = (double) entries.get("randomEventChance");
 		Variables.entitySpawnChance = (double) entries.get("entitySpawnChance");
 		Variables.btdConversationDelay = Math.toIntExact(Math.round((double) entries.get("btdConversationDelay")));
@@ -41,6 +38,5 @@ public class ConfigInit {
 		Config.entries = entries;
 		Config.serializer.serialize(Config.entries);
 		TrueEnd.LOGGER.atLevel(Level.DEBUG).withMarker(MarkerManager.getMarker("CONFIG")).log(Config.serializer.getMessage());
-
 	}
 }

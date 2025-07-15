@@ -37,25 +37,29 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
-import static net.justmili.trueend.sources.IntegerRegistry.*;
 
 @Mod.EventBusSubscriber
 public class DimSwapToBTD {
-    private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
-
     //Vars
+    private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
     public static final int HOUSE_PLATEAU_WIDTH = 9;
     public static final int HOUSE_PLATEAU_LENGTH = 7;
     public static final int TERRAIN_ADAPT_EXTENSION = 10;
     public static final int MAX_FALLBACK_SEARCH_TRIES = 32;
     public static final BlockPos ABSOLUTE_FALLBACK_POS = new BlockPos(0, 120, 12550832);
+    public static final int BlockPosRandomX = 16 + (int)(Math.random() * ((48 - 16) + 1));
+    public static final int BlockPosRandomY = 128 + (int)(Math.random() * ((256 - 128) + 1));
+    public static final int BlockPosRandomZ = 16 + (int)(Math.random() * ((48 - 16) + 1));
 
+    //Advancement check
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
         if (event.getAdvancement().getId().equals(ResourceLocation.parse("true_end:stop_dreaming"))) {
             execute(event, event.getEntity().level(), event.getEntity());
         }
     }
+
+    //Checks and spawning
     private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
         if (!(entity instanceof ServerPlayer serverPlayer))
             return;

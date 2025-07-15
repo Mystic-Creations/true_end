@@ -8,34 +8,32 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.TickEvent;
-
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
-
 import javax.annotation.Nullable;
-
 import java.util.Objects;
 
 import static net.justmili.trueend.init.Dimensions.NWAD;
-import static net.justmili.trueend.sources.IntegerRegistry.*;
+import static net.justmili.trueend.procedures.DimSwapToBTD.BlockPosRandomX;
+import static net.justmili.trueend.procedures.DimSwapToBTD.BlockPosRandomZ;
 
 @Mod.EventBusSubscriber
 public class SoundPlayer {
+    public static final int randomRepeatCount = 3 + (int)(Math.random() * ((9 - 3) + 1));
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             execute(event, event.player.level(), event.player.getX(), event.player.getY(), event.player.getZ(), event.player);
         }
     }
-
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
         execute(null, world, x, y, z, entity);
     }
-
     private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity) {
         int soundX = BlockPosRandomX/4;
         int soundY = 1 + (int)(Math.random() * ((8 - 1) + 1));
@@ -53,9 +51,9 @@ public class SoundPlayer {
                                         TrueEnd.wait(6, () -> {
                                             if (world instanceof Level _level) {
                                                 if (!_level.isClientSide()) {
-                                                    _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1);
+                                                    _level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1);
                                                 } else {
-                                                    _level.playLocalSound(soundX, soundY, soundZ, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.break"))), SoundSource.NEUTRAL, 1, 1, false);
+                                                    _level.playLocalSound(soundX, soundY, soundZ, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("block.grass.step"))), SoundSource.NEUTRAL, 1, 1, false);
                                                 }
                                             }
                                         });
