@@ -95,9 +95,7 @@ public class DimSwapToBTD {
                             serverPlayer.getYRot(), serverPlayer.getXRot());
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
                     for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                        serverPlayer.connection
-                                .send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
-                    serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
                     sendFirstEntryConversation(serverPlayer, nextLevel);
                     executeCommand(nextLevel, serverPlayer, "function true_end:btd_global_spawn");
                     serverPlayer.getCapability(Variables.PLAYER_VARS_CAP)

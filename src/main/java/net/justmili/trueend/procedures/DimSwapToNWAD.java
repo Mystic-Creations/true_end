@@ -43,66 +43,66 @@ public class DimSwapToNWAD {
 
 	private static void executeHurt(Level world, DamageSource source, Entity entity) {
 		if (world == null || source == null || entity == null) return;
-		if (!(entity instanceof ServerPlayer player)) return;
+		if (!(entity instanceof ServerPlayer serverPlayer)) return;
 		if (!source.is(DamageTypes.IN_WALL)) return;
 		if (RAND.nextDouble() >= Variables.randomEventChance * 2) return;
 
-		Advancement adv = player.server.getAdvancements()
+		Advancement adv = serverPlayer.server.getAdvancements()
 				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
-		boolean hasAdvancement = adv != null && player.getAdvancements().getOrStartProgress(adv).isDone();
+		boolean hasAdvancement = adv != null && serverPlayer.getAdvancements().getOrStartProgress(adv).isDone();
 		if (hasAdvancement) return;
 
-		PlayerInvManager.saveInvNWAD(player);
+		PlayerInvManager.saveInvNWAD(serverPlayer);
 		if (!world.isClientSide()) {
-			//player.getInventory().clearContent();
-			//I turned off item clearing so player will have a bit
+			//serverPlayer.getInventory().clearContent();
+			//I turned off item clearing so serverPlayer will have a bit
 			// more of a scare about losing their items even tho they're gonna get them back
-			player.setGameMode(GameType.ADVENTURE);
-			teleportToNWAD(player);
+			serverPlayer.setGameMode(GameType.ADVENTURE);
+			teleportToNWAD(serverPlayer);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerDeath(LivingDeathEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof ServerPlayer player)) return;
-		ResourceKey<Level> dim = player.level().dimension();
+		if (!(entity instanceof ServerPlayer serverPlayer)) return;
+		ResourceKey<Level> dim = serverPlayer.level().dimension();
 		if (dim == NWAD) {
-			diedIn.put(player.getUUID(), dim);
+			diedIn.put(serverPlayer.getUUID(), dim);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerRespawnEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof ServerPlayer player)) return;
+		if (!(entity instanceof ServerPlayer serverPlayer)) return;
 
-		UUID uuid = player.getUUID();
+		UUID uuid = serverPlayer.getUUID();
 		ResourceKey<Level> dim = diedIn.remove(uuid);
 		if (dim == null || dim != NWAD) return;
 
-		PlayerInvManager.restoreInv(player);
-		player.setGameMode(GameType.SURVIVAL);
+		PlayerInvManager.restoreInv(serverPlayer);
+		serverPlayer.setGameMode(GameType.SURVIVAL);
 
-		Advancement advancement = player.server.getAdvancements()
+		Advancement advancement = serverPlayer.server.getAdvancements()
 				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
         assert advancement != null;
-        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
+        AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
 		if (!progress.isDone()) {
 			for (String criteria : progress.getRemainingCriteria()) {
-				player.getAdvancements().award(advancement, criteria);
+				serverPlayer.getAdvancements().award(advancement, criteria);
 			}
 		}
 	}
 
-	private static void teleportToNWAD(ServerPlayer player) {
-		if (player.level().dimension() == NWAD) return;
-		ServerLevel next = player.server.getLevel(NWAD);
+	private static void teleportToNWAD(ServerPlayer serverPlayer) {
+		if (serverPlayer.level().dimension() == NWAD) return;
+		ServerLevel next = serverPlayer.server.getLevel(NWAD);
 		if (next == null) return;
 
-		player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+		serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-		int x = player.getBlockX(), z = player.getBlockZ(), y = 120;
+		int x = serverPlayer.getBlockX(), z = serverPlayer.getBlockZ(), y = 120;
 		boolean found = false;
 		while (y > 0) {
 			BlockPos pos = new BlockPos(x, y, z);
@@ -116,11 +116,10 @@ public class DimSwapToNWAD {
 		}
 		if (!found) y = 129;
 
-		player.teleportTo(next, x, y + 1, z, player.getYRot(), player.getXRot());
-		player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
-		player.getActiveEffects().forEach(e ->
-				player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), e))
+		serverPlayer.teleportTo(next, x, y + 1, z, serverPlayer.getYRot(), serverPlayer.getXRot());
+		serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
+		serverPlayer.getActiveEffects().forEach(e ->
+				serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), e))
 		);
-		player.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
 	}
 }
