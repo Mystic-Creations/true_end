@@ -102,6 +102,9 @@ public class TrueEnd {
             case "creditsToggle" -> Variables.creditsToggle = (boolean) value;
             case "fogToggle" -> Variables.fogToggle = (boolean) value;
             case "popupsToggle" -> Variables.popupsToggle = (boolean) value;
+            case "daytimeChangeToggle" -> Variables.daytimeChangeToggle = (boolean) value;
+            case "clearDreamItems" -> Variables.clearDreamItems = (boolean) value;
+            case "flashingLights" -> Variables.flashingLights = (boolean) value;
             default -> LOGGER.warn("updateConfig: unhandled key '{}'", key);
         }
     }
