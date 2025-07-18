@@ -34,7 +34,6 @@ public class Variables {
 
     public static final Capability<Variables.MapVariables> MAP_VARIABLES_CAP =
             CapabilityManager.get(new CapabilityToken<>() {});
-    public static boolean clearDreamItems;
     public static double randomEventChance;
     public static double entitySpawnChance;
     public static boolean popupsToggle;
@@ -43,6 +42,8 @@ public class Variables {
     public static int btdConversationDelay;
     public static boolean randomEventsToggle;
     public static boolean flashingLights;
+    public static boolean daytimeChangeToggle;
+    public static boolean clearDreamItems;
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
@@ -79,12 +80,13 @@ public class Variables {
         private double randomEventChance = 0.0;
         private boolean randomEventsToggle = false;
         private boolean flashingLights = false;
+        private boolean daytimeChangeToggle = false;
+        private boolean clearDreamItems = false;
 
         public boolean isUnknownInWorld() { return unknownInWorld; }
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
-        public boolean flashingLightsTogge() { return flashingLights; }
 
         public void setUnknownInWorld(boolean v) { unknownInWorld = v ;setDirty(); }
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
@@ -99,6 +101,8 @@ public class Variables {
             m.randomEventChance = nbt.getDouble("randomEventChance");
             m.randomEventsToggle = nbt.getBoolean("randomEventsToggle");
             m.flashingLights = nbt.getBoolean("flashingLights");
+            m.daytimeChangeToggle = nbt.getBoolean("daytimeChangeToggle");
+            m.clearDreamItems = nbt.getBoolean("clearDreamItems");
             return m;
         }
 
@@ -112,6 +116,8 @@ public class Variables {
             nbt.putDouble("randomEventChance", randomEventChance);
             nbt.putBoolean("randomEventsToggle", randomEventsToggle);
             nbt.putBoolean("flashingLights", flashingLights);
+            nbt.putBoolean("daytimeChangeToggle", daytimeChangeToggle);
+            nbt.putBoolean("clearDreamItems", clearDreamItems);
             return nbt;
         }
 

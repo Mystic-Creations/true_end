@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 public class PrintVars {
 
@@ -19,33 +18,30 @@ public class PrintVars {
         int btdSpawnY = (int) getVariable.getBtdSpawnY();
         int btdSpawnZ = (int) getVariable.getBtdSpawnZ();
 
-        // Per-Player Variables
+        // Player vars
         source.sendSystemMessage(Component.literal("----= Per-Player"));
         for (ServerPlayer otherPlayer : player.server.getPlayerList().getPlayers()) {
-            Variables.PlayerVariables vars =
-                otherPlayer.getCapability(Variables.PLAYER_VARS_CAP).orElse(new Variables.PlayerVariables());
-            source.sendSystemMessage(Component.literal(
-                "beenBeyond (" + otherPlayer.getName().getString() + "): " + vars.hasBeenBeyond()
-            ));
+            Variables.PlayerVariables vars = otherPlayer.getCapability(Variables.PLAYER_VARS_CAP).orElse(new Variables.PlayerVariables());
+            source.sendSystemMessage(
+                    Component.literal("beenBeyond (" + otherPlayer.getName().getString() + "): " + vars.hasBeenBeyond())
+            );
         }
 
-        // Global Variables
-        source.sendSystemMessage(Component.literal("\n----= Global"));
+        // World vars
+        source.sendSystemMessage(Component.literal("\n----= World Variables"));
         Variables.MapVariables globalVars = Variables.MapVariables.get(world);
-        source.sendSystemMessage(Component.literal(
-            "btdSpawnX/Y/Z: " + btdSpawnX + "/" + btdSpawnY + "/" + btdSpawnZ
-        ));
+        source.sendSystemMessage(Component.literal("btdSpawnX/Y/Z: "+btdSpawnX+"/"+btdSpawnY +"/"+btdSpawnZ));
         source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
-        // Configurable
-        source.sendSystemMessage(Component.literal("\n----= Configurable"));
+        // Config vars
+        source.sendSystemMessage(Component.literal("\n----= Config Variables"));
         source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));
         source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance));
         source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance));
         source.sendSystemMessage(Component.literal("creditsToggle: " + Variables.creditsToggle));
         source.sendSystemMessage(Component.literal("popupsToggle: " + Variables.popupsToggle));
         source.sendSystemMessage(Component.literal("fogToggle: " + Variables.fogToggle));
-
-        source.sendSystemMessage(Component.literal("\n----= Paths"));
-        source.sendSystemMessage(Component.literal("CONFIGDIR: " + FMLPaths.CONFIGDIR.get()));
+        source.sendSystemMessage(Component.literal("daytimeChangeToggle: " + Variables.daytimeChangeToggle));
+        source.sendSystemMessage(Component.literal("clearDreamItems: " + Variables.daytimeChangeToggle));
+        source.sendSystemMessage(Component.literal("flashingLights: " + Variables.flashingLights));
     }
 }

@@ -21,11 +21,5 @@
         "from": "minecraft:the_end"
       }
     }
-  },
-  "parent": "true_end:root",
-  "rewards": {
-    "recipes": [
-      "true_end:dreamers_compass"
-    ]
   }
 }

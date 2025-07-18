@@ -33,13 +33,13 @@
 - (Wooden) Button
 - Red Flower
 - Yellow Flower
-- Sapling (dev note: in progress, getting fixed)
+- Sapling
 
 --------= Items
 - Dreamer's Compass / Leads you towards The Dreaming Tree
 - Changed the look of the Mysterious Cube
-- Music Disc "Far Lands" by Drekil
-- Music Disc "Never Alone" by Dreki
+- Music Disc "Far Lands" by DGiraffe
+- Music Disc "Never Alone" by DGiraffe
 
 --------= Advancements
 - "Was I here?" / Discover a early-game base, that doesn't belong to you somewhere in your world
@@ -53,18 +53,21 @@
 - Random Events
 - Config (via /te-config command or via file editing)
 - Mod Credits
+- You can kind of talk with the entity (inspired by [The Broken Script](https://modrinth.com/mod/the-broken-script))
+- Day/Night cycle can change randomly (can be disabled, doesn't reset day counter)
 
 --------= New Supported Languages
 - Russian
 - Portuguese (Brazilian)
 - Persian (Farsi)
-- Spanish (Spain)                 (dev note: awaiting)
+- Spanish (Spain)
 
 ## Removed
 --------= Gamerules
 - btdConversationMessegeDelay
 - logicHasVisitedBTDForTheFirstTime
 - keepInvDefaultGameplayValue
+- clearDreamItems (now in /te-config command)
 
 --------= Biomes
 - Neverending Ocean

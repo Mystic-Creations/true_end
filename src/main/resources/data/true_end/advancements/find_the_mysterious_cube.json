@@ -32,5 +32,10 @@
       }
     }
   },
-  "parent": "true_end:stop_dreaming"
+  "parent": "true_end:stop_dreaming",
+  "rewards": {
+    "recipes": [
+      "true_end:dreamers_compass"
+    ]
+  }
 }

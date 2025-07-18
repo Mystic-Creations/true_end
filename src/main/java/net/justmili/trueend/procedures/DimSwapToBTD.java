@@ -23,7 +23,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import net.justmili.trueend.init.GameRules;
 import net.justmili.trueend.init.Blocks;
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -174,7 +173,8 @@ public class DimSwapToBTD {
                     });
 
                     PlayerInvManager.saveInvBTD(serverPlayer);
-                    if (nextLevel.getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) {
+                    PlayerInvManager.clearCuriosSlots(serverPlayer);
+                    if (Variables.clearDreamItems) {
                         serverPlayer.getInventory().clearContent();
                     }
                 });

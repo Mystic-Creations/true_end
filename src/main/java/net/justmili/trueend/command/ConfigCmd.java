@@ -46,6 +46,16 @@ public class ConfigCmd {
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", true)))
                                 .then(Commands.literal("false")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", false))))
+                        .then(Commands.literal("daytimeChangeToggle")
+                                .then(Commands.literal("true")
+                                        .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", true)))
+                                .then(Commands.literal("false")
+                                        .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", false))))
+                        .then(Commands.literal("clearDreamItems")
+                                .then(Commands.literal("true")
+                                        .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", true)))
+                                .then(Commands.literal("false")
+                                        .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", false))))
         );
     }
 

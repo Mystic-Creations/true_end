@@ -1,7 +1,6 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.init.GameRules;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -35,6 +34,7 @@ public class PlayerInvManager {
 
     // BTD player inv management
     public static void saveInvBTD(ServerPlayer player) {
+        if (!Variables.clearDreamItems) return;
         CompoundTag root = new CompoundTag();
         ListTag mainList = new ListTag();
         for (int i = 0; i < player.getInventory().items.size(); i++) {
@@ -106,6 +106,7 @@ public class PlayerInvManager {
 
     // NWAD player inv management
     public static void saveInvNWAD(ServerPlayer player) {
+        if (!Variables.clearDreamItems) return;
         CompoundTag root = new CompoundTag();
         ListTag mainList = new ListTag();
         for (int i = 0; i < player.getInventory().items.size(); i++) {
@@ -175,6 +176,7 @@ public class PlayerInvManager {
     }
 
     public static void restoreInvWithChance(ServerPlayer player) {
+        if (!Variables.clearDreamItems) return;
         File in = new File(saveDir, makeBackupFilename(player, "BTD"));
         if (!in.exists()) return;
 
@@ -235,6 +237,7 @@ public class PlayerInvManager {
     }
 
     public static void restoreInv(ServerPlayer player) {
+        if (!Variables.clearDreamItems) return;
         File in = new File(saveDir, makeBackupFilename(player, "NWAD"));
         if (!in.exists()) return;
 
@@ -300,7 +303,7 @@ public class PlayerInvManager {
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if (event.getFrom() != BTD) return;
-        if (!player.level().getGameRules().getBoolean(GameRules.CLEAR_DREAM_ITEMS)) return;
+        if (!Variables.clearDreamItems) return;
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
             if (data.hasBeenBeyond()) {
