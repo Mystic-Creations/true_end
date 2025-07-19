@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
@@ -15,24 +14,18 @@ import static net.justmili.trueend.init.Dimensions.BTD;
 public class NotAlone {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            execute(event, event.player);
-        }
-    }
-
-    private static void execute(Event event, Entity entity) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Entity entity = event.player;
         if (entity == null) return;
-        if (Variables.randomEventsToggle) {
-            if (Math.random() < Variables.randomEventChance / 2) {
-                if ((entity.level().dimension()) == BTD) {
-                    if (entity instanceof ServerPlayer player) {
-                        Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
-                        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
-                        if (!progress.isDone()) {
-                            for (String criteria : progress.getRemainingCriteria())
-                                player.getAdvancements().award(advancement, criteria);
-                        }
-                    }
+        if (!((entity.level().dimension()) == BTD)) return;
+        if (!Variables.randomEventsToggle) return;
+        if (Math.random() < Variables.randomEventChance/2) {
+            if (entity instanceof ServerPlayer player) {
+                Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
+                AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
+                if (!progress.isDone()) {
+                    for (String criteria : progress.getRemainingCriteria())
+                        player.getAdvancements().award(advancement, criteria);
                 }
             }
         }

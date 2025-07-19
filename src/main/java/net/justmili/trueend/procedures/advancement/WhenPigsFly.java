@@ -17,21 +17,15 @@ public class WhenPigsFly {
 
     @SubscribeEvent
     public static void onPigFallDeath(LivingDeathEvent event) {
-        // Check if the entity that died is a pig
         if (!(event.getEntity() instanceof Pig pig)) {
             return;
         }
-
-        // Check if the damage source is fall damage
         DamageSource source = event.getSource();
         if (!source.is(DamageTypes.FALL)) {
             return;
         }
-
-        // Check if the pig had any passengers
         for (Entity passenger : pig.getPassengers()) {
             if (passenger instanceof ServerPlayer player) {
-                // Grant the advancement to the player
                 Advancement advancement = player.server.getAdvancements().getAdvancement(
                         ResourceLocation.parse("true_end:story/flying_pig"));
                 if (advancement != null) {

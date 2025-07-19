@@ -33,7 +33,7 @@ public class AlphaFoodSystem {
         int consumed = execute(event, player, stack);
     }
 
-    private static int execute(@Nullable PlayerInteractEvent.RightClickItem event, @Nullable Player player,
+    private static int execute(PlayerInteractEvent.RightClickItem event, Player player,
             ItemStack stack) {
         if (player == null)
             return 0;
