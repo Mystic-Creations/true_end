@@ -30,13 +30,7 @@ DGiraffe
 §l// Bug Testers //
 Hxplume
 RoroTheWizard
-
-----=====----
-
-§l// Ideas //
-JustMili
-Notmas*
-Eetgeenappels
+Izya
 
 ----=====----
 
@@ -44,6 +38,13 @@ Eetgeenappels
 JustMili
 VictorTBH
 Mahanhamisi
+
+----=====----
+
+§l// Ideas //
+JustMili
+Notmas*
+Eetgeenappels
 
 ----=====----
 
@@ -70,7 +71,6 @@ Notmas - Ideas
 
 §l// Patreons //
 *insert cricket sounds*
-
 
 ------=========------
 

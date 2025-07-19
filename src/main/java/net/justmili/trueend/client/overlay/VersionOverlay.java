@@ -19,12 +19,13 @@ import static net.justmili.trueend.TrueEnd.MODID;
 public class VersionOverlay {
 
     private static final String BASE_TEXT = "Minecraft Alpha v1.1.2_10";
-    private static final String[] EGGS = {
-        "Minecraft Alpha v0.0.0",
+    private static final String[] VERSIONS = {
         "Minecraft Alpha v1.1.2",
-        "Minecraft Alpha v1.1.2_00",
+        "Minecraft Alpha v1.1.2_01",
         "Minecraft v1.20.1",
-        "Minecraft Alpha v1.1.2_wakeup"
+        "Minecraft Snapshot -3w21a", //Reference to the "Snapshot Null" series on YT
+        "Minecraft Beta v1.0.46", //Reference to andrewgames722 channel on YT
+        "Minecraft Alpha v1.0.7" //Reference to the VoidExp series by mark101 on YT, specifically moonglitch.avi video
     };
 
     private static String currentText = BASE_TEXT;
@@ -51,7 +52,7 @@ public class VersionOverlay {
             // 6000 - ticks between each random "glitch"
             // "//2-6 ticks" - "glitch" string show time
         } else if (random.nextInt(6000) == 0) {
-            currentText = EGGS[random.nextInt(EGGS.length)];
+            currentText = VERSIONS[random.nextInt(VERSIONS.length)];
             flashTicks = 2 + random.nextInt(5); // 2–4 ticks
         }
     }

@@ -10,10 +10,10 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class TimeChange {
-    private static final int DAY = 1000;
+    public static final int DAY = 1000;
     private static final int NOON = 6000;
-    private static final int NIGHT = 13000;
-    private static final int MIDNIGHT = 18000;
+    public static final int NIGHT = 13000;
+    public static final int MIDNIGHT = 18000;
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
