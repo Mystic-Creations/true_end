@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.advancements;
+package net.justmili.trueend.procedures.advancement;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

@@ -1,7 +1,10 @@
 package net.justmili.trueend.command;
 
-import net.justmili.trueend.procedures.devcmd.*;
-import net.justmili.trueend.procedures.devcmd.screentests.*;
+import net.justmili.trueend.command.calls.BTDTest;
+import net.justmili.trueend.command.calls.PrintVars;
+import net.justmili.trueend.command.calls.screentests.TestBlackOverlay;
+import net.justmili.trueend.command.calls.screentests.TestCredits;
+import net.justmili.trueend.command.calls.screentests.TestFunny;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

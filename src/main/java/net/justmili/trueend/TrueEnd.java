@@ -1,15 +1,8 @@
 package net.justmili.trueend;
 
-import net.justmili.trueend.config.Config;
-import net.justmili.trueend.network.Variables;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.biome.Biome;
-import com.mojang.datafixers.util.Pair;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -34,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Predicate;
 
 
 @Mod("true_end")
@@ -50,11 +42,11 @@ public class TrueEnd {
 
         Items.REGISTRY.register(EVENT_BUS);
         Blocks.REGISTRY.register(EVENT_BUS);
-        Tabs.REGISTRY.register(EVENT_BUS);
         Particles.REGISTRY.register(EVENT_BUS);
         Entities.ENTITY_TYPES.register(EVENT_BUS);
-        Guis.REGISTRY.register(EVENT_BUS);
         Sounds.REGISTRY.register(EVENT_BUS);
+        Guis.REGISTRY.register(EVENT_BUS);
+        Tabs.REGISTRY.register(EVENT_BUS);
 
         EVENT_BUS.addListener(this::commonSetup);
         EVENT_BUS.addListener(this::onEntityAttributeCreation);
@@ -91,23 +83,6 @@ public class TrueEnd {
         if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
             workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
     }
-    public static void updateConfig(String key, Object value) {
-        Config.entries.put(key, value);
-        Config.serializer.serialize(Config.entries);
-
-        switch (key) {
-            case "randomEventChance" -> Variables.randomEventChance = (double)  value;
-            case "entitySpawnChance" -> Variables.entitySpawnChance = (double)  value;
-            case "btdConversationDelay" -> Variables.btdConversationDelay = (int) value;
-            case "creditsToggle" -> Variables.creditsToggle = (boolean) value;
-            case "fogToggle" -> Variables.fogToggle = (boolean) value;
-            case "popupsToggle" -> Variables.popupsToggle = (boolean) value;
-            case "daytimeChangeToggle" -> Variables.daytimeChangeToggle = (boolean) value;
-            case "clearDreamItems" -> Variables.clearDreamItems = (boolean) value;
-            case "flashingLights" -> Variables.flashingLights = (boolean) value;
-            default -> LOGGER.warn("updateConfig: unhandled key '{}'", key);
-        }
-    }
     public static void messageWithCooldown(ServerPlayer player, String[] jsonLines, int cooldown) {
         for (int i = 0; i < jsonLines.length; i++) {
             String rawJson = jsonLines[i];
@@ -123,20 +98,6 @@ public class TrueEnd {
 
     @SubscribeEvent
     public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(Entities.UNKNOWN.get(),
-                Unknown.createAttributes().build());
-    }
-
-    private static Predicate<Holder<Biome>> isBiome(String biomeNamespaced) {
-        return biomeHolder -> biomeHolder.unwrapKey()
-                .map(biomeKey -> biomeKey.location().toString().equals(biomeNamespaced))
-                .orElse(false);
-    }
-    public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
-        Pair<BlockPos, Holder<Biome>> result = level.getLevel()
-                .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
-        if (result == null)
-            return null;
-        return result.getFirst();
+        event.put(Entities.UNKNOWN.get(), Unknown.createAttributes().build());
     }
 }

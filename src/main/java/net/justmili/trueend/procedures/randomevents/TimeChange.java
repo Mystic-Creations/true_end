@@ -21,12 +21,17 @@ public class TimeChange {
         if (!Variables.randomEventsToggle) return;
         if (!(event.player instanceof ServerPlayer serverPlayer)) return;
 
+        ServerLevel world = (ServerLevel) serverPlayer.level();
+        long totalDays = world.getDayTime() / 24000;
+        if (totalDays < 3) return;
+        if (totalDays % 4 != 0) return;
+
         makeNight(serverPlayer);
         makeDay(serverPlayer);
     }
 
     public static void makeNight(ServerPlayer player) {
-        if (!(Math.random() < (Variables.randomEventChance/8))) return;
+        if (!(Math.random() < (Variables.randomEventChance/64))) return;
         ServerLevel world = (ServerLevel) player.level();
         long time = world.getDayTime() % 24000;
         if (time > DAY && time < NIGHT) {
@@ -37,7 +42,7 @@ public class TimeChange {
     }
 
     public static void makeDay(ServerPlayer player) {
-        if (!(Math.random() < (Variables.randomEventChance/8))) return;
+        if (!(Math.random() < (Variables.randomEventChance/64))) return;
         ServerLevel world = (ServerLevel) player.level();
         long time = world.getDayTime() % 24000;
         boolean isNight = time >= MIDNIGHT || time < DAY;

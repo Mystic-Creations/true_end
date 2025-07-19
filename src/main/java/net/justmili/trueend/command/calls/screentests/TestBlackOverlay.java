@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.devcmd.screentests;
+package net.justmili.trueend.command.calls.screentests;
 
 import io.netty.buffer.Unpooled;
 import net.justmili.trueend.client.gui.inventory.BlackOverlay;

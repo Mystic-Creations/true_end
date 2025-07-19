@@ -29,7 +29,7 @@ public class PlayCredits {
 
     @SubscribeEvent
     public static void onDimensionChange(PlayerChangedDimensionEvent event) {
-        if (Variables.creditsToggle == true) hasShownCreditsThisSession = false;
+        if (Variables.creditsToggle) hasShownCreditsThisSession = false;
         if (hasShownCreditsThisSession) return;
 
         if (event.getFrom() == BTD &&
@@ -40,7 +40,7 @@ public class PlayCredits {
 
             ticksUntilShow = 10;
             tickHandlerEnabled = true;
-            TrueEnd.updateConfig("creditsToggle", false);
+            Config.updateConfig("creditsToggle", false);
 
             TrueEnd.wait(2, () -> {
                 if (mc.player != null) {

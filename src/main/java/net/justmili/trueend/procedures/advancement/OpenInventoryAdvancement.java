@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.advancements;
+package net.justmili.trueend.procedures.advancement;
 
 import net.justmili.trueend.network.packets.InvOpenAdvPacket;
 import net.minecraft.client.Minecraft;

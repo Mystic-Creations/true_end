@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.advancements;
+package net.justmili.trueend.procedures.advancement;
 
 import net.justmili.trueend.network.Variables;
 import net.minecraft.advancements.Advancement;
@@ -10,8 +10,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import javax.annotation.Nullable;
-
 import static net.justmili.trueend.init.Dimensions.BTD;
 
 public class NotAlone {
@@ -22,22 +20,17 @@ public class NotAlone {
         }
     }
 
-    public static void execute(Entity entity) {
-        execute(null, entity);
-    }
-
-    private static void execute(@Nullable Event event, Entity entity) {
-        if (entity == null)
-            return;
+    private static void execute(Event event, Entity entity) {
+        if (entity == null) return;
         if (Variables.randomEventsToggle) {
             if (Math.random() < Variables.randomEventChance / 2) {
                 if ((entity.level().dimension()) == BTD) {
-                    if (entity instanceof ServerPlayer _player) {
-                        Advancement _adv = _player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
-                        AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
-                        if (!_ap.isDone()) {
-                            for (String criteria : _ap.getRemainingCriteria())
-                                _player.getAdvancements().award(_adv, criteria);
+                    if (entity instanceof ServerPlayer player) {
+                        Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
+                        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
+                        if (!progress.isDone()) {
+                            for (String criteria : progress.getRemainingCriteria())
+                                player.getAdvancements().award(advancement, criteria);
                         }
                     }
                 }

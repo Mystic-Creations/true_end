@@ -1,9 +1,12 @@
 package net.justmili.trueend.procedures;
 
+import com.mojang.datafixers.util.Pair;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
@@ -34,6 +37,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
 
@@ -105,12 +109,12 @@ public class DimSwapToBTD {
 
                 TrueEnd.wait(5, () -> {
                     BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    BlockPos initialSearchPos = TrueEnd.locateBiome(nextLevel, worldSpawn, "true_end:plains");
+                    BlockPos initialSearchPos = locateBiome(nextLevel, worldSpawn, "true_end:plains");
                     if (initialSearchPos == null)
                         initialSearchPos = worldSpawn;
 
                     BlockPos spawnPos = findSpawn(nextLevel, initialSearchPos);
-                    BlockPos secondarySearchPos = TrueEnd.locateBiome(nextLevel,
+                    BlockPos secondarySearchPos = locateBiome(nextLevel,
                             new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
                             "true_end:plains");
 
@@ -231,10 +235,21 @@ public class DimSwapToBTD {
         }
         return null;
     }
-
     public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
         Variables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
                 serverPlayer.getZ());
+    }
+
+    private static Predicate<Holder<Biome>> isBiome(String biomeNamespaced) {
+        return biomeHolder -> biomeHolder.unwrapKey()
+                .map(biomeKey -> biomeKey.location().toString().equals(biomeNamespaced))
+                .orElse(false);
+    }
+    public static BlockPos locateBiome(ServerLevel level, BlockPos startPosition, String biomeNamespaced) {
+        Pair<BlockPos, Holder<Biome>> result = level.getLevel()
+                .findClosestBiome3d(isBiome(biomeNamespaced), startPosition, 6400, 32, 64);
+        if (result == null) return null;
+        return result.getFirst();
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
@@ -338,54 +353,6 @@ public class DimSwapToBTD {
         }
         return true;
     }
-
-    // Helper method to identify tree blocks (leaves or logs)
-    private static boolean isTreeBlock(Block block) {
-        return block.defaultBlockState().is(BlockTags.LEAVES) || block.defaultBlockState().is(BlockTags.LOGS);
-    }
-    public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
-        Queue<BlockPos> queue = new LinkedList<>();
-        Set<BlockPos> visited = new HashSet<>();
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-
-        // Initial scan around the center to enqueue leaves/logs
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    mutablePos.set(center.getX() + x, center.getY() + y, center.getZ() + z);
-                    BlockState state = level.getBlockState(mutablePos);
-                    Block block = state.getBlock();
-
-                    if (isTreeBlock(block)) {
-                        BlockPos foundPos = mutablePos.immutable();
-                        level.removeBlock(foundPos, true);
-                        queue.add(foundPos);
-                        visited.add(foundPos);
-                    }
-                }
-            }
-        }
-        // Breadth-first loop to remove connected tree blocks
-        while (!queue.isEmpty()) {
-            BlockPos current = queue.poll();
-
-            for (Direction direction : Direction.values()) {
-                BlockPos neighbor = current.relative(direction);
-
-                if (!visited.contains(neighbor)) {
-                    BlockState neighborState = level.getBlockState(neighbor);
-                    Block neighborBlock = neighborState.getBlock();
-
-                    if (isTreeBlock(neighborBlock)) {
-                        level.removeBlock(neighbor, true);
-                        queue.add(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-        }
-    }
-
     public static boolean noBadBlocks(ServerLevel level, BlockPos center) {
         final int R = 3;
         int cx = center.getX();
@@ -435,6 +402,53 @@ public class DimSwapToBTD {
     public static boolean isYInSpawnRange(ServerLevel level, BlockPos pos) {
         int y = pos.getY();
         return y >= 66 && y <= 80;
+    }
+
+    // Helper method to identify tree blocks (leaves or logs)
+    private static boolean isTreeBlock(Block block) {
+        return block.defaultBlockState().is(BlockTags.LEAVES) || block.defaultBlockState().is(BlockTags.LOGS);
+    }
+    public static void removeNearbyTrees(ServerLevel level, BlockPos center, int radius) {
+        Queue<BlockPos> queue = new LinkedList<>();
+        Set<BlockPos> visited = new HashSet<>();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+
+        // Initial scan around the center to enqueue leaves/logs
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    mutablePos.set(center.getX() + x, center.getY() + y, center.getZ() + z);
+                    BlockState state = level.getBlockState(mutablePos);
+                    Block block = state.getBlock();
+
+                    if (isTreeBlock(block)) {
+                        BlockPos foundPos = mutablePos.immutable();
+                        level.removeBlock(foundPos, true);
+                        queue.add(foundPos);
+                        visited.add(foundPos);
+                    }
+                }
+            }
+        }
+        // Breadth-first loop to remove connected tree blocks
+        while (!queue.isEmpty()) {
+            BlockPos current = queue.poll();
+
+            for (Direction direction : Direction.values()) {
+                BlockPos neighbor = current.relative(direction);
+
+                if (!visited.contains(neighbor)) {
+                    BlockState neighborState = level.getBlockState(neighbor);
+                    Block neighborBlock = neighborState.getBlock();
+
+                    if (isTreeBlock(neighborBlock)) {
+                        level.removeBlock(neighbor, true);
+                        queue.add(neighbor);
+                        visited.add(neighbor);
+                    }
+                }
+            }
+        }
     }
 
     private static void executeCommand(LevelAccessor world, Entity entity, String command) {

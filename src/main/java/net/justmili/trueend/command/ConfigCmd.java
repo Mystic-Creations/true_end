@@ -4,12 +4,15 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.justmili.trueend.TrueEnd;
+import net.justmili.trueend.config.Config;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import static net.justmili.trueend.config.Config.*;
 
 @Mod.EventBusSubscriber
 public class ConfigCmd {
@@ -57,38 +60,5 @@ public class ConfigCmd {
                                 .then(Commands.literal("false")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", false))))
         );
-    }
-
-    private static int handleDouble(CommandSourceStack src, String key, double value) {
-        try {
-            TrueEnd.updateConfig(key, value);
-        } catch (Exception e) {
-            src.sendFailure(Component.literal("Failed to update config '" + key + "': " + e.getMessage()));
-            return 0;
-        }
-        src.sendSuccess(() -> Component.literal("Config '" + key + "' set to " + value), false);
-        return 1;
-    }
-
-    private static int handleInt(CommandSourceStack src, String key, int value) {
-        try {
-            TrueEnd.updateConfig(key, value);
-        } catch (Exception e) {
-            src.sendFailure(Component.literal("Failed to update config '" + key + "': " + e.getMessage()));
-            return 0;
-        }
-        src.sendSuccess(() -> Component.literal("Config '" + key + "' set to " + value), false);
-        return 1;
-    }
-
-    private static int handleBoolean(CommandSourceStack src, String key, boolean value) {
-        try {
-            TrueEnd.updateConfig(key, value);
-        } catch (Exception e) {
-            src.sendFailure(Component.literal("Failed to update config '" + key + "': " + e.getMessage()));
-            return 0;
-        }
-        src.sendSuccess(() -> Component.literal("Config '" + key + "' set to " + value), false);
-        return 1;
     }
 }

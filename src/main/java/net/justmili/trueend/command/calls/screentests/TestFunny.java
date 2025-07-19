@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.devcmd.screentests;
+package net.justmili.trueend.command.calls.screentests;
 
 import net.justmili.trueend.init.Sounds;
 import net.minecraft.client.Minecraft;
