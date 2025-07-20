@@ -3,14 +3,12 @@ package net.justmili.trueend.entity.renderer;
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.entity.Unknown;
 import net.justmili.trueend.init.Entities;
-
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -41,10 +39,11 @@ public class UnknownEntityRenderer {
 
         @Override
         public ResourceLocation getTextureLocation(Unknown entity) {
-            // int skin = 0;
-            // skin = (int) (Math.random() * 4);
-            // return ResourceLocation.parse("true_end:textures/entity/unknown/unknown_"+skin+".png");
-            return ResourceLocation.parse("true_end:textures/entity/unknown/unknown_0.png");
+            String texture = entity.getTextureName();
+            if (texture == null || texture.isEmpty()) {
+                texture = "unknown_4";
+            }
+            return ResourceLocation.parse("true_end:textures/entity/unknown/" + texture + ".png");
         }
     }
 }
