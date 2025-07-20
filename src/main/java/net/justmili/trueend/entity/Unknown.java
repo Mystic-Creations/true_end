@@ -74,33 +74,25 @@ public class Unknown extends AmbientCreature {
         }
     }
 
-    private void doStalking(Player p) {
-        if (distanceTo(p) <= 6) {
-            playAndDespawn();
-            return;
-        }
-        Vec3 toEntity = position().subtract(p.position()).normalize();
-        double angle = Math.toDegrees(Math.acos(toEntity.dot(p.getLookAngle().normalize())));
-        if (hasLineOfSight(p) && angle < 18 && ++visibleTicks >= MAX_VISIBLE_TICKS) playAndDespawn();
-        else if (!hasLineOfSight(p) || angle >= 18) visibleTicks = 0;
+    private void doStalking(Player player) {
+        if (distanceTo(player) <= 6) { playAndDespawn(); return; }
+        Vec3 toEntity = position().subtract(player.position()).normalize();
+        double angle = Math.toDegrees(Math.acos(toEntity.dot(player.getLookAngle().normalize())));
+        if (hasLineOfSight(player) && angle < 18 && ++visibleTicks >= MAX_VISIBLE_TICKS) playAndDespawn();
+        else if (!hasLineOfSight(player) || angle >= 18) visibleTicks = 0;
         getNavigation().stop();
     }
-
-    private void doWeeping(Player p) {
-        if (distanceTo(p) <= 8) {
-            playAndDespawn();
-            return;
-        }
-        Vec3 toEntity = position().subtract(p.position()).normalize();
-        double angle = Math.toDegrees(Math.acos(toEntity.dot(p.getLookAngle().normalize())));
-        boolean seen = hasLineOfSight(p) && angle < 18;
-        if (!seen) getNavigation().moveTo(p, 0.5025);
+    private void doWeeping(Player player) {
+        if (distanceTo(player) <= 3) { playAndDespawn(); return; }
+        Vec3 toEntity = position().subtract(player.position()).normalize();
+        double angle = Math.toDegrees(Math.acos(toEntity.dot(player.getLookAngle().normalize())));
+        boolean seen = hasLineOfSight(player) && angle < 18;
+        if (!seen) getNavigation().moveTo(player, 0.5025);
         else getNavigation().stop();
     }
-
-    private void doAttacking(Player p) {
-        getNavigation().moveTo(p, 0.75);
-        if (distanceTo(p) < 1.5 && p.hurt(damageSources().mobAttack(this),
+    private void doAttacking(Player player) {
+        getNavigation().moveTo(player, 0.75);
+        if (distanceTo(player) < 1.5 && player.hurt(damageSources().mobAttack(this),
                 (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
             playAndDespawn();
         }
@@ -116,8 +108,8 @@ public class Unknown extends AmbientCreature {
         level().updateNeighborsAt(blockPosition(), state.getBlock());
     }
 
-    @Override public boolean isInvulnerableTo(DamageSource src) { return true; }
     @Override public MobType getMobType() { return MobType.UNDEFINED; }
+    @Override public boolean isInvulnerableTo(DamageSource src) { return true; }
     @Override public boolean isPushable() { return false; }
     @Override public boolean canBeCollidedWith() { return true; }
 
@@ -125,7 +117,6 @@ public class Unknown extends AmbientCreature {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
-        textureName = tag.contains("TextureName", CompoundTag.TAG_STRING) ? tag.getString("TextureName") : textureName;
     }
 
     @Override
@@ -137,11 +128,16 @@ public class Unknown extends AmbientCreature {
 
     public void setBehavior(UnknownBehavior b) {
         behavior = b;
-        String[] textures = {"unknown_0", "unknown_1", "unknown_2", "unknown_3", "unknown_4"};
+        String[] textures;
+        switch (b) {
+            case STALKING -> textures = new String[]{ "unknown_0", "unknown_1" };
+            case WEEPING -> textures = new String[]{ "unknown_3" };
+            case ATTACKING -> textures = new String[]{ "unknown_0", "unknown_2" };
+            default -> textures = new String[]{ "unknown_0" };
+        }
         textureName = textures[new Random().nextInt(textures.length)];
         System.out.println("Assigned texture: " + textureName + " for behavior: " + behavior);
     }
-
     public String getTextureName() { return textureName; }
 
     private static class LookAtNearestPlayerGoal extends Goal {
@@ -156,8 +152,8 @@ public class Unknown extends AmbientCreature {
         }
         @Override
         public void tick() {
-            Player p = mob.level().getNearestPlayer(mob, FOLLOW_RANGE);
-            if (p != null) mob.getLookControl().setLookAt(p.getX(), p.getEyeY(), p.getZ());
+            Player player = mob.level().getNearestPlayer(mob, FOLLOW_RANGE);
+            if (player != null) mob.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ());
         }
     }
 

@@ -26,10 +26,7 @@ public class UnknownEntityRenderer {
 
     public static class UnknownRenderer extends MobRenderer<Unknown, HumanoidModel<Unknown>> {
         public UnknownRenderer(EntityRendererProvider.Context context) {
-            super(
-                    context,
-                    new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)),
-                    0.5f);
+            super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5f);
         }
 
         @Override
@@ -39,11 +36,7 @@ public class UnknownEntityRenderer {
 
         @Override
         public ResourceLocation getTextureLocation(Unknown entity) {
-            String texture = entity.getTextureName();
-            if (texture == null || texture.isEmpty()) {
-                texture = "unknown_4";
-            }
-            return ResourceLocation.parse("true_end:textures/entity/unknown/" + texture + ".png");
+            return ResourceLocation.parse("true_end:textures/entity/unknown/" + entity.getTextureName() + ".png");
         }
     }
 }
