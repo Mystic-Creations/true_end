@@ -1,6 +1,7 @@
 package net.justmili.trueend.init;
 
 import net.justmili.trueend.block.*;
+import net.justmili.trueend.block.Void;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.DeferredRegister;
@@ -70,6 +71,6 @@ public class Blocks {
 	public static final RegistryObject<Block> FLOWER = REGISTRY.register("flower", Flower::new);
 	public static final RegistryObject<Block> ROSE = REGISTRY.register("rose", Rose::new);
 	public static final RegistryObject<Block> SAPLING = REGISTRY.register("sapling", Sapling::new);
-	public static final RegistryObject<Block> UNBREAKABLE_STONE = REGISTRY.register("unbreakable_stone", UnbreakableStone::new);
+	public static final RegistryObject<Block> VOID = REGISTRY.register("void", Void::new);
 
 }

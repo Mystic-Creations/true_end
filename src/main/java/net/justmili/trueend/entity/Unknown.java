@@ -41,7 +41,7 @@ public class Unknown extends AmbientCreature {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-            .add(Attributes.MAX_HEALTH, 1)
+            .add(Attributes.MAX_HEALTH, 20)
             .add(Attributes.MOVEMENT_SPEED, 0.38)
             .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
             .add(Attributes.ATTACK_DAMAGE, 6);

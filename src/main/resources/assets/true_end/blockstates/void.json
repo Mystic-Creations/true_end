@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "type=black": { "model": "true_end:block/void/black" },
+    "type=white": { "model": "true_end:block/void/white" }
+  }
+}

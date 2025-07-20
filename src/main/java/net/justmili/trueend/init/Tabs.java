@@ -48,6 +48,13 @@ public class Tabs {
 				tabData.accept(Items.DREAMERS_COMPASS.get());
 				tabData.accept(Items.MUSIC_DISC_FARLANDS.get());
 				tabData.accept(Items.MUSIC_DISC_NEVER_ALONE.get());
+
+				ItemStack blackVoid = new ItemStack(Items.VOID.get());
+				blackVoid.getOrCreateTagElement("BlockStateTag").putString("type", "black");
+				tabData.accept(blackVoid);
+				ItemStack whiteVoid = new ItemStack(Items.VOID.get());
+				whiteVoid.getOrCreateTagElement("BlockStateTag").putString("type", "white");
+				tabData.accept(whiteVoid);
 			}).withSearchBar().build()
 	);
 }

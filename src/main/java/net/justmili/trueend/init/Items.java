@@ -22,7 +22,6 @@ public class Items {
     public static final RegistryObject<Item> COBBLESTONE = block(Blocks.COBBLESTONE);
     public static final RegistryObject<Item> MOSSY_COBBLESTONE = block(Blocks.MOSSY_COBBLESTONE);
     public static final RegistryObject<Item> STONE = block(Blocks.STONE);
-    public static final RegistryObject<Item> UNBREAKABLE_STONE = block(Blocks.UNBREAKABLE_STONE);
     public static final RegistryObject<Item> COAL_ORE = block(Blocks.COAL_ORE);
     public static final RegistryObject<Item> IRON_ORE = block(Blocks.IRON_ORE);
     public static final RegistryObject<Item> GOLD_ORE = block(Blocks.GOLD_ORE);
@@ -47,6 +46,7 @@ public class Items {
     public static final RegistryObject<Item> FLOWER = block(Blocks.FLOWER);
     public static final RegistryObject<Item> ROSE = block(Blocks.ROSE);
     public static final RegistryObject<Item> SAPLING = block(Blocks.SAPLING);
+    public static final RegistryObject<Item> VOID = block(Blocks.VOID);
     public static final RegistryObject<Item> MYSTERIOUS_CUBE = REGISTRY.register("mysterious_cube", MysteriousCube::new);
     public static final RegistryObject<Item> DREAMERS_COMPASS = REGISTRY.register("dreamers_compass", DreamersCompass::new);
     public static final RegistryObject<Item> UNKNOWN_SPAWN_EGG = REGISTRY.register("unknown_spawn_egg", () -> new ForgeSpawnEggItem(Entities.UNKNOWN, -16777216, -1, new Item.Properties()));

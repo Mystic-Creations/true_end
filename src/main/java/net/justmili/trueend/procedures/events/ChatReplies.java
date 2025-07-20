@@ -18,19 +18,17 @@ import java.util.Random;
 import static net.justmili.trueend.init.Dimensions.BTD;
 import static net.justmili.trueend.procedures.randomevents.TimeChange.*;
 
-@Mod.EventBusSubscriber(modid = TrueEnd.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber
 public class ChatReplies {
-    private static final Random RNG = new Random();
-
     //Detection & Util
     @SubscribeEvent
     public static void onChat(ServerChatEvent event) {
-        String msg = event.getMessage().getString().toLowerCase(Locale.ROOT).trim().replaceAll("[!?.-]+$", "");;
+        String msg = event.getMessage().getString().toLowerCase(Locale.ROOT).trim().replaceAll("[!?.-]+$", "");
         LevelAccessor world = event.getPlayer().serverLevel();
         ServerPlayer player = event.getPlayer();
 
         hardcodedReplies(world, msg, player);
-        randomReplies(world, msg, player);
+        randomReplies(world, player);
     }
     private static void sendChatReply(LevelAccessor world, String text, Boolean cooldown) {
         int delay = 0;
@@ -60,7 +58,7 @@ public class ChatReplies {
             default -> {}
         }
     }
-    public static void randomReplies(LevelAccessor world, String msg, ServerPlayer player) {
+    public static void randomReplies(LevelAccessor world, ServerPlayer player) {
         if (player.level().dimension() == BTD) return;
         if (!(Math.random() < (Variables.randomEventChance)/48)) return;
         String[] messages = {
@@ -70,7 +68,7 @@ public class ChatReplies {
                 "<§kUnknown§r> They see you.",
                 "<§kUnknown§r> The world changes, but not them."
         };
-        String chat = messages[RNG.nextInt(messages.length)];
+        String chat = messages[new Random().nextInt(messages.length)];
         sendChatReply(world, chat, false);
     }
 

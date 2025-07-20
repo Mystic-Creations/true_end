@@ -1,0 +1,30 @@
+{
+  "parent": "true_end:block/void/black",
+  "overrides": [
+    {
+      "predicate": {
+        "true_end:type": 1.0
+      },
+      "model": "true_end:block/void/white"
+    }
+  ],
+  "display": {
+    "thirdperson": {
+      "rotation": [
+        10,
+        -45,
+        170
+      ],
+      "translation": [
+        0,
+        1.5,
+        -2.75
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    }
+  }
+}
