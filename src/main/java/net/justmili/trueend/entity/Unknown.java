@@ -5,6 +5,9 @@ import java.util.Random;
 
 import net.justmili.trueend.network.Variables;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -29,14 +32,15 @@ public class Unknown extends AmbientCreature {
     private static final int MAX_VISIBLE_TICKS = 60, COOLDOWN_TICKS = 3600;
 
     private int visibleTicks = 0, existenceTicks = 0;
+
     private UnknownBehavior behavior = UnknownBehavior.STALKING;
-    private String textureName;
+    private static final EntityDataAccessor<String> TEXTURE_NAME =
+        SynchedEntityData.defineId(Unknown.class, EntityDataSerializers.STRING);
 
     public Unknown(EntityType<? extends AmbientCreature> type, Level level) {
         super(type, level);
         setPersistenceRequired();
         this.navigation = new GroundPathNavigation(this, level);
-        setBehavior(behavior);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -45,6 +49,12 @@ public class Unknown extends AmbientCreature {
             .add(Attributes.MOVEMENT_SPEED, 0.38)
             .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
             .add(Attributes.ATTACK_DAMAGE, 6);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(TEXTURE_NAME, "unknown_0");
     }
 
     @Override
@@ -66,14 +76,12 @@ public class Unknown extends AmbientCreature {
         if (distanceTo(target) < 9 && !target.hasEffect(MobEffects.DARKNESS)) {
             target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0, false, true));
         }
-
         switch (behavior) {
             case STALKING -> doStalking(target);
             case WEEPING -> doWeeping(target);
             case ATTACKING -> doAttacking(target);
         }
     }
-
     private void doStalking(Player player) {
         if (distanceTo(player) <= 6) { playAndDespawn(); return; }
         Vec3 toEntity = position().subtract(player.position()).normalize();
@@ -82,6 +90,7 @@ public class Unknown extends AmbientCreature {
         else if (!hasLineOfSight(player) || angle >= 18) visibleTicks = 0;
         getNavigation().stop();
     }
+
     private void doWeeping(Player player) {
         if (distanceTo(player) <= 3) { playAndDespawn(); return; }
         Vec3 toEntity = position().subtract(player.position()).normalize();
@@ -90,6 +99,7 @@ public class Unknown extends AmbientCreature {
         if (!seen) getNavigation().moveTo(player, 0.5025);
         else getNavigation().stop();
     }
+
     private void doAttacking(Player player) {
         getNavigation().moveTo(player, 0.75);
         if (distanceTo(player) < 1.5 && player.hurt(damageSources().mobAttack(this),
@@ -117,13 +127,14 @@ public class Unknown extends AmbientCreature {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
+        setBehavior(behavior);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putString("Behavior", behavior.name());
-        if (textureName != null && !textureName.isEmpty()) tag.putString("TextureName", textureName);
+        tag.putString("TextureName", getTextureName());
     }
 
     public void setBehavior(UnknownBehavior b) {
@@ -135,10 +146,14 @@ public class Unknown extends AmbientCreature {
             case ATTACKING -> textures = new String[]{ "unknown_0", "unknown_2" };
             default -> textures = new String[]{ "unknown_0" };
         }
-        textureName = textures[new Random().nextInt(textures.length)];
-        System.out.println("Assigned texture: " + textureName + " for behavior: " + behavior);
+        String selected = textures[new Random().nextInt(textures.length)];
+        entityData.set(TEXTURE_NAME, selected);
+        System.out.println("Assigned texture: " + selected + " for behavior: " + behavior);
     }
-    public String getTextureName() { return textureName; }
+
+    public String getTextureName() {
+        return entityData.get(TEXTURE_NAME);
+    }
 
     private static class LookAtNearestPlayerGoal extends Goal {
         private final Mob mob;
@@ -146,10 +161,12 @@ public class Unknown extends AmbientCreature {
             this.mob = mob;
             setFlags(EnumSet.of(Flag.LOOK));
         }
+
         @Override
         public boolean canUse() {
             return mob.level().getNearestPlayer(mob, FOLLOW_RANGE) != null;
         }
+
         @Override
         public void tick() {
             Player player = mob.level().getNearestPlayer(mob, FOLLOW_RANGE);
@@ -159,7 +176,6 @@ public class Unknown extends AmbientCreature {
 
     public enum UnknownBehavior {
         STALKING, WEEPING, ATTACKING;
-
         public static UnknownBehavior fromString(String s) {
             try { return valueOf(s.toUpperCase()); }
             catch (IllegalArgumentException e) { return STALKING; }
