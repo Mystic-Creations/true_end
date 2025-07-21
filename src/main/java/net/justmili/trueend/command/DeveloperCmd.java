@@ -5,6 +5,7 @@ import net.justmili.trueend.command.calls.PrintVars;
 import net.justmili.trueend.command.calls.screentests.TestBlackOverlay;
 import net.justmili.trueend.command.calls.screentests.TestCredits;
 import net.justmili.trueend.command.calls.screentests.TestFunny;
+import net.justmili.trueend.procedures.PlayerInvManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -58,7 +59,13 @@ public class DeveloperCmd {
 					Entity entity = arguments.getSource().getEntity();
 
 					BTDTest.execute(world, entity);
-					return 0;}))
+					return 0;
+				})).then(Commands.literal("clearCurios").executes(arguments -> {
+					ServerPlayer player = arguments.getSource().getPlayer();
+
+					PlayerInvManager.clearCuriosSlots(player);
+					return 0;
+				}))
 		);
 	}
 }

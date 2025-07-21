@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.LevelResource;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Random;
 
@@ -288,15 +290,18 @@ public class PlayerInvManager {
     }
 
     public static void clearCuriosSlots(ServerPlayer player) {
-        CompoundTag emptyCuriosInventory = new CompoundTag();
-        emptyCuriosInventory.put("Curios", new CompoundTag());
-        CompoundTag curiosTag = new CompoundTag();
-        curiosTag.put("curios:inventory", emptyCuriosInventory);
-        CompoundTag forgeCaps = new CompoundTag();
-        forgeCaps.put("ForgeCaps", curiosTag);
+        if (!ModList.get().isLoaded("curios")) return;
+        CompoundTag playerNbt = player.serializeNBT();
+        CompoundTag forgeCaps = playerNbt.getCompound("ForgeCaps");
 
-        // And load it back into the player
-        player.load(forgeCaps);
+        forgeCaps.remove("curios:inventory");
+        playerNbt.put("ForgeCaps", forgeCaps);
+
+        //TODO: FIND A WAY TO SAVE NEW FORGECAPS DATA
+        //No, player.load(forgeCaps) or player.save(forgeCaps) do not work
+
+        TrueEnd.LOGGER.info(playerNbt);
+        TrueEnd.LOGGER.info(forgeCaps);
     }
 
     @SubscribeEvent
