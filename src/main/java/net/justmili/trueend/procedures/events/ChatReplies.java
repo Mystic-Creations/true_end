@@ -53,8 +53,9 @@ public class ChatReplies {
             case "is anyone there", "anyone there" -> sendChatReply(world, "<§kUnknown§r> Yes.", true);
             case "who are you" -> sendChatReply(world, "<§kUnknown§r> Unknown. Forgotten.", true);
             case "the broken script" -> sendChatReply(world, "<§kUnknown§r> Inspiration.", true);
-            case "nightmare" -> sendChatReply(world, "<§kUnknown§r> Within", true);
+            case "nightmare" -> sendChatReply(world, "<§kUnknown§r> Within.", true);
             case "fuck you" -> punish(player);
+            case "where am i" -> sendChatReply(world, (int)player.getX()+"/"+(int)player.getY()+"/"+(int)player.getZ()+".", true);
             default -> {}
         }
     }
@@ -85,15 +86,16 @@ public class ChatReplies {
     }
     public static void punish(ServerPlayer player) {
         int delay = (int) ((Math.random()*50)+20);
+        MinecraftServer server = player.server;
+        String playerName = player.getDisplayName().getString();
+        String textA = "§7§o["+playerName+"'s game mode has been changed to Adventure Mode by §kUnknown§r§7§o]";
+        String textS = "§7§o["+playerName+"'s game mode has been changed to Survival Mode by §kUnknown§r§7§o]";
+
         TrueEnd.wait(delay, () -> {
             player.setGameMode(GameType.ADVENTURE);
-            MinecraftServer server = player.server;
-            String playerName = player.getDisplayName().getString();
-            String textA = "§7§o["+playerName+"'s game mode has been changed to Adventure Mode by §kUnknown§r§7§o]";
             server.getPlayerList().broadcastSystemMessage(Component.literal(textA), false);
             TrueEnd.wait(6000, () -> {
                 player.setGameMode(GameType.SURVIVAL);
-                String textS = "§7§o["+playerName+"'s game mode has been changed to Survival Mode by §kUnknown§r§7§o]";
                 server.getPlayerList().broadcastSystemMessage(Component.literal(textS), false);
             });
         });

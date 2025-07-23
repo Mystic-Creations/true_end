@@ -5,7 +5,6 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
-import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.resources.ResourceKey;
@@ -28,6 +27,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import static net.justmili.trueend.init.Dimensions.BTD;
 import static net.justmili.trueend.init.Dimensions.NWAD;
 
 @Mod.EventBusSubscriber
@@ -37,72 +37,69 @@ public class DimSwapToNWAD {
 
 	@SubscribeEvent
 	public static void onEntityAttacked(LivingHurtEvent event) {
-		if (event == null || event.getEntity() == null) return;
-		executeHurt(event.getEntity().level(), event.getSource(), event.getEntity());
-	}
+		Entity entity = event.getEntity();
+		Level world = entity.level();
+		DamageSource source = event.getSource();
 
-	private static void executeHurt(Level world, DamageSource source, Entity entity) {
-		if (world == null || source == null || entity == null) return;
-		if (!(entity instanceof ServerPlayer serverPlayer)) return;
+		if (entity.level().dimension() == BTD) return;
+		if (event.getEntity() == null) return;
+
+		if (source == null) return;
+		if (!(entity instanceof ServerPlayer player)) return;
 		if (!source.is(DamageTypes.IN_WALL)) return;
 		if (RAND.nextDouble() >= Variables.randomEventChance * 2) return;
 
-		Advancement adv = serverPlayer.server.getAdvancements()
+		Advancement adv = player.server.getAdvancements()
 				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
-		boolean hasAdvancement = adv != null && serverPlayer.getAdvancements().getOrStartProgress(adv).isDone();
+		boolean hasAdvancement = adv != null && player.getAdvancements().getOrStartProgress(adv).isDone();
 		if (hasAdvancement) return;
 
-		PlayerInvManager.saveInvNWAD(serverPlayer);
+		PlayerInvManager.saveInvNWAD(player);
 		if (!world.isClientSide()) {
-			//serverPlayer.getInventory().clearContent();
-			//I turned off item clearing so serverPlayer will have a bit
-			// more of a scare about losing their items even tho they're gonna get them back
-			serverPlayer.setGameMode(GameType.ADVENTURE);
-			teleportToNWAD(serverPlayer);
+			player.setGameMode(GameType.ADVENTURE);
+			teleportToNWAD(player);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerDeath(LivingDeathEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof ServerPlayer serverPlayer)) return;
-		ResourceKey<Level> dim = serverPlayer.level().dimension();
-		if (dim == NWAD) {
-			diedIn.put(serverPlayer.getUUID(), dim);
-		}
+		if (!(entity instanceof ServerPlayer player)) return;
+		ResourceKey<Level> dim = player.level().dimension();
+		if (dim == NWAD) diedIn.put(player.getUUID(), dim);
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerRespawnEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof ServerPlayer serverPlayer)) return;
+		if (!(entity instanceof ServerPlayer player)) return;
 
-		UUID uuid = serverPlayer.getUUID();
+		UUID uuid = player.getUUID();
 		ResourceKey<Level> dim = diedIn.remove(uuid);
 		if (dim == null || dim != NWAD) return;
 
-		PlayerInvManager.restoreInv(serverPlayer);
-		serverPlayer.setGameMode(GameType.SURVIVAL);
+		PlayerInvManager.restoreInv(player);
+		player.setGameMode(GameType.SURVIVAL);
 
-		Advancement advancement = serverPlayer.server.getAdvancements()
+		Advancement advancement = player.server.getAdvancements()
 				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
         assert advancement != null;
-        AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
+        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
 		if (!progress.isDone()) {
 			for (String criteria : progress.getRemainingCriteria()) {
-				serverPlayer.getAdvancements().award(advancement, criteria);
+				player.getAdvancements().award(advancement, criteria);
 			}
 		}
 	}
 
-	private static void teleportToNWAD(ServerPlayer serverPlayer) {
-		if (serverPlayer.level().dimension() == NWAD) return;
-		ServerLevel next = serverPlayer.server.getLevel(NWAD);
+	private static void teleportToNWAD(ServerPlayer player) {
+		if (player.level().dimension() == NWAD) return;
+		ServerLevel next = player.server.getLevel(NWAD);
 		if (next == null) return;
 
-		serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+		player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-		int x = serverPlayer.getBlockX(), z = serverPlayer.getBlockZ(), y = 120;
+		int x = player.getBlockX(), z = player.getBlockZ(), y = 120;
 		boolean found = false;
 		while (y > 0) {
 			BlockPos pos = new BlockPos(x, y, z);
@@ -116,10 +113,10 @@ public class DimSwapToNWAD {
 		}
 		if (!found) y = 129;
 
-		serverPlayer.teleportTo(next, x, y + 1, z, serverPlayer.getYRot(), serverPlayer.getXRot());
-		serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-		serverPlayer.getActiveEffects().forEach(e ->
-				serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), e))
+		player.teleportTo(next, x, y + 1, z, player.getYRot(), player.getXRot());
+		player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
+		player.getActiveEffects().forEach(e ->
+				player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), e))
 		);
 	}
 }

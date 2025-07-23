@@ -9,7 +9,6 @@
     ]
   },
   "back_in_the_game": {
-    "subtitle": "subtitles.back_in_the_game",
     "sounds": [
       {
         "name": "true_end:back_in_the_game",
