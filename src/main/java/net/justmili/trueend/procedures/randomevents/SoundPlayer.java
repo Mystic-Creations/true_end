@@ -27,7 +27,8 @@ public class SoundPlayer {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        ServerPlayer player = (ServerPlayer) event.player;
+        if (!(event.player instanceof ServerPlayer player)) return;
+
         Level level = player.level();
         if (player.level().dimension() != NWAD) if (player.level().dimension() != Level.OVERWORLD) return;
 
@@ -65,18 +66,13 @@ public class SoundPlayer {
         int soundX = BlockPosRandomX / 4;
         int soundY = 1 + (int) (Math.random() * ((8 - 1) + 1));
         int soundZ = BlockPosRandomZ / 4;
-        double x = player.getX();
-        double y = player.getY();
-        double z = player.getZ();
         LevelAccessor world = player.level();
 
         for (int index3 = 0; index3 < (SoundPlayer.randomRepeatCount - 1); index3++) {
             TrueEnd.wait(delay, () -> {
                 if (world instanceof Level level) {
                     if (!level.isClientSide()) {
-                        level.playSound(null, BlockPos.containing(x + 6, y - 6, z + 6), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(soundId))), SoundSource.NEUTRAL, 1, 1);
-                    } else {
-                        level.playLocalSound(soundX, soundY, soundZ, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(soundId))), SoundSource.NEUTRAL, 1, 1, false);
+                        level.playSound(null, BlockPos.containing(soundX, soundY, soundZ), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(soundId))), SoundSource.NEUTRAL, 1, 1);
                     }
                 }
             });
