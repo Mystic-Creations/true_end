@@ -28,33 +28,32 @@ public class SoundPlayer {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!(event.player instanceof ServerPlayer player)) return;
-
-        Level level = player.level();
         if (player.level().dimension() != NWAD) if (player.level().dimension() != Level.OVERWORLD) return;
+
+        if (!Variables.randomEventsToggle) return;
+        if (!(Math.random() < Variables.randomEventChance)) return;
+        if (event.phase != TickEvent.Phase.END) return;
 
         double x = player.getX();
         double y = player.getY();
         double z = player.getZ();
+        Level level = player.level();
 
-        if (!Variables.randomEventsToggle) return;
-        if (!(Math.random() < Variables.randomEventChance)) return;
-
-        if (event.phase == TickEvent.Phase.END) {
-            if (groundBlock(level, x, y, z) == Blocks.GRASS_BLOCK.get() || groundBlock(level, x, y, z) == GRASS_BLOCK) {
-                playSounds(player, 8, "block.grass.step");
-            }
-            if (groundBlock(level, x, y, z) == SAND) {
-                playSounds(player, 8, "block.sand.step");
-            }
-            if (groundBlock(level, x, y, z) == Blocks.DIRT.get() || groundBlock(level, x, y, z) == DIRT) {
-                playSounds(player, 12, "block.gravel.break");
-            }
-            if (groundBlock(level, x, y, z) == Blocks.STONE.get() || groundBlock(level, x, y, z) == STONE) {
-                playSounds(player, 10, "block.stone.break");
-            }
-            if (groundBlock(level, x, y, z) == DEEPSLATE) {
-                playSounds(player, 16, "block.deepslate.break");
-            }
+        //Sound Players
+        if (groundBlock(level, x, y, z) == Blocks.GRASS_BLOCK.get() || groundBlock(level, x, y, z) == GRASS_BLOCK) {
+            playSounds(player, 8, "block.grass.step");
+        }
+        if (groundBlock(level, x, y, z) == SAND) {
+            playSounds(player, 8, "block.sand.step");
+        }
+        if (groundBlock(level, x, y, z) == Blocks.DIRT.get() || groundBlock(level, x, y, z) == DIRT) {
+            playSounds(player, 12, "block.gravel.break");
+        }
+        if (groundBlock(level, x, y, z) == Blocks.STONE.get() || groundBlock(level, x, y, z) == STONE) {
+            playSounds(player, 10, "block.stone.break");
+        }
+        if (groundBlock(level, x, y, z) == DEEPSLATE) {
+            playSounds(player, 16, "block.deepslate.break");
         }
     }
 

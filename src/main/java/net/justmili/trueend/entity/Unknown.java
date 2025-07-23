@@ -90,16 +90,14 @@ public class Unknown extends AmbientCreature {
         else if (!hasLineOfSight(player) || angle >= 18) visibleTicks = 0;
         getNavigation().stop();
     }
-
     private void doWeeping(Player player) {
         if (distanceTo(player) <= 3) { playAndDespawn(); return; }
         Vec3 toEntity = position().subtract(player.position()).normalize();
         double angle = Math.toDegrees(Math.acos(toEntity.dot(player.getLookAngle().normalize())));
-        boolean seen = hasLineOfSight(player) && angle < 18;
+        boolean seen = hasLineOfSight(player) && angle < 30;
         if (!seen) getNavigation().moveTo(player, 0.5025);
         else getNavigation().stop();
     }
-
     private void doAttacking(Player player) {
         getNavigation().moveTo(player, 0.75);
         if (distanceTo(player) < 1.5 && player.hurt(damageSources().mobAttack(this),
@@ -126,21 +124,31 @@ public class Unknown extends AmbientCreature {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
-        setBehavior(behavior);
+        if (tag.contains("doWeeping")) {
+            if (tag.getBoolean("doWeeping")) behavior = UnknownBehavior.WEEPING;
+        } else if (tag.contains("doStalking")) {
+            if (tag.getBoolean("doStalking")) behavior = UnknownBehavior.STALKING;
+        } else if (tag.contains("doAttacking")) {
+            if (tag.getBoolean("doAttacking")) behavior = UnknownBehavior.ATTACKING;
+        } else {
+            behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
+        }
+        setTexture(behavior);
     }
-
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putString("Behavior", behavior.name());
         tag.putString("TextureName", getTextureName());
+        tag.putBoolean("doWeeping",  behavior == UnknownBehavior.WEEPING);
+        tag.putBoolean("doStalking", behavior == UnknownBehavior.STALKING);
+        tag.putBoolean("doAttacking",behavior == UnknownBehavior.ATTACKING);
     }
 
-    public void setBehavior(UnknownBehavior b) {
-        behavior = b;
+    public void setTexture(UnknownBehavior texture) {
+        behavior = texture;
         String[] textures;
-        switch (b) {
+        switch (texture) {
             case STALKING -> textures = new String[]{ "unknown_0", "unknown_1" };
             case WEEPING -> textures = new String[]{ "unknown_3" };
             case ATTACKING -> textures = new String[]{ "unknown_0", "unknown_2" };
@@ -148,9 +156,7 @@ public class Unknown extends AmbientCreature {
         }
         String selected = textures[new Random().nextInt(textures.length)];
         entityData.set(TEXTURE_NAME, selected);
-        System.out.println("Assigned texture: " + selected + " for behavior: " + behavior);
     }
-
     public String getTextureName() {
         return entityData.get(TEXTURE_NAME);
     }
