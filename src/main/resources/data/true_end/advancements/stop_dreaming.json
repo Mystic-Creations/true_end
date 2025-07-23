@@ -14,6 +14,7 @@
     "announce_to_chat": false,
     "hidden": true
   },
+  "parent": "true_end:root",
   "criteria": {
     "stop_dreaming_0": {
       "trigger": "minecraft:changed_dimension",

@@ -6,6 +6,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelAccessor;
 
+import static net.justmili.trueend.init.Dimensions.BTD;
+
 public class PrintVars {
 
     public static void execute(LevelAccessor world, ServerPlayer player, CommandSourceStack source) {
@@ -31,7 +33,11 @@ public class PrintVars {
         source.sendSystemMessage(Component.literal("\n----= World Variables"));
         Variables.MapVariables globalVars = Variables.MapVariables.get(world);
         source.sendSystemMessage(Component.literal("btdSpawnX/Y/Z: "+btdSpawnX+"/"+btdSpawnY +"/"+btdSpawnZ));
-        source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
+        if (player.level().dimension() == BTD) {
+            source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
+        } else {
+            source.sendSystemMessage(Component.literal("You're not in BTD"));
+        }
         // Config vars
         source.sendSystemMessage(Component.literal("\n----= Config Variables"));
         source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));

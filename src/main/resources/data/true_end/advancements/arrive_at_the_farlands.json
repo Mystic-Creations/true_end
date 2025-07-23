@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:compass"
+    },
+    "title": {
+      "translate": "advancements.arrive_at_the_farlands.title"
+    },
+    "description": {
+      "translate": "advancements.arrive_at_the_farlands.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "travel_north": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "location": {
+            "position": {
+              "z": {
+                "max": -12550757
+              }
+            },
+            "dimension": "true_end:beyond_the_dream"
+          }
+        }
+      }
+    }
+  },
+  "parent": "true_end:stop_dreaming",
+  "rewards": {
+    "function": "true_end:gift_disc",
+    "recipes": [],
+    "experience": 32
+  }
+}

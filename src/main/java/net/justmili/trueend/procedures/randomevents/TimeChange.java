@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class TimeChange {
     public static final int DAY = 1000;
-    private static final int NOON = 6000;
+    public static final int NOON = 6000;
     public static final int NIGHT = 13000;
     public static final int MIDNIGHT = 18000;
 
@@ -25,7 +25,6 @@ public class TimeChange {
         long totalDays = world.getDayTime() / 24000;
         if (totalDays < 3) return;
         if (totalDays % 4 != 0) return;
-
         makeNight(serverPlayer);
         makeDay(serverPlayer);
     }

@@ -17,12 +17,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
-import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -30,7 +28,6 @@ import net.justmili.trueend.init.Blocks;
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.world.effect.MobEffectInstance;
 
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,7 +40,6 @@ import static net.justmili.trueend.init.Dimensions.BTD;
 
 @Mod.EventBusSubscriber
 public class DimSwapToBTD {
-    //Vars
     private static final Map<ServerPlayer, Boolean> HAS_PROCESSED = new HashMap<>();
     public static final int HOUSE_PLATEAU_WIDTH = 9;
     public static final int HOUSE_PLATEAU_LENGTH = 7;
@@ -54,134 +50,123 @@ public class DimSwapToBTD {
     public static final int BlockPosRandomY = 128 + (int)(Math.random() * ((256 - 128) + 1));
     public static final int BlockPosRandomZ = 16 + (int)(Math.random() * ((48 - 16) + 1));
 
-    //Advancement check
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
         if (event.getAdvancement().getId().equals(ResourceLocation.parse("true_end:stop_dreaming"))) {
-            execute(event, event.getEntity().level(), event.getEntity());
-        }
-    }
+            Entity entity = event.getEntity();
 
-    //Checks and spawning
-    private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
-        if (!(entity instanceof ServerPlayer serverPlayer))
-            return;
+            if (!(entity instanceof ServerPlayer player)) return;
+            if (HAS_PROCESSED.getOrDefault(player, false)) return;
 
-        if (HAS_PROCESSED.getOrDefault(serverPlayer, false))
-            return;
+            AtomicBoolean hasVisited = new AtomicBoolean(false);
+            player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
+                hasVisited.set(data.hasBeenBeyond());
+            });
+            if (!hasVisited.get()) {
+                if (player.level().dimension() == Level.OVERWORLD
+                        && player.level() instanceof ServerLevel overworld
+                        && player.getAdvancements().getOrStartProgress(
+                        Objects.requireNonNull(player.server.getAdvancements()
+                                .getAdvancement(ResourceLocation.parse("true_end:stop_dreaming")))).isDone()) {
+                    HAS_PROCESSED.put(player, true);
+                    ServerLevel nextLevel = player.server.getLevel(BTD);
+                    if (nextLevel == null || player.level().dimension() == BTD) {
+                        HAS_PROCESSED.remove(player);
+                        return;
+                    }
+                    player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 
-        AtomicBoolean hasVisited = new AtomicBoolean(false);
-        serverPlayer.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
-            hasVisited.set(data.hasBeenBeyond());
-        });
-        if (!hasVisited.get()) {
-            if (serverPlayer.level().dimension() == Level.OVERWORLD
-                    && serverPlayer.level() instanceof ServerLevel overworld
-                    && serverPlayer.getAdvancements().getOrStartProgress(
-                            Objects.requireNonNull(serverPlayer.server.getAdvancements()
-                                    .getAdvancement(ResourceLocation.parse("true_end:stop_dreaming")))).isDone()) {
-                HAS_PROCESSED.put(serverPlayer, true);
-                ServerLevel nextLevel = serverPlayer.server.getLevel(BTD);
-                if (nextLevel == null || serverPlayer.level().dimension() == BTD) {
-                    HAS_PROCESSED.remove(serverPlayer);
-                    return;
-                }
-                serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+                    Variables.MapVariables getVariable = Variables.MapVariables.get(nextLevel);
+                    double btdSpawnX = getVariable.getBtdSpawnX();
+                    double btdSpawnY = getVariable.getBtdSpawnY();
+                    double btdSpawnZ = getVariable.getBtdSpawnZ();
+                    if (btdSpawnY > 0) {
+                        TrueEnd.LOGGER.info("Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
+                        player.teleportTo(nextLevel, btdSpawnX, btdSpawnY, btdSpawnZ, 0, 0);
+                        player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
+                        for (MobEffectInstance effect : player.getActiveEffects())
+                            player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effect));
+                        sendFirstEntryConversation(player, nextLevel);
+                        executeCommand(nextLevel, player, "function true_end:btd_global_spawn");
+                        player.getCapability(Variables.PLAYER_VARS_CAP)
+                                .ifPresent(data -> data.setBeenBeyond(true));
+                        HAS_PROCESSED.remove(player);
+                        return;
+                    }
 
-                Variables.MapVariables getVariable = Variables.MapVariables.get(nextLevel);
-                double btdSpawnX = getVariable.getBtdSpawnX();
-                double btdSpawnY = getVariable.getBtdSpawnY();
-                double btdSpawnZ = getVariable.getBtdSpawnZ();
-                if (btdSpawnY > 0) {
-                    TrueEnd.LOGGER.info("Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
-                    serverPlayer.teleportTo(nextLevel, btdSpawnX, btdSpawnY, btdSpawnZ,
-                            serverPlayer.getYRot(), serverPlayer.getXRot());
-                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-                    for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
-                    sendFirstEntryConversation(serverPlayer, nextLevel);
-                    executeCommand(nextLevel, serverPlayer, "function true_end:btd_global_spawn");
-                    serverPlayer.getCapability(Variables.PLAYER_VARS_CAP)
-                            .ifPresent(data -> data.setBeenBeyond(true));
-                    HAS_PROCESSED.remove(serverPlayer);
-                    return;
-                }
+                    TrueEnd.wait(5, () -> {
+                        BlockPos worldSpawn = overworld.getSharedSpawnPos();
+                        BlockPos initialSearchPos = locateBiome(nextLevel, worldSpawn, "true_end:plains");
+                        if (initialSearchPos == null)
+                            initialSearchPos = worldSpawn;
 
-                TrueEnd.wait(5, () -> {
-                    BlockPos worldSpawn = overworld.getSharedSpawnPos();
-                    BlockPos initialSearchPos = locateBiome(nextLevel, worldSpawn, "true_end:plains");
-                    if (initialSearchPos == null)
-                        initialSearchPos = worldSpawn;
+                        BlockPos spawnPos = findSpawn(nextLevel, initialSearchPos);
+                        BlockPos secondarySearchPos = locateBiome(nextLevel,
+                                new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
+                                "true_end:plains");
 
-                    BlockPos spawnPos = findSpawn(nextLevel, initialSearchPos);
-                    BlockPos secondarySearchPos = locateBiome(nextLevel,
-                            new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
-                            "true_end:plains");
+                        if (spawnPos == null) {
+                            for (int i = 0; i <= MAX_FALLBACK_SEARCH_TRIES; i++) {
+                                secondarySearchPos = new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
+                                        BlockPosRandomY,
+                                        BlockPosRandomZ + BlockPosRandomX));
 
-                    if (spawnPos == null) {
-                        for (int i = 0; i <= MAX_FALLBACK_SEARCH_TRIES; i++) {
-                            secondarySearchPos = new BlockPos(new Vec3i(BlockPosRandomX + BlockPosRandomZ,
-                                    BlockPosRandomY,
-                                    BlockPosRandomZ + BlockPosRandomX));
-
-                            spawnPos = fallbackSpawn(nextLevel, secondarySearchPos);
-                            if (spawnPos != null) {
-                                break;
+                                spawnPos = fallbackSpawn(nextLevel, secondarySearchPos);
+                                if (spawnPos != null) {
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    boolean adaptTerrain;
-                    boolean absoluteFallbackPlatform;
-
-                    if (spawnPos == null) {
-                        adaptTerrain = false;
-                        absoluteFallbackPlatform = true;
-                        spawnPos = ABSOLUTE_FALLBACK_POS;
-                    } else {
-                        adaptTerrain = true;
-                        absoluteFallbackPlatform = false;
-                    }
-
-                    BlockPos finalSpawnPos = spawnPos;
-                    BlockPos secFinalSpawnPos = secondarySearchPos;
-
-                    serverPlayer.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5,
-                            serverPlayer.getYRot(), serverPlayer.getXRot());
-                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.getAbilities()));
-                    for (MobEffectInstance effect : serverPlayer.getActiveEffects())
-                        serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effect));
-                    serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
-
-                    TrueEnd.wait(4, () -> {
-                        if (absoluteFallbackPlatform) {
-                            executeCommand(nextLevel, serverPlayer, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
+                        boolean adaptTerrain;
+                        boolean absoluteFallbackPlatform;
+                        if (spawnPos == null) {
+                            adaptTerrain = false;
+                            absoluteFallbackPlatform = true;
+                            spawnPos = ABSOLUTE_FALLBACK_POS;
+                        } else {
+                            adaptTerrain = true;
+                            absoluteFallbackPlatform = false;
                         }
-                        removeNearbyTrees(nextLevel, serverPlayer.blockPosition(), 15);
-                        if (adaptTerrain) {
-                            adaptTerrain(nextLevel, serverPlayer.blockPosition());
+
+                        BlockPos finalSpawnPos = spawnPos;
+                        BlockPos secFinalSpawnPos = secondarySearchPos;
+
+                        player.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5,
+                                player.getYRot(), player.getXRot());
+                        player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
+                        for (MobEffectInstance effect : player.getActiveEffects()) player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effect));
+
+                        TrueEnd.wait(4, () -> {
+                            if (absoluteFallbackPlatform) {
+                                executeCommand(nextLevel, player, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
+                            }
+                            removeNearbyTrees(nextLevel, player.blockPosition(), 15);
+                            if (adaptTerrain) {
+                                adaptTerrain(nextLevel, player.blockPosition());
+                            }
+                            executeCommand(nextLevel, player, "function true_end:build_home");
+                            setGlobalSpawn(nextLevel, player);
+                            sendFirstEntryConversation(player, nextLevel);
+                            player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
+                            if (secFinalSpawnPos == null) {
+                                nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
+                                        data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY() - 1, finalSpawnPos.getZ()));
+                            }
+                            if (secFinalSpawnPos != null) {
+                                nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
+                                        data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY() - 1, secFinalSpawnPos.getZ()));
+                            }
+                            HAS_PROCESSED.remove(player);
+                        });
+
+                        PlayerInvManager.saveInvBTD(player);
+                        PlayerInvManager.clearCuriosSlots(player);
+                        if (Variables.clearDreamItems) {
+                            player.getInventory().clearContent();
                         }
-                        executeCommand(nextLevel, serverPlayer, "function true_end:build_home");
-                        setGlobalSpawn(nextLevel, serverPlayer);
-                        sendFirstEntryConversation(serverPlayer, nextLevel);
-                        serverPlayer.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
-                        if (secFinalSpawnPos == null) {
-                            nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY() - 1, finalSpawnPos.getZ()));
-                        }
-                        if (secFinalSpawnPos != null) {
-                            nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
-                                    data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY() - 1, secFinalSpawnPos.getZ()));
-                        }
-                        HAS_PROCESSED.remove(serverPlayer);
                     });
-
-                    PlayerInvManager.saveInvBTD(serverPlayer);
-                    PlayerInvManager.clearCuriosSlots(serverPlayer);
-                    if (Variables.clearDreamItems) {
-                        serverPlayer.getInventory().clearContent();
-                    }
-                });
+                }
             }
         }
     }
@@ -235,9 +220,8 @@ public class DimSwapToBTD {
         }
         return null;
     }
-    public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer serverPlayer) {
-        Variables.MapVariables.get(nextLevel).setBtdSpawn(serverPlayer.getX(), serverPlayer.getY(),
-                serverPlayer.getZ());
+    public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer player) {
+        Variables.MapVariables.get(nextLevel).setBtdSpawn(player.getX(), player.getY(), player.getZ());
     }
 
     private static Predicate<Holder<Biome>> isBiome(String biomeNamespaced) {
@@ -461,9 +445,9 @@ public class DimSwapToBTD {
         List<String> jsonLines = new ArrayList<>();
 
         BufferedReader br;
-        InputStream is = DimSwapToBTD.class.getClassLoader().getResourceAsStream("assets/true_end/texts/first_entry.txt");
-        assert is != null;
-        br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+        InputStream file = DimSwapToBTD.class.getClassLoader().getResourceAsStream("assets/true_end/texts/first_entry.txt");
+        assert file != null;
+        br = new BufferedReader(new InputStreamReader(file, StandardCharsets.UTF_8));
 
         //TXT to JSON
         try {
@@ -478,7 +462,7 @@ public class DimSwapToBTD {
                 jsonLines.add(json);
             }
         } catch (Exception e) {
-            TrueEnd.LOGGER.error("Error reading first_entry.txt", e);
+            TrueEnd.LOGGER.error("Error reading {} with exception {}", file, e);
             return;
         } finally {
             try { br.close(); } catch (Exception ignored) {} }
