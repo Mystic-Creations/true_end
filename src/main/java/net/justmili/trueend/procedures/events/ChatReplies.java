@@ -32,7 +32,7 @@ public class ChatReplies {
     private static void sendChatReply(LevelAccessor world, String text, Boolean cooldown) {
         int delay = 0;
         if (cooldown) delay = (int)((Math.random()*50)+15); //Hardcode reply delay
-        if (!cooldown) delay = 15+(int)(Math.random()*46); //Random reply delay
+        if (!cooldown) delay = 15+(int)(Math.random()*46); //Random reply delay or no delay
 
         if (!world.isClientSide() && world.getServer() != null) {
             TrueEnd.wait(delay, () -> {
@@ -113,7 +113,7 @@ public class ChatReplies {
                 "§9Some sunny day",
                 "§3Keep smiling through",
                 "§2Just like you",
-                "§3§3always do",
+                "§3always do",
                 "§2'Til the blue skies chase those dark clouds",
                 "§9Far away"
         };

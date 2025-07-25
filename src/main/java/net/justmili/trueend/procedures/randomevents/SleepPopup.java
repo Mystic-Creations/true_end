@@ -1,25 +1,26 @@
 package net.justmili.trueend.procedures.randomevents;
 
 import java.awt.Dialog;
-
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
 import net.justmili.trueend.interfaces.User32;
+import net.justmili.trueend.network.Variables;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class SleepPopup {
-
 @SubscribeEvent
 public static void onPlayerInBed(PlayerSleepInBedEvent event) {
     if (!(event.getEntity() instanceof ServerPlayer player)) return;
-
-    System.out.println("Sleep event fired!");
+	if (!Variables.randomEventsToggle) return;
+	if (!Variables.popupsToggle) return;
+	if (!(Math.random() < Variables.randomEventChance*1.5)) return;
+	if (player.level().dimension() != Level.OVERWORLD) return;
 
     new Thread(() -> {
         try {
