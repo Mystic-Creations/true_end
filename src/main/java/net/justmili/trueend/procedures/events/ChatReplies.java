@@ -57,6 +57,7 @@ public class ChatReplies {
             case "fuck you" -> punish(player);
             case "where am i" -> sendChatReply(world, (int)player.getX()+"/"+(int)player.getY()+"/"+(int)player.getZ()+".", true);
             case "where are you" -> sendChatReply(world,"U29tZXdoZXJlIGNsb3NlLg==", true);
+            case "28/09/1939", "09/28/1939" -> meetAgain(player); //Reference to "We'll meet again" by Vera Lynn, with that also Gravity Falls but also fits with the last words said by the voices in the mod
             default -> randomReplies(world, player);
         }
     }
@@ -75,7 +76,7 @@ public class ChatReplies {
     }
 
     //More behavior
-    public static void nightReply(ServerPlayer player) {
+    private static void nightReply(ServerPlayer player) {
         ServerLevel world = (ServerLevel) player.level();
         long time = world.getDayTime() % 24000;
         boolean isDay = time >= DAY && time < NIGHT;
@@ -85,7 +86,7 @@ public class ChatReplies {
             sendChatReply(world, "<§kUnknown§r> It is not.", true);
         }
     }
-    public static void punish(ServerPlayer player) {
+    private static void punish(ServerPlayer player) {
         int delay = (int) ((Math.random()*50)+20);
         MinecraftServer server = player.server;
         String playerName = player.getDisplayName().getString();
@@ -100,5 +101,31 @@ public class ChatReplies {
                 server.getPlayerList().broadcastSystemMessage(Component.literal(textS), false);
             });
         });
+    }
+    private static void meetAgain(ServerPlayer player) {
+        ServerLevel world = (ServerLevel) player.level();
+
+        String[] lines = {
+                "§3We'll meet again",
+                "§2Don't know where",
+                "§3Don't know when",
+                "§2But I know we'll meet again",
+                "§9Some sunny day",
+                "§3Keep smiling through",
+                "§2Just like you",
+                "§3§3always do",
+                "§2'Til the blue skies chase those dark clouds",
+                "§9Far away"
+        };
+        int[] delays = { 45, 40, 40, 40, 50, 55, 40, 40, 45, 50 };
+
+        int cumulative = 0;
+        for (int i = 0; i < lines.length; i++) {
+            cumulative += delays[i];
+            int idx = i;
+            TrueEnd.wait(cumulative, () -> {
+                sendChatReply(world, lines[idx], false);
+            });
+        }
     }
 }
