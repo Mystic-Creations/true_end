@@ -12,7 +12,6 @@ import net.justmili.trueend.init.Packets;
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class OpenInventoryAdvancement {
 	private static boolean hasOpenedInventory = false;
-
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.PlayerTickEvent event) {
 		if (event.phase != TickEvent.Phase.END) return;

@@ -23,8 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class Dirt extends Block {
     public Dirt() {
-        super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.5f)
-                .randomTicks());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.5f).randomTicks());
     }
 
     @Override
@@ -67,9 +66,7 @@ public class Dirt extends Block {
         BlockPos abovePos = pos.above();
         BlockState aboveState = world.getBlockState(abovePos);
 
-        if (!aboveState.isAir()) {
-            return false;
-        }
+        if (!aboveState.isAir()) return false;
 
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
@@ -80,9 +77,7 @@ public class Dirt extends Block {
                     BlockPos neighborPos = pos.offset(x, y, z);
                     BlockState neighborState = world.getBlockState(neighborPos);
 
-                    if (neighborState.is(Blocks.GRASS_BLOCK.get())) {
-                        return true;
-                    }
+                    if (neighborState.is(Blocks.GRASS_BLOCK.get())) return true;
                 }
             }
         }

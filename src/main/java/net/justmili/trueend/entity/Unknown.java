@@ -30,19 +30,16 @@ import net.minecraft.world.phys.Vec3;
 public class Unknown extends AmbientCreature {
     private static final double FOLLOW_RANGE = 128;
     private static final int MAX_VISIBLE_TICKS = 60, COOLDOWN_TICKS = 3600;
-
     private int visibleTicks = 0, existenceTicks = 0;
 
     private UnknownBehavior behavior = UnknownBehavior.STALKING;
-    private static final EntityDataAccessor<String> TEXTURE_NAME =
-        SynchedEntityData.defineId(Unknown.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> TEXTURE_NAME = SynchedEntityData.defineId(Unknown.class, EntityDataSerializers.STRING);
 
     public Unknown(EntityType<? extends AmbientCreature> type, Level level) {
         super(type, level);
         setPersistenceRequired();
         this.navigation = new GroundPathNavigation(this, level);
     }
-
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
             .add(Attributes.MAX_HEALTH, 20)
@@ -51,15 +48,38 @@ public class Unknown extends AmbientCreature {
             .add(Attributes.ATTACK_DAMAGE, 6);
     }
 
+    @Override public MobType getMobType() { return MobType.UNDEFINED; }
+    @Override public boolean isInvulnerableTo(DamageSource src) { return true; }
+    @Override public boolean isPushable() { return false; }
+    @Override public boolean canBeCollidedWith() { return true; }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(TEXTURE_NAME, "unknown_0");
     }
-
     @Override
-    protected void registerGoals() {
-        goalSelector.addGoal(0, new LookAtNearestPlayerGoal(this));
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("doWeeping")) {
+            if (tag.getBoolean("doWeeping")) behavior = UnknownBehavior.WEEPING;
+        } else if (tag.contains("doStalking")) {
+            if (tag.getBoolean("doStalking")) behavior = UnknownBehavior.STALKING;
+        } else if (tag.contains("doAttacking")) {
+            if (tag.getBoolean("doAttacking")) behavior = UnknownBehavior.ATTACKING;
+        } else {
+            behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
+        }
+        setTexture(behavior);
+    }
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putString("Behavior", behavior.name());
+        tag.putString("TextureName", getTextureName());
+        tag.putBoolean("doWeeping",  behavior == UnknownBehavior.WEEPING);
+        tag.putBoolean("doStalking", behavior == UnknownBehavior.STALKING);
+        tag.putBoolean("doAttacking",behavior == UnknownBehavior.ATTACKING);
     }
 
     @Override
@@ -80,6 +100,34 @@ public class Unknown extends AmbientCreature {
             case STALKING -> doStalking(target);
             case WEEPING -> doWeeping(target);
             case ATTACKING -> doAttacking(target);
+        }
+    }
+    private static class LookAtNearestPlayerGoal extends Goal {
+        private final Mob mob;
+        LookAtNearestPlayerGoal(Mob mob) {
+            this.mob = mob;
+            setFlags(EnumSet.of(Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return mob.level().getNearestPlayer(mob, FOLLOW_RANGE) != null;
+        }
+        @Override
+        public void tick() {
+            Player player = mob.level().getNearestPlayer(mob, FOLLOW_RANGE);
+            if (player != null) mob.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ());
+        }
+    }
+    @Override
+    protected void registerGoals() {
+        goalSelector.addGoal(0, new LookAtNearestPlayerGoal(this));
+    }
+    public enum UnknownBehavior {
+        STALKING, WEEPING, ATTACKING;
+        public static UnknownBehavior fromString(String s) {
+            try { return valueOf(s.toUpperCase()); }
+            catch (IllegalArgumentException e) { return STALKING; }
         }
     }
     private void doStalking(Player player) {
@@ -105,7 +153,6 @@ public class Unknown extends AmbientCreature {
             playAndDespawn();
         }
     }
-
     private void playAndDespawn() {
         getNavigation().stop();
         if (!(level() instanceof ServerLevel server)) return;
@@ -114,35 +161,6 @@ public class Unknown extends AmbientCreature {
         remove(RemovalReason.DISCARDED);
         BlockState state = level().getBlockState(blockPosition());
         level().updateNeighborsAt(blockPosition(), state.getBlock());
-    }
-
-    @Override public MobType getMobType() { return MobType.UNDEFINED; }
-    @Override public boolean isInvulnerableTo(DamageSource src) { return true; }
-    @Override public boolean isPushable() { return false; }
-    @Override public boolean canBeCollidedWith() { return true; }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("doWeeping")) {
-            if (tag.getBoolean("doWeeping")) behavior = UnknownBehavior.WEEPING;
-        } else if (tag.contains("doStalking")) {
-            if (tag.getBoolean("doStalking")) behavior = UnknownBehavior.STALKING;
-        } else if (tag.contains("doAttacking")) {
-            if (tag.getBoolean("doAttacking")) behavior = UnknownBehavior.ATTACKING;
-        } else {
-            behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
-        }
-        setTexture(behavior);
-    }
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putString("Behavior", behavior.name());
-        tag.putString("TextureName", getTextureName());
-        tag.putBoolean("doWeeping",  behavior == UnknownBehavior.WEEPING);
-        tag.putBoolean("doStalking", behavior == UnknownBehavior.STALKING);
-        tag.putBoolean("doAttacking",behavior == UnknownBehavior.ATTACKING);
     }
 
     public void setTexture(UnknownBehavior texture) {
@@ -159,32 +177,5 @@ public class Unknown extends AmbientCreature {
     }
     public String getTextureName() {
         return entityData.get(TEXTURE_NAME);
-    }
-
-    private static class LookAtNearestPlayerGoal extends Goal {
-        private final Mob mob;
-        LookAtNearestPlayerGoal(Mob mob) {
-            this.mob = mob;
-            setFlags(EnumSet.of(Flag.LOOK));
-        }
-
-        @Override
-        public boolean canUse() {
-            return mob.level().getNearestPlayer(mob, FOLLOW_RANGE) != null;
-        }
-
-        @Override
-        public void tick() {
-            Player player = mob.level().getNearestPlayer(mob, FOLLOW_RANGE);
-            if (player != null) mob.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ());
-        }
-    }
-
-    public enum UnknownBehavior {
-        STALKING, WEEPING, ATTACKING;
-        public static UnknownBehavior fromString(String s) {
-            try { return valueOf(s.toUpperCase()); }
-            catch (IllegalArgumentException e) { return STALKING; }
-        }
     }
 }

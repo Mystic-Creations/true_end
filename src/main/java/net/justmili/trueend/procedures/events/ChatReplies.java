@@ -28,11 +28,10 @@ public class ChatReplies {
         ServerPlayer player = event.getPlayer();
 
         hardcodedReplies(world, msg, player);
-        randomReplies(world, player);
     }
     private static void sendChatReply(LevelAccessor world, String text, Boolean cooldown) {
         int delay = 0;
-        if (cooldown) delay = (int)((Math.random()*50)+25); //Hardcode reply delay
+        if (cooldown) delay = (int)((Math.random()*50)+15); //Hardcode reply delay
         if (!cooldown) delay = 15+(int)(Math.random()*46); //Random reply delay
 
         if (!world.isClientSide() && world.getServer() != null) {
@@ -51,12 +50,14 @@ public class ChatReplies {
             case "where from" -> sendChatReply(world, "<§kUnknown§r> The fog.", true);
             case "why is it night" -> nightReply(player);
             case "is anyone there", "anyone there" -> sendChatReply(world, "<§kUnknown§r> Yes.", true);
-            case "who are you" -> sendChatReply(world, "<§kUnknown§r> Unknown. Forgotten.", true);
+            case "who are you", "what is your name", "what's your name", "whats your name"
+                    -> sendChatReply(world, "<§kUnknown§r> Unknown. Forgotten.", true);
             case "the broken script" -> sendChatReply(world, "<§kUnknown§r> Inspiration.", true);
             case "nightmare" -> sendChatReply(world, "<§kUnknown§r> Within.", true);
             case "fuck you" -> punish(player);
             case "where am i" -> sendChatReply(world, (int)player.getX()+"/"+(int)player.getY()+"/"+(int)player.getZ()+".", true);
-            default -> {}
+            case "where are you" -> sendChatReply(world,"U29tZXdoZXJlIGNsb3NlLg==", true);
+            default -> randomReplies(world, player);
         }
     }
     public static void randomReplies(LevelAccessor world, ServerPlayer player) {

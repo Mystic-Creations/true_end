@@ -32,10 +32,7 @@ public class MysteriousCube extends Item {
 		if (!entity.mayUseItemAt(pos, context.getClickedFace(), itemstack)) {
 			return InteractionResult.FAIL;
 		} else {
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			boolean success = false;
+            boolean success = false;
 			if (world.isEmptyBlock(pos)) {
 				BeyondTheDreamPortal.portalSpawn(world, pos);
 				itemstack.hurtAndBreak(1, entity, c -> c.broadcastBreakEvent(context.getHand()));

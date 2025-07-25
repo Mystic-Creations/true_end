@@ -17,23 +17,19 @@ public class WhenPigsFly {
 
     @SubscribeEvent
     public static void onPigFallDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof Pig pig)) {
-            return;
-        }
         DamageSource source = event.getSource();
-        if (!source.is(DamageTypes.FALL)) {
-            return;
-        }
+        if (!(event.getEntity() instanceof Pig pig)) return;
+        if (!source.is(DamageTypes.FALL)) return;
+
         for (Entity passenger : pig.getPassengers()) {
             if (passenger instanceof ServerPlayer player) {
                 Advancement advancement = player.server.getAdvancements().getAdvancement(
                         ResourceLocation.parse("true_end:story/flying_pig"));
-                if (advancement != null) {
-                    AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
-                    if (!progress.isDone()) {
-                        for (String criterion : progress.getRemainingCriteria()) {
-                            player.getAdvancements().award(advancement, criterion);
-                        }
+                if (advancement == null) return;
+                AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
+                if (!progress.isDone()) {
+                    for (String criterion : progress.getRemainingCriteria()) {
+                        player.getAdvancements().award(advancement, criterion);
                     }
                 }
             }

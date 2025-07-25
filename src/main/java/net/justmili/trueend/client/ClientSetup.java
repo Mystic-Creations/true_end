@@ -51,7 +51,7 @@ public class ClientSetup {
                         double relative = (targetAngle - playerYaw + 360.0) % 360.0;
 
                         // Now convert to 0.0 - 1.0 float for the predicate
-                        float angleValue = (float)(relative / 360.0);
+                        float angleValue = (float) (relative / 360.0);
 
                         return angleValue;
                     }

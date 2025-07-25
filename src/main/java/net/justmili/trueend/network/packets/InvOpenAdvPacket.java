@@ -21,12 +21,11 @@ public class InvOpenAdvPacket {
             if (serverPlayer == null) return;
             ResourceLocation advancementId = ResourceLocation.parse("true_end:story/open_inventory");
             Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(advancementId);
-            if (advancement != null) {
-                AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
-                if (!progress.isDone()) {
-                    for (String criterion : progress.getRemainingCriteria()) {
-                        serverPlayer.getAdvancements().award(advancement, criterion);
-                    }
+            if (advancement == null) return;
+            AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
+            if (!progress.isDone()) {
+                for (String criterion : progress.getRemainingCriteria()) {
+                    serverPlayer.getAdvancements().award(advancement, criterion);
                 }
             }
         });

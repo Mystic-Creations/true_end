@@ -19,14 +19,13 @@ public class NotAlone {
         if (entity == null) return;
         if (!((entity.level().dimension()) == BTD)) return;
         if (!Variables.randomEventsToggle) return;
-        if (Math.random() < Variables.randomEventChance/2) {
-            if (entity instanceof ServerPlayer player) {
-                Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
-                AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
-                if (!progress.isDone()) {
-                    for (String criteria : progress.getRemainingCriteria())
-                        player.getAdvancements().award(advancement, criteria);
-                }
+        if (!(Math.random() < Variables.randomEventChance / 2)) return;
+        if (entity instanceof ServerPlayer player) {
+            Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
+            AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
+            if (!progress.isDone()) {
+                for (String criteria : progress.getRemainingCriteria())
+                    player.getAdvancements().award(advancement, criteria);
             }
         }
     }

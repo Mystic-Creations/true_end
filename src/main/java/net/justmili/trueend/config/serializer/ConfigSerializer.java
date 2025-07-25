@@ -28,8 +28,7 @@ public abstract class ConfigSerializer {
 	protected void createConfigFile() {
 		try {
 			this.getConfigFile().createNewFile();
-		} catch (IOException ignored) {
-		}
+		} catch (IOException ignored) {}
 	}
 
 	public String getMessage() {

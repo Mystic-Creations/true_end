@@ -64,12 +64,12 @@ public class VersionOverlay {
 
         GuiGraphics guiGraphics = event.getGuiGraphics();
         PoseStack poseStack = guiGraphics.pose();
-        int x = 3; // text distance from window border on X axis
-        int y = 3; // text distance from window border on Y axis
-        int textColor = 0xFFFFFF; // text color
-        int textShadowColor = 0xFF3F3F3F; // text shadow color
+        int x = 3;
+        int y = 3;
+        int textColor = 0xFFFFFF;
+        int textShadowColor = 0xFF3F3F3F;
 
-        float scale = 0.8f; // Adjust this value to increase or decrease text size
+        float scale = 0.8f;
         poseStack.pushPose();
         poseStack.scale(scale, scale, 1.0f);
 

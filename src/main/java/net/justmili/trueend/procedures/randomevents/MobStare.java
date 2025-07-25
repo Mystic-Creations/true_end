@@ -76,7 +76,7 @@ public class MobStare {
 
             // Freeze movement
             PathNavigation nav = mob.getNavigation();
-            if (nav != null) nav.stop();
+            nav.stop();
 
             // Look at nearest player
             ServerPlayer closest = null;

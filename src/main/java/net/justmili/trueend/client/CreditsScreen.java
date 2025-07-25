@@ -44,8 +44,7 @@ public class CreditsScreen extends Screen {
             String line;
             while ((line = br.readLine()) != null) {
                 assert Minecraft.getInstance().player != null;
-                lines.add(line.replace("PLAYERNAME",
-                        Minecraft.getInstance().player.getName().getString()));
+                lines.add(line.replace("PLAYERNAME", Minecraft.getInstance().player.getName().getString()));
             }
         } catch (Exception e) {
             TrueEnd.LOGGER.error("Failed to read credits.txt", e);
@@ -113,9 +112,6 @@ public class CreditsScreen extends Screen {
             onClose.run();
             return true;
         }
-        return false;
-    }
-    public boolean isNarratable() {
         return false;
     }
 }

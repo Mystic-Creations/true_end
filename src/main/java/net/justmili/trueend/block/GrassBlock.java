@@ -71,23 +71,19 @@ public class GrassBlock extends Block {
             world.playSound(null, x, y, z, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0f, pitch);
             player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
             getSeeds(world, x, y, z, player, player);
-
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }
 
     public static void getSeeds(LevelAccessor world, double x, double y, double z, Entity entity, Player player) {
-        if (entity == null)
-            return;
-        if (player.getMainHandItem().is(ItemTags.HOES)) {
-            if (Math.random() < 0.125) {
-                if (world instanceof ServerLevel _level) {
-                    ItemEntity entityToSpawn = new ItemEntity(_level, x, (y + 1.1), z, new ItemStack(Items.WHEAT_SEEDS));
-                    entityToSpawn.setPickUpDelay(15);
-                    _level.addFreshEntity(entityToSpawn);
-                }
-            }
+        if (entity == null) return;
+        if (!player.getMainHandItem().is(ItemTags.HOES)) return;
+        if (!(Math.random() < 0.125)) return;
+        if (world instanceof ServerLevel level) {
+            ItemEntity seedsItem = new ItemEntity(level, x, (y + 1.1), z, new ItemStack(Items.WHEAT_SEEDS));
+            seedsItem.setPickUpDelay(15);
+            level.addFreshEntity(seedsItem);
         }
     }
 }

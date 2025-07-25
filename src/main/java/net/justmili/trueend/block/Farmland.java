@@ -48,20 +48,16 @@ public class Farmland extends Block {
 		}
 		return super.updateShape(p_53276_, p_53277_, p_53278_, p_53279_, p_53280_, p_53281_);
 	}
-
 	public boolean canSurvive(BlockState p_53272_, LevelReader p_53273_, BlockPos p_53274_) {
 		BlockState blockstate = p_53273_.getBlockState(p_53274_.above());
 		return !blockstate.isSolid() || blockstate.getBlock() instanceof FenceGateBlock || blockstate.getBlock() instanceof MovingPistonBlock;
 	}
-
 	public BlockState getStateForPlacement(BlockPlaceContext p_53249_) {
 		return !this.defaultBlockState().canSurvive(p_53249_.getLevel(), p_53249_.getClickedPos()) ? Blocks.DIRT.get().defaultBlockState() : super.getStateForPlacement(p_53249_);
 	}
-
 	public boolean useShapeForLightOcclusion(BlockState p_53295_) {
 		return true;
 	}
-
 	public VoxelShape getShape(BlockState p_53290_, BlockGetter p_53291_, BlockPos p_53292_, CollisionContext p_53293_) {
 		return SHAPE;
 	}
@@ -72,9 +68,8 @@ public class Farmland extends Block {
 		}
 
 	}
-
 	public void randomTick(BlockState p_221139_, ServerLevel p_221140_, BlockPos p_221141_, RandomSource p_221142_) {
-		int i = (Integer)p_221139_.getValue(MOISTURE);
+		int i = p_221139_.getValue(MOISTURE);
 		if (!isNearWater(p_221140_, p_221141_) && !p_221140_.isRainingAt(p_221141_.above())) {
 			if (i > 0) {
 				p_221140_.setBlock(p_221141_, p_221139_.setValue(MOISTURE, i - 1), 2);
@@ -94,19 +89,16 @@ public class Farmland extends Block {
 
 		super.fallOn(p_153227_, p_153228_, p_153229_, p_153230_, p_153231_);
 	}
-
 	public static void turnToDirt(@Nullable Entity p_270981_, BlockState p_270402_, Level p_270568_, BlockPos p_270551_) {
 		BlockState blockstate = pushEntitiesUp(p_270402_, Blocks.DIRT.get().defaultBlockState(), p_270568_, p_270551_);
 		p_270568_.setBlockAndUpdate(p_270551_, blockstate);
 		p_270568_.gameEvent(GameEvent.BLOCK_CHANGE, p_270551_, Context.of(p_270981_, blockstate));
 	}
-
 	private static boolean shouldMaintainFarmland(BlockGetter p_279219_, BlockPos p_279209_) {
 		BlockState plant = p_279219_.getBlockState(p_279209_.above());
 		BlockState state = p_279219_.getBlockState(p_279209_);
 		return plant.getBlock() instanceof IPlantable && state.canSustainPlant(p_279219_, p_279209_, Direction.UP, (IPlantable)plant.getBlock());
 	}
-
 	private static boolean isNearWater(LevelReader p_53259_, BlockPos p_53260_) {
 		BlockState state = p_53259_.getBlockState(p_53260_);
 
@@ -122,11 +114,9 @@ public class Farmland extends Block {
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53283_) {
 		p_53283_.add(MOISTURE);
 	}
-
 	public boolean isPathfindable(BlockState p_53267_, BlockGetter p_53268_, BlockPos p_53269_, PathComputationType p_53270_) {
 		return false;
 	}
-
 	static {
 		MOISTURE = BlockStateProperties.MOISTURE;
 		SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 15.0F, 16.0F);
@@ -136,10 +126,8 @@ public class Farmland extends Block {
 	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
 		return true;
 	}
-
-		@Override
+	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, IPlantable plantable) {
 		return true;
 	}
-
 }

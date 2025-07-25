@@ -29,24 +29,16 @@ public class EntitySpawning {
     @SubscribeEvent
     public static void onWorldTick(TickEvent.LevelTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-        execute(event.level);
-    }
 
-    private static void execute(Level level) {
+        Level level = event.level;
         if (level.isClientSide() || !(level instanceof ServerLevel world)) return;
 
         if (world.getGameTime() % TICK_INTERVAL != 0) return;
         if (world.dimension() == Level.END) return;
         if (!Variables.randomEventsToggle) return;
-        //REMOVE THIS DEBUG MESSAGE BEFORE FINAL BUILD
-        if (Variables.MapVariables.get(world).isUnknownInWorld()) {
-            TrueEnd.LOGGER.error("Entity spawn attempt failed: 'Unknown' already in world.");
-            return;
-        }
 
-        Difficulty difficulty;
         double chanceMultiplier = 0.0;
-        difficulty = world.getDifficulty();
+        Difficulty difficulty = world.getDifficulty();
         if (difficulty == Difficulty.PEACEFUL) {
             chanceMultiplier = 0.1;
         } else if (difficulty == Difficulty.EASY) {
@@ -56,9 +48,8 @@ public class EntitySpawning {
         } else if (difficulty == Difficulty.HARD) {
             chanceMultiplier = 2.0;
         }
-        if (Math.random() >= (Variables.entitySpawnChance * chanceMultiplier)) {
-            return;
-        }
+
+        if (!(Math.random() < (Variables.entitySpawnChance * chanceMultiplier))) return;
 
         List<ServerPlayer> players = world.players();
         if (players.isEmpty()) return;
@@ -80,19 +71,10 @@ public class EntitySpawning {
                 continue;
             }
 
-            BlockPos pos1 = new BlockPos(x, surfaceY, z);
-            BlockPos pos2 = pos1.above();
-            if (!world.isEmptyBlock(pos1) || !world.isEmptyBlock(pos2)) {
-                TrueEnd.LOGGER.debug("Attempt {}: space not clear at {}", attempt, pos1);
-                continue;
-            }
-
             EntityType<?> type = Entities.UNKNOWN.get();
             Entity entity = type.create(world);
-            if (entity == null) {
-                TrueEnd.LOGGER.error("Entity spawn failed: couldn't instantiate 'Unknown'.");
-                return;
-            }
+
+            if (entity == null) return;
             entity.moveTo(x + 0.5, surfaceY, z + 0.5, world.random.nextFloat() * 360.0F, 0.0F);
             entity.getPersistentData().putBoolean("PersistenceRequired", true);
             world.addFreshEntity(entity);
