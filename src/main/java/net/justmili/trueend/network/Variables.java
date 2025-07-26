@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.common.capabilities.Capability;
@@ -29,11 +30,9 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Variables {
-    public static final Capability<Variables.PlayerVariables> PLAYER_VARS_CAP =
-        CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<Variables.PlayerVariables> PLAYER_VARS_CAP = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<Variables.MapVariables> MAP_VARIABLES_CAP = CapabilityManager.get(new CapabilityToken<>() {});
 
-    public static final Capability<Variables.MapVariables> MAP_VARIABLES_CAP =
-            CapabilityManager.get(new CapabilityToken<>() {});
     public static double randomEventChance;
     public static double entitySpawnChance;
     public static boolean popupsToggle;
@@ -123,13 +122,14 @@ public class Variables {
 
         public static MapVariables get(LevelAccessor world) {
             if (!(world instanceof ServerLevel lvl)) return new MapVariables();
-            return lvl.getDataStorage().computeIfAbsent(MapVariables::load, MapVariables::new, DATA_NAME);
+            ServerLevel overworld = lvl.getServer().getLevel(Level.OVERWORLD);
+            return overworld.getDataStorage().computeIfAbsent(MapVariables::load, MapVariables::new, DATA_NAME);
         }
 
         public void syncAll(LevelAccessor world) {
             if (world instanceof ServerLevel lvl) {
                 TrueEnd.PACKET_HANDLER.send(
-                        PacketDistributor.DIMENSION.with(() -> lvl.dimension()),
+                        PacketDistributor.ALL.noArg(),
                         new MapVariablesSyncMessage(this)
                 );
             }

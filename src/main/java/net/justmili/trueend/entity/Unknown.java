@@ -94,7 +94,7 @@ public class Unknown extends AmbientCreature {
         if (target == null) return;
 
         if (distanceTo(target) < 9 && !target.hasEffect(MobEffects.DARKNESS)) {
-            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0, false, true));
+            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0, false, false));
         }
         switch (behavior) {
             case STALKING -> doStalking(target);

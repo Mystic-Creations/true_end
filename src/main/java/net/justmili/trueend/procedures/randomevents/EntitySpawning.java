@@ -54,7 +54,7 @@ public class EntitySpawning {
         List<ServerPlayer> players = world.players();
         if (players.isEmpty()) return;
         ServerPlayer player = players.get(world.random.nextInt(players.size()));
-        double maxDistance = (world.getServer().getPlayerList().getViewDistance() * 16.0) - 16.0;
+        double maxDistance = (world.getServer().getPlayerList().getViewDistance() * 16.0) - 48.0;
 
         for (int attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
             double angle = world.random.nextDouble() * Math.PI * 2.0;

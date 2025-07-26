@@ -25,8 +25,7 @@ import static net.justmili.trueend.init.Dimensions.BTD;
 public class AlphaFoodSystem {
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        if (event.getHand() != InteractionHand.MAIN_HAND)
-            return;
+        if (event.getHand() != InteractionHand.MAIN_HAND) return;
 
         Player player = event.getEntity();
         ItemStack stack = event.getItemStack();

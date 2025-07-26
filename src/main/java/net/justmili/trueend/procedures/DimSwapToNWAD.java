@@ -24,7 +24,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
@@ -33,7 +32,6 @@ import static net.justmili.trueend.init.Dimensions.NWAD;
 @Mod.EventBusSubscriber
 public class DimSwapToNWAD {
 	private static final Map<UUID, ResourceKey<Level>> diedIn = new HashMap<>();
-	private static final Random RAND = new Random();
 
 	@SubscribeEvent
 	public static void onEntityAttacked(LivingHurtEvent event) {
@@ -41,13 +39,11 @@ public class DimSwapToNWAD {
 		Level world = entity.level();
 		DamageSource source = event.getSource();
 
-		if (entity.level().dimension() == BTD) return;
-		if (event.getEntity() == null) return;
-
-		if (source == null) return;
+		if (entity.level().dimension() == BTD || entity.level().dimension() == NWAD) return;
+        if (source == null) return;
 		if (!(entity instanceof ServerPlayer player)) return;
-		if (!source.is(DamageTypes.IN_WALL)) return;
-		if (RAND.nextDouble() >= Variables.randomEventChance * 2) return;
+		if (!source.is(DamageTypes.IN_WALL) || !source.is(DamageTypes.FELL_OUT_OF_WORLD)) return;
+		if (Math.random() < Variables.randomEventChance * 2) return;
 
 		Advancement adv = player.server.getAdvancements()
 				.getAdvancement(ResourceLocation.parse("true_end:leave_the_nightmare_within_a_dream"));
@@ -68,7 +64,6 @@ public class DimSwapToNWAD {
 		ResourceKey<Level> dim = player.level().dimension();
 		if (dim == NWAD) diedIn.put(player.getUUID(), dim);
 	}
-
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerRespawnEvent event) {
 		Entity entity = event.getEntity();
