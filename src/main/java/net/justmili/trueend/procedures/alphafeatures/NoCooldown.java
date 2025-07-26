@@ -12,10 +12,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-
 @Mod.EventBusSubscriber
 public class NoCooldown {
-
     private static final AttributeModifier modifier = new AttributeModifier("9b91a426-cc5c-4a08-a0e5-7d00627cb3ef",200.0, AttributeModifier.Operation.ADDITION);
 
     @SubscribeEvent

@@ -2,8 +2,6 @@ package net.justmili.trueend.procedures.alphafeatures;
 
 import java.util.Objects;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -24,24 +22,15 @@ import static net.justmili.trueend.init.Dimensions.BTD;
 @Mod.EventBusSubscriber
 public class AlphaFoodSystem {
     @SubscribeEvent
-    public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        if (event.getHand() != InteractionHand.MAIN_HAND) return;
+    public static int onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        if (event.getHand() != InteractionHand.MAIN_HAND) return 0;
 
         Player player = event.getEntity();
         ItemStack stack = event.getItemStack();
-        int consumed = execute(event, player, stack);
-    }
-
-    private static int execute(PlayerInteractEvent.RightClickItem event, Player player,
-            ItemStack stack) {
-        if (player == null)
-            return 0;
-        if (player.level().dimension() != BTD)
-            return 0;
-
+        if (player == null) return 0;
+        if (player.level().dimension() != BTD) return 0;
         float newHealth = player.getHealth();
-        int consumed = 0;
-        boolean other = false;
+        int consumed;
 
         if (stack.getItem() == Items.PORKCHOP) {
             newHealth += 1.5F;
@@ -83,7 +72,6 @@ public class AlphaFoodSystem {
         }
 
         if (consumed == 1) {
-            assert event != null;
             if (!healthCheck(event)) {
                 stack.shrink(1);
                 player.getInventory().setChanged();
@@ -98,7 +86,30 @@ public class AlphaFoodSystem {
         }
 
         if (consumed == 0) {
-            assert event != null;
+            if (event.isCancelable()) {
+                event.setCanceled(true);
+            }
+        }
+        return consumed;
+    }
+    @SubscribeEvent
+    public static int onRightClickItem(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getHand() != InteractionHand.MAIN_HAND) return 0;
+
+        Player player = event.getEntity();
+        ItemStack stack = event.getItemStack();
+
+        if (player == null) return 0;
+        if (player.level().dimension() != BTD) return 0;
+
+        int consumed;
+        if (stack.is(ItemTags.create(ResourceLocation.parse("true_end:btd_uneatables")))) {
+            consumed = 0;
+        } else {
+            consumed = 2;
+        }
+
+        if (consumed == 0) {
             if (event.isCancelable()) {
                 event.setCanceled(true);
             }
@@ -135,39 +146,4 @@ public class AlphaFoodSystem {
             return false;
         }
     }
-
-    @SubscribeEvent
-    public static void onRightClickItem(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getHand() != InteractionHand.MAIN_HAND)
-            return;
-
-        Player player = event.getEntity();
-        ItemStack stack = event.getItemStack();
-        int consumed = execute2(event, player, stack);
-    }
-
-    private static int execute2(@Nullable PlayerInteractEvent.RightClickBlock event, @Nullable Player player,
-            ItemStack stack) {
-        if (player == null)
-            return 0;
-        if (player.level().dimension() != BTD)
-            return 0;
-
-        int consumed = 0;
-
-        if (stack.is(ItemTags.create(ResourceLocation.parse("true_end:btd_uneatables")))) {
-            consumed = 0;
-        } else {
-            consumed = 2;
-        }
-
-        if (consumed == 0) {
-            assert event != null;
-            if (event.isCancelable()) {
-                event.setCanceled(true);
-            }
-        }
-        return consumed;
-    }
-
 }
