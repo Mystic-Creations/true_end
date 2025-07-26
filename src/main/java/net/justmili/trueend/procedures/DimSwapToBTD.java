@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.LightLayer;
@@ -237,14 +238,27 @@ public class DimSwapToBTD {
     }
 
     public static void adaptTerrain(ServerLevel world, BlockPos centerPos) {
-        BlockPos placePos = new BlockPos(centerPos.getX() - HOUSE_PLATEAU_WIDTH / 2, centerPos.getY() - 1,
-                centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2);
+        BlockPos placePos = new BlockPos(
+                centerPos.getX() - HOUSE_PLATEAU_WIDTH / 2,
+                centerPos.getY() - 1,
+                centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2
+        );
         int plateauHeight = placePos.getY();
         // make the plateau
         for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
             for (int z = 0; z < HOUSE_PLATEAU_LENGTH; z++) {
                 BlockPos grassPos = new BlockPos(x + placePos.getX(), plateauHeight, z + placePos.getZ());
-                placeGrassWithDirt(world, grassPos);
+                BlockState existing = world.getBlockState(grassPos);
+                // only replace air, water, lava, mod grass, dirt, sand
+                if (existing.isAir()
+                        || existing.getFluidState().is(FluidTags.WATER)
+                        || existing.getFluidState().is(FluidTags.LAVA)
+                        || existing.is(Blocks.GRASS_BLOCK.get())
+                        || existing.is(Blocks.DIRT.get())
+                        || existing.is(Blocks.SAND.get())) {
+
+                    placeGrassWithDirt(world, grassPos);
+                }
             }
         }
         int radius = TERRAIN_ADAPT_EXTENSION;
@@ -254,17 +268,16 @@ public class DimSwapToBTD {
         // circular terrain adaptation
         for (int dx = -maxDist; dx <= maxDist; dx++) {
             for (int dz = -maxDist; dz <= maxDist; dz++) {
-                int worldX = centerX + dx;
-                int worldZ = centerZ + dz;
-
                 double distFromCenter = Math.sqrt(dx * dx + dz * dz);
                 if (distFromCenter > radius + (double) Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2)
                     continue;
 
+                int worldX = centerX + dx;
+                int worldZ = centerZ + dz;
                 int localX = worldX - placePos.getX();
                 int localZ = worldZ - placePos.getZ();
-                boolean insidePlateau = localX >= 0 && localX < HOUSE_PLATEAU_WIDTH && localZ >= 0
-                        && localZ < HOUSE_PLATEAU_LENGTH;
+                boolean insidePlateau = localX >= 0 && localX < HOUSE_PLATEAU_WIDTH
+                        && localZ >= 0 && localZ < HOUSE_PLATEAU_LENGTH;
                 if (insidePlateau)
                     continue;
 
@@ -275,21 +288,52 @@ public class DimSwapToBTD {
                 if (dist < 0 || dist > radius)
                     continue;
 
+                // compute and clamp height
                 int height = gradient(targetHeight, plateauHeight, radius, dist);
+                height = Math.max(world.getMinBuildHeight(), Math.min(height, world.getMaxBuildHeight() - 1));
+
                 BlockPos grassPos = new BlockPos(worldX, height, worldZ);
-                placeGrassWithDirt(world, grassPos);
+                BlockState existing = world.getBlockState(grassPos);
+                // only replace air, water, lava, mod grass, dirt, sand
+                if (existing.isAir()
+                        || existing.getFluidState().is(FluidTags.WATER)
+                        || existing.getFluidState().is(FluidTags.LAVA)
+                        || existing.is(Blocks.GRASS_BLOCK.get())
+                        || existing.is(Blocks.DIRT.get())
+                        || existing.is(Blocks.SAND.get())) {
+
+                    placeGrassWithDirt(world, grassPos);
+                }
             }
         }
     }
-    // Helper method to place grass and fill with dirt until hitting stone
+    // Helper method to place grass and fill with dirt until hitting ground
     private static void placeGrassWithDirt(ServerLevel world, BlockPos pos) {
-        world.setBlock(pos, Blocks.GRASS_BLOCK.get().defaultBlockState(), 3);
-        BlockPos.MutableBlockPos mutablePos = pos.mutable();
+        // clamp position
+        int y = Math.max(world.getMinBuildHeight(), Math.min(pos.getY(), world.getMaxBuildHeight() - 1));
+        BlockPos clampedPos = new BlockPos(pos.getX(), y, pos.getZ());
+        BlockState existing = world.getBlockState(clampedPos);
+        // only replace air, water, lava, mod grass, dirt, sand
+        if (!existing.isAir()
+                && !existing.getFluidState().is(FluidTags.WATER)
+                && !existing.getFluidState().is(FluidTags.LAVA)
+                && !existing.is(Blocks.GRASS_BLOCK.get())
+                && !existing.is(Blocks.SAND.get())) {
+            return;
+        }
+        world.setBlock(clampedPos, Blocks.GRASS_BLOCK.get().defaultBlockState(), 3);
+        BlockPos.MutableBlockPos mutablePos = clampedPos.mutable();
 
-        for (int y = pos.getY() - 1; y >= world.getMinBuildHeight(); y--) {
-            mutablePos.setY(y);
+        for (int yy = clampedPos.getY() - 1; yy >= world.getMinBuildHeight(); yy--) {
+            mutablePos.setY(yy);
             BlockState current = world.getBlockState(mutablePos);
-            if (current.is(net.minecraft.world.level.block.Blocks.STONE)) {
+            // stop when hitting non-replaceable block
+            if (!current.isAir()
+                    && !current.getFluidState().is(FluidTags.WATER)
+                    && !current.getFluidState().is(FluidTags.LAVA)
+                    && !current.is(Blocks.GRASS_BLOCK.get())
+                    && !current.is(Blocks.DIRT.get())
+                    && !current.is(Blocks.SAND.get())) {
                 break;
             }
             world.setBlock(mutablePos, Blocks.DIRT.get().defaultBlockState(), 3);
