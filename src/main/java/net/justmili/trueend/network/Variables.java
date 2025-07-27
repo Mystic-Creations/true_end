@@ -185,13 +185,13 @@ public class Variables {
     // --------------------
     public static class PlayerVariables {
         private boolean beenBeyond = false;
-        private int liminalForestTime = 0;
+        private int seepingRealityTime = 0;
 
         public boolean hasBeenBeyond() { return beenBeyond; }
         public void setBeenBeyond(boolean v) { beenBeyond = v; }
 
-        public int getLiminalForestTime() { return liminalForestTime; }
-        public void setLiminalForestTime(int v) { liminalForestTime = v; }
+        public int getSeepingRealityTime() { return seepingRealityTime; }
+        public void setSeepingRealityTime(int v) { seepingRealityTime = v; }
 
         public void sync(ServerPlayer player) {
             TrueEnd.PACKET_HANDLER.send(
@@ -203,13 +203,13 @@ public class Variables {
         public CompoundTag writeNBT() {
             CompoundTag n = new CompoundTag();
             n.putBoolean("beenBeyond", beenBeyond);
-            n.putInt("liminalForestTime", liminalForestTime);
+            n.putInt("seepingRealityTime", seepingRealityTime);
             return n;
         }
 
         public void readNBT(CompoundTag n) {
             beenBeyond = n.getBoolean("beenBeyond");
-            liminalForestTime = n.getInt("liminalForestTime");
+            seepingRealityTime = n.getInt("seepingRealityTime");
         }
     }
 
@@ -264,7 +264,7 @@ public class Variables {
             evt.getOriginal().getCapability(PLAYER_VARS_CAP).ifPresent(oldV ->
                 evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(newV -> {
                             newV.setBeenBeyond(oldV.hasBeenBeyond());
-                            newV.setLiminalForestTime(oldV.getLiminalForestTime());
+                            newV.setSeepingRealityTime(oldV.getSeepingRealityTime());
                         }
                 )
             );

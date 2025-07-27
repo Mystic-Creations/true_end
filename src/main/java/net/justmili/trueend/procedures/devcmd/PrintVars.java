@@ -28,7 +28,7 @@ public class PrintVars {
                 "beenBeyond (" + otherPlayer.getName().getString() + "): " + vars.hasBeenBeyond()
             ));
             source.sendSystemMessage(Component.literal(
-                    "liminalForestTicks (" + otherPlayer.getName().getString() + "): " + vars.getLiminalForestTime()
+                    "liminalForestTicks (" + otherPlayer.getName().getString() + "): " + vars.getSeepingRealityTime()
             ));
         }
 
