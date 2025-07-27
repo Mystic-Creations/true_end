@@ -60,9 +60,7 @@ public class DimSwapToBTD {
             if (HAS_PROCESSED.getOrDefault(player, false)) return;
 
             AtomicBoolean hasVisited = new AtomicBoolean(false);
-            player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
-                hasVisited.set(data.hasBeenBeyond());
-            });
+            player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> hasVisited.set(data.hasBeenBeyond()));
             if (!hasVisited.get()) {
                 if (player.level().dimension() == Level.OVERWORLD
                         && player.level() instanceof ServerLevel overworld
@@ -82,15 +80,12 @@ public class DimSwapToBTD {
                     double btdSpawnY = getVariable.getBtdSpawnY();
                     double btdSpawnZ = getVariable.getBtdSpawnZ();
                     if (btdSpawnY > 0) {
-                        TrueEnd.LOGGER.info("Global Spawn Default Variables were changed, teleporting to Global BTD Spawn");
                         player.teleportTo(nextLevel, btdSpawnX, btdSpawnY, btdSpawnZ, 0, 0);
                         player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
-                        for (MobEffectInstance effect : player.getActiveEffects())
-                            player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effect));
-                        sendFirstEntryConversation(player, nextLevel);
+                        for (MobEffectInstance effect : player.getActiveEffects()) player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effect));
+                        sendFirstEntryConversation(player);
                         executeCommand(nextLevel, player, "function true_end:btd_global_spawn");
-                        player.getCapability(Variables.PLAYER_VARS_CAP)
-                                .ifPresent(data -> data.setBeenBeyond(true));
+                        player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                         HAS_PROCESSED.remove(player);
                         return;
                     }
@@ -98,13 +93,11 @@ public class DimSwapToBTD {
                     TrueEnd.wait(5, () -> {
                         BlockPos worldSpawn = overworld.getSharedSpawnPos();
                         BlockPos initialSearchPos = locateBiome(nextLevel, worldSpawn, "true_end:plains");
-                        if (initialSearchPos == null)
-                            initialSearchPos = worldSpawn;
+                        if (initialSearchPos == null) initialSearchPos = worldSpawn;
 
                         BlockPos spawnPos = findSpawn(nextLevel, initialSearchPos);
                         BlockPos secondarySearchPos = locateBiome(nextLevel,
-                                new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)),
-                                "true_end:plains");
+                                new BlockPos(new Vec3i(BlockPosRandomX, BlockPosRandomY, BlockPosRandomZ)), "true_end:plains");
 
                         if (spawnPos == null) {
                             for (int i = 0; i <= MAX_FALLBACK_SEARCH_TRIES; i++) {
@@ -129,32 +122,25 @@ public class DimSwapToBTD {
                             adaptTerrain = true;
                             absoluteFallbackPlatform = false;
                         }
-
                         BlockPos finalSpawnPos = spawnPos;
                         BlockPos secFinalSpawnPos = secondarySearchPos;
 
-                        player.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5,
-                                player.getYRot(), player.getXRot());
+                        player.teleportTo(nextLevel, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, player.getYRot(), player.getXRot());
                         player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
                         for (MobEffectInstance effect : player.getActiveEffects()) player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effect));
 
                         TrueEnd.wait(4, () -> {
-                            if (absoluteFallbackPlatform) {
-                                executeCommand(nextLevel, player, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
-                            }
+                            if (absoluteFallbackPlatform) executeCommand(nextLevel, player, "fill ~-12 ~-1 12550821 ~12 ~-1 ~4 true_end:cobblestone replace air");
+                            if (adaptTerrain) adaptTerrain(nextLevel, player.blockPosition());
                             removeNearbyTrees(nextLevel, player.blockPosition(), 15);
-                            if (adaptTerrain) {
-                                adaptTerrain(nextLevel, player.blockPosition());
-                            }
                             executeCommand(nextLevel, player, "function true_end:build_home");
                             setGlobalSpawn(nextLevel, player);
-                            sendFirstEntryConversation(player, nextLevel);
+                            sendFirstEntryConversation(player);
                             player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                             if (secFinalSpawnPos == null) {
                                 nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
                                         data -> data.setBtdSpawn(finalSpawnPos.getX(), finalSpawnPos.getY() - 1, finalSpawnPos.getZ()));
-                            }
-                            if (secFinalSpawnPos != null) {
+                            } else {
                                 nextLevel.getCapability(Variables.MAP_VARIABLES_CAP).ifPresent(
                                         data -> data.setBtdSpawn(secFinalSpawnPos.getX(), secFinalSpawnPos.getY() - 1, secFinalSpawnPos.getZ()));
                             }
@@ -163,9 +149,7 @@ public class DimSwapToBTD {
 
                         PlayerInvManager.saveInvBTD(player);
                         PlayerInvManager.clearCuriosSlots(player);
-                        if (Variables.clearDreamItems) {
-                            player.getInventory().clearContent();
-                        }
+                        if (Variables.clearDreamItems) player.getInventory().clearContent();
                     });
                 }
             }
@@ -221,8 +205,8 @@ public class DimSwapToBTD {
         }
         return null;
     }
-    public static void setGlobalSpawn(LevelAccessor nextLevel, ServerPlayer player) {
-        Variables.MapVariables.get(nextLevel).setBtdSpawn(player.getX(), player.getY(), player.getZ());
+    public static void setGlobalSpawn(LevelAccessor world, ServerPlayer player) {
+        Variables.MapVariables.get(world).setBtdSpawn(player.getX(), player.getY(), player.getZ());
     }
 
     private static Predicate<Holder<Biome>> isBiome(String biomeNamespaced) {
@@ -244,17 +228,14 @@ public class DimSwapToBTD {
                 centerPos.getZ() - HOUSE_PLATEAU_LENGTH / 2
         );
         int plateauHeight = placePos.getY();
-        // make the plateau
         for (int x = 0; x < HOUSE_PLATEAU_WIDTH; x++) {
             for (int z = 0; z < HOUSE_PLATEAU_LENGTH; z++) {
                 BlockPos grassPos = new BlockPos(x + placePos.getX(), plateauHeight, z + placePos.getZ());
                 BlockState existing = world.getBlockState(grassPos);
-                // only replace air, water, lava, mod grass, dirt, sand
                 if (existing.isAir()
                         || existing.getFluidState().is(FluidTags.WATER)
                         || existing.getFluidState().is(FluidTags.LAVA)
                         || existing.is(Blocks.GRASS_BLOCK.get())
-                        || existing.is(Blocks.DIRT.get())
                         || existing.is(Blocks.SAND.get())) {
 
                     placeGrassWithDirt(world, grassPos);
@@ -276,30 +257,24 @@ public class DimSwapToBTD {
                 int worldZ = centerZ + dz;
                 int localX = worldX - placePos.getX();
                 int localZ = worldZ - placePos.getZ();
-                boolean insidePlateau = localX >= 0 && localX < HOUSE_PLATEAU_WIDTH
-                        && localZ >= 0 && localZ < HOUSE_PLATEAU_LENGTH;
-                if (insidePlateau)
-                    continue;
+                boolean insidePlateau = localX >= 0 && localX < HOUSE_PLATEAU_WIDTH && localZ >= 0 && localZ < HOUSE_PLATEAU_LENGTH;
+                if (insidePlateau) continue;
 
                 BlockPos checkPos = new BlockPos(worldX, plateauHeight, worldZ);
                 int targetHeight = getLocalMax(world, checkPos);
 
                 int dist = (int) Math.round(distFromCenter) - Math.max(HOUSE_PLATEAU_WIDTH, HOUSE_PLATEAU_LENGTH) / 2;
-                if (dist < 0 || dist > radius)
-                    continue;
+                if (dist < 0 || dist > radius) continue;
 
-                // compute and clamp height
                 int height = gradient(targetHeight, plateauHeight, radius, dist);
                 height = Math.max(world.getMinBuildHeight(), Math.min(height, world.getMaxBuildHeight() - 1));
 
                 BlockPos grassPos = new BlockPos(worldX, height, worldZ);
                 BlockState existing = world.getBlockState(grassPos);
-                // only replace air, water, lava, mod grass, dirt, sand
                 if (existing.isAir()
                         || existing.getFluidState().is(FluidTags.WATER)
                         || existing.getFluidState().is(FluidTags.LAVA)
                         || existing.is(Blocks.GRASS_BLOCK.get())
-                        || existing.is(Blocks.DIRT.get())
                         || existing.is(Blocks.SAND.get())) {
 
                     placeGrassWithDirt(world, grassPos);
@@ -309,11 +284,9 @@ public class DimSwapToBTD {
     }
     // Helper method to place grass and fill with dirt until hitting ground
     private static void placeGrassWithDirt(ServerLevel world, BlockPos pos) {
-        // clamp position
         int y = Math.max(world.getMinBuildHeight(), Math.min(pos.getY(), world.getMaxBuildHeight() - 1));
         BlockPos clampedPos = new BlockPos(pos.getX(), y, pos.getZ());
         BlockState existing = world.getBlockState(clampedPos);
-        // only replace air, water, lava, mod grass, dirt, sand
         if (!existing.isAir()
                 && !existing.getFluidState().is(FluidTags.WATER)
                 && !existing.getFluidState().is(FluidTags.LAVA)
@@ -485,7 +458,7 @@ public class DimSwapToBTD {
         }
     }
 
-    private static void sendFirstEntryConversation(ServerPlayer player, ServerLevel world) {
+    private static void sendFirstEntryConversation(ServerPlayer player) {
         List<String> jsonLines = new ArrayList<>();
 
         BufferedReader br;
