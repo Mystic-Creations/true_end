@@ -23,7 +23,7 @@
 - 'Config'
 - '/te-config' command
 - Credits sequence upon leaving Beyond the Dream for the first time
-  - Disables automatically server-wide after one-time sequence (We're gonna make it a per-player thing)
+  - Disables automatically after one-time sequence
   - Can be turned back on with '/te-config creditsToggle true'
 - Player can not take void damage till Y=-2010 (2010 being the year Alpha 1.1.2_01 came out on which Beyond the Dream is mainly based on)
 
