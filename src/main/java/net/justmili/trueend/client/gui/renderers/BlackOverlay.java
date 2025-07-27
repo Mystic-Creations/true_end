@@ -16,7 +16,7 @@ public class BlackOverlay extends AbstractContainerScreen<net.justmili.trueend.c
 
     @Override
     public boolean isPauseScreen() {
-        return true;
+        return false;
     }
 
     @Override

@@ -32,12 +32,12 @@ public class PrintVars {
         // World vars
         source.sendSystemMessage(Component.literal("\n----= World Variables"));
         Variables.MapVariables globalVars = Variables.MapVariables.get(world);
-        source.sendSystemMessage(Component.literal("btdSpawnX/Y/Z: "+btdSpawnX+"/"+btdSpawnY +"/"+btdSpawnZ));
         if (player.level().dimension() == BTD) {
-            source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
+            source.sendSystemMessage(Component.literal("btdSpawnX/Y/Z: "+btdSpawnX+"/"+btdSpawnY +"/"+btdSpawnZ));
         } else {
             source.sendSystemMessage(Component.literal("You're not in BTD"));
         }
+        source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
         // Config vars
         source.sendSystemMessage(Component.literal("\n----= Config Variables"));
         source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));

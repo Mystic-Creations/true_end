@@ -1,6 +1,7 @@
 # Important Notices
 - **Flashing Lights warning**: to disable, run `/te-config flashingLights false`
 - **Major world-generation changes**: any world that has visited the Beyond the Dream dimension should be retired—create a new world to experience these updates safely
+- **It is recommended to play in Singleplayer, but it is playable in Multiplayer**
 
 ## World Generation
 - Dimension generation overhaul - now more Alpha-like
@@ -89,5 +90,10 @@
 - Replaced legacy gamerules with config variables
 - Renamed leaves' ID from `tree_leaves` to `leaves`
 - Player no longer can cheese it and escape Beyond the Dream by setting their spawn, breaking their bed and dying
+
+## Known Bugs
+- Mod Credits don't appear on multiplayer
+- fogToggle config doesn't work well on multiplayer
+- Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
 
 A lot of inspiration came from mainly Minecraft ARGs as well as mods like [The Broken Script](https://modrinth.com/mod/the-broken-script).

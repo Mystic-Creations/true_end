@@ -40,7 +40,7 @@ public class EntitySpawning {
         double chanceMultiplier = 0.0;
         Difficulty difficulty = world.getDifficulty();
         if (difficulty == Difficulty.PEACEFUL) {
-            chanceMultiplier = 0.1;
+            chanceMultiplier = 3.0; // :)
         } else if (difficulty == Difficulty.EASY) {
             chanceMultiplier = 0.5;
         } else if (difficulty == Difficulty.NORMAL) {

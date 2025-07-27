@@ -16,7 +16,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class TestBlackOverlay {
     private static LevelAccessor world;
-
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
         TestBlackOverlay.world = world;
         if (entity == null)

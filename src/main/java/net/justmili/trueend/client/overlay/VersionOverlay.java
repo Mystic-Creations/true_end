@@ -25,7 +25,8 @@ public class VersionOverlay {
         "Minecraft v1.20.1",
         "Minecraft Snapshot -3w21a", //Reference to the "Snapshot Null" series on YT
         "Minecraft Beta v1.0.46", //Reference to andrewgames722 channel on YT
-        "Minecraft Alpha v1.0.7" //Reference to the VoidExp series by mark101 on YT, specifically moonglitch.avi video
+        "Minecraft Alpha v1.0.7", //Reference to the VoidExp series by mark101 on YT, specifically moonglitch.avi video
+        "Minecraft Alpha v1.0.16_02" //Reference to the infamous herobrine screenshot
     };
 
     private static String currentText = BASE_TEXT;
