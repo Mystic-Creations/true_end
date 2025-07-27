@@ -1,8 +1,8 @@
 package net.justmili.trueend.procedures.events;
 
+import net.justmili.trueend.command.calls.screentests.TestBlackOverlay;
 import net.justmili.trueend.init.Biomes;
 import net.justmili.trueend.network.Variables;
-import net.justmili.trueend.procedures.devcmd.screentests.TestBlackOverlay;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
