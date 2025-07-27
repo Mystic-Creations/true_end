@@ -1,0 +1,93 @@
+# Important Notices
+- **Flashing Lights warning**: to disable, run `/te-config flashingLights false`
+- **Major world-generation changes**: any world that has visited the Beyond the Dream dimension should be retired—create a new world to experience these updates safely
+
+## World Generation
+- Dimension generation overhaul - now more Alpha-like
+- Re-added Farlands
+- Dreaming Tree is now much more rare
+- New biomes: Forest & Plains (formerly Nostalgic Meadow)
+- Seeping Reality zones (biome) in the Overworld ("unstable terrain")
+- New small structure "Unknown Base" spawns, hinting you're not alone
+
+## Features
+*(Exclusive to Beyond the Dream)*
+- Sheep drop wool when hit
+- Removed attack cooldown
+- Alpha-style hunger & health system
+- Sprinting disabled by default
+- In-game version overlay
+- Alpha HUD
+*(General)*
+- 'Config'
+- '/te-config' command
+- Credits sequence upon leaving Beyond the Dream for the first time
+  - Disables automatically server-wide after one-time sequence (We're gonna make it a per-player thing)
+  - Can be turned back on with '/te-config creditsToggle true'
+- Player can not take void damage till Y=-2010 (2010 being the year Alpha 1.1.2_01 came out on which Beyond the Dream is mainly based on)
+
+## Blocks & Building
+- Wooden Stairs
+- Wooden Slab
+- (Wooden) Fence
+- (Wooden) Fence Gate
+- (Wooden) Door
+- (Wooden) Trapdoor
+- (Wooden) Pressure Plate
+- (Wooden) Button
+- Red flower
+- Yellow flower
+- Saplings
+
+## Items & Tools
+- Dreamer's Compass (guides you to the Dreaming Tree)
+- Redesigned Mysterious Cube model
+- Music Disc "Farlands" by DGiraffe (found by traveling to the Farlands)
+- Music Disc "Never Alone" by DGiraffe (found in dungeon chests)
+
+## Advancements
+- "Was I Here?" - discover someone else's early-game base
+- Classic advancements: Hot Topic, On A Rail, When Pigs Fly, etc.
+- One hidden secret advancement
+
+## Entities
+- Unknown - appears in the distance and watches the player from afar; more coming soon.
+
+## Events & Interactions
+- New random world events
+  - Random sounds of walking on, or breaking blocks
+  - Time of day can change randomly (can be disabled via config)
+  - All mobs within a certain distance staring at the player
+  - Message Box pop-up when player goes to sleep in the Overworld (doesn't work on Linux and MacOS yet)
+- Basic chat interaction with the Unknown entity
+  - All available interactions available are written down on our [Discord](https://discord.gg/BcCDgnsCwQ)
+
+## Localization
+- Added support for Russian, Brazilian Portuguese, Persian (Farsi), and Spanish (Spain)
+
+## Removed
+- Removed gamerules:
+  - `btdConversationMessageDelay`
+  - `logicHasVisitedBTDForTheFirstTime`
+  - `keepInvDefaultGameplayValue`
+  - `clearDreamItems` (now handled via `/te-config`)
+- Removed the Neverending Ocean biome
+
+## Bug Fixes & Technical Improvements
+- Improved spawn logic for Beyond the Dream
+  - Player no longer gets thrown back into the overworld with desync if something fails
+  - No more spawns in weird places; on hills, in caves etc.
+- Correct tool requirements and preferred tools set for all blocks
+- Fixed sky type of 'Beyond The Dream' to be the same as Overworld's
+- Fixed inventory preservation in Nightmare Within A Dream and Beyond the Dream
+- Added multiplayer compatibility
+- Fixed leaves suffocating the player and flammable slab issues
+- Added previously missing crafting recipes
+- Corrected "home" door to the custom one and removed obstructing trees (config toggles: Remove Trees, Adapt Terrain)
+- Added terrain adaptation under "home" structure
+- Optimized, fixed and improved block interactions for Redstone Ore and Grass Block
+- Replaced legacy gamerules with config variables
+- Renamed leaves' ID from `tree_leaves` to `leaves`
+- Player no longer can cheese it and escape Beyond the Dream by setting their spawn, breaking their bed and dying
+
+A lot of inspiration came from mainly Minecraft ARGs as well as mods like [The Broken Script](https://modrinth.com/mod/the-broken-script).
