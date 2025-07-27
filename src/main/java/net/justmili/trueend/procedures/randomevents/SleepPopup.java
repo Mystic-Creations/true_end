@@ -1,12 +1,5 @@
 package net.justmili.trueend.procedures.randomevents;
 
-import java.awt.Dialog;
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import net.justmili.trueend.interfaces.User32;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,23 +25,13 @@ public class SleepPopup {
                 e.printStackTrace();
             }
 
+            if (!player.isSleeping()) return;
             String osName = System.getProperty("os.name").toLowerCase();
-            boolean isHeadless = GraphicsEnvironment.isHeadless();
 
-            if (osName.contains("win") && !isHeadless) {
+            if (osName.contains("win")) {
                 User32.INSTANCE.MessageBoxA(0L, "wake up.", "", 0);
-            } else if (!isHeadless) {
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane pane = new JOptionPane("wake up.", JOptionPane.INFORMATION_MESSAGE);
-                    JDialog dialog = pane.createDialog(null, "");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setModal(true);
-                    dialog.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
-                    dialog.setVisible(true);
-                });
-            } else {
-                System.out.println("[True End] Wake up event triggered (GUI skipped due to headless environment).");
             }
+            //We'll do this shit for Linux and MacOS some other time
         }).start();
     }
 }
