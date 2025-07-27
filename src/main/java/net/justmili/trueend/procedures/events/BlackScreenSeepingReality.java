@@ -28,8 +28,8 @@ public class BlackScreenSeepingReality {
                 cap.setSeepingRealityTime(liminalTime);
 
                 double chance =  random.nextDouble();
-                player.sendSystemMessage(Component.literal(Double.toString(Variables.randomEventChance * Math.log(liminalTime) / Math.log(600))));
-                if (chance < Variables.randomEventChance * Math.log(liminalTime) / Math.log(2400)) {
+                player.sendSystemMessage(Component.literal(Double.toString(Variables.randomEventChance * Math.log(liminalTime) / Math.log(240000))));
+                if (chance < Variables.randomEventChance * Math.log(liminalTime) / Math.log(240000)) {
                     TestBlackOverlay.execute(player.level(), player.getX(), player.getY(), player.getZ(), player);
                 }
             });
