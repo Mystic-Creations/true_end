@@ -300,8 +300,8 @@ public class PlayerInvManager {
         //TODO: FIND A WAY TO SAVE NEW FORGECAPS DATA
         //No, player.load(forgeCaps) or player.save(forgeCaps) do not work
 
-        TrueEnd.LOGGER.info(playerNbt);
-        TrueEnd.LOGGER.info(forgeCaps);
+        //TrueEnd.LOGGER.info(playerNbt);
+        //TrueEnd.LOGGER.info(forgeCaps);
     }
 
     @SubscribeEvent

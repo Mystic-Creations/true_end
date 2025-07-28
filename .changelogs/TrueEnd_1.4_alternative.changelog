@@ -73,6 +73,7 @@
   - `keepInvDefaultGameplayValue`
   - `clearDreamItems` (now handled via `/te-config`)
 - Removed the Neverending Ocean biome
+- Removed Herobrine ;)
 
 ## Bug Fixes & Technical Improvements
 - Improved spawn logic for Beyond the Dream
@@ -95,5 +96,4 @@
 - Mod Credits don't appear on multiplayer
 - fogToggle config doesn't work well on multiplayer
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
-
-A lot of inspiration came from mainly Minecraft ARGs as well as mods like [The Broken Script](https://modrinth.com/mod/the-broken-script).
+- Dreamer's Compass points to the edge of the structure's bounding box

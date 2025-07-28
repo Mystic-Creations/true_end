@@ -146,11 +146,9 @@ public class Variables {
         public static void encode(MapVariablesSyncMessage msg, FriendlyByteBuf buf) {
             buf.writeNbt(msg.data);
         }
-
         public static MapVariablesSyncMessage decode(FriendlyByteBuf buf) {
             return new MapVariablesSyncMessage(MapVariables.load(buf.readNbt()));
         }
-
         public static void handle(MapVariablesSyncMessage msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 MapVariables client = MapVariables.get(Minecraft.getInstance().level);
@@ -159,9 +157,6 @@ public class Variables {
         }
     }
 
-    // --------------------
-    // -- PlayerVariables (per-player data)
-    // --------------------
     public static class PlayerVariables {
         private boolean beenBeyond = false;
         private int seepingRealityTime = 0;
@@ -253,12 +248,10 @@ public class Variables {
         public static void syncOnLogin(PlayerEvent.PlayerLoggedInEvent evt) {
             evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(v -> v.sync((ServerPlayer)evt.getEntity()));
         }
-
         @SubscribeEvent
         public static void syncOnRespawn(PlayerEvent.PlayerRespawnEvent evt) {
             evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(v -> v.sync((ServerPlayer)evt.getEntity()));
         }
-
         @SubscribeEvent
         public static void syncOnDimChange(PlayerEvent.PlayerChangedDimensionEvent evt) {
             evt.getEntity().getCapability(PLAYER_VARS_CAP).ifPresent(v -> v.sync((ServerPlayer)evt.getEntity()));
@@ -271,7 +264,6 @@ public class Variables {
 
         @Override
         public CompoundTag serializeNBT() { return vars.writeNBT(); }
-
         @Override
         public void deserializeNBT(CompoundTag nbt) { vars.readNBT(nbt); }
     }

@@ -17,7 +17,7 @@ Wake up, *Player.*
 
 <details>
 <summary>Notes</summary>
-The mod is playable in multiplayer with version 1.4 and above. Any older versions are gonna completely break when played on multiplayer.
+The mod is playable in multiplayer with version 1.4 and above altho it is recommended to play in singleplayer. Any older versions are gonna completely break when played on multiplayer.
 
-Clearing items when entering Beyond The Dream dimension for the first time can be toggled off and on with the clearDreamItems gamerule. It is set to true by default. (You still get some of your items back when you come back to the overworld and the clearing only ever happens once per player)
+Item clearing at first entry to Beyond The Dream dimension can be disabled via /te-config clearDreamItems false, but be aware that on return your items will be brought back.
 </details>

@@ -87,6 +87,9 @@ public class DimSwapToBTD {
                         executeCommand(nextLevel, player, "function true_end:btd_global_spawn");
                         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                         HAS_PROCESSED.remove(player);
+                        PlayerInvManager.saveInvBTD(player);
+                        PlayerInvManager.clearCuriosSlots(player);
+                        if (Variables.clearDreamItems) player.getInventory().clearContent();
                         return;
                     }
 
