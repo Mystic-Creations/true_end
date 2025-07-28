@@ -55,8 +55,8 @@ public class ChatReplies {
             case "the broken script" -> sendChatReply(world, "<§kUnknown§r> Inspiration.", true);
             case "nightmare" -> sendChatReply(world, "<§kUnknown§r> Within.", true);
             case "fuck you" -> punish(player);
-            case "where am i" -> sendChatReply(world, (int)player.getX()+"/"+(int)player.getY()+"/"+(int)player.getZ()+".", true);
-            case "where are you" -> sendChatReply(world,"U29tZXdoZXJlIGNsb3NlLg==", true);
+            case "where am i" -> sendChatReply(world, "<§kUnknown§r> "+(int)player.getX()+"/"+(int)player.getY()+"/"+(int)player.getZ()+".", true);
+            case "where are you" -> sendChatReply(world,"<§kUnknown§r> U29tZXdoZXJlIGNsb3NlLg==", true);
             case "28/09/1939", "09/28/1939" -> meetAgain(player); //Reference to "We'll meet again" by Vera Lynn, with that also Gravity Falls but also fits with the last words said by the voices in the mod
             default -> randomReplies(world, player);
         }
