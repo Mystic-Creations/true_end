@@ -5,7 +5,6 @@ import net.justmili.trueend.command.calls.screentests.TestBlackOverlay;
 import net.justmili.trueend.init.Biomes;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +25,7 @@ public class BlackScreenSeepingReality {
             player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(cap -> cap.setSeepingRealityTime(0));
             return;
         }
+        if (!Variables.flashingLights) return;
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(cap -> {
             int t = cap.getSeepingRealityTime() + 1;
