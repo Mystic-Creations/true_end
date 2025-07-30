@@ -23,8 +23,6 @@ import static net.justmili.trueend.procedures.DimSwapToBTD.BlockPosRandomZ;
 
 @Mod.EventBusSubscriber
 public class SoundPlayer {
-    public static final int randomRepeatCount = 3 + (int) (Math.random() * ((9 - 3) + 1));
-
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!(event.player instanceof ServerPlayer player)) return;
@@ -62,12 +60,13 @@ public class SoundPlayer {
     }
 
     private static void playSounds(ServerPlayer player, Integer delay, String soundId) {
+        int randomRepeatCount = 3 + (int) (Math.random() * ((9 - 3) + 1));
         int soundX = BlockPosRandomX / 4;
         int soundY = 1 + (int) (Math.random() * ((8 - 1) + 1));
         int soundZ = BlockPosRandomZ / 4;
         LevelAccessor world = player.level();
 
-        for (int index3 = 0; index3 < (SoundPlayer.randomRepeatCount - 1); index3++) {
+        for (int index3 = 0; index3 < (randomRepeatCount - 1); index3++) {
             TrueEnd.wait(delay, () -> {
                 if (world instanceof Level level) {
                     if (!level.isClientSide()) {

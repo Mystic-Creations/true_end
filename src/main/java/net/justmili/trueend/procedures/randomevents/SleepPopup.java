@@ -13,10 +13,13 @@ public class SleepPopup {
     @SubscribeEvent
     public static void onPlayerInBed(PlayerSleepInBedEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        Level level = player.level();
+        if (!level.isClientSide) return;
+
         if (!Variables.randomEventsToggle) return;
         if (!Variables.popupsToggle) return;
         if (!(Math.random() < Variables.randomEventChance * 1.5)) return;
-        if (player.level().dimension() != Level.OVERWORLD) return;
+        if (level.dimension() != Level.OVERWORLD) return;
 
         new Thread(() -> {
             try {

@@ -59,7 +59,7 @@
   - Random sounds of walking on, or breaking blocks
   - Time of day can change randomly (can be disabled via config)
   - All mobs within a certain distance staring at the player
-  - Message Box pop-up when player goes to sleep in the Overworld (doesn't work on Linux and MacOS yet)
+  - Message Box pop-up when player goes to sleep in the Overworld (only works on Windows, only on singleplayer)
 - Basic chat interaction with the Unknown entity
   - All available interactions available are written down on our [Discord](https://discord.gg/BcCDgnsCwQ)
 
