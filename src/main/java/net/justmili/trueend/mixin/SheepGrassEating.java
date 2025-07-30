@@ -19,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Predicate;
 
+import static net.minecraft.world.level.block.Blocks.*;
+
 @Mixin(EatBlockGoal.class)
 public class SheepGrassEating {
 
@@ -53,10 +55,10 @@ public class SheepGrassEating {
                 this.mob.ate();
             } else {
                 BlockPos blockpos1 = blockpos.below();
-                if (this.level.getBlockState(blockpos1).is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)) {
+                if (this.level.getBlockState(blockpos1).is(GRASS_BLOCK)) {
                     if (ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                        this.level.levelEvent(2001, blockpos1, Block.getId(net.minecraft.world.level.block.Blocks.GRASS_BLOCK.defaultBlockState()));
-                        this.level.setBlock(blockpos1, net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState(), 2);
+                        this.level.levelEvent(2001, blockpos1, Block.getId(GRASS_BLOCK.defaultBlockState()));
+                        this.level.setBlock(blockpos1, DIRT.defaultBlockState(), 2);
                     }
 
                     this.mob.ate();
