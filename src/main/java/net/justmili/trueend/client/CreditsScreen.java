@@ -4,12 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.justmili.trueend.TrueEnd;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

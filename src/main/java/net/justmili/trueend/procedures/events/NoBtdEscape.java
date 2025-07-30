@@ -2,11 +2,13 @@ package net.justmili.trueend.procedures.events;
 
 import net.justmili.trueend.network.Variables;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
@@ -34,6 +37,12 @@ public class NoBtdEscape {
         Entity entity = event.getEntity();
         LevelAccessor world = entity.level();
         if (!(entity instanceof ServerPlayer player)) return;
+
+        boolean leftBtd = player.getAdvancements()
+                .getOrStartProgress(Objects.requireNonNull(
+                        player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:go_back")))
+                ).isDone();
+        if (leftBtd) return;
 
         UUID uuid = player.getUUID();
         ResourceKey<Level> dim = diedIn.remove(uuid);
