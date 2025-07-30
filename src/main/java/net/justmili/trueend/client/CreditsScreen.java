@@ -91,17 +91,15 @@ public class CreditsScreen extends Screen {
         if (titleY + texH > 0 && titleY < scaledHeight) {
             gui.blit(TITLE_TEX, (int) titleX, (int) titleY, 0, 0, texW, texH, texW, texH);
         }
-        if (this.font != null) {
-            float startY = titleY + texH + 20;
-            for (int i = 0; i < lines.size(); i++) {
-                float lineY = startY + i * 12;
-                if (lineY + 12 < 0) continue;
-                if (lineY > scaledHeight) break;
+        float startY = titleY + texH + 20;
+        for (int i = 0; i < lines.size(); i++) {
+            float lineY = startY + i * 12;
+            if (lineY + 12 < 0) continue;
+            if (lineY > scaledHeight) break;
 
-                String s = lines.get(i);
-                int w = this.font.width(s);
-                gui.drawString(this.font, s, (scaledWidth - w) / 2, (int) lineY, 0xFFFFFF, true);
-            }
+            String s = lines.get(i);
+            int w = this.font.width(s);
+            gui.drawString(this.font, s, (scaledWidth - w) / 2, (int) lineY, 0xFFFFFF, true);
         }
 
         super.render(gui, mouseX, mouseY, partialTicks);

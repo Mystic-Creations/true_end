@@ -27,7 +27,7 @@ public class DeveloperCmd {
 							double x = arguments.getSource().getPosition().x();
 							double y = arguments.getSource().getPosition().y();
 							double z = arguments.getSource().getPosition().z();
-							TestCredits.execute(world, x, y, z);
+							TestCredits.execute(x, y, z);
 							return 0;
 						})).then(Commands.literal("funny").executes(arguments -> {
 							Level world = arguments.getSource().getUnsidedLevel();
