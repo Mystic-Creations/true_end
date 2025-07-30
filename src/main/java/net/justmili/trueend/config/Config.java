@@ -37,7 +37,7 @@ public class Config {
 			src.sendFailure(Component.literal("Failed to update config '" + key + "': " + e.getMessage()));
 			return 0;
 		}
-		src.sendSuccess(() -> Component.literal("Config '" + key + "' set to " + value), false);
+		src.sendSuccess(() -> Component.literal("Config '" + key + "' is now set to " + value), false);
 		return 1;
 	}
 	public static int handleDouble(CommandSourceStack src, String key, double value) {
@@ -47,7 +47,7 @@ public class Config {
 			src.sendFailure(Component.literal("Failed to update config '" + key + "': " + e.getMessage()));
 			return 0;
 		}
-		src.sendSuccess(() -> Component.literal("Config '" + key + "' set to " + value), false);
+		src.sendSuccess(() -> Component.literal("Config '" + key + "' is now set to " + value), false);
 		return 1;
 	}
 	public static int handleInt(CommandSourceStack src, String key, int value) {
@@ -57,7 +57,7 @@ public class Config {
 			src.sendFailure(Component.literal("Failed to update config '" + key + "': " + e.getMessage()));
 			return 0;
 		}
-		src.sendSuccess(() -> Component.literal("Config '" + key + "' set to " + value), false);
+		src.sendSuccess(() -> Component.literal("Config '" + key + "' is now set to " + value), false);
 		return 1;
 	}
 }
