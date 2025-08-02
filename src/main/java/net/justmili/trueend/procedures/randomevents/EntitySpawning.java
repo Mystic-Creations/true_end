@@ -77,6 +77,7 @@ public class EntitySpawning {
             if (entity == null) return;
             entity.moveTo(x + 0.5, surfaceY, z + 0.5, world.random.nextFloat() * 360.0F, 0.0F);
             entity.getPersistentData().putBoolean("PersistenceRequired", true);
+            entity.getPersistentData().putBoolean("doStalking", true);
             world.addFreshEntity(entity);
 
             Variables.MapVariables.get(world).setUnknownInWorld(true);

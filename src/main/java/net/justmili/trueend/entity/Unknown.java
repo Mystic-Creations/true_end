@@ -100,6 +100,7 @@ public class Unknown extends AmbientCreature {
             case STALKING -> doStalking(target);
             case WEEPING -> doWeeping(target);
             case ATTACKING -> doAttacking(target);
+            default -> doStalking(target);
         }
     }
     private static class LookAtNearestPlayerGoal extends Goal {
@@ -170,7 +171,7 @@ public class Unknown extends AmbientCreature {
             case STALKING -> textures = new String[]{ "unknown_0", "unknown_1" };
             case WEEPING -> textures = new String[]{ "unknown_3" };
             case ATTACKING -> textures = new String[]{ "unknown_0", "unknown_2" };
-            default -> textures = new String[]{ "unknown_0" };
+            default -> textures = new String[]{ "unknown_0", "unknown_1" };
         }
         String selected = textures[new Random().nextInt(textures.length)];
         entityData.set(TEXTURE_NAME, selected);
