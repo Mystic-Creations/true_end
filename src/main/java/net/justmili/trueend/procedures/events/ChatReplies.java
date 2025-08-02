@@ -58,6 +58,9 @@ public class ChatReplies {
             case "where am i" -> sendChatReply(world, "<§kUnknown§r> "+(int)player.getX()+"/"+(int)player.getY()+"/"+(int)player.getZ()+".", true);
             case "where are you" -> sendChatReply(world,"<§kUnknown§r> U29tZXdoZXJlIGNsb3NlLg==", true);
             case "28/09/1939", "09/28/1939" -> meetAgain(player); //Reference to "We'll meet again" by Vera Lynn, with that also Gravity Falls but also fits with the last words said by the voices in the mod
+            case "hello" -> sendChatReply(world, "<§kUnknown§r> Hi.", true);
+            case "go away", "please go away", "leave me alone", "can you leave me alone", "can you go away", "please leave me alone"
+                    -> sendChatReply(world, "<§kUnknown§r> I can't.", true);
             default -> randomReplies(world, player);
         }
     }
