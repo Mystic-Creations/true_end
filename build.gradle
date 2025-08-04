@@ -14,7 +14,7 @@ repositories {
 
 //1.4_Forge-1.20.1-TestBuild_nn-yyddmm
 //Final release of 1.4 for public use is gonna be 1.4.0.3
-version = '1.4.0.3_Forge-1.20.1-testbuild9'
+version = '1.4.0.3_Forge-1.20.1-testbuild15'
 group = 'net.justmili.trueend'
 archivesBaseName = 'trueend'
 

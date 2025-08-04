@@ -1,6 +1,5 @@
 package net.justmili.trueend.client.overlay;
 
-import net.justmili.trueend.TrueEnd;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
 
-@Mod.EventBusSubscriber(modid = TrueEnd.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class HudModifier {
 
     @SubscribeEvent
