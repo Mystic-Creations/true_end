@@ -23,8 +23,7 @@ public class DeveloperCmd {
 		event.getDispatcher().register(Commands.literal("trueend").requires(s -> s.hasPermission(4))
 				.then(Commands.literal("testScreen")
 						.then(Commands.literal("credits").executes(arguments -> {
-							Level world = arguments.getSource().getUnsidedLevel();
-							double x = arguments.getSource().getPosition().x();
+                            double x = arguments.getSource().getPosition().x();
 							double y = arguments.getSource().getPosition().y();
 							double z = arguments.getSource().getPosition().z();
 							TestCredits.execute(x, y, z);

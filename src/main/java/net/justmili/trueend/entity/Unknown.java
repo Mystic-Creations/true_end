@@ -43,13 +43,13 @@ public class Unknown extends AmbientCreature {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
             .add(Attributes.MAX_HEALTH, 20)
-            .add(Attributes.MOVEMENT_SPEED, 0.38)
+            .add(Attributes.MOVEMENT_SPEED, 0.4)
             .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
             .add(Attributes.ATTACK_DAMAGE, 6);
     }
 
     @Override public MobType getMobType() { return MobType.UNDEFINED; }
-    @Override public boolean isInvulnerableTo(DamageSource src) { return true; }
+    @Override public boolean isInvulnerableTo(DamageSource source) { return true; }
     @Override public boolean isPushable() { return false; }
     @Override public boolean canBeCollidedWith() { return true; }
 
@@ -61,22 +61,16 @@ public class Unknown extends AmbientCreature {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("doWeeping")) {
-            if (tag.getBoolean("doWeeping")) behavior = UnknownBehavior.WEEPING;
-        } else if (tag.contains("doStalking")) {
-            if (tag.getBoolean("doStalking")) behavior = UnknownBehavior.STALKING;
-        } else if (tag.contains("doAttacking")) {
-            if (tag.getBoolean("doAttacking")) behavior = UnknownBehavior.ATTACKING;
-        } else {
-            behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
-        }
+        behavior = UnknownBehavior.fromString(tag.getString("Behavior"));
+        if (tag.getBoolean("doWeeping")) behavior = UnknownBehavior.WEEPING;
+        if (tag.getBoolean("doStalking")) behavior = UnknownBehavior.STALKING;
+        if (tag.getBoolean("doAttacking")) behavior = UnknownBehavior.ATTACKING;
         setTexture(behavior);
     }
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putString("Behavior", behavior.name());
-        tag.putString("TextureName", getTextureName());
         tag.putBoolean("doWeeping",  behavior == UnknownBehavior.WEEPING);
         tag.putBoolean("doStalking", behavior == UnknownBehavior.STALKING);
         tag.putBoolean("doAttacking",behavior == UnknownBehavior.ATTACKING);
@@ -135,8 +129,8 @@ public class Unknown extends AmbientCreature {
         if (distanceTo(player) <= 6) { playAndDespawn(); return; }
         Vec3 toEntity = position().subtract(player.position()).normalize();
         double angle = Math.toDegrees(Math.acos(toEntity.dot(player.getLookAngle().normalize())));
-        if (hasLineOfSight(player) && angle < 18 && ++visibleTicks >= MAX_VISIBLE_TICKS) playAndDespawn();
-        else if (!hasLineOfSight(player) || angle >= 18) visibleTicks = 0;
+        if (hasLineOfSight(player) && angle < 12 && ++visibleTicks >= MAX_VISIBLE_TICKS) playAndDespawn();
+        else if (!hasLineOfSight(player) || angle >= 12) visibleTicks = 0;
         getNavigation().stop();
     }
     private void doWeeping(Player player) {
