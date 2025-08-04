@@ -20,21 +20,21 @@ import static net.justmili.trueend.procedures.randomevents.TimeChange.*;
 
 @Mod.EventBusSubscriber
 public class ChatReplies {
-    static { TrueEnd.LOGGER.info("ChatReplies registered"); }
     //Detection & Util
     @SubscribeEvent
     public static void onChat(ServerChatEvent event) {
-        String msg = event.getMessage().getString().toLowerCase(Locale.ROOT).trim().replaceAll("[!?.-]+$", "");
         LevelAccessor world = event.getPlayer().serverLevel();
         ServerPlayer player = event.getPlayer();
+        MinecraftServer server = player.getServer();
 
-        TrueEnd.LOGGER.info("Detected chat message from player {}", player);
-        hardcodedReplies(world, msg, player);
+        if (server != null) server.execute(() -> {
+            String msg = event.getMessage().getString().toLowerCase(Locale.ROOT).trim().replaceAll("[!?.-]+$", "");
+            hardcodedReplies(world, msg, player);
+        });
     }
     private static void sendChatReply(LevelAccessor world, String text, Integer delay) {
         if (!world.isClientSide() && world.getServer() != null) {
             TrueEnd.wait(delay, () -> {
-                TrueEnd.LOGGER.info("Running scheduled reply: {}", text);
                 MinecraftServer server = world.getServer();
                 server.getPlayerList().broadcastSystemMessage(Component.literal(text), false);
             });
@@ -43,7 +43,6 @@ public class ChatReplies {
 
     //Main components
     public static void hardcodedReplies(LevelAccessor world, String msg, ServerPlayer player) {
-        TrueEnd.LOGGER.info("Attempting to send hardcoded message");
         int delay = (int)((Math.random()*50)+15);
         switch (msg) {
             case "sleep" -> sendChatReply(world, "<§kUnknown§r> No more.", delay);
