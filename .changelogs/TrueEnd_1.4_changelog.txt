@@ -1,7 +1,9 @@
 # Important Notices
 - **Flashing Lights warning**: to disable, run `/te-config flashingLights false`
-- **Major world-generation changes**: any world that has visited the Beyond the Dream dimension should be retired—create a new world to experience these updates safely
+- **Major world-generation changes**: if you have already played any older version of True End, it is recommended to start a new word to avoid world corruption.
 - **It is recommended to play in Singleplayer, but it is playable in Multiplayer**
+
+**FABRIC PORT IS ON IT'S WAY!**
 
 ## World Generation
 - Dimension generation overhaul - now more Alpha-like
@@ -38,7 +40,7 @@
 - (Wooden) Button
 - Red flower
 - Yellow flower
-- Saplings
+- Sapling
 
 ## Items & Tools
 - Dreamer's Compass (guides you to the Dreaming Tree)
