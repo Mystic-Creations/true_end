@@ -55,6 +55,20 @@
 
 ## Entities
 - Unknown - appears in the distance and watches the player from afar; more coming soon.
+  - Available 'Chat Replies' (* = has multiple question variants available):
+    - Sleep
+    - Awake
+    - Where from
+    - Why is it night
+    - *Is anyone there
+    - *Who are you
+    - Nightmare
+    - Fuck you
+    - Where am I
+    - Where are you
+    - *Hello
+    - *Go away
+  - Capitalization and punctuation don't matter when you type any of these in chat
 
 ## Events & Interactions
 - New random world events
