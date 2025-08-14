@@ -8,9 +8,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
 
+@Mod.EventBusSubscriber
 public class NotAlone {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -19,7 +21,7 @@ public class NotAlone {
         if (entity == null) return;
         if (!((entity.level().dimension()) == BTD)) return;
         if (!Variables.randomEventsToggle) return;
-        if (!(Math.random() < Variables.randomEventChance / 2)) return;
+        if (!(Math.random() < Variables.randomEventChance / 24)) return;
         if (entity instanceof ServerPlayer player) {
             Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
             AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);

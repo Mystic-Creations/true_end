@@ -1,0 +1,13 @@
+**FABRIC PORT IS ON IT'S WAY!**
+
+## Bug Fixes & Technical Improvements
+- Secret advancement now actually hooked up to Mod's EventBusSubscriber
+- Added "Fallback Spawn Cleanup" for if so happens that the player falls down a few blocks when spawning at the farlands
+- Never Alone music converted to mono (dev note: fix awaiting)
+
+## Known Bugs (1.4-now)
+- Mod Credits don't appear on multiplayer
+- fogToggle config doesn't work well on multiplayer
+- Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
+- Dreamer's Compass points to the edge of the structure's bounding box
+- Dreamer's Compass item name changes to 'Lodestone Compass'
