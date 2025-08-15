@@ -1,5 +1,6 @@
 package net.justmili.trueend.network.packets;
 
+import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.config.Config;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.network.FriendlyByteBuf;
@@ -7,16 +8,16 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class UpdateClientConfig {
+public class UpdateClientConfigPacket {
     private String key;
     private boolean value;
 
-    public UpdateClientConfig() {}
-    public UpdateClientConfig(String key, boolean value) {
+    public UpdateClientConfigPacket() {}
+    public UpdateClientConfigPacket(String key, boolean value) {
         this.key = key;
         this.value = value;
     }
-    public UpdateClientConfig(FriendlyByteBuf buf) {
+    public UpdateClientConfigPacket(FriendlyByteBuf buf) {
         this.key = buf.readUtf(32767);
         this.value = buf.readBoolean();
     }
@@ -25,11 +26,10 @@ public class UpdateClientConfig {
         buf.writeBoolean(this.value);
     }
 
-    public static void handle(UpdateClientConfig msg, Supplier<NetworkEvent.Context> ctxSupplier) {
+    public static void handle(UpdateClientConfigPacket msg, Supplier<NetworkEvent.Context> ctxSupplier) {
         NetworkEvent.Context ctx = ctxSupplier.get();
         ctx.enqueueWork(() -> {
-            Variables.fogToggle = msg.value;
-            if (Config.entries != null) Config.entries.put(msg.key, msg.value);
+            Variables.fogToggleClient = msg.value;
         });
         ctx.setPacketHandled(true);
     }

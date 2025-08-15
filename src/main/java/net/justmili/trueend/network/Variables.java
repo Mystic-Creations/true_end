@@ -44,6 +44,8 @@ public class Variables {
     public static boolean daytimeChangeToggle;
     public static boolean clearDreamItems;
 
+    public static boolean fogToggleClient;
+
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
         TrueEnd.PACKET_HANDLER.registerMessage(
