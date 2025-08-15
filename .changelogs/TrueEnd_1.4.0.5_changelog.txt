@@ -4,8 +4,12 @@
 - New available 'Chat Replies', mainly easter eggs for streamers/youtubers who have played the mod.
 
 ## Bug Fixes & Technical Improvements
-- Mod credits now works on multiplayer (only affects the client, not server) (IN PROGRESS)
-- fogToggle now works on multiplayer (only affects the client, not server) (Kind of)
+- Mod credits now works on multiplayer
+  - Can be only played once for the first player to leave Beyond The Dream
+  - Credits can be re-enabled on with `/te-config creditsToggle true`
+- fogToggle now works on multiplayer
+  - Only affects the client, not server
+  - Server config does not get changed
 - flashingLights, fogToggle and creditsToggle config settings now can be used without operator permissions/cheats
   - fogToggle changes only for the client, does not affect the whole server
   - flashingLights changes for the whole server/world
@@ -17,5 +21,4 @@
 - Mod is now compatible with KiltMC (HAVEN'T TESTED YET, WORKING ON IT)
 
 ## Known Bugs (1.4-now)
-- Mod Credits don't appear on multiplayer
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

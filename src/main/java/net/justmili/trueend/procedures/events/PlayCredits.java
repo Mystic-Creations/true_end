@@ -6,17 +6,15 @@ import net.justmili.trueend.network.Variables;
 import net.justmili.trueend.network.packets.ShowCreditsPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static net.justmili.trueend.init.Dimensions.BTD;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber
 public class PlayCredits {
     private static boolean hasShownCreditsThisSession = false;
-
     @SubscribeEvent
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (Variables.creditsToggle) hasShownCreditsThisSession = false;
