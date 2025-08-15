@@ -6,6 +6,7 @@ import net.justmili.trueend.network.Variables;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,18 +18,21 @@ public class ConfigCmd {
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
         event.getDispatcher().register(
-                Commands.literal("te-config").requires(s -> s.hasPermission(4))
+                Commands.literal("te-config")
                         .then(Commands.literal("randomEventChance")
+                                .requires(s -> s.hasPermission(4))
                                 .executes(ctx -> getConfig(ctx.getSource(), "randomEventChance", Variables.randomEventChance))
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg(0.0, 0.5))
                                         .executes(ctx -> handleDouble(ctx.getSource(), "randomEventChance", DoubleArgumentType.getDouble(ctx, "value")))))
 
                         .then(Commands.literal("entitySpawnChance")
+                                .requires(s -> s.hasPermission(4))
                                 .executes(ctx -> getConfig(ctx.getSource(), "entitySpawnChance", Variables.entitySpawnChance))
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg(0.0, 1))
                                         .executes(ctx -> handleDouble(ctx.getSource(), "entitySpawnChance", DoubleArgumentType.getDouble(ctx, "value")))))
 
                         .then(Commands.literal("btdConversationDelay")
+                                .requires(s -> s.hasPermission(4))
                                 .executes(ctx -> getConfig(ctx.getSource(), "btdConversationDelay", Variables.btdConversationDelay))
                                 .then(Commands.argument("value", IntegerArgumentType.integer(0, 60))
                                         .executes(ctx -> handleInt(ctx.getSource(), "btdConversationDelay", IntegerArgumentType.getInteger(ctx, "value")))))
@@ -43,11 +47,28 @@ public class ConfigCmd {
                         .then(Commands.literal("fogToggle")
                                 .executes(ctx -> getConfig(ctx.getSource(), "fogToggle", Variables.fogToggle))
                                 .then(Commands.literal("true")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "fogToggle", true)))
+                                        .executes(ctx -> {
+                                            try {
+                                                ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                                updateClientConfig(player, ctx.getSource(), "fogToggle", true);
+                                            } catch (Exception e) {
+                                                handleBoolean(ctx.getSource(), "fogToggle", true);
+                                            }
+                                            return 1;
+                                        }))
                                 .then(Commands.literal("false")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "fogToggle", false))))
+                                        .executes(ctx -> {
+                                            try {
+                                                ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                                updateClientConfig(player, ctx.getSource(), "fogToggle", false);
+                                            } catch (Exception e) {
+                                                handleBoolean(ctx.getSource(), "fogToggle", false);
+                                            }
+                                            return 1;
+                                        })))
 
                         .then(Commands.literal("popupsToggle")
+                                .requires(s -> s.hasPermission(4))
                                 .executes(ctx -> getConfig(ctx.getSource(), "popupsToggle", Variables.popupsToggle))
                                 .then(Commands.literal("true")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", true)))
@@ -62,6 +83,7 @@ public class ConfigCmd {
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", false))))
 
                         .then(Commands.literal("daytimeChangeToggle")
+                                .requires(s -> s.hasPermission(4))
                                 .executes(ctx -> getConfig(ctx.getSource(), "randomEventChance", Variables.daytimeChangeToggle))
                                 .then(Commands.literal("true")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", true)))
@@ -69,6 +91,7 @@ public class ConfigCmd {
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", false))))
 
                         .then(Commands.literal("clearDreamItems")
+                                .requires(s -> s.hasPermission(4))
                                 .executes(ctx -> getConfig(ctx.getSource(), "randomEventChance", Variables.clearDreamItems))
                                 .then(Commands.literal("true")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", true)))

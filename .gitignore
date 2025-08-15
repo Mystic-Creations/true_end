@@ -4,6 +4,7 @@ run/
 .gradle/
 .settings/
 build/
+.builtJars/
 bin/
 
 *.class

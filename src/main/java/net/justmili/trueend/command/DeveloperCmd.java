@@ -20,15 +20,18 @@ public class DeveloperCmd {
 
 	@SubscribeEvent
 	public static void registerCommand(RegisterCommandsEvent event) {
-		event.getDispatcher().register(Commands.literal("trueend").requires(s -> s.hasPermission(4))
+		event.getDispatcher().register(Commands.literal("trueend")
 				.then(Commands.literal("testScreen")
-						.then(Commands.literal("credits").executes(arguments -> {
+						.then(Commands.literal("credits")
+								.requires(s -> s.hasPermission(4))
+								.executes(arguments -> {
                             double x = arguments.getSource().getPosition().x();
 							double y = arguments.getSource().getPosition().y();
 							double z = arguments.getSource().getPosition().z();
 							TestCredits.execute(x, y, z);
 							return 0;
-						})).then(Commands.literal("funny").executes(arguments -> {
+						})).then(Commands.literal("funny")
+								.executes(arguments -> {
 							Level world = arguments.getSource().getUnsidedLevel();
 							double x = arguments.getSource().getPosition().x();
 							double y = arguments.getSource().getPosition().y();
@@ -37,7 +40,9 @@ public class DeveloperCmd {
 
 							TestFunny.execute(world, x, y, z, entity);
 							return 0;
-						})).then(Commands.literal("black").executes(arguments -> {
+						})).then(Commands.literal("black")
+								.requires(s -> s.hasPermission(4))
+								.executes(arguments -> {
 							Level world = arguments.getSource().getUnsidedLevel();
 							double x = arguments.getSource().getPosition().x();
 							double y = arguments.getSource().getPosition().y();
@@ -47,19 +52,25 @@ public class DeveloperCmd {
 							TestBlackOverlay.execute(world, x, y, z, entity);
 							return 0;
 						})))
-				.then(Commands.literal("printVars").executes(arguments -> {
+				.then(Commands.literal("printVars")
+						.requires(s -> s.hasPermission(4))
+						.executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 					Entity entity = arguments.getSource().getEntity();
 
 					PrintVars.execute(world, (ServerPlayer) entity, arguments.getSource());
 					return 0;
-				})).then(Commands.literal("testBTD").executes(arguments -> {
+				})).then(Commands.literal("testBTD")
+						.requires(s -> s.hasPermission(4))
+						.executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 					Entity entity = arguments.getSource().getEntity();
 
 					BTDTest.execute(world, entity);
 					return 0;
-				})).then(Commands.literal("clearCurios").executes(arguments -> {
+				})).then(Commands.literal("clearCurios")
+						.requires(s -> s.hasPermission(4))
+						.executes(arguments -> {
 					ServerPlayer player = arguments.getSource().getPlayer();
 
 					PlayerInvManager.clearCuriosSlots(player);

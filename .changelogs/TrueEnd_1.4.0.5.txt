@@ -1,0 +1,22 @@
+**FABRIC PORT IS ON IT'S WAY!** (might take some time, for now y'all are just gotta get small mod updates for Forge)
+
+## Events & Interactions
+- New available 'Chat Replies', mainly easter eggs for streamers/youtubers who have played the mod.
+
+## Bug Fixes & Technical Improvements
+- Mod credits now works on multiplayer (only affects the client, not server) (IN PROGRESS)
+- fogToggle now works on multiplayer (only affects the client, not server) (Kind of)
+- flashingLights, fogToggle and creditsToggle config settings now can be used without operator permissions/cheats
+  - fogToggle changes only for the client, does not affect the whole server
+  - flashingLights changes for the whole server/world
+  - creditsToggle changes for the whole server/world (soon only for client)
+- `/trueend testScreen funny` now can be used without operator permissions/cheats
+- Never Alone music converted to mono
+- Dreamer's Compass item name no longer changes to 'Lodestone Compass' and doesn't have the enchanted glint
+- Dreamer's Compass now points to the actual trunk of the tree
+- Mod is now compatible with KiltMC (HAVEN'T TESTED YET, WORKING ON IT)
+
+## Known Bugs (1.4-now)
+- fogToggle defaults back to 'true' when reloading world, rejoining server, restarting game even if config is set to something else
+- Mod Credits don't appear on multiplayer
+- Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

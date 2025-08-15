@@ -8,7 +8,7 @@
 ## World Generation
 - Dimension generation overhaul - now more Alpha-like
 - Re-added Farlands
-- Dreaming Tree is now much more rare
+- Dreaming Tree is now much rarer
 - New biomes: Forest & Plains (formerly Nostalgic Meadow)
 - Seeping Reality zones (biome) in the Overworld ("unstable terrain")
 - New small structure "Unknown Base" spawns, hinting you're not alone

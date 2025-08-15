@@ -27,10 +27,15 @@ public class ClientSetup {
                             return 0F;
                         }
                         CompoundTag tag = stack.getOrCreateTag();
+
+                        if (!tag.getBoolean("TargetTracked")) {
+                            return 0F;
+                        }
+
                         BlockPos targetPos = new BlockPos(
-                                tag.getInt("LodestonePosX"),
-                                tag.getInt("LodestonePosY"),
-                                tag.getInt("LodestonePosZ")
+                                tag.getInt("TargetX"),
+                                tag.getInt("TargetY"),
+                                tag.getInt("TargetZ")
                         );
                         BlockPos playerPos = entity.blockPosition();
                         float playerYaw = entity.getYRot(); // in degrees

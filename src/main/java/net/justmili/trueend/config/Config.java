@@ -2,12 +2,19 @@ package net.justmili.trueend.config;
 
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.config.serializer.GsonSerializer;
+import net.justmili.trueend.init.Packets;
 import net.justmili.trueend.network.Variables;
+import net.justmili.trueend.network.packets.UpdateClientConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.Map;
 
+@Mod.EventBusSubscriber
 public class Config {
 	public static final GsonSerializer serializer = new GsonSerializer("TrueEnd_COMMON");
 	public static Map<String, Object> entries;
@@ -59,5 +66,15 @@ public class Config {
 		}
 		src.sendSuccess(() -> Component.literal("Config '" + key + "' is now set to " + value), false);
 		return 1;
+	}
+
+	public static void updateClientConfig(ServerPlayer player, CommandSourceStack src, String key, boolean value) {
+		updateConfig(key, value);
+		handleBoolean(src, key, value);
+
+		if (player != null && !player.level().isClientSide()) {
+			Packets.sendToPlayer(
+					new UpdateClientConfig(key, value), player);
+		}
 	}
 }

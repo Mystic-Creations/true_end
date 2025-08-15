@@ -32,11 +32,11 @@ public class ChatReplies {
             hardcodedReplies(world, msg, player);
         });
     }
-    private static void sendChatReply(LevelAccessor world, String text, Integer delay) {
+    private static void sendChatReply(LevelAccessor world, String msg, Integer delay) {
         if (!world.isClientSide() && world.getServer() != null) {
             TrueEnd.wait(delay, () -> {
                 MinecraftServer server = world.getServer();
-                server.getPlayerList().broadcastSystemMessage(Component.literal(text), false);
+                server.getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
             });
         }
     }
@@ -61,6 +61,8 @@ public class ChatReplies {
             case "hello", "hi" -> sendChatReply(world, "<§kUnknown§r> Hi.", delay);
             case "go away", "please go away", "leave me alone", "can you leave me alone", "can you go away", "please leave me alone"
                     -> sendChatReply(world, "<§kUnknown§r> I can't.", delay);
+            case "null" -> sendChatReply(world, "<§kUnknown§r> I'm not Null", delay);
+            case "zarsai", "zarsaivt", "shinhoa", "shinhoaz" -> sendChatReply(world, "<SillyMili> <3", 30);
             default -> randomReplies(world, player);
         }
     }
