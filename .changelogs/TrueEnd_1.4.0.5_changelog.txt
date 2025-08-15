@@ -18,7 +18,6 @@
 - Never Alone music converted to mono
 - Dreamer's Compass item name no longer changes to 'Lodestone Compass' and doesn't have the enchanted glint
 - Dreamer's Compass now points to the actual trunk of the tree
-- Mod is now compatible with KiltMC (HAVEN'T TESTED YET, WORKING ON IT)
 
 ## Known Bugs (1.4-now)
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
