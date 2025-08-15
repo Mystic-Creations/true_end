@@ -17,6 +17,5 @@
 - Mod is now compatible with KiltMC (HAVEN'T TESTED YET, WORKING ON IT)
 
 ## Known Bugs (1.4-now)
-- fogToggle defaults back to 'true' when reloading world, rejoining server, restarting game even if config is set to something else
 - Mod Credits don't appear on multiplayer
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

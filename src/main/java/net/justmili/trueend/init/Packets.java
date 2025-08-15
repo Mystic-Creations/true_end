@@ -1,8 +1,7 @@
 package net.justmili.trueend.init;
 
 import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.network.packets.InvOpenAdvPacket;
-import net.justmili.trueend.network.packets.UpdateClientConfigPacket;
+import net.justmili.trueend.network.packets.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -23,6 +22,13 @@ public class Packets {
             UpdateClientConfigPacket::toBytes,
             UpdateClientConfigPacket::new,
             UpdateClientConfigPacket::handle
+        );
+        TrueEnd.PACKET_HANDLER.registerMessage(
+            id++,
+            ShowCreditsPacket.class,
+            ShowCreditsPacket::toBytes,
+            ShowCreditsPacket::new,
+            ShowCreditsPacket::handle
         );
     }
 

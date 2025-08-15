@@ -25,10 +25,7 @@ public class DeveloperCmd {
 						.then(Commands.literal("credits")
 								.requires(s -> s.hasPermission(4))
 								.executes(arguments -> {
-                            double x = arguments.getSource().getPosition().x();
-							double y = arguments.getSource().getPosition().y();
-							double z = arguments.getSource().getPosition().z();
-							TestCredits.execute(x, y, z);
+							TestCredits.execute();
 							return 0;
 						})).then(Commands.literal("funny")
 								.executes(arguments -> {

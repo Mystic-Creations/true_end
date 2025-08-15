@@ -12,13 +12,10 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class ConfigSync {
-
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) {return;}
-
-
-        TrueEnd.wait(10, () ->
+        TrueEnd.wait(5, () ->
         Packets.sendToPlayer(new UpdateClientConfigPacket("fogToggle", Variables.fogToggle), player)
         );
     }

@@ -1,7 +1,5 @@
 package net.justmili.trueend.network.packets;
 
-import net.justmili.trueend.TrueEnd;
-import net.justmili.trueend.config.Config;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -28,9 +26,7 @@ public class UpdateClientConfigPacket {
 
     public static void handle(UpdateClientConfigPacket msg, Supplier<NetworkEvent.Context> ctxSupplier) {
         NetworkEvent.Context ctx = ctxSupplier.get();
-        ctx.enqueueWork(() -> {
-            Variables.fogToggleClient = msg.value;
-        });
+        ctx.enqueueWork(() -> Variables.fogToggleClient = msg.value);
         ctx.setPacketHandled(true);
     }
 }

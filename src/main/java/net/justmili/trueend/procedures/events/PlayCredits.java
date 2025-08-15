@@ -1,11 +1,13 @@
 package net.justmili.trueend.procedures.events;
 
-import net.justmili.trueend.command.calls.screentests.TestCredits;
 import net.justmili.trueend.config.Config;
+import net.justmili.trueend.init.Packets;
 import net.justmili.trueend.network.Variables;
+import net.justmili.trueend.network.packets.ShowCreditsPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -16,7 +18,7 @@ public class PlayCredits {
     private static boolean hasShownCreditsThisSession = false;
 
     @SubscribeEvent
-    public static void onDimensionChange(PlayerChangedDimensionEvent event) {
+    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (Variables.creditsToggle) hasShownCreditsThisSession = false;
         if (hasShownCreditsThisSession) return;
 
@@ -24,7 +26,8 @@ public class PlayCredits {
             hasShownCreditsThisSession = true;
             Config.updateConfig("creditsToggle", false);
 
-            TestCredits.execute(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
+            ServerPlayer player = (ServerPlayer) event.getEntity();
+            Packets.sendToPlayer(new ShowCreditsPacket(), player);
         }
     }
 }

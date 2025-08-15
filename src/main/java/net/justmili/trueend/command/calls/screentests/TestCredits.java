@@ -9,8 +9,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Objects;
 
 public class TestCredits {
-    private static final Minecraft mc = Minecraft.getInstance();
-    public static void execute(double x, double y, double z) {
+    public static void execute() {
+        Minecraft mc = Minecraft.getInstance();
+        double x = mc.player.getX();
+        double y = mc.player.getY();
+        double z = mc.player.getZ();
         mc.execute(() -> {
             mc.getSoundManager().stop();
 
