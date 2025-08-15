@@ -8,11 +8,10 @@ import java.util.function.Supplier;
 
 public class ShowCreditsPacket {
     public ShowCreditsPacket() {}
+    public void toBytes(FriendlyByteBuf buf) {}
+    public ShowCreditsPacket(FriendlyByteBuf buf) {}
 
     public void handle(Supplier<NetworkEvent.Context> context) {
         TestCredits.execute();
     }
-
-    public void toBytes(FriendlyByteBuf buf) {}
-    public ShowCreditsPacket(FriendlyByteBuf buf) {}
 }
