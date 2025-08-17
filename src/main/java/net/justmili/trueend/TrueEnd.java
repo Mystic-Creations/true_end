@@ -8,6 +8,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -98,5 +99,9 @@ public class TrueEnd {
     @SubscribeEvent
     public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(Entities.UNKNOWN.get(), Unknown.createAttributes().build());
+    }
+
+    public static boolean inModList(String ModID) {
+        return ModList.get().isLoaded(ModID);
     }
 }

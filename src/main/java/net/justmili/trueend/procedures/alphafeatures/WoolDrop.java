@@ -1,5 +1,6 @@
 package net.justmili.trueend.procedures.alphafeatures;
 
+import net.justmili.trueend.TrueEnd;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.animal.Sheep;
@@ -19,6 +20,7 @@ import static net.justmili.trueend.init.Dimensions.BTD;
 public class WoolDrop {
     @SubscribeEvent
     public static void onEntityAttacked(LivingHurtEvent event) {
+        if (TrueEnd.inModList("nostalgic_tweaks")) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof Sheep sheep && (entity.level().dimension()) == BTD)) return;
         Level world = sheep.level();

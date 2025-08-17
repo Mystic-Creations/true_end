@@ -23,13 +23,9 @@ import static net.minecraft.world.level.block.Blocks.*;
 
 @Mixin(EatBlockGoal.class)
 public class SheepGrassEating {
-
     @Shadow @Final private Mob mob;
-
     @Shadow @Final private static Predicate<BlockState> IS_TALL_GRASS;
-
     @Shadow @Final private Level level;
-
     @Shadow private int eatAnimationTick;
 
     @Inject(method = "canUse", at = @At("HEAD"), cancellable = true)

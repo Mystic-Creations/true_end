@@ -18,7 +18,7 @@ public class NoSprint {
 
         if (entity.level().dimension() == BTD && entity instanceof Player player) {
             player.getFoodData().setFoodLevel(4);
-            player.getFoodData().setSaturation(20.0F);
+            player.getFoodData().setSaturation(0.0F);
         }
     }
 }

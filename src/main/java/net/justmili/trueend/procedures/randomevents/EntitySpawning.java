@@ -6,6 +6,7 @@ import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.init.Entities;
 import net.justmili.trueend.network.Variables;
 
+import net.justmili.trueend.procedures.advancement.NotAlone;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -81,6 +82,7 @@ public class EntitySpawning {
             world.addFreshEntity(entity);
 
             Variables.MapVariables.get(world).setUnknownInWorld(true);
+            NotAlone.grantAdvancement(player);
             TrueEnd.LOGGER.info("Spawned 'Unknown' at {} on {} after {} attempts.", entity.blockPosition(), groundState, attempt + 1);
             return;
         }

@@ -1,0 +1,14 @@
+**FABRIC PORT IS ON IT'S WAY!** (Still just doing patches for Forge)
+
+## Bug Fixes & Technical Improvements
+- Secret advancement now only has a chance to appear when Unknown spawns instead of getting a chance every tick
+- Added (partial) compatibility with [Nostalgic Tweaks](https://modrinth.com/mod/nostalgic-tweaks)
+  - NT's stamina system and version overlay do not work or render when player is in BTD
+- Mod no longer crashes the game on forge loader versions older than 47.4.5
+
+# Removed
+- Removed Herobrine
+
+## Known Bugs (1.4-now)
+- NT's version overlay renders over True End's version overlay when player is in BTD
+- Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

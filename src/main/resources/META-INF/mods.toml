@@ -4,12 +4,12 @@ license="MIT"
 
 [[mods]]
 modId="true_end"
-version="1.4.0.5"
+version="1.4.0.6"
 displayName="True End"
 displayURL="https://modrinth.com/mod/true_end"
 logoFile="icon.png"
 authors="Mystic Creations Team"
-description="'But it was all a dream'"
+description="But it was all a dream"
 
 [[mixin]]
 mixinClasses = ["net.justmili.trueend.mixin.Mixins"]
@@ -20,12 +20,6 @@ mixinClasses = ["net.justmili.trueend.mixin.Mixins"]
     versionRange="[1.20.1]"
     ordering="AFTER"
     side="BOTH"
-[[dependencies.true_end]]
-    modId="forge"
-    mandatory=true
-    versionRange="[47.4.5,)"
-    ordering="NONE"
-    side="BOTH"
 
 [[dependencies.true_end]]
     modId="terrablender"
@@ -33,11 +27,16 @@ mixinClasses = ["net.justmili.trueend.mixin.Mixins"]
     versionRange="[3.0.1.10,)"
     ordering="NONE"
     side="BOTH"
-
 [[dependencies.true_end]]
     modId="curios"
     mandatory=false
-    versionRange="[5.4.3,)"
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.true_end]]
+    modId="nostalgic_tweaks"
+    mandatory=false
+    versionRange="*"
     ordering="NONE"
     side="BOTH"
 
