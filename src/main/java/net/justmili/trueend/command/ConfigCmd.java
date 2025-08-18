@@ -84,7 +84,7 @@ public class ConfigCmd {
 
                         .then(Commands.literal("daytimeChangeToggle")
                                 .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "randomEventChance", Variables.daytimeChangeToggle))
+                                .executes(ctx -> getConfig(ctx.getSource(), "daytimeChangeToggle", Variables.daytimeChangeToggle))
                                 .then(Commands.literal("true")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", true)))
                                 .then(Commands.literal("false")
@@ -92,7 +92,7 @@ public class ConfigCmd {
 
                         .then(Commands.literal("clearDreamItems")
                                 .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "randomEventChance", Variables.clearDreamItems))
+                                .executes(ctx -> getConfig(ctx.getSource(), "clearDreamItems", Variables.clearDreamItems))
                                 .then(Commands.literal("true")
                                         .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", true)))
                                 .then(Commands.literal("false")
