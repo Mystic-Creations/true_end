@@ -126,7 +126,7 @@ public class Unknown extends AmbientCreature {
         }
     }
     private void doStalking(Player player) {
-        if (distanceTo(player) <= 6) { playAndDespawn(); return; }
+        if (distanceTo(player) <= 16) { playAndDespawn(); return; }
         Vec3 toEntity = position().subtract(player.position()).normalize();
         double angle = Math.toDegrees(Math.acos(toEntity.dot(player.getLookAngle().normalize())));
         if (hasLineOfSight(player) && angle < 12 && ++visibleTicks >= MAX_VISIBLE_TICKS) playAndDespawn();

@@ -12,7 +12,7 @@ public class NotAlone {
     public static void grantAdvancement(ServerPlayer player) {
         if (!((player.level().dimension()) == BTD)) return;
         if (!Variables.randomEventsToggle) return;
-        if (!(Math.random() < Variables.randomEventChance / 24)) return;
+        if (!(Math.random() < Variables.randomEventChance)) return;
 
         Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));
         AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);

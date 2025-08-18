@@ -52,17 +52,19 @@ public class ChatReplies {
             case "is anyone there", "anyone there" -> sendChatReply(world, "<§kUnknown§r> Yes.", delay);
             case "who are you", "what is your name", "what's your name", "whats your name"
                     -> sendChatReply(world, "<§kUnknown§r> Unknown. Forgotten.", delay);
-            case "the broken script" -> sendChatReply(world, "<§kUnknown§r> Inspiration.", delay);
             case "nightmare" -> sendChatReply(world, "<§kUnknown§r> Within.", delay);
             case "fuck you" -> punish(player);
             case "where am i" -> sendChatReply(world, "<§kUnknown§r> "+(int)player.getX()+"/"+(int)player.getY()+"/"+(int)player.getZ()+".", delay);
             case "where are you" -> sendChatReply(world,"<§kUnknown§r> U29tZXdoZXJlIGNsb3NlLg==", delay);
-            case "28/09/1939", "09/28/1939" -> meetAgain(player); //Reference to "We'll meet again" by Vera Lynn, with that also Gravity Falls but also fits with the last words said by the voices in the mod
             case "hello", "hi" -> sendChatReply(world, "<§kUnknown§r> Hi.", delay);
             case "go away", "please go away", "leave me alone", "can you leave me alone", "can you go away", "please leave me alone"
                     -> sendChatReply(world, "<§kUnknown§r> I can't.", delay);
+            
+            //Easter eggs
+            case "28/09/1939", "09/28/1939" -> meetAgain(player); //Reference to "We'll meet again" by Vera Lynn, with that also Gravity Falls but also fits with the last words said by the voices in the mod
             case "null" -> sendChatReply(world, "<§kUnknown§r> I'm not Null", delay);
-            case "zarsai", "zarsaivt", "shinhoa", "shinhoaz" -> sendChatReply(world, "<SillyMili> <3", 30);
+            case "the broken script" -> sendChatReply(world, "<§kUnknown§r> Inspiration.", delay);
+            case "zarsai", "zarsaivt", "shinhoa", "shinhoaz", "fireydude", "imfireydude" -> sendChatReply(world, "<SillyMili> <3", 30);
             default -> randomReplies(world, player);
         }
     }

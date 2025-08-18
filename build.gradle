@@ -10,10 +10,11 @@ repositories {
     maven { url = "https://maven.shedaniel.me/" }
     maven { url = "https://maven.theillusivec4.top/" }
     maven { url = "https://cursemaven.com/" }
+    maven { url 'https://jitpack.io/' }
 }
 
 //x.x.x.x_Forge/Fabric-x.xx.x-TestBuild_nn
-version = '1.4.0.6_Forge-1.20.1-TestBuild_10'
+version = '1.4.0.6_Forge-1.20.1-TestBuild_13'
 group = 'net.justmili.trueend'
 archivesBaseName = 'trueend'
 
@@ -55,6 +56,7 @@ dependencies {
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.3+1.20.1")
     implementation fg.deobf("curse.maven:artifacts-312353:4631664")
+    implementation fg.deobf("com.github.Nostalgica-Reverie.Nostalgic-Tweaks:NostalgicTweaks-forge:1.20.1-SNAPSHOT")
 }
 
 tasks.withType(JavaCompile).configureEach {

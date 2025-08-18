@@ -1,14 +1,24 @@
 **FABRIC PORT IS ON IT'S WAY!** (Still just doing patches for Forge)
 
+# Important Notices
+- True End can now change config values of Nostalgic Tweaks to avoid feature conflicts
+  - Currently affected: Version Overlay
+
+## Events & Interactions
+- New available 'Chat Replies', you can type in "fireydude" or "imfireydude" in chat to get a special reply
+
 ## Bug Fixes & Technical Improvements
-- Secret advancement now only has a chance to appear when Unknown spawns instead of getting a chance every tick
-- Added (partial) compatibility with [Nostalgic Tweaks](https://modrinth.com/mod/nostalgic-tweaks)
-  - NT's stamina system and version overlay do not work or render when player is in BTD
+- Added compatibility with [Nostalgic Tweaks](https://modrinth.com/mod/nostalgic-tweaks)
+  - NT's stamina system and version overlay do not work or render when player is in BTD (Intended)
 - Mod no longer crashes the game on forge loader versions older than 47.4.5
+- Changed chances of getting the secret advancement
+  - Now it only has a chance to be granted to the player when Unknown spawns
+  - Chance is no longer randomEventChance/24 to make it a little more common
+- Unknown's doStalking despawn distance changed from 6 to 16 blocks
+- Player's Air level now appears above player health like in Minecraft Alpha 1.1.2_01
 
 # Removed
 - Removed Herobrine
 
 ## Known Bugs (1.4-now)
-- NT's version overlay renders over True End's version overlay when player is in BTD
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
