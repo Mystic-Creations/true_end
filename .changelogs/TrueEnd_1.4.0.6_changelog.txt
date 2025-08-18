@@ -16,6 +16,7 @@
   - Chance is no longer randomEventChance/24 to make it a little more common
 - Unknown's doStalking despawn distance changed from 6 to 16 blocks
 - Player's Air level now appears above player health like in Minecraft Alpha 1.1.2_01
+- Version Overlay no longer scales with GUI scale
 
 # Removed
 - Removed Herobrine

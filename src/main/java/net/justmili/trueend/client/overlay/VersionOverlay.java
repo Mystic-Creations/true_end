@@ -59,25 +59,33 @@ public class VersionOverlay {
         }
     }
 
-    @SubscribeEvent
-    public static void onRenderGui(RenderGuiEvent.Pre event) {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onRenderGui(RenderGuiEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || mc.level.dimension() != BTD) return;
 
-        GuiGraphics guiGraphics = event.getGuiGraphics();
-        PoseStack poseStack = guiGraphics.pose();
-        int x = 3;
-        int y = 3;
+        GuiGraphics gui = event.getGuiGraphics();
+        PoseStack pose = gui.pose();
+
+        final int fontSize = 32;
+        float guiScaleFactor = (float) mc.getWindow().getScreenWidth() / (float) mc.getWindow().getGuiScaledWidth();
+        float baseFontHeight = (float) mc.font.lineHeight;
+        float userScale = fontSize / baseFontHeight;
+
+        pose.pushPose();
+        pose.scale(1f / guiScaleFactor, 1f / guiScaleFactor, 1f);
+        pose.scale(userScale, userScale, 1f);
+
+        int x = 6;
+        int y = 6;
         int textColor = 0xFFFFFF;
         int textShadowColor = 0xFF3F3F3F;
+        int drawX = Math.round(x / userScale);
+        int drawY = Math.round(y / userScale);
 
-        float scale = 0.8f;
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, 1.0f);
+        gui.drawString(mc.font, Component.literal(currentText), drawX + 1, drawY + 1, textShadowColor, false);
+        gui.drawString(mc.font, Component.literal(currentText), drawX, drawY, textColor, false);
 
-        guiGraphics.drawString(mc.font, Component.literal(currentText), x + 1, y + 1, textShadowColor, false);
-        guiGraphics.drawString(mc.font, Component.literal(currentText), x, y, textColor, false);
-
-        poseStack.popPose();
+        pose.popPose();
     }
 }

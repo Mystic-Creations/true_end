@@ -24,7 +24,7 @@ public class HudModifier {
     public static void onGuiOverlayPre(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        assert player != null;
+        if (player == null) return;
 
         NamedGuiOverlay getOverlay = event.getOverlay();
         IGuiOverlay overlay = getOverlay.overlay();
