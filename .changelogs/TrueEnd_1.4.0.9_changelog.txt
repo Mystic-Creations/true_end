@@ -4,7 +4,6 @@
 - Fixed player inventory not restoring when leaving BTD
 - Credits appearance stays consistent with creditsToggle
 - Improved BTD spawn "absolute fallback" cleanup
-- Music automatically plays when entering BTD for the first time
 
 # Removed
 - Removed Herobrine

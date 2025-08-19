@@ -93,7 +93,7 @@ public class DimSwapToBTD {
                         return;
                     }
 
-                    TrueEnd.wait(5, () -> {
+                    TrueEnd.wait(4, () -> {
                         BlockPos worldSpawn = overworld.getSharedSpawnPos();
                         BlockPos initialSearchPos = locateBiome(nextLevel, worldSpawn, "true_end:plains");
                         if (initialSearchPos == null) initialSearchPos = worldSpawn;
