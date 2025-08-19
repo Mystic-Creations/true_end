@@ -41,7 +41,7 @@ public class SheepGrassEating {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void tick(CallbackInfo ci) {
         this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
-        if (this.eatAnimationTick == Mth.positiveCeilDiv(4,2)) {
+        if (this.eatAnimationTick == Mth.positiveCeilDiv(4, 2)) {
             BlockPos blockpos = this.mob.blockPosition();
             if (IS_TALL_GRASS.test(this.level.getBlockState(blockpos))) {
                 if (ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
