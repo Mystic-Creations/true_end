@@ -2,9 +2,12 @@
 
 ## Bug Fixes & Technical Improvements
 - Fixed crash at world creation
+- Mod no longer crashes on forge lader versions older than 47.4.5
 
 # Removed
 - Removed Herobrine
 
 ## Known Bugs (1.4-now)
+- Player inventory doesn't get restored when leaving BTD
+  - We're working on fixing that right now
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
