@@ -2,7 +2,9 @@ package net.justmili.trueend;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -77,12 +79,18 @@ public class TrueEnd {
             workQueue.removeAll(actions);
         }
     }
+    @SubscribeEvent
+    public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+        event.put(Entities.UNKNOWN.get(), Unknown.createAttributes().build());
+    }
 
     private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
     public static void wait(int tick, Runnable action) {
         if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
             workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
     }
+
+    //Until methods
     public static void messageWithCooldown(ServerPlayer player, String[] jsonLines, int cooldown) {
         for (int i = 0; i < jsonLines.length; i++) {
             String rawJson = jsonLines[i];
@@ -95,13 +103,12 @@ public class TrueEnd {
             });
         }
     }
-
-    @SubscribeEvent
-    public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(Entities.UNKNOWN.get(), Unknown.createAttributes().build());
-    }
-
     public static boolean inModList(String ModID) {
         return ModList.get().isLoaded(ModID);
+    }
+    public static boolean hasAdvancement(ServerPlayer player, String AdvancementID) {
+        return player.getAdvancements().getOrStartProgress(
+                player.server.getAdvancements().getAdvancement(ResourceLocation.parse(AdvancementID))
+        ).isDone();
     }
 }

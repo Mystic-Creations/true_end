@@ -17,7 +17,7 @@ public class PlayCredits {
     private static boolean hasShownCreditsThisSession = false;
     @SubscribeEvent
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (Variables.creditsToggle) hasShownCreditsThisSession = false;
+        if (Variables.creditsToggle) { hasShownCreditsThisSession = false; } else { return; }
         if (hasShownCreditsThisSession) return;
 
         if (event.getFrom() == BTD && event.getTo() == Level.OVERWORLD) {
