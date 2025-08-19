@@ -6,9 +6,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,16 +16,17 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Random;
 
+import static net.justmili.trueend.TrueEnd.LOGGER;
 import static net.justmili.trueend.init.Dimensions.BTD;
 
 public class PlayerInvManager {
     private static final double RETURN_CHANCE = 0.90;
     private static final Random RAND = new Random();
     private static final File saveDir = FMLPaths.CONFIGDIR.get().resolve("true_end").toFile();
+
     private static String makeBackupFilename(ServerPlayer player, String suffix) {
         Path worldFolder = player.getServer().getWorldPath(LevelResource.LEVEL_DATA_FILE).getParent();
         String folderName = worldFolder.getFileName().toString();
@@ -74,35 +75,35 @@ public class PlayerInvManager {
         }
         root.put("Offhand", offList);
 
-        if (ModList.get().isLoaded("curios")) {
-            CompoundTag fullNbt = player.serializeNBT();
-            if (fullNbt.contains("ForgeCaps", Tag.TAG_COMPOUND)) {
-                CompoundTag forgeCaps = fullNbt.getCompound("ForgeCaps");
-                String curiosKey = "curios:inventory";
-                if (forgeCaps.contains(curiosKey, Tag.TAG_COMPOUND)) {
-                    CompoundTag invTag = forgeCaps.getCompound(curiosKey).copy();
-                    root.put("CuriosInventory", invTag);
-                }
-            }
-        }
-        //if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-        //    CompoundTag fullNbt = player.serializeNBT();
-        //    if (fullNbt.contains("cardinal_components", Tag.TAG_COMPOUND)) {
-        //        CompoundTag cardCaps = fullNbt.getCompound("cardinal_components");
-        //        String trinketsKey = "trinkets:trinkets";
-        //        if (cardCaps.contains(trinketsKey, Tag.TAG_COMPOUND)) {
-        //            CompoundTag trinkTag = cardCaps.getCompound(trinketsKey).copy();
-        //            root.put("TrinketsInventory", trinkTag);
-        //        }
-        //    }
-        //}
+//        if (ModList.get().isLoaded("curios")) {
+//            CompoundTag fullNbt = player.serializeNBT();
+//            if (fullNbt.contains("ForgeCaps", Tag.TAG_COMPOUND)) {
+//                CompoundTag forgeCaps = fullNbt.getCompound("ForgeCaps");
+//                String curiosKey = "curios:inventory";
+//                if (forgeCaps.contains(curiosKey, Tag.TAG_COMPOUND)) {
+//                    CompoundTag invTag = forgeCaps.getCompound(curiosKey).copy();
+//                    root.put("CuriosInventory", invTag);
+//                }
+//            }
+//        }
+//        if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+//            CompoundTag fullNbt = player.serializeNBT();
+//            if (fullNbt.contains("cardinal_components", Tag.TAG_COMPOUND)) {
+//                CompoundTag cardCaps = fullNbt.getCompound("cardinal_components");
+//                String trinketsKey = "trinkets:trinkets";
+//                if (cardCaps.contains(trinketsKey, Tag.TAG_COMPOUND)) {
+//                    CompoundTag trinkTag = cardCaps.getCompound(trinketsKey).copy();
+//                    root.put("TrinketsInventory", trinkTag);
+//                }
+//            }
+//        }
 
         if (!saveDir.exists()) saveDir.mkdirs();
         File out = new File(saveDir, makeBackupFilename(player, "BTD"));
         try {
             NbtIo.writeCompressed(root, out);
         } catch (Exception e) {
-            TrueEnd.LOGGER.error("Failed to save BTD for player {}", player.getName().getString(), e);
+            LOGGER.error("Failed to save BTD for player {}", player.getName().getString(), e);
         }
     }
 
@@ -146,34 +147,34 @@ public class PlayerInvManager {
         }
         root.put("Offhand", offList);
 
-        if (ModList.get().isLoaded("curios")) {
-            CompoundTag fullNbt = player.serializeNBT();
-            if (fullNbt.contains("ForgeCaps", Tag.TAG_COMPOUND)) {
-                CompoundTag forgeCaps = fullNbt.getCompound("ForgeCaps");
-                String curiosKey = "curios:inventory";
-                if (forgeCaps.contains(curiosKey, Tag.TAG_COMPOUND)) {
-                    CompoundTag invTag = forgeCaps.getCompound(curiosKey).copy();
-                    root.put("CuriosInventory", invTag);
-                }
-            }
-        }
-        //if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-        //    CompoundTag fullNbt = player.serializeNBT();
-        //    if (fullNbt.contains("cardinal_components", Tag.TAG_COMPOUND)) {
-        //        CompoundTag cardCaps = fullNbt.getCompound("cardinal_components");
-        //        String trinketsKey = "trinkets:trinkets";
-        //        if (cardCaps.contains(trinketsKey, Tag.TAG_COMPOUND)) {
-        //            CompoundTag trinkTag = cardCaps.getCompound(trinketsKey).copy();
-        //            root.put("TrinketsInventory", trinkTag);
-        //        }
-        //    }
-        //}
+//        if (ModList.get().isLoaded("curios")) {
+//            CompoundTag fullNbt = player.serializeNBT();
+//            if (fullNbt.contains("ForgeCaps", Tag.TAG_COMPOUND)) {
+//                CompoundTag forgeCaps = fullNbt.getCompound("ForgeCaps");
+//                String curiosKey = "curios:inventory";
+//                if (forgeCaps.contains(curiosKey, Tag.TAG_COMPOUND)) {
+//                    CompoundTag invTag = forgeCaps.getCompound(curiosKey).copy();
+//                    root.put("CuriosInventory", invTag);
+//                }
+//            }
+//        }
+//        if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+//            CompoundTag fullNbt = player.serializeNBT();
+//            if (fullNbt.contains("cardinal_components", Tag.TAG_COMPOUND)) {
+//                CompoundTag cardCaps = fullNbt.getCompound("cardinal_components");
+//                String trinketsKey = "trinkets:trinkets";
+//                if (cardCaps.contains(trinketsKey, Tag.TAG_COMPOUND)) {
+//                    CompoundTag trinkTag = cardCaps.getCompound(trinketsKey).copy();
+//                    root.put("TrinketsInventory", trinkTag);
+//                }
+//            }
+//        }
 
         File out = new File(saveDir, makeBackupFilename(player, "NWAD"));
         try {
             NbtIo.writeCompressed(root, out);
         } catch (Exception e) {
-            TrueEnd.LOGGER.error("Failed to save NWAD for player {}", player.getName().getString(), e);
+            LOGGER.error("Failed to save NWAD for player {}", player.getName().getString(), e);
         }
     }
 
@@ -181,6 +182,8 @@ public class PlayerInvManager {
         if (!Variables.clearDreamItems) return;
         File in = new File(saveDir, makeBackupFilename(player, "BTD"));
         if (!in.exists()) return;
+
+        LOGGER.info("Attempting to use restoreInvWithChance");
 
         try {
             CompoundTag root = NbtIo.readCompressed(in);
@@ -211,30 +214,30 @@ public class PlayerInvManager {
                     player.getInventory().offhand.set(slot, stack);
                 }
             }
-            if (root.contains("CuriosInventory", Tag.TAG_COMPOUND)) {
-                CompoundTag invTag = root.getCompound("CuriosInventory");
-                CompoundTag forgeCaps = new CompoundTag();
-                forgeCaps.put("curios:inventory", invTag);
-                CompoundTag replay = new CompoundTag();
-                replay.put("ForgeCaps", forgeCaps);
-                if (RAND.nextDouble() < RETURN_CHANCE) {
-                    player.load(replay);
-                }
-            }
-            //if (FabricLoader.getInstance().isModLoaded("trinkets")
-            //        && root.contains("TrinketsInventory", Tag.TAG_COMPOUND)) {
-            //    CompoundTag trinkTag = root.getCompound("TrinketsInventory");
-            //    CompoundTag cardCaps = new CompoundTag();
-            //    cardCaps.put("trinkets:trinkets", trinkTag);
-            //    CompoundTag replay = new CompoundTag();
-            //    replay.put("cardinal_components", cardCaps);
-            //    if (RAND.nextDouble() < RETURN_CHANCE) {
-            //        player.load(replay);
-            //    }
-            //}
+//            if (root.contains("CuriosInventory", Tag.TAG_COMPOUND)) {
+//                CompoundTag invTag = root.getCompound("CuriosInventory");
+//                CompoundTag forgeCaps = new CompoundTag();
+//                forgeCaps.put("curios:inventory", invTag);
+//                CompoundTag replay = new CompoundTag();
+//                replay.put("ForgeCaps", forgeCaps);
+//                if (RAND.nextDouble() < RETURN_CHANCE) {
+//                    player.load(replay);
+//                }
+//            }
+//            if (FabricLoader.getInstance().isModLoaded("trinkets")
+//                    && root.contains("TrinketsInventory", Tag.TAG_COMPOUND)) {
+//                CompoundTag trinkTag = root.getCompound("TrinketsInventory");
+//                CompoundTag cardCaps = new CompoundTag();
+//                cardCaps.put("trinkets:trinkets", trinkTag);
+//                CompoundTag replay = new CompoundTag();
+//                replay.put("cardinal_components", cardCaps);
+//                if (RAND.nextDouble() < RETURN_CHANCE) {
+//                    player.load(replay);
+//                }
+//            }
             in.delete();
         } catch (Exception e) {
-            TrueEnd.LOGGER.error("Failed to restore BTD for player {}", player.getName().getString(), e);
+            LOGGER.error("Failed to restore BTD for player {}", player.getName().getString(), e);
         }
     }
 
@@ -266,31 +269,31 @@ public class PlayerInvManager {
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
                 player.getInventory().offhand.set(slot, stack);
             }
-            if (root.contains("CuriosInventory", Tag.TAG_COMPOUND)) {
-                CompoundTag invTag = root.getCompound("CuriosInventory");
-                CompoundTag forgeCaps = new CompoundTag();
-                forgeCaps.put("curios:inventory", invTag);
-                CompoundTag replay = new CompoundTag();
-                replay.put("ForgeCaps", forgeCaps);
-                player.load(replay);
-            }
-            //if (FabricLoader.getInstance().isModLoaded("trinkets")
-            //        && root.contains("TrinketsInventory", Tag.TAG_COMPOUND)) {
-            //    CompoundTag trinkTag = root.getCompound("TrinketsInventory");
-            //    CompoundTag cardCaps = new CompoundTag();
-            //    cardCaps.put("trinkets:trinkets", trinkTag);
-            //    CompoundTag replay = new CompoundTag();
-            //    replay.put("cardinal_components", cardCaps);
-            //    player.load(replay);
-            //}
+//            if (root.contains("CuriosInventory", Tag.TAG_COMPOUND)) {
+//                CompoundTag invTag = root.getCompound("CuriosInventory");
+//                CompoundTag forgeCaps = new CompoundTag();
+//                forgeCaps.put("curios:inventory", invTag);
+//                CompoundTag replay = new CompoundTag();
+//                replay.put("ForgeCaps", forgeCaps);
+//                player.load(replay);
+//            }
+//            if (FabricLoader.getInstance().isModLoaded("trinkets")
+//                    && root.contains("TrinketsInventory", Tag.TAG_COMPOUND)) {
+//                CompoundTag trinkTag = root.getCompound("TrinketsInventory");
+//                CompoundTag cardCaps = new CompoundTag();
+//                cardCaps.put("trinkets:trinkets", trinkTag);
+//                CompoundTag replay = new CompoundTag();
+//                replay.put("cardinal_components", cardCaps);
+//                player.load(replay);
+//            }
             in.delete();
         } catch (Exception e) {
-            TrueEnd.LOGGER.error("Failed to restore NWAD for player {}", player.getName().getString(), e);
+            LOGGER.error("Failed to restore NWAD for player {}", player.getName().getString(), e);
         }
     }
 
     public static void clearCuriosSlots(ServerPlayer player) {
-        if (!ModList.get().isLoaded("curios")) return;
+        if (!TrueEnd.inModList("curios")) return;
         CompoundTag playerNbt = player.serializeNBT();
         CompoundTag forgeCaps = playerNbt.getCompound("ForgeCaps");
 
@@ -307,7 +310,7 @@ public class PlayerInvManager {
     @SubscribeEvent
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        if (event.getFrom() != BTD) return;
+        if (!(event.getFrom().equals(BTD) && event.getTo().equals(Level.OVERWORLD))) return;
         if (!Variables.clearDreamItems) return;
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
