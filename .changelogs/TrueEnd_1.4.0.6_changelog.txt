@@ -10,7 +10,6 @@
 ## Bug Fixes & Technical Improvements
 - Added compatibility with [Nostalgic Tweaks](https://modrinth.com/mod/nostalgic-tweaks)
   - NT's stamina system and version overlay do not work or render when player is in BTD (Intended)
-- Mod no longer crashes the game on forge loader versions older than 47.4.5
 - Changed chances of getting the secret advancement
   - Now it only has a chance to be granted to the player when Unknown spawns
   - Chance is no longer randomEventChance/24 to make it a little more common

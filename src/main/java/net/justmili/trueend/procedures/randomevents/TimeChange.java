@@ -18,14 +18,14 @@ public class TimeChange {
         if (event.phase != TickEvent.Phase.END) return;
         if (!Variables.randomEventsToggle) return;
         if (!Variables.daytimeChangeToggle) return;
+        if (!(event.level instanceof ServerLevel serverWorld)) return;
 
-        ServerLevel world = (ServerLevel) event.level;
-        long totalDays = world.getDayTime() / 24000;
+        long totalDays = serverWorld.getDayTime() / 24000;
         if (totalDays < 3) return;
         if (totalDays % 4 != 0) return;
 
-        makeNight(world);
-        makeDay(world);
+        makeNight(serverWorld);
+        makeDay(serverWorld);
     }
 
     public static void makeNight(ServerLevel world) {
