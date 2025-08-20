@@ -1,5 +1,6 @@
 package net.justmili.trueend.mixin;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.justmili.trueend.init.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -34,7 +35,8 @@ public class SheepGrassEating {
             cir.setReturnValue(false);
         } else {
             BlockPos blockpos = this.mob.blockPosition();
-            cir.setReturnValue(IS_TALL_GRASS.test(this.level.getBlockState(blockpos)) || this.level.getBlockState(blockpos.below()).is(Blocks.GRASS_BLOCK.get()));
+            cir.setReturnValue(IS_TALL_GRASS.test(this.level.getBlockState(blockpos)) ||
+                    this.level.getBlockState(blockpos.below()).is(Blocks.GRASS_BLOCK.get()));
         }
     }
 
@@ -44,31 +46,37 @@ public class SheepGrassEating {
         if (this.eatAnimationTick == Mth.positiveCeilDiv(4, 2)) {
             BlockPos blockpos = this.mob.blockPosition();
             if (IS_TALL_GRASS.test(this.level.getBlockState(blockpos))) {
-                if (ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                    this.level.destroyBlock(blockpos, false);
-                }
-
+                this.level.destroyBlock(blockpos, false);
                 this.mob.ate();
             } else {
                 BlockPos blockpos1 = blockpos.below();
                 if (this.level.getBlockState(blockpos1).is(GRASS_BLOCK)) {
-                    if (ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                        this.level.levelEvent(2001, blockpos1, Block.getId(GRASS_BLOCK.defaultBlockState()));
-                        this.level.setBlock(blockpos1, DIRT.defaultBlockState(), 2);
-                    }
-
+                    this.level.levelEvent(2001, blockpos1, Block.getId(GRASS_BLOCK.defaultBlockState()));
+                    this.level.setBlock(blockpos1, DIRT.defaultBlockState(), 2);
                     this.mob.ate();
                 }
                 if (this.level.getBlockState(blockpos1).is(Blocks.GRASS_BLOCK.get())) {
-                    if (ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                        this.level.levelEvent(2001, blockpos1, Block.getId(Blocks.GRASS_BLOCK.get().defaultBlockState()));
-                        this.level.setBlock(blockpos1, Blocks.DIRT.get().defaultBlockState(), 2);
-                    }
-
+                    this.level.levelEvent(2001, blockpos1, Block.getId(Blocks.GRASS_BLOCK.get().defaultBlockState()));
+                    this.level.setBlock(blockpos1, Blocks.DIRT.get().defaultBlockState(), 2);
                     this.mob.ate();
                 }
             }
         }
         ci.cancel();
+    }
+
+    @WrapWithCondition(method = "tick", at = {@At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;destroyBlock(Lnet/minecraft/core/BlockPos;Z)Z")})
+    private boolean allowDestroyBlock(Level instance, BlockPos pos, boolean doDrops) {
+        return ForgeEventFactory.getMobGriefingEvent(this.level, this.mob);
+    }
+
+    @WrapWithCondition(method = "tick", at = {@At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;levelEvent(ILnet/minecraft/core/BlockPos;I)V")})
+    private boolean allowLevelEvent(Level instance, int id, BlockPos pos, int data) {
+        return ForgeEventFactory.getMobGriefingEvent(this.level, this.mob);
+    }
+
+    @WrapWithCondition(method = "tick", at = {@At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z")})
+    private boolean allowSetBlock(Level instance, BlockPos pos, BlockState state, int flags) {
+        return ForgeEventFactory.getMobGriefingEvent(this.level, this.mob);
     }
 }

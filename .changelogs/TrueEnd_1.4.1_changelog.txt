@@ -2,6 +2,10 @@
 
 ## Bug Fixes & Technical Improvements
 - Added compatibility with Kilt [WORKING ON IT]
+- Changed how entitySpawnChance is implemented for entity "Unknown"
+  - Entity won't start spawning until day 10
+  - Entity spawn chance increases with day count
+  - Entity spawning is now (more) seed-based
 
 # Removed
 - Removed Herobrine
