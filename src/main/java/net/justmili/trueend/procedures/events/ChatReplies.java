@@ -87,7 +87,7 @@ public class ChatReplies {
     private static void nightReply(ServerPlayer player) {
         ServerLevel world = (ServerLevel) player.level();
         int delay = (int)((Math.random()*50)+15);
-        long time = world.getDayTime() % 24000;
+        long time = world.getGameTime() % 24000;
         boolean isDay = time >= DAY && time < NIGHT;
         if (!isDay) {
             sendChatReply(world, "<§kUnknown§r> Sleep.", delay);
