@@ -31,5 +31,13 @@
         "stream": true
       }
     ]
+  },
+  "daisy_bell": {
+    "sounds": [
+      {
+        "name": "true_end:daisy_bell",
+        "stream": true
+      }
+    ]
   }
 }

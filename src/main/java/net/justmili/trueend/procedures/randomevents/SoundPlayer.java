@@ -9,12 +9,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
-import java.util.Objects;
+
+import static net.justmili.trueend.init.Dimensions.BTD;
 import static net.minecraft.world.level.block.Blocks.*;
 
 import static net.justmili.trueend.init.Dimensions.NWAD;
@@ -39,19 +39,45 @@ public class SoundPlayer {
 
         //Sound Players
         if (groundBlock(level, x, y, z) == Blocks.GRASS_BLOCK.get() || groundBlock(level, x, y, z) == GRASS_BLOCK) {
-            playSounds(player, 8, "block.grass.step");
+            if (Math.random() < 0.90) {
+                repeatSound(player, 8, "block.grass.step");
+            } else {
+                repeatSound(player, 8, "block.grass.break");
+            }
         }
         if (groundBlock(level, x, y, z) == SAND) {
-            playSounds(player, 8, "block.sand.step");
+            if (Math.random() < 0.90) {
+                repeatSound(player, 8, "block.sand.step");
+            } else {
+                repeatSound(player, 8, "block.sand.break");
+            }
         }
-        if (groundBlock(level, x, y, z) == Blocks.DIRT.get() || groundBlock(level, x, y, z) == DIRT) {
-            playSounds(player, 12, "block.gravel.break");
+        if (groundBlock(level, x, y, z) == Blocks.DIRT.get()
+                || groundBlock(level, x, y, z) == Blocks.GRAVEL.get()
+                || groundBlock(level, x, y, z) == DIRT
+                || groundBlock(level, x, y, z) == GRAVEL) {
+            if (Math.random() < 0.90) {
+                repeatSound(player, 8, "block.gravel.step");
+            } else {
+                repeatSound(player, 12, "block.gravel.break");
+            }
         }
         if (groundBlock(level, x, y, z) == Blocks.STONE.get() || groundBlock(level, x, y, z) == STONE) {
-            playSounds(player, 10, "block.stone.break");
+            if (Math.random() < 0.40) {
+                repeatSound(player, 8, "block.stone.step");
+            } else {
+                repeatSound(player, 10, "block.stone.break");
+            }
         }
         if (groundBlock(level, x, y, z) == DEEPSLATE) {
-            playSounds(player, 16, "block.deepslate.break");
+            if (Math.random() < 0.60) {
+                repeatSound(player, 8, "block.deepslate.step");
+            } else {
+                repeatSound(player, 16, "block.stone.break");
+            }
+        }
+        if ((player.getY() < 0 || player.level().dimension() == BTD) && Math.random() < 0.00005) {
+            playSound(player, 5, "true_end:daisy_bell");
         }
     }
 
@@ -59,21 +85,37 @@ public class SoundPlayer {
         return level.getBlockState(BlockPos.containing(x, y - 0.5, z)).getBlock();
     }
 
-    private static void playSounds(ServerPlayer player, Integer delay, String soundId) {
+    public static void repeatSound(ServerPlayer player, Integer delay, String soundId) {
         int randomRepeatCount = 3 + (int) (Math.random() * ((9 - 3) + 1));
         int soundX = BlockPosRandomX / 4;
         int soundY = 1 + (int) (Math.random() * ((8 - 1) + 1));
         int soundZ = BlockPosRandomZ / 4;
-        LevelAccessor world = player.level();
+        Level level = player.level();
+        if (level.isClientSide()) return;
 
         for (int index3 = 0; index3 < (randomRepeatCount - 1); index3++) {
             TrueEnd.wait(delay, () -> {
-                if (world instanceof Level level) {
-                    if (!level.isClientSide()) {
-                        level.playSound(null, BlockPos.containing(soundX, soundY, soundZ), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(soundId))), SoundSource.NEUTRAL, 1, 1);
-                    }
-                }
+                level.playSound(
+                        null,
+                        BlockPos.containing(soundX, soundY, soundZ),
+                        ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(soundId)),
+                        SoundSource.NEUTRAL, 1, 1);
             });
         }
+    }
+    public static void playSound(ServerPlayer player, Integer delay, String soundId) {
+        int soundX = BlockPosRandomX / 4;
+        int soundY = 1 + (int) (Math.random() * ((8 - 1) + 1));
+        int soundZ = BlockPosRandomZ / 4;
+        Level level = player.level();
+        if (level.isClientSide()) return;
+
+        TrueEnd.wait(delay, () -> {
+            level.playSound(
+                    null,
+                    BlockPos.containing(soundX, soundY, soundZ),
+                    ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(soundId)),
+                    SoundSource.NEUTRAL, 1, 1);
+        });
     }
 }

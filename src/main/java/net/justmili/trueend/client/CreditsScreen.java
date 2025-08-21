@@ -18,6 +18,7 @@ public class CreditsScreen extends Screen {
     private static final ResourceLocation TITLE_TEX = ResourceLocation.parse("true_end:textures/gui/title.png");
     private static final ResourceLocation TEXT_FILE = ResourceLocation.parse("true_end:texts/credits.txt");
     private static final ResourceLocation BG_TEXTURE = ResourceLocation.parse("true_end:textures/block/old_dirt.png");
+    private static final String ALLOWED_SYMBOLS = "~_-=+!@#$%^&*()/\\?<>.,[]{};':\"|";
 
     private final Runnable onClose;
     private final List<String> lines = new ArrayList<>();
@@ -41,17 +42,41 @@ public class CreditsScreen extends Screen {
             String line;
             while ((line = br.readLine()) != null) {
                 assert Minecraft.getInstance().player != null;
-                lines.add(line.replace("PLAYERNAME", Minecraft.getInstance().player.getName().getString()));
+                String replaced = line.replace("PLAYERNAME", Minecraft.getInstance().player.getName().getString());
+                lines.add(filterFile(replaced));
             }
         } catch (Exception e) {
             TrueEnd.LOGGER.error("Failed to read credits.txt", e);
         }
     }
+    private String filterFile(String line) {
+        if (line == null) return "";
+        StringBuilder sb = new StringBuilder(line.length());
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '§') {
+                sb.append(c);
+                if (i + 1 < line.length()) {
+                    sb.append(line.charAt(i + 1));
+                    i++;
+                }
+                continue;
+            }
+            if ((c >= 'A' && c <= 'Z') ||
+                    (c >= 'a' && c <= 'z') ||
+                    (c >= '0' && c <= '9') ||
+                    c == ' ' ||
+                    ALLOWED_SYMBOLS.indexOf(c) >= 0) {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
     @Override
     protected void init() {
         super.init();
     }
-
     @Override
     public void renderBackground(@NotNull GuiGraphics gui) {
         Minecraft mc = Minecraft.getInstance();

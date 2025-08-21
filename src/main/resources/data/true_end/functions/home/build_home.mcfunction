@@ -19,19 +19,15 @@ fill ~-2 ~4 ~-2 ~2 ~4 ~2 true_end:wooden_planks
 setblock ~ ~-1 ~-3 true_end:wooden_planks
 
 # Supports and walls
-fill ~-3 ~ ~-3 ~-3 ~3 ~-3 true_end:wood
-setblock ~-3 ~4 ~-3 true_end:wood_6_sided[axis=z]
-fill ~3 ~ ~-3 ~3 ~3 ~-3 true_end:wood
-setblock ~3 ~4 ~-3 true_end:wood_6_sided[axis=x]
-fill ~-3 ~ ~3 ~-3 ~3 ~3 true_end:wood
-setblock ~-3 ~4 ~3 true_end:wood_6_sided[axis=x]
-fill ~3 ~ ~3 ~3 ~3 ~3 true_end:wood
-setblock ~3 ~4 ~3 true_end:wood_6_sided[axis=z]
+fill ~-3 ~ ~-3 ~-3 ~4 ~-3 true_end:wood
+fill ~3 ~ ~-3 ~3 ~4 ~-3 true_end:wood
+fill ~-3 ~ ~3 ~-3 ~4 ~3 true_end:wood
+fill ~3 ~ ~3 ~3 ~4 ~3 true_end:wood
 
-fill ~-2 ~4 ~-3 ~2 ~4 ~-3 true_end:wood[axis=x]
-fill ~-2 ~4 ~3 ~2 ~4 ~3 true_end:wood[axis=x]
-fill ~-3 ~4 ~-2 ~-3 ~4 ~2 true_end:wood[axis=z]
-fill ~3 ~4 ~-2 ~3 ~4 ~2 true_end:wood[axis=z]
+fill ~-2 ~4 ~-3 ~2 ~4 ~-3 true_end:wood
+fill ~-2 ~4 ~3 ~2 ~4 ~3 true_end:wood
+fill ~-3 ~4 ~-2 ~-3 ~4 ~2 true_end:wood
+fill ~3 ~4 ~-2 ~3 ~4 ~2 true_end:wood
 
 fill ~-2 ~ ~-3 ~2 ~ ~-3 true_end:cobblestone
 fill ~-2 ~ ~3 ~2 ~ ~3 true_end:cobblestone

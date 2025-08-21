@@ -16,4 +16,5 @@ public class Sounds {
     public static final RegistryObject<SoundEvent> MOD_CREDITS_MUSIC = sound("back_in_the_game");
     public static final RegistryObject<SoundEvent> MUSIC_FARLANDS = sound("farlands");
     public static final RegistryObject<SoundEvent> MUSIC_NEVER_ALONE = sound("never_alone");
+    public static final RegistryObject<SoundEvent> DAISY_BELL = sound("daisy_bell");
 }
