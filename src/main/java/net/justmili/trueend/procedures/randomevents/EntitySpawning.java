@@ -27,11 +27,12 @@ public class EntitySpawning {
     private static final int MAX_ATTEMPTS = 16;
 
     @SubscribeEvent
-    public static void onWorldTick(TickEvent.LevelTickEvent event) {
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
 
-        Level level = event.level;
+        Level level = event.player.level();
         if (level.isClientSide() || !(level instanceof ServerLevel world)) return;
+        if (Variables.MapVariables.get(world).isUnknownInWorld()) return;
 
         if (world.getGameTime() % TICK_INTERVAL != 0) return;
         if (world.dimension() == Level.END) return;

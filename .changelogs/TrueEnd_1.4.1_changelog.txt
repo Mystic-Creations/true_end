@@ -6,6 +6,8 @@
   - Entity won't start spawning until day 10
   - Entity spawn chance increases with day count
   - Entity spawning is now (more) seed-based
+  - EntitySpawning now works on onPlayerTick event
+  - Fixed multiple instances of Unknown spawning in the world
 
 # Removed
 - Removed Herobrine
