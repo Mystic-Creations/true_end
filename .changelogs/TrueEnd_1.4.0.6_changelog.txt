@@ -7,6 +7,9 @@
 ## Events & Interactions
 - New available 'Chat Replies', you can type in "fireydude" or "imfireydude" in chat to get a special reply
 
+## Removed
+- Removed Herobrine
+
 ## Bug Fixes & Technical Improvements
 - Added compatibility with [Nostalgic Tweaks](https://modrinth.com/mod/nostalgic-tweaks)
   - NT's stamina system and version overlay do not work or render when player is in BTD (Intended)
@@ -16,9 +19,6 @@
 - Unknown's doStalking despawn distance changed from 6 to 16 blocks
 - Player's Air level now appears above player health like in Minecraft Alpha 1.1.2_01
 - Version Overlay no longer scales with GUI scale
-
-# Removed
-- Removed Herobrine
 
 ## Known Bugs (1.4-now)
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

@@ -14,7 +14,7 @@ repositories {
 }
 
 //x.x.x.x_Forge/Fabric-x.xx.x-TestBuild_nn
-version = '1.4.1_Forge-1.20.1-TestBuild11'
+version = '1.4.1_Forge-1.20.1-TestBuild12'
 group = 'net.justmili.trueend'
 archivesBaseName = 'trueend'
 

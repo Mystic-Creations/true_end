@@ -1,4 +1,11 @@
-**FABRIC PORT IS ON IT'S WAY!** (Last patch I swear <- lie)
+**FABRIC PORT IS ON IT'S WAY!** (Actually the last patch for True End Forge (Unless some new bug will be discovered))
+
+## Events & Interactions
+- New rare sound event
+  - "Distant Daisy Bell", addition to mod's SoundPlayer
+
+## Removed
+- Removed Herobrine
 
 ## Bug Fixes & Technical Improvements
 - Added compatibility with Kilt [WORKING ON IT]
@@ -8,9 +15,8 @@
   - Entity spawning is now (more) seed-based
   - EntitySpawning now works on onPlayerTick event
   - Fixed multiple instances of Unknown spawning in the world
-
-# Removed
-- Removed Herobrine
+- `wood_6_sided` can be now used as furnace fuel
+- Added missing charcoal recipes for
 
 ## Known Bugs (1.4-now)
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

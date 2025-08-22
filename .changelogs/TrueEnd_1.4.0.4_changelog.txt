@@ -1,11 +1,11 @@
 **FABRIC PORT IS ON IT'S WAY!**
 
+## Removed
+- Removed Herobrine
+
 ## Bug Fixes & Technical Improvements
 - Secret advancement now actually hooked up to Mod's EventBusSubscriber
 - Added "Fallback Spawn Cleanup" for if so happens that the player falls down a few blocks when spawning at the farlands
-
-# Removed
-- Removed Herobrine
 
 ## Known Bugs (1.4-now)
 - Mod Credits don't appear on multiplayer

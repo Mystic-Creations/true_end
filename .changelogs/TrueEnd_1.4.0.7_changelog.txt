@@ -1,11 +1,11 @@
 **FABRIC PORT IS ON IT'S WAY!** (This one's a small patch)
 
+## Removed
+- Removed Herobrine
+
 ## Bug Fixes & Technical Improvements
 - Config daytimeChangeToggle now actually affects TimeChange event
 - `/te-config daytimeChangeToggle` and `/te-config clearDreamItems` now show the correct config values
-
-# Removed
-- Removed Herobrine
 
 ## Known Bugs (1.4-now)
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

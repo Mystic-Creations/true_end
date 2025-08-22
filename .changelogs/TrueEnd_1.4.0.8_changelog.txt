@@ -1,11 +1,11 @@
 **FABRIC PORT IS ON IT'S WAY!** (This one's a small patch)
 
+## Removed
+- Removed Herobrine
+
 ## Bug Fixes & Technical Improvements
 - Fixed crash at world creation
 - Mod no longer crashes on forge lader versions older than 47.4.5
-
-# Removed
-- Removed Herobrine
 
 ## Known Bugs (1.4-now)
 - Player inventory doesn't get restored when leaving BTD

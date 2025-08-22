@@ -3,6 +3,9 @@
 ## Events & Interactions
 - New available 'Chat Replies', mainly easter eggs for streamers/youtubers who have played the mod.
 
+## Removed
+- Removed Herobrine
+
 ## Bug Fixes & Technical Improvements
 - Mod credits now works on multiplayer
   - Can be only played once for the first player to leave Beyond The Dream
@@ -18,9 +21,6 @@
 - Never Alone music converted to mono
 - Dreamer's Compass item name no longer changes to 'Lodestone Compass' and doesn't have the enchanted glint
 - Dreamer's Compass now points to the actual trunk of the tree
-
-# Removed
-- Removed Herobrine
 
 ## Known Bugs (1.4-now)
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
