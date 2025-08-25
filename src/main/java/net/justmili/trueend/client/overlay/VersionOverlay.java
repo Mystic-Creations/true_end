@@ -59,10 +59,11 @@ public class VersionOverlay {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void onRenderGui(RenderGuiEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || mc.level.dimension() != BTD) return;
+        if (mc.options.renderDebug) return;
 
         GuiGraphics gui = event.getGuiGraphics();
         PoseStack pose = gui.pose();

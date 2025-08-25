@@ -1,12 +1,5 @@
 {
   "textures": [
-    "true_end:dream_portal_particle_1",
-    "true_end:dream_portal_particle_2",
-    "true_end:dream_portal_particle_3",
-    "true_end:dream_portal_particle_4",
-    "true_end:dream_portal_particle_5",
-    "true_end:dream_portal_particle_6",
-    "true_end:dream_portal_particle_7",
-    "true_end:dream_portal_particle_8"
+    "true_end:dream_particle"
   ]
 }

@@ -1,5 +1,14 @@
 **FABRIC PORT IS ON IT'S WAY!** (Actually the last patch for True End Forge (Unless some new bug will be discovered))
 
+## World Generation
+- Changed how the Dreaming Tree spawns
+  - Spawns a little closer 👍 (15-10k blocks -> 10-5k blocks)
+
+## Features
+*(General)*
+- Added config reset option in `/te-config`
+  - Requires operator permissions/cheats
+
 ## Events & Interactions
 - New rare sound event
   - "Distant Daisy Bell", addition to mod's SoundPlayer
@@ -8,7 +17,6 @@
 - Removed Herobrine
 
 ## Bug Fixes & Technical Improvements
-- Added compatibility with Kilt [WORKING ON IT]
 - Changed how entitySpawnChance is implemented for entity "Unknown"
   - Entity won't start spawning until day 10
   - Entity spawn chance increases with day count
@@ -16,7 +24,8 @@
   - EntitySpawning now works on onPlayerTick event
   - Fixed multiple instances of Unknown spawning in the world
 - `wood_6_sided` can be now used as furnace fuel
-- Added missing charcoal recipes for
+- Added missing charcoal recipes for wood
+- Version Overlay no longer renders over F3 and such
 
 ## Known Bugs (1.4-now)
 - Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream

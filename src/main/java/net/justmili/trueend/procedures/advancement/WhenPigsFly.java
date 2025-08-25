@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class WhenPigsFly {
-
     @SubscribeEvent
     public static void onPigFallDeath(LivingDeathEvent event) {
         DamageSource source = event.getSource();

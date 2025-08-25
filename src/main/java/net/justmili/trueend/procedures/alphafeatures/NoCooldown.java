@@ -33,8 +33,6 @@ public class NoCooldown {
     }
 
     private static void applyCooldown(Player player, ResourceKey<Level> toDim) {
-
-
         AttributeInstance attackSpeedAttr = player.getAttribute(Attributes.ATTACK_SPEED);
         if (attackSpeedAttr == null) return;
 

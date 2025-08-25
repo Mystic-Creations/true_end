@@ -54,7 +54,7 @@ public class EntitySpawning {
         if (players.isEmpty()) return;
         ServerPlayer player = players.get(world.random.nextInt(players.size()));
         double maxDistance = (world.getServer().getPlayerList().getViewDistance() * 16.0) - 48.0;
-        if (maxDistance <= 32.0) return; //return if render distance too small
+        if (maxDistance <= 48.0) return; //return if render distance too small
 
         for (int attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
             double angle = world.random.nextDouble() * Math.PI * 2.0;
@@ -62,9 +62,9 @@ public class EntitySpawning {
             double px = player.getX(), pz = player.getZ();
             int x = Mth.floor(px + Math.cos(angle) * dist);
             int z = Mth.floor(pz + Math.sin(angle) * dist);
-            int surfaceY = world.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+            int y = world.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
 
-            BlockPos groundPos = new BlockPos(x, surfaceY - 1, z);
+            BlockPos groundPos = new BlockPos(x, y - 1, z);
             BlockState groundState = world.getBlockState(groundPos);
             if (groundState.isAir() || groundState.getBlock() == Blocks.WATER || groundState.getBlock() == Blocks.LAVA) {
                 TrueEnd.LOGGER.debug("Attempt {}: invalid ground at {}: {}", attempt, groundPos, groundState.getBlock());
@@ -75,14 +75,14 @@ public class EntitySpawning {
             Entity entity = type.create(world);
 
             if (entity == null) return;
-            entity.moveTo(x + 0.5, surfaceY, z + 0.5, world.random.nextFloat() * 360.0F, 0.0F);
+            entity.moveTo(x + 0.5, y, z + 0.5, world.random.nextFloat() * 360.0F, 0.0F);
             entity.getPersistentData().putBoolean("PersistenceRequired", true);
             entity.getPersistentData().putBoolean("doStalking", true);
             world.addFreshEntity(entity);
 
             Variables.MapVariables.get(world).setUnknownInWorld(true);
             NotAlone.grantAdvancement(player);
-            TrueEnd.LOGGER.info("Spawned 'Unknown' at {} on {} after {} attempts.", entity.blockPosition(), groundState, attempt + 1);
+            TrueEnd.LOGGER.info("Spawned 'Unknown' at {} on {}", entity.blockPosition(), groundState);
             return;
         }
     }

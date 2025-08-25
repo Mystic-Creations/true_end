@@ -2,6 +2,7 @@ package net.justmili.trueend.command;
 
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -18,90 +19,117 @@ public class ConfigCmd {
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
         event.getDispatcher().register(
-                Commands.literal("te-config")
-                        .then(Commands.literal("randomEventChance")
-                                .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "randomEventChance", Variables.randomEventChance))
-                                .then(Commands.argument("value", DoubleArgumentType.doubleArg(0.0, 0.5))
-                                        .executes(ctx -> handleDouble(ctx.getSource(), "randomEventChance", DoubleArgumentType.getDouble(ctx, "value")))))
+            Commands.literal("te-config")
+                .then(Commands.literal("reset")
+                    .requires(s -> s.hasPermission(4))
+                    .executes(ConfigCmd::resetConfig)
+                )
+                .then(Commands.literal("modify")
+                    .then(Commands.literal("randomEventChance")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "randomEventChance", Variables.randomEventChance))
+                        .then(Commands.argument("value", DoubleArgumentType.doubleArg(0.0, 0.5))
+                            .executes(ctx -> handleDouble(ctx.getSource(), "randomEventChance", DoubleArgumentType.getDouble(ctx, "value")))))
 
-                        .then(Commands.literal("entitySpawnChance")
-                                .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "entitySpawnChance", Variables.entitySpawnChance))
-                                .then(Commands.argument("value", DoubleArgumentType.doubleArg(0.0, 1))
-                                        .executes(ctx -> handleDouble(ctx.getSource(), "entitySpawnChance", DoubleArgumentType.getDouble(ctx, "value")))))
+                    .then(Commands.literal("entitySpawnChance")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "entitySpawnChance", Variables.entitySpawnChance))
+                        .then(Commands.argument("value", DoubleArgumentType.doubleArg(0.0, 1))
+                            .executes(ctx -> handleDouble(ctx.getSource(), "entitySpawnChance", DoubleArgumentType.getDouble(ctx, "value")))))
 
-                        .then(Commands.literal("btdConversationDelay")
-                                .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "btdConversationDelay", Variables.btdConversationDelay))
-                                .then(Commands.argument("value", IntegerArgumentType.integer(0, 60))
-                                        .executes(ctx -> handleInt(ctx.getSource(), "btdConversationDelay", IntegerArgumentType.getInteger(ctx, "value")))))
+                    .then(Commands.literal("btdConversationDelay")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "btdConversationDelay", Variables.btdConversationDelay))
+                        .then(Commands.argument("value", IntegerArgumentType.integer(0, 60))
+                            .executes(ctx -> handleInt(ctx.getSource(), "btdConversationDelay", IntegerArgumentType.getInteger(ctx, "value")))))
 
-                        .then(Commands.literal("creditsToggle")
-                                .executes(ctx -> getConfig(ctx.getSource(), "creditsToggle", Variables.creditsToggle))
-                                .then(Commands.literal("true")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "creditsToggle", true)))
-                                .then(Commands.literal("false")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "creditsToggle", false))))
+                    .then(Commands.literal("creditsToggle")
+                        .executes(ctx -> getConfig(ctx.getSource(), "creditsToggle", Variables.creditsToggle))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "creditsToggle", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "creditsToggle", false))))
 
-                        .then(Commands.literal("fogToggle")
-                                .executes(ctx -> getConfig(ctx.getSource(), "fogToggle", Variables.fogToggle))
-                                .then(Commands.literal("true")
-                                        .executes(ctx -> {
-                                            try {
-                                                ServerPlayer player = ctx.getSource().getPlayerOrException();
-                                                updateClientConfig(player, ctx.getSource(), "fogToggle", true);
-                                            } catch (Exception e) {
-                                                handleBoolean(ctx.getSource(), "fogToggle", true);
-                                            }
-                                            return 1;
-                                        }))
-                                .then(Commands.literal("false")
-                                        .executes(ctx -> {
-                                            try {
-                                                ServerPlayer player = ctx.getSource().getPlayerOrException();
-                                                updateClientConfig(player, ctx.getSource(), "fogToggle", false);
-                                            } catch (Exception e) {
-                                                handleBoolean(ctx.getSource(), "fogToggle", false);
-                                            }
-                                            return 1;
-                                        })))
+                    .then(Commands.literal("fogToggle")
+                        .executes(ctx -> getConfig(ctx.getSource(), "fogToggle", Variables.fogToggle))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> {
+                                try {
+                                    ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                    updateClientConfig(player, ctx.getSource(), "fogToggle", true);
+                                } catch (Exception e) {
+                                    handleBoolean(ctx.getSource(), "fogToggle", true);
+                                }
+                                return 1;
+                            }))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> {
+                                try {
+                                    ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                    updateClientConfig(player, ctx.getSource(), "fogToggle", false);
+                                } catch (Exception e) {
+                                    handleBoolean(ctx.getSource(), "fogToggle", false);
+                                }
+                                return 1;
+                            })))
 
-                        .then(Commands.literal("popupsToggle")
-                                .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "popupsToggle", Variables.popupsToggle))
-                                .then(Commands.literal("true")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", true)))
-                                .then(Commands.literal("false")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", false))))
+                    .then(Commands.literal("popupsToggle")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "popupsToggle", Variables.popupsToggle))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", false))))
 
-                        .then(Commands.literal("flashingLights")
-                                .executes(ctx -> getConfig(ctx.getSource(), "flashingLights", Variables.flashingLights))
-                                .then(Commands.literal("true")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", true)))
-                                .then(Commands.literal("false")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", false))))
+                    .then(Commands.literal("flashingLights")
+                        .executes(ctx -> getConfig(ctx.getSource(), "flashingLights", Variables.flashingLights))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", false))))
 
-                        .then(Commands.literal("daytimeChangeToggle")
-                                .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "daytimeChangeToggle", Variables.daytimeChangeToggle))
-                                .then(Commands.literal("true")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", true)))
-                                .then(Commands.literal("false")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", false))))
+                    .then(Commands.literal("daytimeChangeToggle")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "daytimeChangeToggle", Variables.daytimeChangeToggle))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", false))))
 
-                        .then(Commands.literal("clearDreamItems")
-                                .requires(s -> s.hasPermission(4))
-                                .executes(ctx -> getConfig(ctx.getSource(), "clearDreamItems", Variables.clearDreamItems))
-                                .then(Commands.literal("true")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", true)))
-                                .then(Commands.literal("false")
-                                        .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", false))))
+                    .then(Commands.literal("clearDreamItems")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "clearDreamItems", Variables.clearDreamItems))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "clearDreamItems", false))))
+
+                )
         );
     }
 
     private static int getConfig(CommandSourceStack src, String key, Object value) {
         src.sendSuccess(() -> Component.literal("Config '" + key + "' is currently set to " + value), false);
+        return 1;
+    }
+
+    private static int resetConfig(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack src = ctx.getSource();
+        updateConfig("randomEventChance", 0.005);
+        updateConfig("entitySpawnChance", 0.05);
+        updateConfig("btdConversationDelay", 40);
+        updateConfig("randomEventsToggle", true);
+        updateConfig("popupsToggle", true);
+        try {
+            ServerPlayer player = src.getPlayerOrException();
+            updateClientConfig(player, src, "fogToggle", true);
+        } catch (Exception e) {
+            handleBoolean(src, "fogToggle", true);
+        }
+        updateConfig("creditsToggle", true);
+        updateConfig("flashingLights", true);
+        updateConfig("daytimeChangeToggle", true);
+        updateConfig("clearDreamItems", true);
         return 1;
     }
 }
