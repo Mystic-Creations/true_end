@@ -21,13 +21,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.ambient.AmbientCreature;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class Unknown extends AmbientCreature {
+public class Unknown extends Monster {
     private static final double FOLLOW_RANGE = 128;
     private static final int MAX_VISIBLE_TICKS = 60, COOLDOWN_TICKS = 3600;
     private int visibleTicks = 0, existenceTicks = 0;
@@ -35,7 +35,7 @@ public class Unknown extends AmbientCreature {
     private UnknownBehavior behavior = UnknownBehavior.STALKING;
     private static final EntityDataAccessor<String> TEXTURE_NAME = SynchedEntityData.defineId(Unknown.class, EntityDataSerializers.STRING);
 
-    public Unknown(EntityType<? extends AmbientCreature> type, Level level) {
+    public Unknown(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         setPersistenceRequired();
         this.navigation = new GroundPathNavigation(this, level);
@@ -65,7 +65,7 @@ public class Unknown extends AmbientCreature {
         if (tag.getBoolean("doWeeping")) behavior = UnknownBehavior.WEEPING;
         if (tag.getBoolean("doStalking")) behavior = UnknownBehavior.STALKING;
         if (tag.getBoolean("doAttacking")) behavior = UnknownBehavior.ATTACKING;
-        setBehavior(behavior);
+        setTexture(behavior);
     }
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
@@ -141,7 +141,7 @@ public class Unknown extends AmbientCreature {
         if (!seen) getNavigation().moveTo(player, 0.5025);
         else getNavigation().stop();
     }
-    private void doAttacking(Player player) { //Doesn't work??
+    private void doAttacking(Player player) {
         getNavigation().moveTo(player, 0.75);
         if (distanceTo(player) < 1.5 && player.hurt(damageSources().mobAttack(this),
                 (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
@@ -158,7 +158,7 @@ public class Unknown extends AmbientCreature {
         level().updateNeighborsAt(blockPosition(), state.getBlock());
     }
 
-    public void setBehavior(UnknownBehavior texture) {
+    public void setTexture(UnknownBehavior texture) {
         behavior = texture;
         String[] textures;
         switch (texture) {
