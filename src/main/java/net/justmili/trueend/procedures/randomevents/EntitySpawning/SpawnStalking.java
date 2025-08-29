@@ -1,4 +1,4 @@
-package net.justmili.trueend.procedures.randomevents;
+package net.justmili.trueend.procedures.randomevents.EntitySpawning;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
-public class EntitySpawning {
+public class SpawnStalking {
     private static final long TICK_INTERVAL = 1200L;
     private static final int MAX_ATTEMPTS = 16;
 
@@ -77,7 +77,9 @@ public class EntitySpawning {
             if (entity == null) return;
             entity.moveTo(x + 0.5, y, z + 0.5, world.random.nextFloat() * 360.0F, 0.0F);
             entity.getPersistentData().putBoolean("PersistenceRequired", true);
-            entity.getPersistentData().putBoolean("doStalking", true);
+            entity.getPersistentData().putBoolean("doStalking", true); //Doesn't work so defaults to stalking,
+                                                                                          // not a big deal in this case but annoying we didn't
+                                                                                          // catch it earlier
             world.addFreshEntity(entity);
 
             Variables.MapVariables.get(world).setUnknownInWorld(true);

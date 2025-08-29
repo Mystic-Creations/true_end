@@ -2,6 +2,7 @@ package net.justmili.trueend.procedures.events;
 
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.network.Variables;
+import net.justmili.trueend.procedures.randomevents.SoundPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -59,6 +60,7 @@ public class ChatReplies {
             case "hello", "hi" -> sendChatReply(world, "<§kUnknown§r> Hi.", delay);
             case "go away", "please go away", "leave me alone", "can you leave me alone", "can you go away", "please leave me alone"
                     -> sendChatReply(world, "<§kUnknown§r> I can't.", delay);
+            case "song", "sing" -> entitySings(world, delay, player);
             
             //Easter eggs
             case "28/09/1939", "09/28/1939" -> meetAgain(player); //Reference to "We'll meet again" by Vera Lynn, with that also Gravity Falls but also fits with the last words said by the voices in the mod
@@ -119,12 +121,12 @@ public class ChatReplies {
                 "§2Don't know where",
                 "§3Don't know when",
                 "§2But I know we'll meet again",
-                "§9Some sunny day",
+                "Some sunny day",
                 "§3Keep smiling through",
                 "§2Just like you",
                 "§3always do",
                 "§2'Til the blue skies chase those dark clouds",
-                "§9Far away"
+                "Far away"
         };
         int[] delays = { 45, 40, 40, 40, 50, 55, 40, 40, 45, 50 };
 
@@ -134,5 +136,9 @@ public class ChatReplies {
             int idx = i;
             TrueEnd.wait(cumulative, () -> sendChatReply(world, lines[idx], 0));
         }
+    }
+    private static void entitySings(LevelAccessor world, Integer delay, ServerPlayer player) {
+        sendChatReply(world, "<§kUnknown§r> 0100110101111001001000000110011001100001011101100110111101110010011010010111010001100101", delay);
+        SoundPlayer.playSound(player, 10, "true_end:daisy_bell");
     }
 }

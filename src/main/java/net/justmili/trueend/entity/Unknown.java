@@ -65,7 +65,7 @@ public class Unknown extends AmbientCreature {
         if (tag.getBoolean("doWeeping")) behavior = UnknownBehavior.WEEPING;
         if (tag.getBoolean("doStalking")) behavior = UnknownBehavior.STALKING;
         if (tag.getBoolean("doAttacking")) behavior = UnknownBehavior.ATTACKING;
-        setTexture(behavior);
+        setBehavior(behavior);
     }
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
@@ -141,7 +141,7 @@ public class Unknown extends AmbientCreature {
         if (!seen) getNavigation().moveTo(player, 0.5025);
         else getNavigation().stop();
     }
-    private void doAttacking(Player player) {
+    private void doAttacking(Player player) { //Doesn't work??
         getNavigation().moveTo(player, 0.75);
         if (distanceTo(player) < 1.5 && player.hurt(damageSources().mobAttack(this),
                 (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
@@ -158,7 +158,7 @@ public class Unknown extends AmbientCreature {
         level().updateNeighborsAt(blockPosition(), state.getBlock());
     }
 
-    public void setTexture(UnknownBehavior texture) {
+    public void setBehavior(UnknownBehavior texture) {
         behavior = texture;
         String[] textures;
         switch (texture) {
