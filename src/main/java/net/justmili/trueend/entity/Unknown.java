@@ -141,7 +141,7 @@ public class Unknown extends AmbientCreature {
         if (!seen) getNavigation().moveTo(player, 0.5025);
         else getNavigation().stop();
     }
-    private void doAttacking(Player player) { //Doesn't work??
+    private void doAttacking(Player player) {
         getNavigation().moveTo(player, 0.75);
         if (distanceTo(player) < 1.5 && player.hurt(damageSources().mobAttack(this),
                 (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {

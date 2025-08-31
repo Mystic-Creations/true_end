@@ -1,16 +1,17 @@
-**FABRIC PORT IS ON IT'S WAY!** (Fuck it we ball)
+**FABRIC PORT IS ON IT'S WAY!** (Fuck it, we ball)
 
 ## Entities
-- Added rare jumpscare event
+- Added rare "jumpscare" event
+  - Can't even call it a jumpscare but it can get a scare outta you
 
 ## Events & Interactions
-- New available 'Chat Replies', you can type in "Sing" in chat to get a special reply
+- New available 'Chat Replies':
+  - "Sing"
+  - "I love you"
+  - "Voices"
 
 ## Removed
 - Removed Herobrine
 
 ## Bug Fixes & Technical Improvements
--
-
-## Known Bugs (1.4-now)
-- Slots from mods like Curios API or Trinkets can't be cleared when entering Beyond the Dream
+- Inventory slots added by Curios API now get cleared at first entry to Beyond The Dream

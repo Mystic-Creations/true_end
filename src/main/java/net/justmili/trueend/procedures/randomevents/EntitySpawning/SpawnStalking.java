@@ -3,6 +3,7 @@ package net.justmili.trueend.procedures.randomevents.EntitySpawning;
 import java.util.List;
 
 import net.justmili.trueend.TrueEnd;
+import net.justmili.trueend.entity.Unknown;
 import net.justmili.trueend.init.Entities;
 import net.justmili.trueend.network.Variables;
 
@@ -75,11 +76,10 @@ public class SpawnStalking {
             Entity entity = type.create(world);
 
             if (entity == null) return;
+            if (!(entity instanceof Unknown unknown)) return;
             entity.moveTo(x + 0.5, y, z + 0.5, world.random.nextFloat() * 360.0F, 0.0F);
             entity.getPersistentData().putBoolean("PersistenceRequired", true);
-            entity.getPersistentData().putBoolean("doStalking", true); //Doesn't work so defaults to stalking,
-                                                                                          // not a big deal in this case but annoying we didn't
-                                                                                          // catch it earlier
+            unknown.setBehavior(Unknown.UnknownBehavior.STALKING);
             world.addFreshEntity(entity);
 
             Variables.MapVariables.get(world).setUnknownInWorld(true);
