@@ -18,3 +18,4 @@
 
 ## Known Bugs (added for dev notes)
 - At exit from BTD, credits get skipped, main inventory doesn't get restored (Curios API restores somehow) and player gets shoved back to BTD for some damn reason
+- Inventory gets cleared after every return to BTD
