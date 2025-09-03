@@ -177,18 +177,18 @@ public class PlayerInvManager {
         }
     }
     public static void clearCuriosSlots(ServerPlayer player) {
-//        if (!TrueEnd.inModList("curios")) return;
-//        CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
-//            Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
-//            curios.forEach((id, stackHandler) -> {
-//                if (stackHandler == null) return;
-//                var stacks = stackHandler.getStacks();
-//                int slots = stacks.getSlots();
-//                for (int i = 0; i < slots; i++) {
-//                    stacks.setStackInSlot(i, ItemStack.EMPTY);
-//                }
-//            });
-//        });
+        if (!TrueEnd.inModList("curios")) return;
+        CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
+            Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
+            curios.forEach((id, stackHandler) -> {
+                if (stackHandler == null) return;
+                var stacks = stackHandler.getStacks();
+                int slots = stacks.getSlots();
+                for (int i = 0; i < slots; i++) {
+                    stacks.setStackInSlot(i, ItemStack.EMPTY);
+                }
+            });
+        });
     }
 
     @SubscribeEvent
@@ -200,6 +200,7 @@ public class PlayerInvManager {
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
             if (data.hasBeenBeyond()) {
                 player.getInventory().clearContent();
+                clearCuriosSlots(player);
                 PlayerInvManager.restoreInvWithChance(player);
             }
         });
