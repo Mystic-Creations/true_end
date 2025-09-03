@@ -17,4 +17,4 @@
 - Inventory slots added by Curios API now get cleared at first entry to Beyond The Dream
 
 ## Known Bugs (added for dev notes)
-- Only Curios API slots get restored at exit from BTD
+- At exit from BTD, credits get skipped, main inventory doesn't get restored (Curios API restores somehow) and player gets shoved back to BTD for some damn reason

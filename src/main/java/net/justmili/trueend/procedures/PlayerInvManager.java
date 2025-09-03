@@ -27,7 +27,6 @@ import static net.justmili.trueend.init.Dimensions.BTD;
 
 @Mod.EventBusSubscriber
 public class PlayerInvManager {
-    private static final double RETURN_CHANCE = 0.90;
     private static final Random RAND = new Random();
     private static final File saveDir = FMLPaths.CONFIGDIR.get().resolve("true_end").toFile();
 
@@ -44,52 +43,7 @@ public class PlayerInvManager {
         if (!Variables.clearDreamItems) return;
         CompoundTag root = new CompoundTag();
         ListTag mainList = new ListTag();
-        for (int i = 0; i < player.getInventory().items.size(); i++) {
-            ItemStack stack = player.getInventory().items.get(i);
-            if (!stack.isEmpty()) {
-                CompoundTag entry = new CompoundTag();
-                entry.putInt("Slot", i);
-                entry.put("Item", stack.save(new CompoundTag()));
-                mainList.add(entry);
-            }
-        }
-        root.put("Inventory", mainList);
-
-        ListTag armorList = new ListTag();
-        for (int i = 0; i < player.getInventory().armor.size(); i++) {
-            ItemStack stack = player.getInventory().armor.get(i);
-            if (!stack.isEmpty()) {
-                CompoundTag entry = new CompoundTag();
-                entry.putInt("Slot", i);
-                entry.put("Item", stack.save(new CompoundTag()));
-                armorList.add(entry);
-            }
-        }
-        root.put("Armor", armorList);
-
-        ListTag offList = new ListTag();
-        for (int i = 0; i < player.getInventory().offhand.size(); i++) {
-            ItemStack stack = player.getInventory().offhand.get(i);
-            if (!stack.isEmpty()) {
-                CompoundTag entry = new CompoundTag();
-                entry.putInt("Slot", i);
-                entry.put("Item", stack.save(new CompoundTag()));
-                offList.add(entry);
-            }
-        }
-        root.put("Offhand", offList);
-
-        if (TrueEnd.inModList("curios")) {
-            CompoundTag fullNbt = player.serializeNBT();
-            if (fullNbt.contains("ForgeCaps", Tag.TAG_COMPOUND)) {
-                CompoundTag forgeCaps = fullNbt.getCompound("ForgeCaps");
-                String curiosKey = "curios:inventory";
-                if (forgeCaps.contains(curiosKey, Tag.TAG_COMPOUND)) {
-                    CompoundTag invTag = forgeCaps.getCompound(curiosKey).copy();
-                    root.put("CuriosInventory", invTag);
-                }
-            }
-        }
+        saveInventory(player, root, mainList);
 
         if (!saveDir.exists()) saveDir.mkdirs();
         File out = new File(saveDir, makeBackupFilename(player, "BTD"));
@@ -99,12 +53,37 @@ public class PlayerInvManager {
             LOGGER.error("Failed to save BTD for player {}", player.getName().getString(), e);
         }
     }
+    public static void restoreInvWithChance(ServerPlayer player) {
+        if (!Variables.clearDreamItems) return;
+        File in = new File(saveDir, makeBackupFilename(player, "BTD"));
+        if (!in.exists()) return;
+
+        restoreInventory(player, in, 0.90);
+    }
 
     // NWAD player inv management
     public static void saveInvNWAD(ServerPlayer player) {
         if (!Variables.clearDreamItems) return;
         CompoundTag root = new CompoundTag();
         ListTag mainList = new ListTag();
+        saveInventory(player, root, mainList);
+
+        File out = new File(saveDir, makeBackupFilename(player, "NWAD"));
+        try {
+            NbtIo.writeCompressed(root, out);
+        } catch (Exception e) {
+            LOGGER.error("Failed to save NWAD for player {}", player.getName().getString(), e);
+        }
+    }
+    public static void restoreInv(ServerPlayer player) {
+        if (!Variables.clearDreamItems) return;
+        File in = new File(saveDir, makeBackupFilename(player, "NWAD"));
+        if (!in.exists()) return;
+
+        restoreInventory(player, in, 1.0);
+    }
+
+    public static void saveInventory(ServerPlayer player, CompoundTag root, ListTag mainList) {
         for (int i = 0; i < player.getInventory().items.size(); i++) {
             ItemStack stack = player.getInventory().items.get(i);
             if (!stack.isEmpty()) {
@@ -151,22 +130,8 @@ public class PlayerInvManager {
                 }
             }
         }
-
-        File out = new File(saveDir, makeBackupFilename(player, "NWAD"));
-        try {
-            NbtIo.writeCompressed(root, out);
-        } catch (Exception e) {
-            LOGGER.error("Failed to save NWAD for player {}", player.getName().getString(), e);
-        }
     }
-
-    public static void restoreInvWithChance(ServerPlayer player) {
-        if (!Variables.clearDreamItems) return;
-        File in = new File(saveDir, makeBackupFilename(player, "BTD"));
-        if (!in.exists()) return;
-
-        LOGGER.info("Attempting to use restoreInvWithChance");
-
+    public static void restoreInventory(ServerPlayer player, File in, Double chance) {
         try {
             CompoundTag root = NbtIo.readCompressed(in);
             ListTag mainList = root.getList("Inventory", Tag.TAG_COMPOUND);
@@ -174,7 +139,7 @@ public class PlayerInvManager {
                 CompoundTag entry = (CompoundTag) t;
                 int slot = entry.getInt("Slot");
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                if (RAND.nextDouble() < RETURN_CHANCE) {
+                if (RAND.nextDouble() < chance) {
                     player.getInventory().items.set(slot, stack);
                 }
             }
@@ -183,7 +148,7 @@ public class PlayerInvManager {
                 CompoundTag entry = (CompoundTag) t;
                 int slot = entry.getInt("Slot");
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                if (RAND.nextDouble() < RETURN_CHANCE) {
+                if (RAND.nextDouble() < chance) {
                     player.getInventory().armor.set(slot, stack);
                 }
             }
@@ -192,7 +157,7 @@ public class PlayerInvManager {
                 CompoundTag entry = (CompoundTag) t;
                 int slot = entry.getInt("Slot");
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                if (RAND.nextDouble() < RETURN_CHANCE) {
+                if (RAND.nextDouble() < chance) {
                     player.getInventory().offhand.set(slot, stack);
                 }
             }
@@ -202,7 +167,7 @@ public class PlayerInvManager {
                 forgeCaps.put("curios:inventory", invTag);
                 CompoundTag replay = new CompoundTag();
                 replay.put("ForgeCaps", forgeCaps);
-                if (RAND.nextDouble() < RETURN_CHANCE) {
+                if (RAND.nextDouble() < chance) {
                     player.load(replay);
                 }
             }
@@ -211,67 +176,19 @@ public class PlayerInvManager {
             LOGGER.error("Failed to restore BTD for player {}", player.getName().getString(), e);
         }
     }
-
-    public static void restoreInv(ServerPlayer player) {
-        if (!Variables.clearDreamItems) return;
-        File in = new File(saveDir, makeBackupFilename(player, "NWAD"));
-        if (!in.exists()) return;
-
-        try {
-            CompoundTag root = NbtIo.readCompressed(in);
-            ListTag mainList = root.getList("Inventory", Tag.TAG_COMPOUND);
-            for (Tag t : mainList) {
-                CompoundTag entry = (CompoundTag) t;
-                int slot = entry.getInt("Slot");
-                ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                player.getInventory().items.set(slot, stack);
-            }
-            ListTag armorList = root.getList("Armor", Tag.TAG_COMPOUND);
-            for (Tag t : armorList) {
-                CompoundTag entry = (CompoundTag) t;
-                int slot = entry.getInt("Slot");
-                ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                player.getInventory().armor.set(slot, stack);
-            }
-            ListTag offList = root.getList("Offhand", Tag.TAG_COMPOUND);
-            for (Tag t : offList) {
-                CompoundTag entry = (CompoundTag) t;
-                int slot = entry.getInt("Slot");
-                ItemStack stack = ItemStack.of(entry.getCompound("Item"));
-                player.getInventory().offhand.set(slot, stack);
-            }
-            if (root.contains("CuriosInventory", Tag.TAG_COMPOUND)) {
-                CompoundTag invTag = root.getCompound("CuriosInventory");
-                CompoundTag forgeCaps = new CompoundTag();
-                forgeCaps.put("curios:inventory", invTag);
-                CompoundTag replay = new CompoundTag();
-                replay.put("ForgeCaps", forgeCaps);
-                player.load(replay);
-            }
-            in.delete();
-        } catch (Exception e) {
-            LOGGER.error("Failed to restore NWAD for player {}", player.getName().getString(), e);
-        }
-    }
-
     public static void clearCuriosSlots(ServerPlayer player) {
-        if (!TrueEnd.inModList("curios")) return;
-        try {
-            CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
-                Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
-                curios.forEach((id, stackHandler) -> {
-                    if (stackHandler == null) return;
-                    var stacks = stackHandler.getStacks();
-                    int slots = stacks.getSlots();
-                    for (int i = 0; i < slots; i++) {
-                        stacks.setStackInSlot(i, ItemStack.EMPTY);
-                    }
-                });
-            });
-            LOGGER.info("Cleared Curios slots for {}", player.getName().getString());
-        } catch (Throwable t) {
-            LOGGER.error("Failed to clear Curios slots for player {}", player.getName().getString(), t);
-        }
+//        if (!TrueEnd.inModList("curios")) return;
+//        CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
+//            Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
+//            curios.forEach((id, stackHandler) -> {
+//                if (stackHandler == null) return;
+//                var stacks = stackHandler.getStacks();
+//                int slots = stacks.getSlots();
+//                for (int i = 0; i < slots; i++) {
+//                    stacks.setStackInSlot(i, ItemStack.EMPTY);
+//                }
+//            });
+//        });
     }
 
     @SubscribeEvent
