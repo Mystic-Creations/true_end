@@ -1,8 +1,12 @@
-**FABRIC PORT IS ON IT'S WAY!** (Fuck it, we ball)
+# Important Notices
+- Mod's **Player Inventory Manager**'s saveInventory method was changed (and optimized) to work with Curios API, use `/trueend convertInvBackup <dimension>` to convert your inventory backup from the old type to the new one
+  - Old system probably didn't even save Curios API, but better be safe than sorry
+
+**FABRIC PORT IS ON ITS WAY!** (Fuck it, we ball)
 
 ## Entities
 - Added rare "jumpscare" event
-  - Can't even call it a jumpscare but it can get a scare outta you
+  - Can't even call it a jumpscare, but it can get a scare out of you
 
 ## Events & Interactions
 - New available 'Chat Replies':
@@ -16,6 +20,5 @@
 ## Bug Fixes & Technical Improvements
 - Inventory slots added by Curios API now get cleared at first entry to Beyond The Dream
 
-## Known Bugs (added for dev notes)
-- At exit from BTD, credits get skipped, main inventory doesn't get restored (Curios API restores somehow) and player gets shoved back to BTD for some damn reason
-- Inventory gets cleared after every return to BTD
+## Known Bugs
+NONE! :D

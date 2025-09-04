@@ -4,8 +4,8 @@ import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -68,6 +68,7 @@ public class PlayerInvManager {
         ListTag mainList = new ListTag();
         saveInventory(player, root, mainList);
 
+        if (!saveDir.exists()) saveDir.mkdirs();
         File out = new File(saveDir, makeBackupFilename(player, "NWAD"));
         try {
             NbtIo.writeCompressed(root, out);
@@ -83,6 +84,7 @@ public class PlayerInvManager {
         restoreInventory(player, in, 1.0);
     }
 
+    //Util
     public static void saveInventory(ServerPlayer player, CompoundTag root, ListTag mainList) {
         for (int i = 0; i < player.getInventory().items.size(); i++) {
             ItemStack stack = player.getInventory().items.get(i);
@@ -120,29 +122,43 @@ public class PlayerInvManager {
         root.put("Offhand", offList);
 
         if (TrueEnd.inModList("curios")) {
-            CompoundTag fullNbt = player.serializeNBT();
-            if (fullNbt.contains("ForgeCaps", Tag.TAG_COMPOUND)) {
-                CompoundTag forgeCaps = fullNbt.getCompound("ForgeCaps");
-                String curiosKey = "curios:inventory";
-                if (forgeCaps.contains(curiosKey, Tag.TAG_COMPOUND)) {
-                    CompoundTag invTag = forgeCaps.getCompound(curiosKey).copy();
-                    root.put("CuriosInventory", invTag);
-                }
-            }
+            CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
+                ListTag curiosList = new ListTag();
+                Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
+                curios.forEach((id, stackHandler) -> {
+                    if (stackHandler == null) return;
+                    var stacks = stackHandler.getStacks();
+                    for (int i = 0; i < stacks.getSlots(); i++) {
+                        ItemStack s = stacks.getStackInSlot(i);
+                        if (!s.isEmpty()) {
+                            CompoundTag entry = new CompoundTag();
+                            entry.putString("Handler", id);
+                            entry.putInt("Slot", i);
+                            entry.put("Item", s.save(new CompoundTag()));
+                            curiosList.add(entry);
+                        }
+                    }
+                });
+                root.put("CuriosInventory", curiosList);
+            });
         }
     }
     public static void restoreInventory(ServerPlayer player, File in, Double chance) {
         try {
             CompoundTag root = NbtIo.readCompressed(in);
+
             ListTag mainList = root.getList("Inventory", Tag.TAG_COMPOUND);
             for (Tag t : mainList) {
                 CompoundTag entry = (CompoundTag) t;
                 int slot = entry.getInt("Slot");
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
                 if (RAND.nextDouble() < chance) {
-                    player.getInventory().items.set(slot, stack);
+                    player.getInventory().setItem(slot, stack);
+                } else {
+                    player.getInventory().setItem(slot, ItemStack.EMPTY);
                 }
             }
+
             ListTag armorList = root.getList("Armor", Tag.TAG_COMPOUND);
             for (Tag t : armorList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -150,8 +166,11 @@ public class PlayerInvManager {
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
                 if (RAND.nextDouble() < chance) {
                     player.getInventory().armor.set(slot, stack);
+                } else {
+                    player.getInventory().armor.set(slot, ItemStack.EMPTY);
                 }
             }
+
             ListTag offList = root.getList("Offhand", Tag.TAG_COMPOUND);
             for (Tag t : offList) {
                 CompoundTag entry = (CompoundTag) t;
@@ -159,23 +178,39 @@ public class PlayerInvManager {
                 ItemStack stack = ItemStack.of(entry.getCompound("Item"));
                 if (RAND.nextDouble() < chance) {
                     player.getInventory().offhand.set(slot, stack);
+                } else {
+                    player.getInventory().offhand.set(slot, ItemStack.EMPTY);
                 }
             }
-            if (root.contains("CuriosInventory", Tag.TAG_COMPOUND)) {
-                CompoundTag invTag = root.getCompound("CuriosInventory");
-                CompoundTag forgeCaps = new CompoundTag();
-                forgeCaps.put("curios:inventory", invTag);
-                CompoundTag replay = new CompoundTag();
-                replay.put("ForgeCaps", forgeCaps);
-                if (RAND.nextDouble() < chance) {
-                    player.load(replay);
-                }
+
+            if (root.contains("CuriosInventory", Tag.TAG_LIST) && TrueEnd.inModList("curios")) {
+                ListTag curiosList = root.getList("CuriosInventory", Tag.TAG_COMPOUND);
+                CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
+                    Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
+                    for (Tag t : curiosList) {
+                        CompoundTag entry = (CompoundTag) t;
+                        String handlerId = entry.getString("Handler");
+                        int slot = entry.getInt("Slot");
+                        ItemStack stack = ItemStack.of(entry.getCompound("Item"));
+                        ICurioStacksHandler handler = curios.get(handlerId);
+                        if (handler == null) continue;
+                        var stacks = handler.getStacks();
+                        if (slot >= 0 && slot < stacks.getSlots()) {
+                            if (RAND.nextDouble() < chance) {
+                                stacks.setStackInSlot(slot, stack);
+                            } else {
+                                stacks.setStackInSlot(slot, ItemStack.EMPTY);
+                            }
+                        }
+                    }
+                });
             }
             in.delete();
         } catch (Exception e) {
-            LOGGER.error("Failed to restore BTD for player {}", player.getName().getString(), e);
+            LOGGER.error("Failed to restore inventory for player {}", player.getName().getString(), e);
         }
     }
+
     public static void clearCuriosSlots(ServerPlayer player) {
         if (!TrueEnd.inModList("curios")) return;
         CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
@@ -191,6 +226,7 @@ public class PlayerInvManager {
         });
     }
 
+    //BTD -> Overworld Inv Restore
     @SubscribeEvent
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
@@ -201,7 +237,7 @@ public class PlayerInvManager {
             if (data.hasBeenBeyond()) {
                 player.getInventory().clearContent();
                 clearCuriosSlots(player);
-                PlayerInvManager.restoreInvWithChance(player);
+                restoreInvWithChance(player);
             }
         });
     }

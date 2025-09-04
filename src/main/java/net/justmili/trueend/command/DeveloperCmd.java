@@ -1,10 +1,7 @@
 package net.justmili.trueend.command;
 
-import net.justmili.trueend.command.calls.BTDTest;
-import net.justmili.trueend.command.calls.PrintVars;
-import net.justmili.trueend.command.calls.screentests.TestBlackOverlay;
-import net.justmili.trueend.command.calls.screentests.TestCredits;
-import net.justmili.trueend.command.calls.screentests.TestFunny;
+import net.justmili.trueend.command.calls.*;
+import net.justmili.trueend.command.calls.screentests.*;
 import net.justmili.trueend.procedures.PlayerInvManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod;
@@ -14,6 +11,9 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.commands.Commands;
+
+import static net.justmili.trueend.init.Dimensions.BTD;
+import static net.justmili.trueend.init.Dimensions.NWAD;
 
 @Mod.EventBusSubscriber
 public class DeveloperCmd {
@@ -72,7 +72,21 @@ public class DeveloperCmd {
 
 					PlayerInvManager.clearCuriosSlots(player);
 					return 0;
-				}))
+				})).then(Commands.literal("convertInvBackup")
+				.requires(s -> s.hasPermission(4))
+				.then(Commands.literal(BTD.toString())
+					.executes(arguments -> {
+						ServerPlayer player = arguments.getSource().getPlayer();
+						InvFileConvert.execute(player, "BTD");
+						return 0;
+					}))
+				.then(Commands.literal(NWAD.toString())
+					.executes(arguments -> {
+						ServerPlayer player = arguments.getSource().getPlayer();
+						InvFileConvert.execute(player, "NWAD");
+						return 0;
+					}))
+			)
 		);
 	}
 }
