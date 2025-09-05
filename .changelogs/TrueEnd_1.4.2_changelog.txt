@@ -19,6 +19,7 @@
 
 ## Bug Fixes & Technical Improvements
 - Inventory slots added by Curios API now get cleared at first entry to Beyond The Dream
+- Player now gets the Mysterious Cube back after returning to the Overworld
 
 ## Known Bugs
 NONE! :D

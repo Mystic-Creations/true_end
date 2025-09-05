@@ -1,6 +1,8 @@
 package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.TrueEnd;
+import net.justmili.trueend.init.Items;
+import net.justmili.trueend.item.MysteriousCube;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -14,6 +16,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.items.ItemHandlerHelper;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
@@ -238,6 +241,10 @@ public class PlayerInvManager {
                 player.getInventory().clearContent();
                 clearCuriosSlots(player);
                 restoreInvWithChance(player);
+
+                ItemStack cube = new ItemStack(Items.MYSTERIOUS_CUBE.get());
+                cube.setCount(1);
+                ItemHandlerHelper.giveItemToPlayer(player, cube);
             }
         });
     }

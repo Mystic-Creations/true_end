@@ -18,19 +18,21 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public class SpawnShortAttack {
-    private static final long TICK_INTERVAL = 1200L;
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         Level level = event.player.level();
         if (level.isClientSide() || !(level instanceof ServerLevel world)) return;
         if (Variables.MapVariables.get(world).isUnknownInWorld()) return;
-        if (world.getGameTime() % TICK_INTERVAL != 0) return;
+        if (world.getGameTime() % 1200L != 0) return; //Tick Interval
         if (world.dimension() == Level.END) return;
 
         if (!Variables.randomEventsToggle) return;
-        if (!(world.random.nextDouble() < (Variables.entitySpawnChance / 10))) return;
+        if (!(world.random.nextDouble() < (Variables.entitySpawnChance / 50))) return;
         if (world.getDifficulty() == Difficulty.PEACEFUL) return;
+
+        long daysPlayed = world.getGameTime() / 24000;
+        if (daysPlayed < 24) return;
 
         List<ServerPlayer> players = world.players();
         if (players.isEmpty()) return;
