@@ -74,13 +74,13 @@ public class DeveloperCmd {
 					return 0;
 				})).then(Commands.literal("convertInvBackup")
 				.requires(s -> s.hasPermission(4))
-				.then(Commands.literal(BTD.toString())
+				.then(Commands.literal(BTD.location().toString())
 					.executes(arguments -> {
 						ServerPlayer player = arguments.getSource().getPlayer();
 						InvFileConvert.execute(player, "BTD");
 						return 0;
 					}))
-				.then(Commands.literal(NWAD.toString())
+				.then(Commands.literal(NWAD.location().toString())
 					.executes(arguments -> {
 						ServerPlayer player = arguments.getSource().getPlayer();
 						InvFileConvert.execute(player, "NWAD");

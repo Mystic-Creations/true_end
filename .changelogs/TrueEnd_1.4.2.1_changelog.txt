@@ -1,0 +1,11 @@
+**FABRIC PORT IS ON ITS WAY!** (Bruh.)
+
+## Removed
+- Removed Herobrine
+
+## Bug Fixes & Technical Improvements
+- Fixed `/trueend convertInvBackup <dimension>` not being executable
+- Logs no longer get spammed by NT config updates
+
+## Known Bugs
+NONE! :D

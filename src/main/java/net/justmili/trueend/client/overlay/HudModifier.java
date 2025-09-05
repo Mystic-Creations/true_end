@@ -73,9 +73,9 @@ public class HudModifier {
                 String path = id.getPath().toLowerCase();
                 if (!("nostalgic_tweaks".equals(ns))) return;
                 if (path.contains("stamina")) event.setCanceled(true);
-                CandyTweak.OLD_VERSION_OVERLAY.setCacheAndDiskThenSave(false);
+                if (CandyTweak.OLD_VERSION_OVERLAY.get()) CandyTweak.OLD_VERSION_OVERLAY.setCacheAndDiskThenSave(false);
             } else {
-                CandyTweak.OLD_VERSION_OVERLAY.setCacheAndDiskThenSave(true);
+                if (!CandyTweak.OLD_VERSION_OVERLAY.get()) CandyTweak.OLD_VERSION_OVERLAY.setCacheAndDiskThenSave(true);
             }
         }
     }
