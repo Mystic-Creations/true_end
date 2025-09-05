@@ -2,7 +2,6 @@ package net.justmili.trueend.procedures;
 
 import net.justmili.trueend.TrueEnd;
 import net.justmili.trueend.init.Items;
-import net.justmili.trueend.item.MysteriousCube;
 import net.justmili.trueend.network.Variables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
