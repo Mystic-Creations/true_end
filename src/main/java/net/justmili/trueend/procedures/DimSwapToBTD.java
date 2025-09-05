@@ -87,9 +87,11 @@ public class DimSwapToBTD {
                         executeCommand(nextLevel, player, "function true_end:spawn/global_spawn");
                         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> data.setBeenBeyond(true));
                         HAS_PROCESSED.remove(player);
-                        PlayerInvManager.saveInvBTD(player);
-                        PlayerInvManager.clearCuriosSlots(player);
-                        if (Variables.clearDreamItems) player.getInventory().clearContent();
+                        if (Variables.clearDreamItems) {
+                            PlayerInvManager.saveInvBTD(player);
+                            PlayerInvManager.clearCuriosSlots(player);
+                            player.getInventory().clearContent();
+                        }
                         return;
                     }
 
@@ -150,9 +152,11 @@ public class DimSwapToBTD {
                             HAS_PROCESSED.remove(player);
                         });
 
-                        PlayerInvManager.saveInvBTD(player);
-                        PlayerInvManager.clearCuriosSlots(player);
-                        if (Variables.clearDreamItems) player.getInventory().clearContent();
+                        if (Variables.clearDreamItems) {
+                            PlayerInvManager.saveInvBTD(player);
+                            PlayerInvManager.clearCuriosSlots(player);
+                            player.getInventory().clearContent();
+                        }
                     });
                 }
             }

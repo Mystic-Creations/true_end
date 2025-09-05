@@ -6,6 +6,7 @@
 ## Bug Fixes & Technical Improvements
 - Fixed `/trueend convertInvBackup <dimension>` not being executable
 - Logs no longer get spammed by NT config updates
+- Curios API inventory no longer gets cleared if clearDreamItems config is disabled
 
 ## Known Bugs
 NONE! :D
