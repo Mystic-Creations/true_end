@@ -9,4 +9,5 @@
 - Curios API inventory no longer gets cleared if clearDreamItems config is disabled
 
 ## Known Bugs
-NONE! :D
+- Farlands are non-existent for some reason
+  - They're supposed to exist again with this mod wtf

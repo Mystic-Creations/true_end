@@ -130,7 +130,7 @@ public class Unknown extends AmbientCreature {
         Vec3 toEntity = position().subtract(player.position()).normalize();
         double angle = Math.toDegrees(Math.acos(toEntity.dot(player.getLookAngle().normalize())));
         if (hasLineOfSight(player) && angle < 12 && ++visibleTicks >= MAX_VISIBLE_TICKS) playAndDespawn();
-        else if (!hasLineOfSight(player) || angle >= 12) visibleTicks = 0;
+        else if (!hasLineOfSight(player) || angle >= 4) visibleTicks = 0;
         getNavigation().stop();
     }
     private void doWeeping(Player player) {
