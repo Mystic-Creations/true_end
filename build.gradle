@@ -58,6 +58,7 @@ dependencies {
     implementation fg.deobf("curse.maven:artifacts-312353:4631664")
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     implementation fg.deobf("curse.maven:nostalgic-tweaks-592465:6800425")
+    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
         jarJar.ranged(it, "[0.5.0,)")
@@ -70,4 +71,8 @@ tasks.withType(JavaCompile).configureEach {
 tasks.named('jar', Jar) {
     destinationDirectory.set(layout.projectDirectory.dir('.builtJars'))
     archiveFileName.set("${archivesBaseName}-${version}.jar")
+}
+
+mixin {
+    config 'mixins.trueend.json'
 }

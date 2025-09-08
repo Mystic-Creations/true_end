@@ -1,15 +1,14 @@
-**FABRIC PORT IS ON ITS WAY!** (...)
+**FABRIC PORT IS ON ITS WAY!** (Last one, I swear)
 
 ## Entities
 - "Unknown" now has fully emissive textures
-- "Unknown" now only disappears if you look completely directly at him
 
 ## Removed
 - Removed Herobrine
 
 ## Bug Fixes & Technical Improvements
 - Increased `MAX_FALLBACK_SEARCH_TRIES` from 32 to 48
+- Farlands exist once again
 
 ## Known Bugs
-- Farlands are non-existent for some reason
-  - They're supposed to exist again with this mod wtf
+None (hopefully) :D
