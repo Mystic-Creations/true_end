@@ -1,0 +1,11 @@
+**FABRIC PORT IS ON ITS WAY!** (Insert funny text)
+
+## Removed
+- Removed Herobrine
+
+## Bug Fixes & Technical Improvements
+- Added compatibility with Subtle Effects
+  - Player's Stomach Growl SFX no longer plays in BTD
+
+## Known Bugs
+None (hopefully) :D

@@ -13,10 +13,9 @@ repositories {
     maven { url 'https://jitpack.io/' }
 }
 
-//x.x.x.x_Forge/Fabric-x.xx.x_TestBuildnn
-version = '1.4.2.2_Forge-1.20.1'
-group = 'net.justmili.trueend'
-archivesBaseName = 'TrueEnd'
+version = "${project.modVersion}_${project.loaderType}-${project.mcVer}"
+group = "net.mysticcreations.true_end"
+archivesBaseName = "TrueEnd"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -50,19 +49,33 @@ minecraft {
 }
 
 dependencies {
+    //Dependencies
     minecraft 'net.minecraftforge:forge:1.20.1-47.4.6'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation fg.deobf('com.github.glitchfiend:TerraBlender-forge:1.20.1-3.0.1.10')
-    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.3+1.20.1")
-    implementation fg.deobf("curse.maven:artifacts-312353:4631664")
-    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
-    implementation fg.deobf("curse.maven:nostalgic-tweaks-592465:6800425")
-    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
         jarJar.ranged(it, "[0.5.0,)")
     }
+
+    //Performance
+    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
+    implementation fg.deobf("curse.maven:modernfix-790626:6837713")
+
+    //APIs
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
+    //implementation fg.deobf("curse.maven:kotlin-for-forge-351264:5402061")
+    //implementation fg.deobf("curse.maven:fzzy-config-1005914:6843463")
+
+    //Compatibility updates
+    //Keep this in here
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.3+1.20.1")
+    implementation fg.deobf("curse.maven:nostalgic-tweaks-592465:6800425")
+    //implementation fg.deobf(files('libs/SubtleEffects-forge-1.20.1-1.12.1.jar'))
+
+    //Other (Testing)
+    implementation fg.deobf("curse.maven:artifacts-312353:4631664")
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -74,5 +87,5 @@ tasks.named('jar', Jar) {
 }
 
 mixin {
-    config 'mixins.trueend.json'
+    config 'mixins.true_end.json'
 }

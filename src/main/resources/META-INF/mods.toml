@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]]
 modId="true_end"
-version="1.4.2.2"
+version="1.4.2.3"
 displayName="True End"
 displayURL="https://modrinth.com/mod/true_end"
 logoFile="icon.png"
@@ -12,7 +12,7 @@ authors="Mystic Creations Team"
 description="But it was all a dream"
 
 [[mixin]]
-mixinClasses = ["net.justmili.trueend.mixin.Mixins"]
+mixinClasses = ["net.mysticcreations.true_end.mixin.Mixins"]
 
 [[dependencies.true_end]]
     modId="minecraft"
@@ -35,6 +35,12 @@ mixinClasses = ["net.justmili.trueend.mixin.Mixins"]
     side="BOTH"
 [[dependencies.true_end]]
     modId="nostalgic_tweaks"
+    mandatory=false
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.true_end]]
+    modId="subtle_effects"
     mandatory=false
     versionRange="*"
     ordering="NONE"
