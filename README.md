@@ -1,6 +1,6 @@
 ![Titlecard](https://cdn.modrinth.com/data/cached_images/d7da4a988c8ec07750167fda1a6e87f20bc94e1a.png)
 
-<pre><div style="text-align: center;">"But it was all a dream"</div></pre>
+<pre><center>"But it was all a dream"</center></pre>
 
 <hr>
 
@@ -24,7 +24,7 @@ The mod is playable in multiplayer with version 1.4 and above altho it is recomm
 </details>
 <details>
 <summary>Config / Inventory clearing</summary>
-Inventory clearing at first entry to Beyond The Dream dimension can be disabled via "/te-config clearDreamItems false" in True End 1.4 and above, but be aware that on return your items will be brought back. You can do "/gamerule clearDreamItems false" in older versions.
+Inventory clearing at first entry to Beyond The Dream dimension can be disabled via "/te-config modify clearDreamItems false" in True End 1.4 and above, but be aware that on return your items will be brought back. You can do "/gamerule clearDreamItems false" in older versions.
 </details>
 
 _All mod versions and files are protected under the MIT License since April 11th, 2025._

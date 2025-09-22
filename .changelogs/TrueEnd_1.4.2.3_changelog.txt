@@ -6,7 +6,7 @@
 ## Bug Fixes & Technical Improvements
 - Added compatibility with Subtle Effects [WORKING ON IT]
   - Player's Stomach Growl SFX no longer plays in BTD
-- Fixed crashes with mods such as Create: The Factory Must Grow
+- Fixed crashes with mods such as Create: The Factory Must Grow [WORKING ON IT]
 - Rewrote the Farlands mixin using MixinExtras
 
 ## Known Bugs
