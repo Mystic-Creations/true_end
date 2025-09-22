@@ -39,6 +39,7 @@ public class NoSprint {
 //                }
 //            }
             //Altho it seems it won't do much really
+            //And I checked, trying to modify player's speed attribute won't work either
         }
     }
 
