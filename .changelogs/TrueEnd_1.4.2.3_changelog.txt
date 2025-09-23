@@ -1,5 +1,8 @@
 **FABRIC PORT IS ON ITS WAY!** (Sorry for the wait guys)
 
+## Localization
+- Added support for Italian and French
+
 ## Removed
 - Removed Herobrine
 
