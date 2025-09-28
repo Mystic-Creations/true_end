@@ -39,10 +39,3 @@ mixinClasses = ["net.mysticcreations.true_end.mixin.Mixins"]
     versionRange="*"
     ordering="NONE"
     side="BOTH"
-[[dependencies.true_end]]
-    modId="subtle_effects"
-    mandatory=false
-    versionRange="*"
-    ordering="NONE"
-    side="BOTH"
-

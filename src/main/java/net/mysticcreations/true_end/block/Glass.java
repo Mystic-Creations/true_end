@@ -15,7 +15,14 @@ import net.minecraft.core.BlockPos;
 
 public class Glass extends Block {
 	public Glass() {
-		super(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(0.3f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
+		super(BlockBehaviour.Properties
+            .of().mapColor(MapColor.NONE)
+            .sound(SoundType.GLASS)
+            .strength(0.3f)
+            .noOcclusion()
+            .isRedstoneConductor((bs, br, bp) -> false)
+            .isSuffocating((bs, br, bp) -> false)
+            .isViewBlocking((bs, br, bp) -> false));
 	}
 
 	@Override

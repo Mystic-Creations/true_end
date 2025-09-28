@@ -1,7 +1,7 @@
-**FABRIC PORT IS ON ITS WAY!** (Sorry for the wait guys)
+**FABRIC PORT IS ON ITS WAY!** (Welp, this took a while)
 
 ## Localization
-- Added support for Italian and French
+- Added support for Italian and French [Awaiting translations from Raze]
 
 ## Removed
 - Removed Herobrine
@@ -9,8 +9,11 @@
 ## Bug Fixes & Technical Improvements
 - Added compatibility with Subtle Effects
   - Player's Stomach Growl SFX no longer plays in BTD
-- Fixed crashes with mods such as Create: The Factory Must Grow [WORKING ON IT]
+- Fixed crashes with mods such as Create: The Factory Must Grow
+- Fixed Farlands not existing when using C2ME [WORKING ON IT]
+- Glass can no longer suffocate the player
 - Rewrote the Farlands mixin using MixinExtras
 
 ## Known Bugs
-None (hopefully) :D
+None that we know of :'D
+Any bugs or requests of mod compatibility, please report to our Discord server!

@@ -1,0 +1,44 @@
+# Important Notices
+- ** **
+
+**FABRIC PORT IS ON IT'S WAY!**
+
+## New Mod Loader Support
+-
+
+## World Generation
+-
+
+## Features
+*(Exclusive to Beyond the Dream)*
+-
+*(General)*
+-
+
+## Blocks & Building
+-
+
+## Items & Tools
+-
+
+## Advancements
+-
+
+## Entities
+-
+
+## Events & Interactions
+-
+
+## Localization
+-
+
+## Removed
+-
+- Removed Herobrine
+
+## Bug Fixes & Technical Improvements
+-
+
+## Known Bugs
+-

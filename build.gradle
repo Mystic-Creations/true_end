@@ -1,3 +1,5 @@
+import org.gradle.api.logging.LogLevel
+
 plugins {
     id 'eclipse'
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
@@ -42,9 +44,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
-                    source sourceSets.main
-                }
             }
         }
     }
@@ -67,21 +66,20 @@ dependencies {
     //APIs
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
-    //implementation fg.deobf("curse.maven:kotlin-for-forge-351264:5402061")
-    //implementation fg.deobf("curse.maven:fzzy-config-1005914:6843463")
 
     //Compatibility updates
     //Keep this in here
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.3+1.20.1")
     implementation fg.deobf("curse.maven:nostalgic-tweaks-592465:6800425")
-    //implementation fg.deobf(files('libs/SubtleEffects-forge-1.20.1-1.12.1.jar'))
-
-    //Other (Testing)
-    implementation fg.deobf("curse.maven:artifacts-312353:4631664")
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+tasks.withType(JavaCompile).configureEach { JavaCompile jc ->
+    logging.captureStandardOutput(LogLevel.QUIET)
+    logging.captureStandardError(LogLevel.QUIET)
+    jc.options.compilerArgs += ['-Xlint:-deprecation', '-Xlint:-removal']
 }
 tasks.named('jar', Jar) {
     destinationDirectory.set(layout.projectDirectory.dir('.builtJars'))
@@ -89,5 +87,6 @@ tasks.named('jar', Jar) {
 }
 
 mixin {
+    add sourceSets.main, "refmap.true_end.json"
     config 'mixins.true_end.json'
 }
