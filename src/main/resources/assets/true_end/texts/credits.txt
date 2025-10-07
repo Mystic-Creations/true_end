@@ -28,9 +28,9 @@ DGiraffe
 ----=====----
 
 §l// Bug Testers //
+Izya
 Hxplume
 RoroTheWizard
-Izya
 
 ----=====----
 
@@ -38,13 +38,6 @@ Izya
 JustMili
 VictorTBH
 Mahanhamisi
-
-----=====----
-
-§l// Ideas //
-JustMili
-Notmas*
-Eetgeenappels
 
 ----=====----
 
@@ -56,21 +49,30 @@ John Roboeye - Russian
 JustMili - Polish
 Eetgeenappels - Dutch
 Mahanhamisi - Persian (Farsi)
-
-----=====----
-
-§l// Colaborators //
-ShinHoa / twitch.tv/shinhoaz
+Raze7th - Italian
+Raze7th - French
 
 ----=====----
 
 §l// Contributors //
-Notmas - Ideas
+Notmas
+BluSpring
 
 ----=====----
 
 §l// Patreons //
 *insert cricket sounds*
+
+----=====----
+
+§l// Collaborators //
+ShinHoa / twitch.tv/shinhoaz
+
+----=====----
+
+§l// Content Creators //
+Fireydude / youtube.com/@imfireydude
+ZarsaiVT / twitch.tv/zarsai
 
 ------=========------
 
@@ -95,7 +97,12 @@ Revamps, more blocks, more lore.
 
 
 
+
+
+
 See you all next time <3
+
+
 
 
 

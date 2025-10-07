@@ -64,12 +64,12 @@ public class DeveloperCmd {
 
 					BTDTest.execute(world, entity);
 					return 0;
-				}))			.then(Commands.literal("clearCurios")
+				}))			.then(Commands.literal("clearAccessories")
 				.requires(s -> s.hasPermission(4))
 				.executes(arguments -> {
 					ServerPlayer player = arguments.getSource().getPlayer();
 
-					PlayerInvManager.clearCuriosSlots(player);
+					PlayerInvManager.clearAccessories(player);
 					return 0;
 				})).then(Commands.literal("convertInvBackup")
 				.requires(s -> s.hasPermission(4))

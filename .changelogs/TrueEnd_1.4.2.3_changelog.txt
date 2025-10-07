@@ -10,9 +10,9 @@
 - Added compatibility with Subtle Effects
   - Player's Stomach Growl SFX no longer plays in BTD
 - Fixed crashes with mods such as Create: The Factory Must Grow
-- Fixed Farlands not existing when using C2ME [WORKING ON IT]
-- Glass can no longer suffocate the player
-- Rewrote the Farlands mixin using MixinExtras
+- Fixed Farlands not being generated when using C2ME for Forge
+- Glass no longer can suffocate the player
+- Added support for Trinkets in PlayerInvManager [WORKING ON IT]
 
 ## Known Bugs
 None that we know of :'D

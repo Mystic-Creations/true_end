@@ -1,5 +1,11 @@
 package net.mysticcreations.true_end.procedures;
 
+import io.wispforest.accessories.Accessories;
+import io.wispforest.accessories.api.AccessoriesAPI;
+import io.wispforest.accessories.api.AccessoriesCapability;
+import io.wispforest.accessories.api.AccessoriesHolder;
+import io.wispforest.accessories.endec.NbtMapCarrier;
+import net.minecraft.advancements.critereon.SerializationContext;
 import net.mysticcreations.true_end.TrueEnd;
 import net.mysticcreations.true_end.init.Items;
 import net.mysticcreations.true_end.network.Variables;
@@ -144,6 +150,12 @@ public class PlayerInvManager {
                 root.put("CuriosInventory", curiosList);
             });
         }
+        if (TrueEnd.inModList("accessories")) {
+            AccessoriesCapability.getOptionally(player).ifPresent(accessoriesInv -> {
+                CompoundTag accList = new CompoundTag();
+                //Save
+            });
+        }
     }
     public static void restoreInventory(ServerPlayer player, File in, Double chance) {
         try {
@@ -207,25 +219,37 @@ public class PlayerInvManager {
                     }
                 });
             }
+            if (TrueEnd.inModList("accessories")) {
+                AccessoriesCapability.getOptionally(player).ifPresent(accessoriesInv -> {
+                    CompoundTag accList = new CompoundTag();
+                    //Restore
+                });
+            }
             in.delete();
         } catch (Exception e) {
             LOGGER.error("Failed to restore inventory for player {}", player.getName().getString(), e);
         }
     }
 
-    public static void clearCuriosSlots(ServerPlayer player) {
-        if (!TrueEnd.inModList("curios")) return;
-        CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
-            Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
-            curios.forEach((id, stackHandler) -> {
-                if (stackHandler == null) return;
-                var stacks = stackHandler.getStacks();
-                int slots = stacks.getSlots();
-                for (int i = 0; i < slots; i++) {
-                    stacks.setStackInSlot(i, ItemStack.EMPTY);
-                }
+    public static void clearAccessories(ServerPlayer player) {
+        if (TrueEnd.inModList("curios")) {
+            CuriosApi.getCuriosInventory(player).ifPresent(curiosInv -> {
+                Map<String, ICurioStacksHandler> curios = curiosInv.getCurios();
+                curios.forEach((id, stackHandler) -> {
+                    if (stackHandler == null) return;
+                    var stacks = stackHandler.getStacks();
+                    int slots = stacks.getSlots();
+                    for (int i = 0; i < slots; i++) {
+                        stacks.setStackInSlot(i, ItemStack.EMPTY);
+                    }
+                });
             });
-        });
+        }
+        if (TrueEnd.inModList("accessories")) {
+            AccessoriesCapability.getOptionally(player).ifPresent(accessoriesInv -> {
+                accessoriesInv.reset(false);
+            });
+        }
     }
 
     //BTD -> Overworld Inv Restore
@@ -238,7 +262,7 @@ public class PlayerInvManager {
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
             if (data.hasBeenBeyond()) {
                 player.getInventory().clearContent();
-                clearCuriosSlots(player);
+                clearAccessories(player);
                 restoreInvWithChance(player);
 
                 ItemStack cube = new ItemStack(Items.MYSTERIOUS_CUBE.get());

@@ -89,7 +89,7 @@ public class DimSwapToBTD {
                         HAS_PROCESSED.remove(player);
                         if (Variables.clearDreamItems) {
                             PlayerInvManager.saveInvBTD(player);
-                            PlayerInvManager.clearCuriosSlots(player);
+                            PlayerInvManager.clearAccessories(player);
                             player.getInventory().clearContent();
                         }
                         return;
@@ -154,7 +154,7 @@ public class DimSwapToBTD {
 
                         if (Variables.clearDreamItems) {
                             PlayerInvManager.saveInvBTD(player);
-                            PlayerInvManager.clearCuriosSlots(player);
+                            PlayerInvManager.clearAccessories(player);
                             player.getInventory().clearContent();
                         }
                     });
