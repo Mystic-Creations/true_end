@@ -1,0 +1,43 @@
+# Important Notices
+- ** **
+
+## New Mod Loader Support
+- Fabric [WORKING ON IT]
+
+## World Generation
+-
+
+## Features
+*(Exclusive to Beyond the Dream)*
+-
+*(General)*
+-
+
+## Blocks & Building
+-
+
+## Items & Tools
+-
+
+## Advancements
+-
+
+## Entities
+-
+
+## Events & Interactions
+-
+
+## Localization
+-
+
+## Removed
+-
+- Removed Herobrine
+
+## Bug Fixes & Technical Improvements
+- Added support for save & restore of cardinal_components in PlayerInvManager [WORKING ON IT]
+- Added support for Accessories (expansion of Trinkets/Curios) in PlayerInvManager [WORKING ON IT]
+
+## Known Bugs
+-

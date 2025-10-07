@@ -12,7 +12,6 @@
 - Fixed crashes with mods such as Create: The Factory Must Grow
 - Fixed Farlands not being generated when using C2ME for Forge
 - Glass no longer can suffocate the player
-- Added support for Trinkets in PlayerInvManager [WORKING ON IT]
 
 ## Known Bugs
 None that we know of :'D

@@ -1,11 +1,6 @@
 package net.mysticcreations.true_end.procedures;
 
-import io.wispforest.accessories.Accessories;
-import io.wispforest.accessories.api.AccessoriesAPI;
 import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.AccessoriesHolder;
-import io.wispforest.accessories.endec.NbtMapCarrier;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.mysticcreations.true_end.TrueEnd;
 import net.mysticcreations.true_end.init.Items;
 import net.mysticcreations.true_end.network.Variables;
