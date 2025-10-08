@@ -83,15 +83,6 @@ dependencies {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
-tasks.withType(JavaCompile).configureEach { JavaCompile jc ->
-    logging.captureStandardOutput(LogLevel.QUIET)
-    logging.captureStandardError(LogLevel.QUIET)
-    jc.options.compilerArgs += ['-Xlint:-deprecation', '-Xlint:-removal']
-}
-//tasks.named('jar', Jar) {
-//    destinationDirectory.set(layout.projectDirectory.dir('.builtJars'))
-//    archiveFileName.set("${archivesBaseName}-${version}.jar")
-//}
 
 mixin {
     add sourceSets.main, "refmap.true_end.json"

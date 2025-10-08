@@ -1,7 +1,7 @@
 **FABRIC PORT IS ON ITS WAY!** (Welp, this took a while)
 
 ## Localization
-- Added support for Italian and French [Awaiting translations from Raze]
+- Added support for Italian and French
 
 ## Removed
 - Removed Herobrine
@@ -13,6 +13,10 @@
 - Fixed Farlands not being generated when using C2ME for Forge
 - Glass no longer can suffocate the player
 
-## Known Bugs
+## Known Bugs (Forge)
 None that we know of :'D
 Any bugs or requests of mod compatibility, please report to our Discord server!
+
+## Known Bugs (With Kilt version 20.1.9 and earlier)
+- HUD doesn't work right in Beyond The Dream
+- AppleSkin hunger/saturation/health preview still shows up
