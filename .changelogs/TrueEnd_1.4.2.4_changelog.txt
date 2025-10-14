@@ -1,0 +1,14 @@
+**FABRIC PORT IS ON ITS WAY!**
+
+## Removed
+- Removed Herobrine
+
+## Bug Fixes & Technical Improvements
+- Changed repawn mechanic after death in NWaD
+  - instant respawn like it was "just a bad dream"
+- Hardcore players no longer get softlocked in NWaD
+  - If you play in hardcore, now you can escape by attempting to kill yourself; the damage event gets cancelled, and you get teleported back to your spawn.
+
+## Known Bugs
+None that we know of :'D
+Any bugs or requests of mod compatibility, please report to our Discord server!

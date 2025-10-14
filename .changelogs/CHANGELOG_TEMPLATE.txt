@@ -1,7 +1,7 @@
 # Important Notices
 - ** **
 
-**FABRIC PORT IS ON IT'S WAY!**
+**FABRIC PORT IS ON ITS WAY!**
 
 ## New Mod Loader Support
 -
