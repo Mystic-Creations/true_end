@@ -27,6 +27,7 @@ public class ConfigInit {
 		entries.putIfAbsent("flashingLights", true);
 		entries.putIfAbsent("daytimeChangeToggle", true);
 		entries.putIfAbsent("clearDreamItems", true);
+        entries.putIfAbsent("doChatReplies", true);
 
 		Variables.randomEventChance = (double) entries.get("randomEventChance");
 		Variables.entitySpawnChance = (double) entries.get("entitySpawnChance");
@@ -38,6 +39,7 @@ public class ConfigInit {
 		Variables.flashingLights = (boolean) entries.get("flashingLights");
 		Variables.daytimeChangeToggle = (boolean) entries.get("daytimeChangeToggle");
 		Variables.clearDreamItems = (boolean) entries.get("clearDreamItems");
+        Variables.doChatReplies = (boolean) entries.get("doChatReplies");
 
 		Config.entries = entries;
 		Config.serializer.serialize(Config.entries);

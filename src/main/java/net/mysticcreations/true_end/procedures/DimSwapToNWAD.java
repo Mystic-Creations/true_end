@@ -1,5 +1,8 @@
 package net.mysticcreations.true_end.procedures;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -8,9 +11,6 @@ import net.mysticcreations.true_end.network.Variables;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
-import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
-import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +31,7 @@ import static net.mysticcreations.true_end.init.Dimensions.NWAD;
 public class DimSwapToNWAD {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent event) {
+    public static void onEntityHurt(LivingHurtEvent event) {
         Entity entity = event.getEntity();
         if (!(entity instanceof ServerPlayer player)) return;
         Level world = player.level();
@@ -50,9 +50,11 @@ public class DimSwapToNWAD {
             player.setGameMode(GameType.ADVENTURE);
             teleportToNWAD(player);
             //A journal, as requested by Gonza on Discord
-            ItemStack cube = new ItemStack(Items.WRITABLE_BOOK);
-            cube.setCount(1);
-            ItemHandlerHelper.giveItemToPlayer(player, cube);
+            ItemStack book = new ItemStack(Items.WRITABLE_BOOK);
+            book.setCount(1);
+            book.setHoverName(Component.translatable("item.true_end.journal").withStyle(s -> s.withItalic(false)));
+            book.getOrCreateTag().putBoolean("nwad_journal", true);
+            ItemHandlerHelper.giveItemToPlayer(player, book);
         }
 
         //Leave
@@ -67,11 +69,16 @@ public class DimSwapToNWAD {
             player.resetFallDistance();
             player.getFoodData().setFoodLevel(20);
             player.getFoodData().setSaturation(10.0f);
+//            player.setArrowCount(0);
+//            player.connection.send(new ClientboundSetEntityDataPacket(player.getId(),
+//                Objects.requireNonNull(player.getEntityData().getNonDefaultValues())));
+//            player.setDeltaMovement(0.0, 0.0, 0.0);
+//            player.connection.send(new ClientboundSetEntityMotionPacket(player));
+
             BlockPos respawnPos = player.getRespawnPosition();
             ResourceKey<Level> respawnDim = player.getRespawnDimension();
             ServerLevel targetLevel = null;
             BlockPos targetPos = null;
-
             if (respawnPos != null) {
                 targetLevel = player.server.getLevel(respawnDim);
                 if (targetLevel != null) {
@@ -86,11 +93,11 @@ public class DimSwapToNWAD {
                 targetPos = targetLevel.getSharedSpawnPos();
             }
 
-
             double x = targetPos.getX() + 0.5;
             double y = targetPos.getY() + 0.1;
             double z = targetPos.getZ() + 0.5;
             player.teleportTo(targetLevel, x, y, z, player.getYRot(), player.getXRot());
+            player.getInventory().clearContent();
             PlayerInvManager.restoreInv(player);
             player.setGameMode(GameType.SURVIVAL);
             Advancement advancement = player.server.getAdvancements()
@@ -103,6 +110,31 @@ public class DimSwapToNWAD {
                     }
                 }
             }
+
+            boolean removed = false;
+            for (int i = 0; i < player.getInventory().items.size() && !removed; i++) {
+                ItemStack stack = player.getInventory().items.get(i);
+                if (!stack.isEmpty() && stack.is(Items.WRITABLE_BOOK)) {
+                    CompoundTag tag = stack.getTag();
+                    if (tag != null && tag.getBoolean("nwad_journal")) {
+                        stack.shrink(1);
+                        if (stack.isEmpty()) player.getInventory().items.set(i, ItemStack.EMPTY);
+                        removed = true;
+                    }
+                }
+            }
+            for (int i = 0; i < player.getInventory().offhand.size() && !removed; i++) {
+                ItemStack stack = player.getInventory().offhand.get(i);
+                if (!stack.isEmpty() && stack.is(Items.WRITABLE_BOOK)) {
+                    CompoundTag tag = stack.getTag();
+                    if (tag != null && tag.getBoolean("nwad_journal")) {
+                        stack.shrink(1);
+                        if (stack.isEmpty()) player.getInventory().offhand.set(i, ItemStack.EMPTY);
+                        removed = true;
+                    }
+                }
+            }
+            player.containerMenu.broadcastChanges();
         }
 
         player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));

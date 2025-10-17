@@ -45,6 +45,7 @@ public class Variables {
     public static boolean clearDreamItems;
 
     public static boolean fogToggleClient;
+    public static boolean doChatReplies;
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent evt) {
@@ -83,6 +84,7 @@ public class Variables {
         private boolean flashingLights = false;
         private boolean daytimeChangeToggle = false;
         private boolean clearDreamItems = false;
+        private boolean doChatReplies = true;
 
         public boolean isUnknownInWorld() { return unknownInWorld; }
         public double getBtdSpawnX() { return btdSpawnX; }

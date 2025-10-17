@@ -35,36 +35,56 @@ public class HudModifier {
         boolean inBTD = player.level().dimension().equals(BTD);
 
         if (inBTD) {
-            boolean jumpBarActive;
-            if (player.getVehicle() instanceof AbstractHorse horse && horse.isSaddled()) {
-                jumpBarActive = true;
-            } else {
-                jumpBarActive = false;
-            }
-            int horseOffset = jumpBarActive ? 6 : 0;
-            int fullscreenOffset = 1; //kinda inefficient, but at least we know what this does
-            int yOffset = horseOffset - fullscreenOffset;
-
             int w = mc.getWindow().getGuiScaledWidth();
             int h = mc.getWindow().getGuiScaledHeight();
+            int fullscreenOffset;
+            int horseBar;
+            int armorW;
+            int armorH;
+            int playerHpH;
+            int airLvlW;
+            int airLvlH;
+            int mountHpH;
+
+            if (!TrueEnd.inModList("kilt")) {
+                fullscreenOffset = 1;
+                horseBar = 7;
+                armorW = 200;
+                armorH = 16;
+                playerHpH = 6;
+                airLvlW = 202;
+                airLvlH = 3;
+                mountHpH = 5;
+            } else {
+                fullscreenOffset = 1;
+                horseBar = 7;
+                armorW = 202;
+                armorH = 6;
+                playerHpH = 16;
+                airLvlW = 202;
+                airLvlH = 3;
+                mountHpH = 3;
+            }
+            int horseBarOffset = player.getVehicle() instanceof AbstractHorse horse && horse.isSaddled() ? horseBar : 0;
+            int yOffset = horseBarOffset - fullscreenOffset;
 
             if (id.equals(VanillaGuiOverlay.FOOD_LEVEL.id())) event.setCanceled(true);
             if (id.equals(VanillaGuiOverlay.EXPERIENCE_BAR.id())) event.setCanceled(true);
             if (id.equals(VanillaGuiOverlay.ARMOR_LEVEL.id())) {
                 event.setCanceled(true);
-                overlay.render((ForgeGui) mc.gui, gui, pt, w + 200, h + 16 - yOffset);
+                overlay.render((ForgeGui) mc.gui, gui, pt, w + armorW, h + armorH - yOffset);
             }
             if (id.equals(VanillaGuiOverlay.PLAYER_HEALTH.id())) {
                 event.setCanceled(true);
-                overlay.render((ForgeGui) mc.gui, gui, pt, w, h + 6 - yOffset);
+                overlay.render((ForgeGui) mc.gui, gui, pt, w, h + playerHpH - yOffset);
             }
             if (id.equals(VanillaGuiOverlay.AIR_LEVEL.id())) {
                 event.setCanceled(true);
-                overlay.render((ForgeGui) mc.gui, gui, pt, w - 202, h - 3 - yOffset);
+                overlay.render((ForgeGui) mc.gui, gui, pt, w - airLvlW, h - airLvlH - yOffset);
             }
             if (id.equals(VanillaGuiOverlay.MOUNT_HEALTH.id())) {
                 event.setCanceled(true);
-                overlay.render((ForgeGui) mc.gui, gui, pt, w, h - 5 - yOffset);
+                overlay.render((ForgeGui) mc.gui, gui, pt, w, h - mountHpH - yOffset);
             }
         }
         if (TrueEnd.inModList("nostalgic_tweaks")) {

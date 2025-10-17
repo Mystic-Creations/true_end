@@ -24,6 +24,7 @@ public class ChatReplies {
     //Detection & Util
     @SubscribeEvent
     public static void onChat(ServerChatEvent event) {
+        if (!Variables.doChatReplies) return;
         LevelAccessor world = event.getPlayer().serverLevel();
         ServerPlayer player = event.getPlayer();
         MinecraftServer server = player.getServer();
@@ -68,7 +69,7 @@ public class ChatReplies {
             case "28/09/1939", "09/28/1939" -> meetAgain(player); //Reference to "We'll meet again" by Vera Lynn, with that also Gravity Falls but also fits with the last words said by the voices in the mod
             case "null" -> sendChatReply(world, "<§kUnknown§r> I'm not Null", delay);
             case "the broken script" -> sendChatReply(world, "<§kUnknown§r> Inspiration.", delay);
-            case "zarsai", "zarsaivt", "shinhoa", "shinhoaz", "fireydude", "imfireydude" -> sendChatReply(world, "<SillyMili> <3", 30);
+            case "zarsai", "zarsaivt", "shinhoa", "shinhoaz", "fireydude", "imfireydude", "olt", "one last time", "dario" -> sendChatReply(world, "<SillyMili> <3", 30);
             default -> randomReplies(world, player);
         }
     }

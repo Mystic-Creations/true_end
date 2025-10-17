@@ -1,0 +1,19 @@
+**FABRIC PORT IS ON ITS WAY!** (How many of y'all even knew Nightmare Within a Dream even exists?)
+
+## Removed
+- Removed Herobrine
+
+## Bug Fixes & Technical Improvements
+- Given Writable Book now comes with a custom name "Journal"
+  - A different name is given depending on translation
+- Corrected Inventory Clear/Restore when entering NWaD
+- Fixed `/trueend testScreen funny` not working
+- Switched to Parchment mappings
+- Added `doChatReplies` to mod config
+- Updated credits and added a new someone to the content creator ChatReplies easter egg
+- Expanded on compatibility with KiltMC
+  - Fixed HUD rendering in BTD
+
+## Known Bugs
+- Mount HP being weirdly high up when in BTD
+Any bugs or requests of mod compatibility, please report to our Discord server!

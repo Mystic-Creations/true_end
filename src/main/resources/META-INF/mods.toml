@@ -4,9 +4,13 @@ license="MIT"
 
 [[mods]]
 modId="true_end"
-version="1.4.2.4"
+version="1.4.2.5"
 displayName="True End"
-displayURL="https://modrinth.com/mod/true_end"
+displayURL="""
+
+https://modrinth.com/mod/true_end
+https://www.curseforge.com/minecraft/mc-mods/true-end-cf
+"""
 logoFile="icon.png"
 authors="Mystic Creations Team"
 description="But it was all a dream"

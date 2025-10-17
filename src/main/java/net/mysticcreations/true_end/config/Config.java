@@ -31,6 +31,7 @@ public class Config {
 			case "daytimeChangeToggle" -> Variables.daytimeChangeToggle = (boolean) value;
 			case "clearDreamItems" -> Variables.clearDreamItems = (boolean) value;
 			case "flashingLights" -> Variables.flashingLights = (boolean) value;
+            case "doChatReplies" -> Variables.doChatReplies = (boolean) value;
 			default -> TrueEnd.LOGGER.warn("updateConfig: unhandled key '{}'", key);
 		}
 	}

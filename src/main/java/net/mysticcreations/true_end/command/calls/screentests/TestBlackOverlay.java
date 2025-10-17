@@ -16,24 +16,23 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class TestBlackOverlay {
     private static LevelAccessor world;
+
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
         TestBlackOverlay.world = world;
-        if (entity == null)
-            return;
-        if (entity instanceof ServerPlayer serverPlayer) {
-            BlockPos pos = BlockPos.containing(x, y, z);
-            NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
-                @Override
-                public Component getDisplayName() {
-                    return Component.literal("Funny");
-                }
+        if (entity == null) return;
+        if (!(entity instanceof ServerPlayer serverPlayer)) return;
+        BlockPos pos = BlockPos.containing(x, y, z);
+        NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+            @Override
+            public Component getDisplayName() {
+                return Component.literal("Flash");
+            }
 
-                @Override
-                public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-                    return new BlackOverlay(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos));
-                }
-            }, pos);
-        }
+            @Override
+            public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+                return new BlackOverlay(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos));
+            }
+        }, pos);
     }
 }
 
