@@ -55,7 +55,7 @@ public class HudModifier {
                 playerHpH = 6;
                 airLvlW = 202;
                 airLvlH = 3;
-                mountHpH = 5;
+                mountHpH = 3;
             } else {
                 fullscreenOffset = 1;
                 horseBar = 7;
@@ -66,14 +66,8 @@ public class HudModifier {
                 airLvlH = 3;
                 mountHpH = 3;
             }
-            // TODO: BRING DOWN THE RENDERING ON UNSADDLED ABSTRACTHORSE AND OTHER MOUNTS
-            Entity mount = player.getVehicle();
-            int horseBarOffset = 0;
-            if (mount instanceof AbstractHorse horse) {
-                horseBarOffset = horse.isSaddled() ? horseBar : 0;
-            }
+            int horseBarOffset = player.getVehicle() instanceof AbstractHorse horse && horse.isSaddled() ? horseBar : 0;
             int yOffset = horseBarOffset - fullscreenOffset;
-            int mountHpOffset = !TrueEnd.inModList("kilt") ? (horseBarOffset*2)-3 : 0;
 
             if (id.equals(VanillaGuiOverlay.FOOD_LEVEL.id())) event.setCanceled(true);
             if (id.equals(VanillaGuiOverlay.EXPERIENCE_BAR.id())) event.setCanceled(true);
@@ -91,7 +85,13 @@ public class HudModifier {
             }
             if (id.equals(VanillaGuiOverlay.MOUNT_HEALTH.id())) {
                 event.setCanceled(true);
-                overlay.render((ForgeGui) mc.gui, gui, pt, w, h - mountHpH - yOffset + mountHpOffset);
+                if (player.getArmorValue() > 0) {
+                    //Armor on
+                    overlay.render((ForgeGui) mc.gui, gui, pt, w - 2, h - mountHpH - yOffset);
+                } else {
+                    //Armor off
+                    overlay.render((ForgeGui) mc.gui, gui, pt, w - 2, h - mountHpH - yOffset + 7);
+                }
             }
         }
         if (TrueEnd.inModList("nostalgic_tweaks")) {

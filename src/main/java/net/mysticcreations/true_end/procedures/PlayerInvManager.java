@@ -257,6 +257,7 @@ public class PlayerInvManager {
         LevelAccessor world = player.level();
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
+            //TODO: CHANGE leftBtd TO READ/SAVE PLAYER VAR CAPS
             if (data.hasBeenBeyond() && !Variables.MapVariables.get(world).hasLeftBtd()) {
                 player.getInventory().clearContent();
                 clearAccessories(player);

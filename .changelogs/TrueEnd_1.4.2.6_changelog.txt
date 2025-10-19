@@ -4,10 +4,10 @@
 - Removed Herobrine
 
 ## Bug Fixes & Technical Improvements
-- Inventory no longer completely resets after reentering and leaving BTD
+- Fixed mount HP rendering being rendered way too high
+- Fixed constant inventory resets with each BTD reentry [WORKING ON IT]
 - Renamed config keys
 - Added missing config key `doChatReplies` and 'doRandomEvents' to `te-config` command
 
 ## Known Bugs
-- Mount HP being weirdly high up when in BTD [WORKING ON FIXING]
 Any bugs or requests of mod compatibility, please report to our Discord server!

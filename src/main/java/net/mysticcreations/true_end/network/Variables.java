@@ -77,7 +77,6 @@ public class Variables {
         private double btdSpawnX = 0.0;
         private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
-        private boolean leftBtd = false;
         private boolean unknownInWorld = false;
         private int btdConversationDelay = 0;
         private double randomEventChance = 0.0;
@@ -91,11 +90,9 @@ public class Variables {
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
-        public boolean hasLeftBtd() { return leftBtd; }
 
         public void setUnknownInWorld(boolean v) { unknownInWorld = v; setDirty(); }
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
-        public void setLeftBtd(boolean v) { leftBtd = v; setDirty(); }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
@@ -168,10 +165,13 @@ public class Variables {
 
     public static class PlayerVariables {
         private boolean beenBeyond = false;
+        private boolean leftBtd = false;
         private int seepingRealityTime = 0;
 
         public boolean hasBeenBeyond() { return beenBeyond; }
         public void setBeenBeyond(boolean v) { beenBeyond = v; }
+        public boolean hasLeftBtd() { return leftBtd; }
+        public void setLeftBtd(boolean v) { leftBtd = v; }
 
         public int getSeepingRealityTime() { return seepingRealityTime; }
         public void setSeepingRealityTime(int v) { seepingRealityTime = v; }
@@ -186,12 +186,14 @@ public class Variables {
         public CompoundTag writeNBT() {
             CompoundTag n = new CompoundTag();
             n.putBoolean("beenBeyond", beenBeyond);
+            n.putBoolean("leftBtd", leftBtd);
             n.putInt("seepingRealityTime", seepingRealityTime);
             return n;
         }
 
         public void readNBT(CompoundTag n) {
             beenBeyond = n.getBoolean("beenBeyond");
+            leftBtd = n.getBoolean("leftBtd");
             seepingRealityTime = n.getInt("seepingRealityTime");
         }
     }
