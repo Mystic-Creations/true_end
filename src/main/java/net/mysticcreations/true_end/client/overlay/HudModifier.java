@@ -40,7 +40,6 @@ public class HudModifier {
             int h = mc.getWindow().getGuiScaledHeight();
             int fullscreenOffset;
             int horseBar;
-            int horseBarOffset;
             int armorW;
             int armorH;
             int playerHpH;
@@ -67,17 +66,11 @@ public class HudModifier {
                 airLvlH = 3;
                 mountHpH = 3;
             }
-            // TODO: FIND A MORE OPTIMIZED WAY TO DO THIS
+            // TODO: BRING DOWN THE RENDERING ON UNSADDLED ABSTRACTHORSE AND OTHER MOUNTS
             Entity mount = player.getVehicle();
-            boolean onMount = mount != null;
-            boolean onHorse = mount instanceof AbstractHorse horse;
-            boolean isSaddled = mount instanceof AbstractHorse horse && horse.isSaddled();
-            if (onMount && onHorse && isSaddled) {
-                horseBarOffset = horseBar;
-            } else if (onMount && onHorse && !isSaddled) {
-                horseBarOffset = 0;
-            } else if (onMount && !onHorse) {
-                horseBarOffset = 0;
+            int horseBarOffset = 0;
+            if (mount instanceof AbstractHorse horse) {
+                horseBarOffset = horse.isSaddled() ? horseBar : 0;
             }
             int yOffset = horseBarOffset - fullscreenOffset;
             int mountHpOffset = !TrueEnd.inModList("kilt") ? (horseBarOffset*2)-3 : 0;

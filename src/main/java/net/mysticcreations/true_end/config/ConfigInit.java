@@ -17,17 +17,26 @@ public class ConfigInit {
 		Map<String, Object> entries = Config.serializer.deserialize();
 		entries = entries == null ? new HashMap<>() : entries;
 
+        //Remove old keys
+        entries.remove("randomEventsToggle");
+        entries.remove("creditsToggle");
+        entries.remove("popupsToggle");
+        entries.remove("daytimeChangeToggle");
+        entries.remove("flashingLights");
+        entries.remove("fogToggle");
+
+        //Create Config
 		entries.putIfAbsent("randomEventChance", 0.005d);
 		entries.putIfAbsent("entitySpawnChance", 0.05d);
 		entries.putIfAbsent("btdConversationDelay", 40d);
+        entries.putIfAbsent("clearDreamItems", true);
 		entries.putIfAbsent("doRandomEvents", true);
+        entries.putIfAbsent("doFlashingLights", true);
+        entries.putIfAbsent("doDaytimeChange", true);
 		entries.putIfAbsent("doWindowPopups", true);
+        entries.putIfAbsent("doChatReplies", true);
 		entries.putIfAbsent("showFog", true);
 		entries.putIfAbsent("showCredits", true);
-		entries.putIfAbsent("doFlashingLights", true);
-		entries.putIfAbsent("doDaytimeChange", true);
-		entries.putIfAbsent("clearDreamItems", true);
-        entries.putIfAbsent("doChatReplies", true);
 
 		Variables.randomEventChance = (double) entries.get("randomEventChance");
 		Variables.entitySpawnChance = (double) entries.get("entitySpawnChance");
