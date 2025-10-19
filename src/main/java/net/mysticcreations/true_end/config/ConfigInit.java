@@ -20,24 +20,24 @@ public class ConfigInit {
 		entries.putIfAbsent("randomEventChance", 0.005d);
 		entries.putIfAbsent("entitySpawnChance", 0.05d);
 		entries.putIfAbsent("btdConversationDelay", 40d);
-		entries.putIfAbsent("randomEventsToggle", true);
-		entries.putIfAbsent("popupsToggle", true);
-		entries.putIfAbsent("fogToggle", true);
-		entries.putIfAbsent("creditsToggle", true);
-		entries.putIfAbsent("flashingLights", true);
-		entries.putIfAbsent("daytimeChangeToggle", true);
+		entries.putIfAbsent("doRandomEvents", true);
+		entries.putIfAbsent("doWindowPopups", true);
+		entries.putIfAbsent("showFog", true);
+		entries.putIfAbsent("showCredits", true);
+		entries.putIfAbsent("doFlashingLights", true);
+		entries.putIfAbsent("doDaytimeChange", true);
 		entries.putIfAbsent("clearDreamItems", true);
         entries.putIfAbsent("doChatReplies", true);
 
 		Variables.randomEventChance = (double) entries.get("randomEventChance");
 		Variables.entitySpawnChance = (double) entries.get("entitySpawnChance");
 		Variables.btdConversationDelay = Math.toIntExact(Math.round((double) entries.get("btdConversationDelay")));
-		Variables.randomEventsToggle = (boolean) entries.get("randomEventsToggle");
-		Variables.popupsToggle = (boolean) entries.get("popupsToggle");
-		Variables.fogToggle = (boolean) entries.get("fogToggle");
-		Variables.creditsToggle = (boolean) entries.get("creditsToggle");
-		Variables.flashingLights = (boolean) entries.get("flashingLights");
-		Variables.daytimeChangeToggle = (boolean) entries.get("daytimeChangeToggle");
+		Variables.doRandomEvents = (boolean) entries.get("doRandomEvents");
+		Variables.doWindowPopups = (boolean) entries.get("doWindowPopups");
+		Variables.showFog = (boolean) entries.get("showFog");
+		Variables.showCredits = (boolean) entries.get("showCredits");
+		Variables.doFlashingLights = (boolean) entries.get("doFlashingLights");
+		Variables.doDaytimeChange = (boolean) entries.get("doDaytimeChange");
 		Variables.clearDreamItems = (boolean) entries.get("clearDreamItems");
         Variables.doChatReplies = (boolean) entries.get("doChatReplies");
 

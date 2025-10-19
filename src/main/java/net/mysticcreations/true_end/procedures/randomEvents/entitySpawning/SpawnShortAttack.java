@@ -27,7 +27,7 @@ public class SpawnShortAttack {
         if (world.getGameTime() % 1200L != 0) return; //Tick Interval
         if (world.dimension() == Level.END) return;
 
-        if (!Variables.randomEventsToggle) return;
+        if (!Variables.doRandomEvents) return;
         if (!(world.random.nextDouble() < (Variables.entitySpawnChance / 50))) return;
         if (world.getDifficulty() == Difficulty.PEACEFUL) return;
 

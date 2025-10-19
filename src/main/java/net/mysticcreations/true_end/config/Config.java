@@ -25,12 +25,13 @@ public class Config {
 			case "randomEventChance" -> Variables.randomEventChance = (double)  value;
 			case "entitySpawnChance" -> Variables.entitySpawnChance = (double)  value;
 			case "btdConversationDelay" -> Variables.btdConversationDelay = (int) value;
-			case "creditsToggle" -> Variables.creditsToggle = (boolean) value;
-			case "fogToggle" -> Variables.fogToggle = (boolean) value;
-			case "popupsToggle" -> Variables.popupsToggle = (boolean) value;
-			case "daytimeChangeToggle" -> Variables.daytimeChangeToggle = (boolean) value;
+			case "showCredits" -> Variables.showCredits = (boolean) value;
+			case "showFog" -> Variables.showFog = (boolean) value;
+            case "doRandomEvents" -> Variables.doRandomEvents = (boolean) value;
+			case "doWindowPopups" -> Variables.doWindowPopups = (boolean) value;
+			case "doDaytimeChange" -> Variables.doDaytimeChange = (boolean) value;
 			case "clearDreamItems" -> Variables.clearDreamItems = (boolean) value;
-			case "flashingLights" -> Variables.flashingLights = (boolean) value;
+			case "doFlashingLights" -> Variables.doFlashingLights = (boolean) value;
             case "doChatReplies" -> Variables.doChatReplies = (boolean) value;
 			default -> TrueEnd.LOGGER.warn("updateConfig: unhandled key '{}'", key);
 		}

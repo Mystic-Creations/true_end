@@ -17,12 +17,12 @@ public class PlayCredits {
     private static boolean hasShownCreditsThisSession = false;
     @SubscribeEvent
     public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (Variables.creditsToggle) { hasShownCreditsThisSession = false; } else { return; }
+        if (Variables.showCredits) { hasShownCreditsThisSession = false; } else { return; }
         if (hasShownCreditsThisSession) return;
 
         if (event.getFrom() == BTD && event.getTo() == Level.OVERWORLD) {
             hasShownCreditsThisSession = true;
-            Config.updateConfig("creditsToggle", false);
+            Config.updateConfig("showCredits", false);
 
             ServerPlayer player = (ServerPlayer) event.getEntity();
             Packets.sendToPlayer(new ShowCreditsPacket(), player);

@@ -26,7 +26,7 @@ public class UpdateClientConfigPacket {
 
     public static void handle(UpdateClientConfigPacket msg, Supplier<NetworkEvent.Context> ctxSupplier) {
         NetworkEvent.Context ctx = ctxSupplier.get();
-        ctx.enqueueWork(() -> Variables.fogToggleClient = msg.value);
+        ctx.enqueueWork(() -> Variables.showFogClient = msg.value);
         ctx.setPacketHandled(true);
     }
 }

@@ -37,7 +37,7 @@ public class SpawnStalking {
 
         if (world.getGameTime() % TICK_INTERVAL != 0) return;
         if (world.dimension() == Level.END) return;
-        if (!Variables.randomEventsToggle) return;
+        if (!Variables.doRandomEvents) return;
 
         long daysPlayed = world.getGameTime() / 24000;
         if (daysPlayed < 10) return;

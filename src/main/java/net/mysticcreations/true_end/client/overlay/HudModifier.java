@@ -1,6 +1,7 @@
 package net.mysticcreations.true_end.client.overlay;
 
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import net.minecraft.world.entity.Entity;
 import net.mysticcreations.true_end.TrueEnd;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -39,6 +40,7 @@ public class HudModifier {
             int h = mc.getWindow().getGuiScaledHeight();
             int fullscreenOffset;
             int horseBar;
+            int horseBarOffset;
             int armorW;
             int armorH;
             int playerHpH;
@@ -65,8 +67,20 @@ public class HudModifier {
                 airLvlH = 3;
                 mountHpH = 3;
             }
-            int horseBarOffset = player.getVehicle() instanceof AbstractHorse horse && horse.isSaddled() ? horseBar : 0;
+            // TODO: FIND A MORE OPTIMIZED WAY TO DO THIS
+            Entity mount = player.getVehicle();
+            boolean onMount = mount != null;
+            boolean onHorse = mount instanceof AbstractHorse horse;
+            boolean isSaddled = mount instanceof AbstractHorse horse && horse.isSaddled();
+            if (onMount && onHorse && isSaddled) {
+                horseBarOffset = horseBar;
+            } else if (onMount && onHorse && !isSaddled) {
+                horseBarOffset = 0;
+            } else if (onMount && !onHorse) {
+                horseBarOffset = 0;
+            }
             int yOffset = horseBarOffset - fullscreenOffset;
+            int mountHpOffset = !TrueEnd.inModList("kilt") ? (horseBarOffset*2)-3 : 0;
 
             if (id.equals(VanillaGuiOverlay.FOOD_LEVEL.id())) event.setCanceled(true);
             if (id.equals(VanillaGuiOverlay.EXPERIENCE_BAR.id())) event.setCanceled(true);
@@ -84,7 +98,7 @@ public class HudModifier {
             }
             if (id.equals(VanillaGuiOverlay.MOUNT_HEALTH.id())) {
                 event.setCanceled(true);
-                overlay.render((ForgeGui) mc.gui, gui, pt, w, h - mountHpH - yOffset);
+                overlay.render((ForgeGui) mc.gui, gui, pt, w, h - mountHpH - yOffset + mountHpOffset);
             }
         }
         if (TrueEnd.inModList("nostalgic_tweaks")) {

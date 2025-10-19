@@ -32,22 +32,20 @@ public class PrintVars {
         // World vars
         source.sendSystemMessage(Component.literal("\n----= World Variables"));
         Variables.MapVariables globalVars = Variables.MapVariables.get(world);
-        if (player.level().dimension() == BTD) {
-            source.sendSystemMessage(Component.literal("btdSpawnX/Y/Z: "+btdSpawnX+"/"+btdSpawnY +"/"+btdSpawnZ));
-        } else {
-            source.sendSystemMessage(Component.literal("You're not in BTD"));
-        }
+        source.sendSystemMessage(Component.literal("btdSpawnX/Y/Z: "+btdSpawnX+"/"+btdSpawnY +"/"+btdSpawnZ));
         source.sendSystemMessage(Component.literal("unknownInWorld: " + globalVars.isUnknownInWorld()));
         // Config vars
         source.sendSystemMessage(Component.literal("\n----= Config Variables"));
         source.sendSystemMessage(Component.literal("btdConversationDelay: " + Variables.btdConversationDelay));
         source.sendSystemMessage(Component.literal("randomEventChance: " + Variables.randomEventChance));
         source.sendSystemMessage(Component.literal("entitySpawnChance: " + Variables.entitySpawnChance));
-        source.sendSystemMessage(Component.literal("creditsToggle: " + Variables.creditsToggle));
-        source.sendSystemMessage(Component.literal("popupsToggle: " + Variables.popupsToggle));
-        source.sendSystemMessage(Component.literal("fogToggle: " + Variables.fogToggle));
-        source.sendSystemMessage(Component.literal("daytimeChangeToggle: " + Variables.daytimeChangeToggle));
-        source.sendSystemMessage(Component.literal("clearDreamItems: " + Variables.daytimeChangeToggle));
-        source.sendSystemMessage(Component.literal("flashingLights: " + Variables.flashingLights));
+        source.sendSystemMessage(Component.literal("doRandomEvents: " + Variables.doRandomEvents));
+        source.sendSystemMessage(Component.literal("showCredits: " + Variables.showCredits));
+        source.sendSystemMessage(Component.literal("doWindowPopups: " + Variables.doWindowPopups));
+        source.sendSystemMessage(Component.literal("showFog: " + Variables.showFog));
+        source.sendSystemMessage(Component.literal("doDaytimeChange: " + Variables.doDaytimeChange));
+        source.sendSystemMessage(Component.literal("clearDreamItems: " + Variables.clearDreamItems));
+        source.sendSystemMessage(Component.literal("doFlashingLights: " + Variables.doFlashingLights));
+        source.sendSystemMessage(Component.literal("doChatReplies: " + Variables.doChatReplies));
     }
 }

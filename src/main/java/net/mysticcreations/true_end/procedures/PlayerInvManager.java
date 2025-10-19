@@ -1,6 +1,7 @@
 package net.mysticcreations.true_end.procedures;
 
 import io.wispforest.accessories.api.AccessoriesCapability;
+import net.minecraft.world.level.LevelAccessor;
 import net.mysticcreations.true_end.TrueEnd;
 import net.mysticcreations.true_end.init.Items;
 import net.mysticcreations.true_end.network.Variables;
@@ -253,9 +254,10 @@ public class PlayerInvManager {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if (!(event.getFrom().equals(BTD) && event.getTo().equals(Level.OVERWORLD))) return;
         if (!Variables.clearDreamItems) return;
+        LevelAccessor world = player.level();
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(data -> {
-            if (data.hasBeenBeyond()) {
+            if (data.hasBeenBeyond() && !Variables.MapVariables.get(world).hasLeftBtd()) {
                 player.getInventory().clearContent();
                 clearAccessories(player);
                 restoreInvWithChance(player);
@@ -263,6 +265,8 @@ public class PlayerInvManager {
                 ItemStack cube = new ItemStack(Items.MYSTERIOUS_CUBE.get());
                 cube.setCount(1);
                 ItemHandlerHelper.giveItemToPlayer(player, cube);
+
+                Variables.MapVariables.get(world).setLeftBtd(true);
             }
         });
     }

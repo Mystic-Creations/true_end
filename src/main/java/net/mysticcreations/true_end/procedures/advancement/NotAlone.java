@@ -11,7 +11,7 @@ import static net.mysticcreations.true_end.init.Dimensions.BTD;
 public class NotAlone {
     public static void grantAdvancement(ServerPlayer player) {
         if (!((player.level().dimension()) == BTD)) return;
-        if (!Variables.randomEventsToggle) return;
+        if (!Variables.doRandomEvents) return;
         if (!(Math.random() < Variables.randomEventChance)) return;
 
         Advancement advancement = player.server.getAdvancements().getAdvancement(ResourceLocation.parse("true_end:not_alone"));

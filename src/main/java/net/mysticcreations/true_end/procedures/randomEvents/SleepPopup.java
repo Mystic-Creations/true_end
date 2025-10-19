@@ -16,8 +16,8 @@ public class SleepPopup {
         Level level = player.level();
         if (!level.isClientSide) return;
 
-        if (!Variables.randomEventsToggle) return;
-        if (!Variables.popupsToggle) return;
+        if (!Variables.doRandomEvents) return;
+        if (!Variables.doWindowPopups) return;
         if (!(Math.random() < Variables.randomEventChance * 1.5)) return;
         if (level.dimension() != Level.OVERWORLD) return;
 

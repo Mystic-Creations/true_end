@@ -68,7 +68,6 @@ dependencies {
 
     //Performance
     implementation fg.deobf("curse.maven:embeddium-908741:5681725")
-    implementation fg.deobf("curse.maven:modernfix-790626:6837713")
 
     //APIs
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")

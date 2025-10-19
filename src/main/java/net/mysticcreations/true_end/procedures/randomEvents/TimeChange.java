@@ -16,8 +16,8 @@ public class TimeChange {
     @SubscribeEvent
     public static void onWorldTick(TickEvent.LevelTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-        if (!Variables.randomEventsToggle) return;
-        if (!Variables.daytimeChangeToggle) return;
+        if (!Variables.doRandomEvents) return;
+        if (!Variables.doDaytimeChange) return;
         if (!(event.level instanceof ServerLevel serverWorld)) return;
 
         long totalDays = serverWorld.getDayTime() / 24000;

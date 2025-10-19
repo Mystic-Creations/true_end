@@ -32,7 +32,7 @@ public class ConfigSync {
     private static void fogUpdate(PlayerEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) {return;}
         TrueEnd.wait(5, () ->
-                Packets.sendToPlayer(new UpdateClientConfigPacket("fogToggle", Variables.fogToggle), player)
+                Packets.sendToPlayer(new UpdateClientConfigPacket("showFog", Variables.showFog), player)
         );
     }
 }

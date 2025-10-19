@@ -28,7 +28,7 @@ public class SoundPlayer {
         if (!(event.player instanceof ServerPlayer player)) return;
         if (player.level().dimension() != NWAD) if (player.level().dimension() != Level.OVERWORLD) return;
 
-        if (!Variables.randomEventsToggle) return;
+        if (!Variables.doRandomEvents) return;
         if (!(Math.random() < Variables.randomEventChance)) return;
         if (event.phase != TickEvent.Phase.END) return;
 

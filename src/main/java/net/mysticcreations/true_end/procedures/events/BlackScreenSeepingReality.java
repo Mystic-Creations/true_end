@@ -25,7 +25,7 @@ public class BlackScreenSeepingReality {
             player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(cap -> cap.setSeepingRealityTime(0));
             return;
         }
-        if (!Variables.flashingLights) return;
+        if (!Variables.doFlashingLights) return;
 
         player.getCapability(Variables.PLAYER_VARS_CAP).ifPresent(cap -> {
             int t = cap.getSeepingRealityTime() + 1;

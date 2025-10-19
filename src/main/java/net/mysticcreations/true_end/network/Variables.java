@@ -35,16 +35,16 @@ public class Variables {
 
     public static double randomEventChance;
     public static double entitySpawnChance;
-    public static boolean popupsToggle;
-    public static boolean fogToggle;
-    public static boolean creditsToggle;
+    public static boolean doRandomEvents;
+    public static boolean doDaytimeChange;
+    public static boolean doWindowPopups;
+    public static boolean doFlashingLights;
+    public static boolean showFog;
+    public static boolean showCredits;
     public static int btdConversationDelay;
-    public static boolean randomEventsToggle;
-    public static boolean flashingLights;
-    public static boolean daytimeChangeToggle;
     public static boolean clearDreamItems;
 
-    public static boolean fogToggleClient;
+    public static boolean showFogClient;
     public static boolean doChatReplies;
 
     @SubscribeEvent
@@ -77,12 +77,13 @@ public class Variables {
         private double btdSpawnX = 0.0;
         private double btdSpawnY = 0.0;
         private double btdSpawnZ = 0.0;
+        private boolean leftBtd = false;
         private boolean unknownInWorld = false;
         private int btdConversationDelay = 0;
         private double randomEventChance = 0.0;
-        private boolean randomEventsToggle = false;
-        private boolean flashingLights = false;
-        private boolean daytimeChangeToggle = false;
+        private boolean doRandomEvents = false;
+        private boolean doFlashingLights = false;
+        private boolean doDaytimeChange = false;
         private boolean clearDreamItems = false;
         private boolean doChatReplies = true;
 
@@ -90,9 +91,11 @@ public class Variables {
         public double getBtdSpawnX() { return btdSpawnX; }
         public double getBtdSpawnY() { return btdSpawnY; }
         public double getBtdSpawnZ() { return btdSpawnZ; }
+        public boolean hasLeftBtd() { return leftBtd; }
 
-        public void setUnknownInWorld(boolean v) { unknownInWorld = v ;setDirty(); }
+        public void setUnknownInWorld(boolean v) { unknownInWorld = v; setDirty(); }
         public void setBtdSpawn(double x, double y, double z) { btdSpawnX = x; btdSpawnY = y; btdSpawnZ = z; setDirty(); }
+        public void setLeftBtd(boolean v) { leftBtd = v; setDirty(); }
 
         public static MapVariables load(CompoundTag nbt) {
             MapVariables m = new MapVariables();
@@ -102,10 +105,11 @@ public class Variables {
             m.unknownInWorld = nbt.getBoolean("unknownInWorld");
             m.btdConversationDelay = nbt.getInt("btdConversationDelay");
             m.randomEventChance = nbt.getDouble("randomEventChance");
-            m.randomEventsToggle = nbt.getBoolean("randomEventsToggle");
-            m.flashingLights = nbt.getBoolean("flashingLights");
-            m.daytimeChangeToggle = nbt.getBoolean("daytimeChangeToggle");
+            m.doRandomEvents = nbt.getBoolean("doRandomEvents");
+            m.doFlashingLights = nbt.getBoolean("doFlashingLights");
+            m.doDaytimeChange = nbt.getBoolean("doDaytimeChange");
             m.clearDreamItems = nbt.getBoolean("clearDreamItems");
+            m.doChatReplies = nbt.getBoolean("doChatReplies");
             return m;
         }
 
@@ -117,10 +121,11 @@ public class Variables {
             nbt.putBoolean("unknownInWorld", unknownInWorld);
             nbt.putInt("btdConversationDelay", btdConversationDelay);
             nbt.putDouble("randomEventChance", randomEventChance);
-            nbt.putBoolean("randomEventsToggle", randomEventsToggle);
-            nbt.putBoolean("flashingLights", flashingLights);
-            nbt.putBoolean("daytimeChangeToggle", daytimeChangeToggle);
+            nbt.putBoolean("doRandomEvents", doRandomEvents);
+            nbt.putBoolean("doFlashingLights", doFlashingLights);
+            nbt.putBoolean("doDaytimeChange", doDaytimeChange);
             nbt.putBoolean("clearDreamItems", clearDreamItems);
+            nbt.putBoolean("doChatReplies", doChatReplies);
             return nbt;
         }
 

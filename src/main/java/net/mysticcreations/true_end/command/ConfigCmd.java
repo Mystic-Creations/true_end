@@ -43,22 +43,22 @@ public class ConfigCmd {
                         .then(Commands.argument("value", IntegerArgumentType.integer(0, 60))
                             .executes(ctx -> handleInt(ctx.getSource(), "btdConversationDelay", IntegerArgumentType.getInteger(ctx, "value")))))
 
-                    .then(Commands.literal("creditsToggle")
-                        .executes(ctx -> getConfig(ctx.getSource(), "creditsToggle", Variables.creditsToggle))
+                    .then(Commands.literal("showCredits")
+                        .executes(ctx -> getConfig(ctx.getSource(), "showCredits", Variables.showCredits))
                         .then(Commands.literal("true")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "creditsToggle", true)))
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "showCredits", true)))
                         .then(Commands.literal("false")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "creditsToggle", false))))
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "showCredits", false))))
 
-                    .then(Commands.literal("fogToggle")
-                        .executes(ctx -> getConfig(ctx.getSource(), "fogToggle", Variables.fogToggle))
+                    .then(Commands.literal("showFog")
+                        .executes(ctx -> getConfig(ctx.getSource(), "showFog", Variables.showFog))
                         .then(Commands.literal("true")
                             .executes(ctx -> {
                                 try {
                                     ServerPlayer player = ctx.getSource().getPlayerOrException();
-                                    updateClientConfig(player, ctx.getSource(), "fogToggle", true);
+                                    updateClientConfig(player, ctx.getSource(), "showFog", true);
                                 } catch (Exception e) {
-                                    handleBoolean(ctx.getSource(), "fogToggle", true);
+                                    handleBoolean(ctx.getSource(), "showFog", true);
                                 }
                                 return 1;
                             }))
@@ -66,35 +66,51 @@ public class ConfigCmd {
                             .executes(ctx -> {
                                 try {
                                     ServerPlayer player = ctx.getSource().getPlayerOrException();
-                                    updateClientConfig(player, ctx.getSource(), "fogToggle", false);
+                                    updateClientConfig(player, ctx.getSource(), "showFog", false);
                                 } catch (Exception e) {
-                                    handleBoolean(ctx.getSource(), "fogToggle", false);
+                                    handleBoolean(ctx.getSource(), "showFog", false);
                                 }
                                 return 1;
                             })))
 
-                    .then(Commands.literal("popupsToggle")
+                    .then(Commands.literal("doRandomEvents")
                         .requires(s -> s.hasPermission(4))
-                        .executes(ctx -> getConfig(ctx.getSource(), "popupsToggle", Variables.popupsToggle))
+                        .executes(ctx -> getConfig(ctx.getSource(), "doRandomEvents", Variables.doRandomEvents))
                         .then(Commands.literal("true")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", true)))
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doRandomEvents", true)))
                         .then(Commands.literal("false")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "popupsToggle", false))))
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doRandomEvents", false))))
 
-                    .then(Commands.literal("flashingLights")
-                        .executes(ctx -> getConfig(ctx.getSource(), "flashingLights", Variables.flashingLights))
-                        .then(Commands.literal("true")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", true)))
-                        .then(Commands.literal("false")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "flashingLights", false))))
-
-                    .then(Commands.literal("daytimeChangeToggle")
+                    .then(Commands.literal("doWindowPopups")
                         .requires(s -> s.hasPermission(4))
-                        .executes(ctx -> getConfig(ctx.getSource(), "daytimeChangeToggle", Variables.daytimeChangeToggle))
+                        .executes(ctx -> getConfig(ctx.getSource(), "doWindowPopups", Variables.doWindowPopups))
                         .then(Commands.literal("true")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", true)))
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doWindowPopups", true)))
                         .then(Commands.literal("false")
-                            .executes(ctx -> handleBoolean(ctx.getSource(), "daytimeChangeToggle", false))))
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doWindowPopups", false))))
+
+                    .then(Commands.literal("doFlashingLights")
+                        .executes(ctx -> getConfig(ctx.getSource(), "doFlashingLights", Variables.doFlashingLights))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doFlashingLights", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doFlashingLights", false))))
+
+                    .then(Commands.literal("doDaytimeChange")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "doDaytimeChange", Variables.doDaytimeChange))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doDaytimeChange", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doDaytimeChange", false))))
+
+                    .then(Commands.literal("doChatReplies")
+                        .requires(s -> s.hasPermission(4))
+                        .executes(ctx -> getConfig(ctx.getSource(), "doChatReplies", Variables.doChatReplies))
+                        .then(Commands.literal("true")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doChatReplies", true)))
+                        .then(Commands.literal("false")
+                            .executes(ctx -> handleBoolean(ctx.getSource(), "doChatReplies", false))))
 
                     .then(Commands.literal("clearDreamItems")
                         .requires(s -> s.hasPermission(4))
@@ -118,18 +134,19 @@ public class ConfigCmd {
         updateConfig("randomEventChance", 0.005);
         updateConfig("entitySpawnChance", 0.05);
         updateConfig("btdConversationDelay", 40);
-        updateConfig("randomEventsToggle", true);
-        updateConfig("popupsToggle", true);
+        updateConfig("doRandomEvents", true);
+        updateConfig("doWindowsPopups", true);
         try {
             ServerPlayer player = src.getPlayerOrException();
-            updateClientConfig(player, src, "fogToggle", true);
+            updateClientConfig(player, src, "showFog", true);
         } catch (Exception e) {
-            handleBoolean(src, "fogToggle", true);
+            handleBoolean(src, "showFog", true);
         }
-        updateConfig("creditsToggle", true);
-        updateConfig("flashingLights", true);
-        updateConfig("daytimeChangeToggle", true);
+        updateConfig("showCredits", true);
+        updateConfig("doFlashingLights", true);
+        updateConfig("doDaytimeChange", true);
         updateConfig("clearDreamItems", true);
+        updateConfig("doChatReplies", true);
         return 1;
     }
 }
