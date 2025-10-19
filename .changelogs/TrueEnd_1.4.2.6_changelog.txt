@@ -1,4 +1,4 @@
-**FABRIC PORT IS ON ITS WAY!** ()
+**FABRIC PORT IS ON ITS WAY!** (Last one before full-support Fabric I SWEAR)
 
 ## Removed
 - Removed Herobrine
@@ -10,4 +10,5 @@
 - Added missing config key `doChatReplies` and 'doRandomEvents' to `te-config` command
 
 ## Known Bugs
+None that we know of :'D
 Any bugs or requests of mod compatibility, please report to our Discord server!
